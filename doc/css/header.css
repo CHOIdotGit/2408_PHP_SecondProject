@@ -11,16 +11,17 @@
     box-sizing: border-box;
     font-family: 'Ownglyph_okticon-Bd';
 }
-body {
+header {
     background-color: #A4D8E1;
 }
 
 .header {
     height: 150px;
-    width: 80%;
+    width: 93%;
     margin: auto;
     display: flex;
 }
+
 /* 로고 이미지 */
 .logo {
     background-image: url('../img/logo.png');
@@ -28,6 +29,12 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     width: 400px;
+}
+
+.header-hr {
+    border: 1px solid #FFFFFF;
+    width: 75%;
+    margin-left: 400px;
 }
 
 /* 메뉴 바 */
@@ -43,7 +50,7 @@ body {
 
 
 }
-.navi-bar > .item > button {
+.item-btn {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     font-size: 2rem;
@@ -54,16 +61,15 @@ body {
 /* drop bar 아이콘 */
 .drop-bar {
     display: flex;
-    gap: 10px;
+    gap: 30px;
 }
 
-.drop-bar > .item > button {
+.hamburger-btn {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     font-size: 2rem;
     cursor: pointer;
     position: relative;
-
 }
 
 /* 드랍 메뉴 */
@@ -83,7 +89,7 @@ body {
 }
 
 /* 햄버거 드롭다운 */
-.dropdown > a  {
+.info-page  {
     text-decoration: none;
     color: #000;
     font-size: 1.5rem;
@@ -92,8 +98,60 @@ body {
     
 }
 
-.dropdown > a:hover {
+.info-page:hover {
     color: #A4D8E1;
+
+}
+
+.bell-btn {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 2rem;
+    cursor: pointer;
+    position: relative;
+}
+
+/* 벨 드롭다운 */
+.dropdown-bell {
+    width: 290px;
+    background-color: #FFFFFF;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
+
+    /* 종 버튼 누르면 나타나는 메뉴 */
+    transform: translateY(0.5rem);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+
+}
+
+.bell{
+    width: 290px;
+}
+
+
+.alram {
+    display: flex;
+    gap: 20px;
+    text-decoration: none;
+    color: #000;
+    font-size: 1.0rem;
+    padding: 10px;
+}
+
+.alram-pro {
+    margin: 10px;
+    border: 3px solid #FFBDD0;
+    border-radius: 50px;
+    padding: 3px;
+
+}
+
+.alram:hover {
+    background-color: #f3f5f5;
 
 }
 
@@ -102,3 +160,13 @@ body {
     visibility: visible;
     opacity: 1;
 }
+
+/* ****footer**** */
+/* footer {
+    color: #FFFFFF;
+    text-align: center;
+    display: grid;
+    grid-template-rows: 1fr 40px;
+    min-height: 40vh;
+} */
+
