@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Ownglyph_okticon-Bd';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/Ownglyph_okticon-Bd.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ownglyph_okticon-Bd';
+}
+
+.container {
+    display: flex;
+}
+
+.nav-section {
+    width: 35%;
+    margin-left: 80px;
+    margin-top: 30px;
+}
+
+.selected {
+    border: 3px solid #ffBDD0;
+    background-color: white;
+    border-radius: 50px;
+    padding: 3px;
+}
+
+.not-selected {
+    border: 3px solid #cacaca;
+    background-color: #cacaca;
+    border-radius: 50px;
+    padding: 3px;
+}
+
+.blank {
+    height: 150px;
+}
+
+.btn-box {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.content-btn, .data-btn {
+    width: 100px;
+    height: 50px;
+}
+
