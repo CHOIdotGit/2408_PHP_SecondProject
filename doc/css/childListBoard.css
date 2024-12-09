@@ -1,0 +1,22 @@
+/* 미션 작성 페이지 - 부모 */
+body {
+    background: #A4D8E1;
+}
+
+.d-flex{
+    display: flex;
+
+}
+
+.logo-img {
+    margin: 20px;
+}
+
+.nav-bar {
+position: relative;
+width: 1509px;
+height: 85px;
+left: 320px;
+top: 64px;
+background-color: white;
+}
