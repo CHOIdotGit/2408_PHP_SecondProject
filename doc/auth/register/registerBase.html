@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../css/authCommon.css">
+    <link rel="stylesheet" href="../../css/authRegisterFrom.css">
+    <title>회원가입</title>
+</head>
+<body>
+  <!-- 백그라운드 배경 MAIN -->
+  <main>
+    <!-- 중앙 박스 컨테이너 DIV -->
+    <div class="container">
+        <div class="data-form">
+            <!-- 로고 조절용 DIV -->
+            <div class="logo-img">
+                <img src="../../img/logo.png">
+            </div>
+
+            <div>
+                프로필 사진
+            </div>
+        </div>
+        <!-- 회원가입 입력 폼 1 -->
+        <div class="data-form">
+            <label for="name">이름</label>
+            <input type="text" name="name">
+
+            <label for="account">아이디</label>
+            <input type="text" name="account">
+            
+            <label for="password">비밀번호</label>
+            <input type="password" name="password">
+            
+            <label for="password_chk">비밀번호 확인</label>
+            <input type="password" name="password_chk">
+            
+            <label for="email">이메일</label>
+            <input type="email" name="email">
+        </div>
+        
+        <!-- 회원가입 입력 폼 2 -->
+        <div class="data-form">
+            <label for="nick_name">닉네임</label>
+            <input type="text" name="nick_name">
+
+            <label for="tel">전화번호</label>
+            <input type="tel" name="tel">
+
+            <div class="data-gender">
+                <p>성별</p>
+
+                <div>
+                    <input type="radio" name="gender" value="M">
+                    <label for="gender">남자</label>
+                    &nbsp;
+                    <input type="radio" name="gender" value="F">
+                    <label for="gender">여자</label>
+                </div>
+            </div>
+        </div>
+
+        <div></div>
+    </div>
+  </main>
+  
+</body>
+</html>

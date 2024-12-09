@@ -1,0 +1,23 @@
+/* ---------------------------------------------------------------------- 
+    메인
+----------------------------------------------------------------------*/
+
+/* 입력 폼 */
+.data-form {
+    gap: 60px; /* input과 버튼 사이의 갭 */
+    font-size: 1.5rem;
+}
+
+/* 박스간의 상하 간격 조절 */
+.data-input div:last-child, .data-button button:last-child {
+    margin-top: 15px;
+}
+
+/* 입력 폼 안의 input과 버튼은 동일한 크기를 가짐 */
+.data-form input, .data-form button {
+    padding: 10px;
+    width: 330px;
+    /* width: 20rem; */
+    font-size: 1.4rem;
+}
+
