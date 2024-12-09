@@ -27,33 +27,78 @@ body {
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
-    width: 300px;
+    width: 400px;
 }
+
 /* 메뉴 바 */
 .navi-bar {
     background-color: #FFFFFF;
     width: 100%;
     height: 60px;
     margin: 40px;
+
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     padding: 10px;
+
+
 }
 .navi-bar > .item > button {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     font-size: 2rem;
     cursor: pointer;
-    width: 200px;
+    width: 150px;
 }
+
 /* drop bar 아이콘 */
 .drop-bar {
     display: flex;
     gap: 10px;
 }
+
 .drop-bar > .item > button {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     font-size: 2rem;
     cursor: pointer;
+    position: relative;
+
+}
+
+/* 드랍 메뉴 */
+.dropdown {
+    width: 180px;
+    background-color: #FFFFFF;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
+
+    /* 햄버거 버튼 누르면 나타나는 메뉴 */
+    transform: translateY(0.5rem);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+}
+
+/* 햄버거 드롭다운 */
+.dropdown > a  {
+    text-decoration: none;
+    color: #000;
+    font-size: 1.5rem;
+    margin: 15px;
+
+    
+}
+
+.dropdown > a:hover {
+    color: #A4D8E1;
+
+}
+
+.show {
+    transform: translateY(0rem);
+    visibility: visible;
+    opacity: 1;
 }
