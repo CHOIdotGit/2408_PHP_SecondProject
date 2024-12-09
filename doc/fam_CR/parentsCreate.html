@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../doc/css/header.css">
-    <script src="../doc/js/header.js" defer></script>
+    <link rel="stylesheet" href="../css/parentsCreate.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <script src="../js/header.js"></script>
+    <title>⚽미션등록</title>
 </head>
 <body>
-    
     <header>
         <div class="header">
             <div class="logo"></div>
@@ -28,7 +28,7 @@
                     <div class="drop-bar">
                         <div class="item">
                             <button class="hamburger-btn">
-                                <img src="../doc/img/icon-hamburger.png" alt="" width="40px" height="40px">
+                                <img src="../../doc/img/icon-hamburger.png" alt="" width="40px" height="40px">
                             </button>
                             <!-- 햄버거 드롭 메뉴 -->
                             <div class="dropdown">
@@ -39,7 +39,7 @@
 
                         <div class="item">
                             <button class="bell-btn">
-                                <img src="../doc/img/icon-bell.png" alt="" width="40px" height="40px">
+                                <img src="../../doc/img/icon-bell.png" alt="" width="40px" height="40px">
                             </button>
                             <!-- 벨 드롭 메뉴 -->
                                 <div class="dropdown-bell">
@@ -72,9 +72,31 @@
         <hr>
     </header>
 
-    <!-- 나중에 -->
-    <!-- <footer>
-        <p>© 2024. Moa Co. all rights reserved.</p>
-    </footer> -->
+    <form action="#">
+        <div class="container">
+            <div class="content">
+                <p>미션 제목</p>
+                <input type="text" class="ms-title" id="ms-title"  required>
+                <input type="date" class="ms-date" id="ms-date" required>
+            </div>
+            <div class="content">
+                <p>미션 종류</p>
+                <button><img src="../img/icon-pencil.png" alt=""></button>
+                <button><img src="../img/icon-bicycle.png" alt=""></button>
+                <button><img src="../img/icon-cleaner.png" alt=""></button>
+                <button><img src="../img/icon-clock.png" alt=""></button>
+                <button><img src="../img/icon-checklist7.png" alt=""></button>
+            </div>
+            <div class="content">
+                <p>미션 내용</p>
+                <textarea id="ms-content" placeholder="내용을 적으세요"></textarea>
+            </div>
+            <div class="content">
+                <p>금액(원)</p>
+                <input type="number" class="ms-amount" id="ms-amount" required>
+            </div>
+
+        </div>
+    </form>
 </body>
 </html>
