@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../doc/css/header.css">
-    <script src="../doc/js/header.js" defer></script>
+    <link rel="stylesheet" href="./calendar.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <script src="../js/header.js" defer></script>
 </head>
 <body>
     
@@ -28,7 +29,7 @@
                     <div class="drop-bar">
                         <div class="item">
                             <button class="hamburger-btn">
-                                <img src="../doc/img/icon-hamburger.png" alt="" width="40px" height="40px">
+                                <img src="../img/icon-hamburger.png" alt="" width="40px" height="40px">
                             </button>
                             <!-- 햄버거 드롭 메뉴 -->
                             <div class="dropdown">
@@ -39,26 +40,26 @@
 
                         <div class="item">
                             <button class="bell-btn">
-                                <img src="../doc/img/icon-bell.png" alt="" width="40px" height="40px">
+                                <img src="../img/icon-bell.png" alt="" width="40px" height="40px">
                             </button>
                             <!-- 벨 드롭 메뉴 -->
                                 <div class="dropdown-bell">
                                     <a href="#" class="alram">
-                                        <img src="../doc/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
+                                        <img src="../img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
                                         <div class="content">
                                             <p>[미션]배현진(이)의 미션이 등록되었어요!</p>
                                             <p>2024. 12. 04</p>
                                         </div>
                                     </a>
                                     <a href="#" class="alram">
-                                        <img src="../doc/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
+                                        <img src="../img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
                                         <div class="content">
                                             <p>[미션]배현진(이)의 미션이 승인을 기다리고 있어요.</p>
                                             <p>2024. 12. 04</p>
                                         </div>
                                     </a>
                                     <a href="#" class="alram">
-                                        <img src="../doc/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
+                                        <img src="../img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
                                         <div class="content">
                                             <p>[미션]배현진(이)의 지출이 등록되었어요!</p>
                                             <p>2024. 12. 03</p>
@@ -71,10 +72,33 @@
             </div>
         <hr>
     </header>
+    <main>
+        <div class="container">
+            <div class="nav-section">
+                <div class="select-kids">
+                    <img class=selected src="./img/icon-boy-1.png" alt="" width="85px" height="85px">
+                    <img class="not-selected" src="./img/icon-boy-5.png" alt="" width="85px" height="85px">
+                    <img class="not-selected" src="./img/icon-girl-1.png" alt="" width="85px" height="85px">
+                    <img class="not-selected" src="./img/icon-girl-3.png" alt="" width="85px" height="85px">
+                </div>
+                <div class="blank">
 
-    <!-- 나중에 -->
-    <!-- <footer>
-        <p>© 2024. Moa Co. all rights reserved.</p>
-    </footer> -->
+                </div>
+                <div  class="btn-box">
+                    <button class="content-btn">내용</button>
+                    <button class="data-btn">통계</button>
+                </div>
+                <div>
+                    <ul class="li"> 식비 </ul>
+                    <ul class="li"> 교통비</ul>
+                    <ul class="li"> 쇼핑 </ul>
+                    <ul class="li"> 기타 </ul>
+                    <ul class="li"> 미션 </ul>
+                    <ul class="li">보너스 </ul>
+                    <ul class="li"> 총합 </ul>
+                </div>
+            </div>
+        </div>
+    </main>
 </body>
 </html>
