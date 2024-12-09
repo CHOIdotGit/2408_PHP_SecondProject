@@ -21,6 +21,7 @@ body {
     margin: auto;
     display: flex;
 }
+
 /* 로고 이미지 */
 .logo {
     background-image: url('../img/logo.png');
