@@ -1,0 +1,141 @@
+.container {
+    width: 1820px;
+    height: 800px;
+    background-color: white;
+    margin: 50px;
+}
+
+.select-table {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 1700px;
+    height: 100px;
+    margin-bottom: 10px;
+    gap: 45rem;
+    font-size: 30px;
+    
+    /* padding: 10px 10px 0 10px; */
+}
+
+.child-area {
+    display: flex;
+    margin-top: 1rem;
+    gap: 2.5rem;
+}
+
+/* 자녀 프로필 */
+.profile-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 80px;
+    height: 80px;
+    border: #D9D9D9 solid 5px;
+    border-radius: 50%;
+}
+
+.profile-child > img {
+    width: 60px;
+    height: 60px;
+}
+
+.selected {
+    border: #FFBDD0 solid 5px;
+}
+
+.mission-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.mission-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12rem;
+    height: 75px;
+    background-color: #F5F5F5;
+    font-size: 30px;
+    margin: 10px;
+    width: 1700px;
+}
+
+.mission-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12rem;
+    height: 80px;
+    margin: 10px;
+    font-size: 30px;
+}
+
+.list-hr-line {
+    background-color: #f1f1f19c;
+    width: 1700px;
+    height: 3px;
+}
+
+/* 버튼 */
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+}
+
+.update {
+    margin-top: 1rem;
+}
+
+.btn-approve {
+    color: #A4D8E1;
+    border: #A4D8E1 solid 3px;
+    background-color: #FFFFFF;
+    width: 120px;
+    height: 50px;
+    font-size: 30px;
+}
+
+.btn-delete {
+    border: none;
+    background-color: #A4D8E1;
+    color: #FFFFFF;
+    width: 120px;
+    height: 50px;
+    font-size: 30px;
+}
+
+
+/* 상태 */
+.state {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90px;
+    height: 50px;
+}
+
+.state-underway {
+    background-color: rgba(138, 160, 246, 0.5);
+    color: #0010BE;
+}
+
+.state-waiting {
+    background-color: rgba(22, 200, 150, 0.5);
+    color: #165442;
+}
+
+.state-complete {
+    background-color: rgba(255, 222, 92, 0.5);
+    color: #2F8A1D;
+}
+
+.state-cancel {
+    background-color: rgba(254, 135, 105, 0.5);
+    color: #FF3300;
+}
