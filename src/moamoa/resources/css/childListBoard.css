@@ -1,7 +1,7 @@
 /* 메인 화면 */
 .container {
-    width: 1820px;
-    height: 800px;
+    width: 90%;
+    height: 600px;
     background-color: white;
     margin: 50px;
     display: grid;

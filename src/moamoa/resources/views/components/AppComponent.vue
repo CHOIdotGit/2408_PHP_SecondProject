@@ -75,9 +75,20 @@
 
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
+// vuex route, store 가져오기
+// const store = useStore();
 const route = useRoute();
+
+const currentPath = computed(() => store.state.currentPath);
+
+
 const isHomePage = computed(() => route.path === '/boards');
+// const isOutlayPage = computed(() => route.path === '/outlays');
+// const isMissionPage = computed(() => route.path === '/missions');
+// const isCalendarPage = computed(() => route.path === '/calendars');
+
 const isActive = computed(() => route.path === '/boards');
 
 </script>
