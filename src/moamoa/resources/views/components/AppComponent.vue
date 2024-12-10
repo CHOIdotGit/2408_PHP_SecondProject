@@ -4,7 +4,7 @@
             <div class="logo"></div>
             <div class="navi-bar">
                 <div class="item">
-                <button class="item-btn">홈</button>
+                    <button class="item-btn" v-if="isHomePage" :class="{ active: isActive }">홈</button>
                 </div>
                 <div class="item">
                     <button class="item-btn">지출</button>
@@ -72,6 +72,13 @@
     </footer>
 </template>
 <script setup>
+
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const isHomePage = computed(() => route.path === '/boards');
+const isActive = computed(() => route.path === '/boards');
 
 </script>
 <style>

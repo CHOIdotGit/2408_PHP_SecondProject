@@ -53,9 +53,16 @@ header {
 .item-btn {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    font-size: 2rem;
     cursor: pointer;
     width: 150px;
+    font-size: 35px;  /* 기본 폰트 사이즈 */
+    color: #CACACA;   /* 기본 색상 */
+    text-decoration: none;
+}
+
+.item-btn.active {
+    font-size: 40px;  /* 활성화된 버튼의 폰트 사이즈 */
+    color: #000;      /* 활성화된 버튼의 색상 */
 }
 
 /* drop bar 아이콘 */
