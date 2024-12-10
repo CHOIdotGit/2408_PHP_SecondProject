@@ -4,68 +4,165 @@
 
 /* 컨테이너 */
 .container {
-    background-color: #fff;
     display: grid;
-    grid-template-columns: 0.5fr 1fr 1fr 0.1fr;
+    grid-template-columns: 0.5fr 1.1fr 1fr 0.1fr;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    max-width: 1000px;
     padding: 20px;
     gap: 50px;
 }
 
-/* 컨테이너 자식 DIV들 중앙 정렬 */
+/* 컨테이너 자식 DIV들 */
 .container > div {
     display: flex;
-    justify-content: center;
 }
 
 /* 로고 이미지 크기 조정 */
 .logo-img > img {
-    width: 200px;
+    width: 300px;
 }
 
 /* 데이터 들어갈 폼 */
 .data-form {
     flex-direction: column; /* 세로 정렬 */
-    font-size: 1.3rem;
+    font-size: 2rem;
+    padding: 20px;
+    padding-top: 40px;
+    height: 100%;
+}
+
+/* 첫번째 영역만 여백 삭제  */
+.data-form:nth-child(1) {
+    padding: 0;
+}
+
+/* 프로필 영역 */
+.profile-field {
+    text-align: center;
     padding: 10px;
+    padding-top: 30px;
+}
+
+/* 프로필 사진 텍스트 */
+.profile-field > label {
+    font-size: 1.5rem;
+}
+
+/* 파일 인풋 숨김 */
+.profile-field > input[type="file"] {
+    display: none;
+}
+
+/* 클릭 사진 영역 넓힘 */
+.profile-field > label {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 클릭 영역 프리뷰 부분 */
+.profile-preview {
+    padding: 10px;
+    width: 200px;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #E8E8E8;
+    margin-top: 5px;
 }
 
 /* 데이터 라벨 박스 */
 .data-form > label {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 /* 데이터 입력 박스  */
-.data-form > input {
-    padding: 6.5px;
-    width: 230px;
-    font-size: 0.85rem;
+.data-form input {
+    padding: 10px;
+    width: 400px;
+    font-size: 1.35rem;
+}
+
+.account-gruop {
+    display: flex;
+    align-items: center;
+}
+
+.account-gruop input {
+    width: 310px;
+    padding-right: 0;
+}
+
+/* 중복확인 버튼 */
+.dup-btn {
+    width: 90px;
+    font-size: 1.2rem;
+    height: 100%;
 }
 
 /* 성별 내부 박스 */
 .data-gender {
-    padding: 20px 15px;
-    font-size: 1rem;
+    padding: 35px 20px;
+    font-size: 1.4rem;
 }
 
+/* 성별 텍스트 */
 .data-gender > p {
-    font-size: 1.3rem;
-    margin-bottom: 5px;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
 }
 
-.data-gender > input[type="radio"] {
+/* 커스텀 라디오 버튼 */
+.gender-radio > input[type="radio"] {
     appearance: none; /* 기본 스타일 제거 */
-    width: 17px; /* 크기 조정 */
-    height: 17px; /* 크기 조정 */
-    border: none; /* 테두리 제거 */
+    width: 24px; /* 크기 조정 */
+    height: 24px; /* 크기 조정 */
+    border: none; 
     outline: none; /* 아웃라인 제거 */
     border-radius: 50%; /* 원형으로 만들기 */
     cursor: pointer; /* 커서 손모양으로 변경 */
-    vertical-align: center; /* 중앙 정렬 */
-} 
+    vertical-align: top;
+}
 
-/* .data-gender > input[type="radio"]:checked {
-} */
+/* 라디오 버튼 클릭시 컬러 지정 */
+.gender-radio > input[type="radio"]:checked {
+    background-color: #FFBDD0;
+}
+
+/* 앱솔르트 이동을 위해 포지션 설정 */
+.position-relative {
+    position: relative;
+}
+
+/* 다음 단계로 버튼 */
+.next-btn > button {
+    position: absolute;
+    top: 92%;
+    left: 62%;
+    background-color: transparent;
+    font-size: 2.3rem;
+    width: 230px;
+}
+
+/* 반응형 설정: 화면 너비가 컨테이너 크기 이하일 때 */
+@media (max-width: 1010px) {
+    .container {
+        grid-template-columns: 1fr; /* 좌우 한칸으로 변경 */
+        grid-template-rows: 1fr 1fr 1fr;
+    }
+    .container > div {
+        align-items: center;
+    }
+
+    /* 로고 이미지 */
+    .logo-img img {
+        max-width: 400px;
+    }
+
+    /* 중앙선 DIV 숨기기 */
+    .container > div:last-child {
+        display: none;
+    }
+}

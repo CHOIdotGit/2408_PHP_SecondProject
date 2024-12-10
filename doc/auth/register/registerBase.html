@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/authCommon.css">
     <link rel="stylesheet" href="../../css/authRegisterFrom.css">
-    <title>회원가입</title>
+    <title>회원가입 작성</title>
 </head>
 <body>
   <!-- 백그라운드 배경 MAIN -->
@@ -18,46 +18,62 @@
                 <img src="../../img/logo.png">
             </div>
 
-            <div>
-                프로필 사진
+            <div class="profile-field">
+                <p>프로필 사진</p>
+
+                
+                <label for="file">
+                    <div class="profile-preview">클릭하여 <br>사진 선택</div>
+                </label>
+                <input type="file" name="file" id="file">
             </div>
         </div>
         <!-- 회원가입 입력 폼 1 -->
-        <div class="data-form">
+        <div class="data-form position-relative">
             <label for="name">이름</label>
-            <input type="text" name="name">
+            <input type="text" name="name" id="name">
 
             <label for="account">아이디</label>
-            <input type="text" name="account">
+            <div class="account-gruop">
+                <input type="text" name="account" id="account">
+                <button type="button" class="dup-btn">중복확인</button>
+            </div>
             
             <label for="password">비밀번호</label>
-            <input type="password" name="password">
+            <input type="password" name="password" id="password">
             
             <label for="password_chk">비밀번호 확인</label>
-            <input type="password" name="password_chk">
+            <input type="password" name="password_chk" id="password_chk">
             
             <label for="email">이메일</label>
-            <input type="email" name="email">
+            <input type="email" name="email" id="email">
         </div>
         
         <!-- 회원가입 입력 폼 2 -->
-        <div class="data-form">
+        <div class="data-form position-relative">
             <label for="nick_name">닉네임</label>
-            <input type="text" name="nick_name">
+            <input type="text" name="nick_name" id="nick_name">
 
             <label for="tel">전화번호</label>
-            <input type="tel" name="tel">
+            <input type="tel" name="tel" id="tel">
+
+            <label for="fam_code">가족코드</label>
+            <input type="text" name="fam_code" id="fam_code">
 
             <div class="data-gender">
                 <p>성별</p>
 
-                <div>
+                <div class="gender-radio">
                     <input type="radio" name="gender" value="M">
                     <label for="gender">남자</label>
                     &nbsp;
                     <input type="radio" name="gender" value="F">
                     <label for="gender">여자</label>
                 </div>
+            </div>
+
+            <div class="next-btn">
+                <button type="button">다음 단계로 ></button>
             </div>
         </div>
 
