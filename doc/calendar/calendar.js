@@ -22,7 +22,7 @@ let dateToday = new Date();
 // }
 
 function displayCalendar(){
-    let formattedDate = dateToday.toLocaleString('en-Us', {
+    let formattedDate = dateToday.toLocaleString('ko-KR', {
         year: "numeric", 
         month: "long",
         timeZone:'Asia/Seoul'

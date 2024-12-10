@@ -34,9 +34,9 @@
                     </ul>
                 </div>
             </div>
-            </div>
         </div>
-        </div>
+        
+        
         <div class="sec-container">
             <div class="calendar">
                 <div class="sec-header">
@@ -69,30 +69,18 @@
     </div>
 </div>
 </template>
+
+
 <script setup>
 
 
 </script>
+
+
 <style>
-   @font-face {
-    font-family: 'Ownglyph_okticon-Bd';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/Ownglyph_okticon-Bd.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-}
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Ownglyph_okticon-Bd';
-}
 
-.main{
-    width: 93%;
-}
-
-.container {
+.cal-container {
     width: 93%;
     display: flex;
 
@@ -103,7 +91,7 @@
 
 .nav-section {
     background-color: white;
-    height: 720px;
+    height: 750px;
 }
 
 .selected-kid {
@@ -132,7 +120,7 @@
 
 .btn-box {
     display: flex;
-    /* justify-content: space-between; */
+    justify-content: left;
 
 }
 
@@ -264,4 +252,5 @@ pre {
     background: var(--accent);
     color: var(--white);
 } 
+
 </style>
