@@ -11,11 +11,13 @@
     box-sizing: border-box;
     font-family: 'Ownglyph_okticon-Bd';
 }
-header {
+
+body {
     background-color: #A4D8E1;
 }
 
 .header {
+    background-color: #A4D8E1;
     height: 150px;
     width: 93%;
     margin: auto;

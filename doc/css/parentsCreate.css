@@ -8,36 +8,123 @@
     background-color: #FFFFFF;
     width: 90%;
     margin: 30px auto 50px;
-    height: 60vh;
+    height: 70vh;
 
 }
 
 .content {
     display: flex;
-    margin: 60px ;
+    padding: 20px;
+    margin: 0 400px;
     gap: 20px;
+    border-bottom: 2px solid #dfdfdf;
+    width: 800px;
+
 }
 
-p {
-    font-size: 1.2rem;
+
+.title {
+    font-size: 1.5rem;
+    border-right: 2px solid #dfdfdf;
+    padding: 10px;
+    width: 150px;
+    text-align: center;
+
+}
+
+/* 미션 제목 */
+.ms-title {
+    width: 300px;
+    border: 3px solid #A4D8E1;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    padding-left: 5px;
+}
+
+/* 미션 날짜 */
+.ms-date {
+    border: 3px solid #A4D8E1;
+    padding: 5px;
+    width: 200px;
+    font-size: 1.3rem;
+    border-radius: 10px;
+    text-align: center;
 }
 
 /* 미션 종류 카테고리 이미지 */
-button {
+.category {
     border: none;
     background-color: #A4D8E1;
     cursor: pointer;
     border-radius: 50px;
+
 }
 
-
-.content > button > img {
+.category > img {
     width: 60px;
     height: 60px;
     background-size: cover;
     background-repeat: no-repeat;
 }
 
-.ms-date {
+/* 미션 내용 */
+.ms-content {
+    width: 500px;
+    height: 150px;
+    resize: none;
+    padding: 10px;
+    outline: none;
+    border-radius: 10px;
     border: 3px solid #A4D8E1;
+    font-size: 1.3rem;
+}
+
+/* 미션 금액 */
+.ms-amount {
+    width: 300px;
+    border: 3px solid #A4D8E1;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    padding-left: 5px;
+}
+
+.ms-amount::-webkit-outer-spin-button,
+.ms-amount::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+/* 취소/미션등록 버튼 */
+.create-btn {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-right: 300px;
+    margin-top: 5px;
+}
+
+.ms-cancel {
+    color: #A4D8E1;
+    background-color: #FFFFFF;
+    font-size: 1.2rem;
+    border: 1px solid #A4D8E1;
+    padding: 5px;
+    width: 100px;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.ms-sub {
+    color: #FFFF;
+    background-color: #A4D8E1;
+    font-size: 1.2rem;
+    border: 1px solid #A4D8E1;
+    padding: 5px;
+    width: 100px;
+    border-radius: 0px;
+    cursor: pointer;
 }
