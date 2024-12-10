@@ -1,4 +1,80 @@
-@font-face {
+<template>
+    <div class="cal-container">
+        <div class="nav-section">
+            <div class="select-kids">
+                <img class=selected-kid src="/img/icon-boy-1.png" alt="" width="90px" height="90px">
+                <img class="not-selected" src="/img/icon-boy-5.png" alt="" width="90px" height="90px">
+                <img class="not-selected" src="/img/icon-girl-1.png" alt="" width="90px" height="90px">
+                <img class="not-selected" src="/img/icon-girl-3.png" alt="" width="90px" height="90px">
+            </div>
+            <div class="blank"></div>
+            <div  class="btn-box">
+                <button class="content-btn">내역</button>
+                <button class="data-btn">통계</button>
+            </div>
+            <div class="money-history">
+                <div class="money-title">
+                    <li>식비</li>
+                    <li>교통비</li>
+                    <li>쇼핑</li>
+                    <li>교통비</li>
+                    <li>보너스</li>
+                    <li>미션</li>
+                    <li>총합</li>
+                </div>
+                <div class="money-cost">
+                    <ul>
+                        <li class="cost">7,000원</li>
+                        <li class="cost">15,000원</li>
+                        <li class="cost">12,000</li>
+                        <li class="cost">8,000원</li>
+                        <li class="cost">15,000원</li>
+                        <li class="cost">40,000원</li>
+                        <li class="cost">6,000원</li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+        <div class="sec-container">
+            <div class="calendar">
+                <div class="sec-header">
+                    <pre class="left"> ◀ </pre>
+                    <div class="header-display">
+                        <p class="display"></p>
+                    </div>
+                    <pre class="right"> ▶ </pre>
+                </div>
+                <div class="week">
+                    <div>월</div>
+                    <div>화</div>
+                    <div>수</div>
+                    <div>목</div>
+                    <div>금</div>
+                    <div>토</div>
+                    <div>일</div>
+                </div>
+                <div class="days">
+                    <!-- days will be filled here -->
+                    
+                </div>
+            
+            <div class="display-selected">
+                <p class="selected">
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+</template>
+<script setup>
+
+
+</script>
+<style>
+   @font-face {
     font-family: 'Ownglyph_okticon-Bd';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/Ownglyph_okticon-Bd.woff2') format('woff2');
     font-weight: 700;
@@ -187,4 +263,5 @@ pre {
 .current-date {
     background: var(--accent);
     color: var(--white);
-}
+} 
+</style>

@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import ChildListManagerComponent from '../views/components/board/ChildListManagerComponent.vue';
+import ParentsCalendarComponent from '../views/components/board/ParentsCalendarComponent.vue';
 import ParentsCreateComponent from '../views/components/board/ParentsCreateComponent.vue';
 
 
@@ -18,13 +19,18 @@ const routes = [
         component: ChildListManagerComponent,
     },
     {
+        path: '/pcalendar',
+        component: ParentsCalendarComponent,
+    },
+    {
         path: '/parentsboards',
         component: ParentsCreateComponent,
     },
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
-    }
+    },
+    
 
 ];
 
