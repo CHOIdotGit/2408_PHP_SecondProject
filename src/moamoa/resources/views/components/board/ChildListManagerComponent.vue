@@ -93,6 +93,6 @@
 <script setup>
 
 </script>
-<style scoped>
+<style>
     @import url("../../../css/childListBoard.css");
 </style>

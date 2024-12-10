@@ -64,6 +64,7 @@
     <!-- main -->
     <main>
         <router-view></router-view>
+
     </main>
     
     <!-- footer -->
@@ -74,14 +75,16 @@
 <script setup>
 
 import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 
-const route = useRoute();
-const isHomePage = computed(() => route.path === '/boards');
-const isActive = computed(() => route.path === '/boards');
+// const route = useRoute();
+// const isHomePage = computed(() => route.path === '/boards');
+// const isActive = computed(() => route.path === '/boards');
+
+
 
 </script>
-<style>
+<style scoped>
     @import url("../../css/common.css");
     @import url("../../css/header.css");
 </style>
