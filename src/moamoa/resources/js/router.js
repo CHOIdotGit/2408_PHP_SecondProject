@@ -5,29 +5,29 @@ import ParentsCalendarComponent from '../views/components/board/ParentsCalendarC
 import ParentsCreateComponent from '../views/components/board/ParentsCreateComponent.vue';
 import ParentsUpdateComponent from '../views/components/board/ParentsUpdateComponent.vue';
 import ParentsDetailComponent from '../views/components/board/ParentsDetailComponent.vue';
+import ParentsMissionListComponent from '../views/components/board/ParentsMissionListComponent.vue';
 
 
 const routes = [
     {
         path: '/',
-        redirect: '/boards'
+        redirect: '/parentsBoards'
     },
     // {
     //     path: '/login',
     //     component: 
     // },
     {
-        path: '/boards',
+        path: '/parentsBoards',
         component: ChildListManagerComponent,
         // parentsBoards로 변경 예정
     },
     {
         path: '/parentsMissionList',
         component: ParentsMissionListComponent,
-        // parentsBoards로 변경 예정
     },
     {
-        path: '/pcalendar',
+        path: '/parentsCalendar',
         component: ParentsCalendarComponent,
     },
     {
@@ -35,11 +35,11 @@ const routes = [
         component: ParentsCreateComponent,
     },
     {
-        path: '/parentsupdate',
+        path: '/parentsUpdate',
         component: ParentsUpdateComponent,
     },
     {
-        path: '/parentsdetail',
+        path: '/parentsDetail',
         component: ParentsDetailComponent,
     },
     {
