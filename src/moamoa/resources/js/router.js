@@ -19,13 +19,19 @@ const routes = [
     {
         path: '/boards',
         component: ChildListManagerComponent,
+        // parentsBoards로 변경 예정
+    },
+    {
+        path: '/parentsMissionList',
+        component: ParentsMissionListComponent,
+        // parentsBoards로 변경 예정
     },
     {
         path: '/pcalendar',
         component: ParentsCalendarComponent,
     },
     {
-        path: '/parentsboards',
+        path: '/parentsMissionCreate',
         component: ParentsCreateComponent,
     },
     {

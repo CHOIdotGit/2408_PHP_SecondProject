@@ -15,10 +15,8 @@
             <div class="first-child child">
                 <h3 class="name">이름</h3>
                 <p class="nickname">별명</p>
-                <div class="cild-profile">
+                <div class="child-mission">
                     <p class="mission">승인 대기 중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
@@ -26,7 +24,7 @@
                 <p class="allowance">오늘 받은 용돈</p>
                 <p class="amount">6,000</p>
             </div>
-            <div class="btn-box">
+            <div class="btn-div">
                 <button class="btn bonus">+ 보너스 지급</button>
                 <button class="btn malus">- 용돈 차감</button>
             </div>
@@ -40,10 +38,8 @@
             <div class="first-child child">
                 <h3 class="name">이름</h3>
                 <p class="nickname">별명</p>
-                <div class="cild-profile">
+                <div class="child-mission">
                     <p class="mission">승인 대기 중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
@@ -51,7 +47,7 @@
                 <p class="allowance">오늘 받은 용돈</p>
                 <p class="amount">6,000</p>
             </div>
-            <div class="btn-box">
+            <div class="btn-div">
                 <button class="btn bonus">+ 보너스 지급</button>
                 <button class="btn malus">- 용돈 차감</button>
             </div>
@@ -65,10 +61,8 @@
             <div class="first-child child">
                 <h3 class="name">이름</h3>
                 <p class="nickname">별명</p>
-                <div class="cild-profile">
+                <div class="child-mission">
                     <p class="mission">승인 대기 중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
-                    <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
                     <p class="pre-mission">대기중인 미션</p>
@@ -76,7 +70,7 @@
                 <p class="allowance">오늘 받은 용돈</p>
                 <p class="amount">6,000</p>
             </div>
-            <div class="btn-box">
+            <div class="btn-div">
                 <button class="btn bonus">+ 보너스 지급</button>
                 <button class="btn malus">- 용돈 차감</button>
             </div>
@@ -101,7 +95,7 @@
     background-color: white;
     margin: 50px;
     display: grid;
-    grid-template-columns: 1fr 480px 480px 480px 1fr;
+    grid-template-columns: 1fr 360px 360px 360px 1fr;
 
     gap: 10px;
 }
@@ -121,29 +115,29 @@
 .profile-img {
     display: flex;
     justify-content: center;
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     border: #FFBDD0 solid 5px;
     border-radius: 50%;
 }
 
 .profile-img > img {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
 }
 
 .child {
     background-color: white;
     border: solid #A4D8E1 5px;
-    width: 480px;
-    height: 500px;
+    width: 360px;
+    height: 375px;
     margin-top: 15px;
 }
 
 /* 프로필 텍스트 */
 .name {
-    font-size: 48px;
-    margin-top: 50px;
+    font-size: 45px;
+    margin-top: 5px;
     text-align: center;
     color: #A4D8E1;
 }
@@ -175,7 +169,7 @@
 
 .amount {
     font-size: 20px;
-    margin-top: 20px;
+    margin-top: 10px;
     text-align: center;
 }
 
@@ -186,7 +180,7 @@
     align-items: center;
 }
 
-.btn-box{
+.btn-div{
     display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -195,8 +189,8 @@
 }
 
 .btn {
-    width: 180px;
-    height: 50px;
+    width: 160px;
+    height: 40px;
     cursor: pointer;
 }
 
@@ -204,14 +198,14 @@
     border: none;
     background-color: #A4D8E1;
     color: #FFFFFF;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .malus {
     border: #A4D8E1 solid 5px;
     background-color: #FFFFFF;
     color: #A4D8E1;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 /* 페이지네이션 버튼 */
