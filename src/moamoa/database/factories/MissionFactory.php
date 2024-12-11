@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\Mission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +17,7 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
-        $user = User::select('user_id')->inRandomOrder()->first();
+        Mission::select('mission_id')->inRandomOrder()->first();
         return [
             'parent_id' => 1,
             'child_id' => rand(2,4),

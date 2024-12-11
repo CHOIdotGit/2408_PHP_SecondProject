@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Income;
+use App\Models\Mission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,8 +17,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call([
-        //     UserSeeder::class,
+        //     FamilyCodeSeeder::class
+        //     ,UserSeeder::class
+        //     ,IncomeCategorySeeder::class
+        //     ,MissionCategorySeeder::class
         // ]);
-        // Board::factory(50)->create();
+        Income::factory(50)->create();
+        Mission::factory(50)->create();
     }
 }

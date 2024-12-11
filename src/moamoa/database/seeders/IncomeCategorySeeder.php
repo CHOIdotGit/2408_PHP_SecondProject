@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\IncomeCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,7 +22,7 @@ class IncomeCategorySeeder extends Seeder
             ['in_type' => '3', 'in_name' => '기타', 'in_img' => '/img/Pngtreestationery_icon_3728043.png'],
         ];
         foreach($data as $item) {
-            User::create($item);
+            IncomeCategory::create($item);
         }
     }
 }

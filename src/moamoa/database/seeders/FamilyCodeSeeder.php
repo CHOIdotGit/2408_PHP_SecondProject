@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\FamilyCode;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,7 +19,7 @@ class FamilyCodeSeeder extends Seeder
             ['family_code' => 'ab123456'],
         ];
         foreach($data as $item) {
-            User::create($item);
+            FamilyCode::create($item);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\MissionCategory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -23,7 +23,7 @@ class MissionCategorySeeder extends Seeder
             ['ms_type' => '4', 'ms_name' => '기타', 'ms_img' => 'icon-checklist7.png'],
         ];
         foreach($data as $item) {
-            User::create($item);
+            MissionCategory::create($item);
         }
     }
 }
