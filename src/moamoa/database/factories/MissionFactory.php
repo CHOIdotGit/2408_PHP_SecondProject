@@ -18,8 +18,8 @@ class MissionFactory extends Factory
     {
         // Mission::select('mission_id')->inRandomOrder()->first();
         return [
-            'parent_id' => 4,
-            'child_id' => rand(5,7),
+            'parent_id' => 1,
+            'child_id' => rand(2,4),
             'ms_id' => rand(1,4),
             'title' => $this->faker->text(50),
             'content' => $this->faker->text(255),

@@ -18,8 +18,8 @@ class IncomeFactory extends Factory
     {
         // Income::select('income_id')->inRandomOrder()->first();
         return [
-            'parent_id' => 4,
-            'child_id' => rand(5,7),
+            'parent_id' => 1,
+            'child_id' => rand(2,4),
             'in_id' => rand(1,4),
             'income_code' => rand(0,1),
             'amount' => rand(100,10000),

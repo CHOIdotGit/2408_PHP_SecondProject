@@ -87,7 +87,7 @@
 <script setup>
 
 </script>
-<style>
+<style scoped>
     /* 메인 화면 */
 .container {
     width: 90%;

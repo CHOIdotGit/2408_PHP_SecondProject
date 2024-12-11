@@ -16,12 +16,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //     FamilyCodeSeeder::class
-        //     ,UserSeeder::class
-        //     ,IncomeCategorySeeder::class
-        //     ,MissionCategorySeeder::class
-        // ]);
+        $this->call([
+            FamilyCodeSeeder::class
+            ,UserSeeder::class
+            ,IncomeCategorySeeder::class
+            ,MissionCategorySeeder::class
+        ]);
         Income::factory(50)->create();
         Mission::factory(50)->create();
     }

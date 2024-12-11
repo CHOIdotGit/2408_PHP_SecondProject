@@ -70,7 +70,7 @@
     
     <!-- footer -->
     <footer>
-        
+        <p>© 2024. Moa Co. all rights reserved.</p>
     </footer>
 </template>
 
@@ -116,4 +116,9 @@ const bellDropDown = () => {
 <style scoped>
     @import url("../../css/common.css");
     @import url("../../css/header.css");
+    /* footer */
+    footer > p {
+        text-align: center;
+        color: white;
+    }
 </style>

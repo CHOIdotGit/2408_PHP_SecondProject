@@ -20,61 +20,63 @@
                 <button class="btn-delete">삭제</button>
             </div>
         </div>
-        <div class="mission-list">
-            <div class="mission-title">
-                <p>자녀이름</p>
-                <div class="state">
-                    <p class="status">상태</p>
+        <div class="mission">
+            <div class="mission-list">
+                <div class="mission-title">
+                    <p>자녀이름</p>
+                    <div class="state">
+                        <p class="status">상태</p>
+                    </div>
+                    <p>종류</p>
+                    <p>미션 이름</p>
+                    <p>금액(원)</p>
+                    <p>미션 기한</p>
                 </div>
-                <p>종류</p>
-                <p>미션 이름</p>
-                <p>금액(원)</p>
-                <p>미션 기한</p>
-            </div>
-            <div class="mission-content">
-                <p>자녀이름</p>
-                <div class="state state-underway">
-                    <p>진행중</p>
+                <div class="mission-content">
+                    <p>자녀이름</p>
+                    <div class="state state-underway">
+                        <p>진행중</p>
+                    </div>
+                    <p>종류</p>
+                    <p>미션 이름</p>
+                    <p>금액(원)</p>
+                    <p>미션 기한</p>
                 </div>
-                <p>종류</p>
-                <p>미션 이름</p>
-                <p>금액(원)</p>
-                <p>미션 기한</p>
-            </div>
-            <hr class="list-hr-line">
-            <div class="mission-content">
-                <p>자녀이름</p>
-                <div class="state state-waiting">
-                    <p>대기중</p>
+                <hr class="list-hr-line">
+                <div class="mission-content">
+                    <p>자녀이름</p>
+                    <div class="state state-waiting">
+                        <p>대기중</p>
+                    </div>
+                    <p>종류</p>
+                    <p>미션 이름</p>
+                    <p>금액(원)</p>
+                    <p>미션 기한</p>
                 </div>
-                <p>종류</p>
-                <p>미션 이름</p>
-                <p>금액(원)</p>
-                <p>미션 기한</p>
-            </div>
-            <hr class="list-hr-line">
-            <div class="mission-content">
-                <p>자녀이름</p>
-                <div class="state state-complete">
-                    <p>완료</p>
+                <hr class="list-hr-line">
+                <div class="mission-content">
+                    <p>자녀이름</p>
+                    <div class="state state-complete">
+                        <p>완료</p>
+                    </div>
+                    <p>종류</p>
+                    <p>미션 이름</p>
+                    <p>금액(원)</p>
+                    <p>미션 기한</p>
                 </div>
-                <p>종류</p>
-                <p>미션 이름</p>
-                <p>금액(원)</p>
-                <p>미션 기한</p>
-            </div>
-            <hr class="list-hr-line">
-            <div class="mission-content">
-                <p>자녀이름</p>
-                <div class="state state-cancel">
-                    <p>취소</p>
+                <hr class="list-hr-line">
+                <div class="mission-content">
+                    <p>자녀이름</p>
+                    <div class="state state-cancel">
+                        <p>취소</p>
+                    </div>
+                    <p>종류</p>
+                    <p>미션 이름</p>
+                    <p>금액(원)</p>
+                    <p>미션 기한</p>
                 </div>
-                <p>종류</p>
-                <p>미션 이름</p>
-                <p>금액(원)</p>
-                <p>미션 기한</p>
+                <hr class="list-hr-line">
             </div>
-            <hr class="list-hr-line">
         </div>
     </div>    
 </template>
@@ -87,17 +89,17 @@
     width: 90%;
     height: 600px;
     background-color: white;
-    margin: 50px;
+    margin: 25px;
 }
 
 .select-table {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
     width: 1000px;
     height: 100px;
     margin-bottom: 10px;
-    gap: 45rem;
+    gap: 42rem;
     font-size: 30px;
     
     /* padding: 10px 10px 0 10px; */
@@ -105,7 +107,7 @@
 
 .child-area {
     display: flex;
-    margin-top: 1rem;
+    margin: 1rem 0 0 1rem;
     gap: 2.5rem;
 }
 
@@ -131,11 +133,18 @@
 }
 
 /* 미션 리스트 */
+.mission {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .mission-list {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 1400px;
 }
 
 .mission-title {
@@ -154,15 +163,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12rem;
-    height: 80px;
+    gap: 11rem;
+    height: 60px;
     margin: 10px;
-    font-size: 30px;
+    font-size: 20px;
 }
 
 .list-hr-line {
     background-color: #f1f1f19c;
-    width: 1700px;
+    width: 1400px;
     height: 3px;
 }
 
