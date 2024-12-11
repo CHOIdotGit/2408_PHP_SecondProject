@@ -1,13 +1,12 @@
 <template>
-    <div class="create-container">
+    <div class="detail-container">
         <div class="content">
             <p class="title">미션 제목</p>
-            <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
+            <p class="ms-title">점심 설거지하기</p>
             <div class="date">
-                <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
+                <p class="ms-date">2024-12-11</p>
                 <span>⁓</span>
-                <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
-                <!-- value="today" -->
+                <p class="ms-date">2024-12-11</p>
             </div>
         </div>
         <div class="content">
@@ -45,32 +44,30 @@
         </div>
         <div class="content">
             <p class="title">미션 내용</p>
-            <textarea class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+            <div class="ms-content">점심먹고 설거지 해놔라. 집에 엄마 없다.</div>
         </div>
         <div class="content">
             <p class="title">금액(원)</p>
-            <input type="number" class="ms-amount" id="ms-amount" required>
+            <p class="ms-amount">2,000원</p>
         </div>
         <div class="create-btn">
             <button class="ms-cancel">취소</button>
             <button class="ms-sub">+ 미션등록</button>
+            <button class="ms-del">삭제</button>
         </div>
     </div>
 </template>
 
-
 <script setup>
-
 
 </script>
 
-
-<style scoped>
-.create-container {
+<style>
+.detail-container {
     background-color: #FFFFFF;
     width: 1550px;
     margin: 30px auto 50px;
-    height: 600px;
+    height: 700px;
 
 }
 
@@ -98,7 +95,6 @@
 .ms-title {
     width: 300px;
     border: 3px solid #A4D8E1;
-    outline: none;
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;
@@ -160,9 +156,7 @@ span {
 .ms-content {
     width: 500px;
     height: 150px;
-    resize: none;
     padding: 10px;
-    outline: none;
     border-radius: 10px;
     border: 3px solid #A4D8E1;
     font-size: 1.3rem;
@@ -172,26 +166,19 @@ span {
 .ms-amount {
     width: 300px;
     border: 3px solid #A4D8E1;
-    outline: none;
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;
 }
 
-.ms-amount::-webkit-outer-spin-button,
-.ms-amount::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
 
-
-/* 취소/미션등록 버튼 */
+/* 취소,미션등록, 삭제 버튼 */
 .create-btn {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-    margin-right: 300px;
+    margin-right: 250px;
     margin-top: 20px;
 }
 
@@ -216,4 +203,16 @@ span {
     border-radius: 0px;
     cursor: pointer;
 }
+
+.ms-del {
+    color: #FFFF;
+    background-color: #A4D8E1;
+    font-size: 1.2rem;
+    border: 1px solid #A4D8E1;
+    padding: 5px;
+    width: 100px;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
 </style>

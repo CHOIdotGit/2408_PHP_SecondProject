@@ -72,6 +72,9 @@
         
     </footer>
 </template>
+
+
+
 <script setup>
 
 import { computed } from 'vue';
@@ -91,6 +94,15 @@ const isHomePage = computed(() => route.path === '/boards');
 // const isCalendarPage = computed(() => route.path === '/calendars');
 
 const isActive = computed(() => route.path === '/boards');
+
+
+// *******햄버거 드랍 메뉴 *******
+
+
+
+
+
+
 
 </script>
 <style scoped>

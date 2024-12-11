@@ -1,5 +1,5 @@
 <template>
-    <div class="create-container">
+    <div class="update-container">
         <div class="content">
             <p class="title">미션 제목</p>
             <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
@@ -58,15 +58,12 @@
     </div>
 </template>
 
-
 <script setup>
-
 
 </script>
 
-
 <style scoped>
-.create-container {
+.update-container {
     background-color: #FFFFFF;
     width: 1550px;
     margin: 30px auto 50px;
