@@ -17,39 +17,39 @@
                 </div>
                 <div class="drop-bar">
                     <div class="item">
-                        <button class="hamburger-btn">
+                        <button @click="hamDropDown" class="hamburger-btn">
                             <img class="hamburger-icon" src="/img/icon-hamburger.png" width="40px" height="40px">
                         </button>
                         <!-- 햄버거 드롭 메뉴 -->
-                        <div class="dropdown">
+                        <div class="dropdown" v-show="dropDownMenu">
                             <a href="#" class="info-page">개인정보 수정</a>
                             <a href="#" class="info-page">가족정보</a>
                         </div>
                     </div> 
                     
                     <div class="item">
-                        <button class="bell-btn">
+                        <button @click="bellDropDown" class="bell-btn">
                             <img class="bell-icon" src="/img/icon-bell.png" width="40px" height="40px">
                         </button>
                         <!-- 벨 드롭 메뉴 -->
-                        <div class="dropdown-bell">
+                        <div class="dropdown-bell" v-show="bellListDropMenu">
                             <a href="#" class="alram">
-                                <img class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px">
-                                <div class="content">
+                                <img class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px">
+                                <div class="bell-content">
                                     <p>[미션]배현진(이)의 미션이 등록되었어요!</p>
                                     <p>2024. 12. 04</p>
                                 </div>
                             </a>
                             <a href="#" class="alram">
-                                <img  class="alram-pro" rc="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
-                                <div class="content">
+                                <img  class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px" >
+                                <div class="bell-content">
                                     <p>[미션]배현진(이)의 미션이 승인을 기다리고 있어요.</p>
                                     <p>2024. 12. 04</p>
                                 </div>
                             </a>
                             <a href="#" class="alram">
-                                <img  class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
-                                <div class="content">
+                                <img  class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px" >
+                                <div class="bell-content">
                                     <p>[미션]배현진(이)의 지출이 등록되었어요!</p>
                                     <p>2024. 12. 03</p>
                                 </div>
@@ -61,6 +61,7 @@
         </div>
         <hr class="header-hr">
     </header>
+
     <!-- main -->
     <main>
         <router-view></router-view>
@@ -76,13 +77,37 @@
 
 
 <script setup>
-
-
+import { ref } from 'vue';
 
 // *******햄버거 드랍 메뉴 *******
+const dropDownMenu = ref(false);
+// if(bellListDropMenu.value === true) {
+//     console.log('닫겼나?');
+    
+// }
 
+// const closeModal = () => {
+//     if(bellListDropMenu.value === true) {
+//         dropDownMenu.value = false;
+//     }
+// }
 
+const hamDropDown = () => {
+    console.log('열려랴');
+    dropDownMenu.value = true;
+    console.log('닫힘?');
+    bellListDropMenu.value = false;
+}
 
+// *******벨 드랍 메뉴 *******
+const bellListDropMenu = ref(false);
+
+const bellDropDown = () => {
+    console.log('열라라 참께');
+    bellListDropMenu.value = true;
+    dropDownMenu.value = false;
+    console.log('이거 닫겼나?');
+}
 
 
 

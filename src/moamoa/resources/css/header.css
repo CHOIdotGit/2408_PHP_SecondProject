@@ -72,10 +72,10 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
 
     /* 햄버거 버튼 누르면 나타나는 메뉴 */
-    transform: translateY(0.5rem);
+    /* transform: translateY(0.5rem);
     visibility: hidden;
     opacity: 0;
-    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1); */
 }
 
 /* 햄버거 드롭다운 */
@@ -111,10 +111,10 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
 
     /* 종 버튼 누르면 나타나는 메뉴 */
-    transform: translateY(0.5rem);
+    /* transform: translateY(0.5rem);
     visibility: hidden;
     opacity: 0;
-    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1);
+    transition: all 0.1s cubic-bezier(0.16, 1, 0.5, 1); */
 
 }
 
@@ -142,14 +142,20 @@
 
 .alram:hover {
     background-color: #f3f5f5;
-
 }
 
-.show {
+.bell-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* .show {
     transform: translateY(0rem);
     visibility: visible;
     opacity: 1;
-}
+} */
 
 /* ****footer**** */
 /* footer {
