@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Mission;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,15 +16,16 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
-        Mission::select('mission_id')->inRandomOrder()->first();
+        // Mission::select('mission_id')->inRandomOrder()->first();
         return [
-            'parent_id' => 1,
-            'child_id' => rand(2,4),
-            'ms_id' => rand(0,4),
+            'parent_id' => 4,
+            'child_id' => rand(5,7),
+            'ms_id' => rand(1,4),
             'title' => $this->faker->text(50),
             'content' => $this->faker->text(255),
             'amount' => rand(100,10000),
             'status' => rand(1,5),
+            'start_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
         ];
     }
 }

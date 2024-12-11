@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Income;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,11 +16,11 @@ class IncomeFactory extends Factory
      */
     public function definition()
     {
-        $user = Income::select('income_id')->inRandomOrder()->first();
+        // Income::select('income_id')->inRandomOrder()->first();
         return [
-            'parent_id' => 1,
-            'child_id' => rand(2,4),
-            'in_id' => rand(0,3),
+            'parent_id' => 4,
+            'child_id' => rand(5,7),
+            'in_id' => rand(1,4),
             'income_code' => rand(0,1),
             'amount' => rand(100,10000),
             'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
