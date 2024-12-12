@@ -6,6 +6,7 @@ import ParentsCreateComponent from '../views/components/board/ParentsCreateCompo
 import ParentsUpdateComponent from '../views/components/board/ParentsUpdateComponent.vue';
 import ParentsDetailComponent from '../views/components/board/ParentsDetailComponent.vue';
 import ParentsMissionListComponent from '../views/components/board/ParentsMissionListComponent.vue';
+import ChildCalendarComponent from '../views/components/board/ChildCalendarComponent.vue';
 
 
 const routes = [
@@ -29,6 +30,10 @@ const routes = [
     {
         path: '/parentsCalendar',
         component: ParentsCalendarComponent,
+    },
+    {
+    path: '/childCalendar',
+    component: ChildCalendarComponent,
     },
     {
         path: '/parentsMissionCreate',
