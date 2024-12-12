@@ -21,6 +21,7 @@ class TransactionFactory extends Factory
             'child_id' => rand(1,3),
             'category' => rand(0,3),
             'transaction_code' => rand(0,1),
+            'title' => $this->faker->text(50),
             'amount' => rand(100,10000),
             'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
             'memo' => null,
