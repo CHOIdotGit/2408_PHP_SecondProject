@@ -110,9 +110,8 @@ const dropDownMenu = ref(false);
 
 const hamDropDown = () => {
     console.log('열려랴');
-    dropDownMenu.value = true;
+    dropDownMenu.value = !dropDownMenu.value; // 현재 상태를 반전시킴
     console.log('닫힘?');
-    bellListDropMenu.value = false;
 }
 
 // *******벨 드랍 메뉴 *******

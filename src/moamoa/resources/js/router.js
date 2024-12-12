@@ -12,40 +12,40 @@ import ChildCalendarComponent from '../views/components/board/ChildCalendarCompo
 const routes = [
     {
         path: '/',
-        redirect: '/parentsBoards'
+        redirect: '/parents/boards'
     },
     // {
     //     path: '/login',
     //     component: 
     // },
     {
-        path: '/parentsBoards',
+        path: '/parents/boards',
         component: ChildListManagerComponent,
         // parentsBoards로 변경 예정
     },
     {
-        path: '/parentsMissionList',
+        path: '/parents/mission/list',
         component: ParentsMissionListComponent,
     },
     {
-        path: '/parentsCalendar',
+        path: '/parents/calendar',
         component: ParentsCalendarComponent,
     },
     {
-    path: '/childCalendar',
-    component: ChildCalendarComponent,
-    },
-    {
-        path: '/parentsMissionCreate',
+        path: '/parents/mission/create',
         component: ParentsCreateComponent,
     },
     {
-        path: '/parentsUpdate',
+        path: '/parents/update',
         component: ParentsUpdateComponent,
     },
     {
-        path: '/parentsDetail',
+        path: '/parents/detail',
         component: ParentsDetailComponent,
+    },
+    {
+        path: '/child/calendar',
+        component: ChildCalendarComponent,
     },
     {
         path: '/:catchAll(.*)',
