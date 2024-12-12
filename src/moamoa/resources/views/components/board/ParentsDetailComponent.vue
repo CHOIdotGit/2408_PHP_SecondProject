@@ -273,10 +273,12 @@ span {
 .del-modal-black {
     background-color: rgba(0, 0, 0, 0.5);
     position: fixed;
-    top: 182px;
-    left: 177px;
-    width: 1550px;
-    height: 700px;
+    /* top: 182px;
+    left: 177px; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
 }
@@ -286,10 +288,12 @@ span {
     height: 500px;
     background-color: #FFFFFF;
     border: 3px solid #A4D8E1;
-    margin: 50px;
+    /* margin: 170px; */
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
 }
 
 .modal-content {

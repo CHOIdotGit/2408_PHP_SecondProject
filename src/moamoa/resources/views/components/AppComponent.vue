@@ -4,16 +4,31 @@
             <div class="logo"></div>
             <div class="navi-bar">
                 <div class="item">
-                    <button class="item-btn">홈</button>
+                    <a href="#" class="item-btn">홈</a>
                 </div>
                 <div class="item">
-                    <button class="item-btn">지출</button>
+                    <a href="#" class="item-btn">지출</a>
+                        <div class="child-dropdown">
+                            <p class="child">배현진</p>
+                            <p class="child">김주연</p>
+                        </div>
                 </div>
                 <div class="item">
-                    <button class="item-btn">미션</button>
+                    <a href="#" class="item-btn">미션</a>
+                        <div class="child-dropdown">
+                            <p class="child">배현진</p>
+                            <p class="child">김주연</p>
+                        </div>
                 </div>
                 <div class="item">
-                    <button class="item-btn">캘린더</button>
+                    <a href="#" class="item-btn">캘린더</a>
+                        <div class="child-dropdown">
+                            <p class="child">배현진</p>
+                            <p class="child">김주연</p>
+                        </div>
+                </div>
+                <div class="item">
+                    <a href="#" class="item-btn">통계</a>
                 </div>
                 <div class="drop-bar">
                     <div class="item">
@@ -24,6 +39,7 @@
                         <div class="dropdown" v-show="dropDownMenu">
                             <a href="#" class="info-page">개인정보 수정</a>
                             <a href="#" class="info-page">가족정보</a>
+                            <button class="logout-btn">로그아웃</button>
                         </div>
                     </div> 
                     
@@ -121,4 +137,7 @@ const bellDropDown = () => {
         text-align: center;
         color: white;
     }
+
+
+
 </style>

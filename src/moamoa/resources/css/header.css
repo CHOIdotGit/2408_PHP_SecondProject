@@ -1,6 +1,6 @@
 .header {
-    height: 150px;
-    width: 93%;
+    height: 140px;
+    /* width: 93%; */
     margin: auto;
     display: flex;
 }
@@ -23,30 +23,63 @@
 /* 메뉴 바 */
 .navi-bar {
     background-color: #FFFFFF;
-    width: 100%;
+    width: 80%;
     height: 60px;
     margin: 40px;
-
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-
+    display: grid;
+    grid-template-columns: repeat(6, 220px);
 
 }
+
 .item-btn {
-    border: none;
     background-color: rgba(0, 0, 0, 0);
     cursor: pointer;
-    width: 150px;
+    /* width: 130px; */
     font-size: 35px;  /* 기본 폰트 사이즈 */
     color: #CACACA;   /* 기본 색상 */
     text-decoration: none;
+
+
+}
+
+.item {
+    text-align: center;
+    padding: 10px;
+    /* position: absolute; */
+
 }
 
 .item-btn.active {
     font-size: 40px;  /* 활성화된 버튼의 폰트 사이즈 */
     color: #000;      /* 활성화된 버튼의 색상 */
 }
+
+/* 게시판 드랍 메뉴 */
+.child-dropdown {
+    display: none;
+    width: 130px;
+    background-color: #FFFFFF;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
+    left: 10px;
+    position: relative;
+    left: 50px;
+}
+
+.item:hover .child-dropdown {
+    display: block;
+}
+
+.child {
+    padding: 15px;
+    font-size: 1.2rem;
+}
+
+
+.child:hover {
+    background-color: #f3f5f5;
+}
+
+
 
 /* drop bar 아이콘 */
 .drop-bar {
@@ -57,15 +90,17 @@
 .hamburger-btn {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    font-size: 2rem;
+    /* font-size: 2rem; */
     cursor: pointer;
     position: relative;
+
 }
 
 /* 드랍 메뉴 */
 .dropdown {
     width: 180px;
     background-color: #FFFFFF;
+    /* position: relative; */
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -82,29 +117,41 @@
 .info-page  {
     text-decoration: none;
     color: #000;
-    font-size: 1.5rem;
-    margin: 15px;
+    font-size: 1.2rem;
+    /* margin: 15px; */
+    padding: 15px;
 
-    
 }
 
+.logout-btn {
+    border: none;
+    background-color: #A4D8E1;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+
 .info-page:hover {
-    color: #A4D8E1;
+    background-color: #f3f5f5;
 
 }
 
 .bell-btn {
     border: none;
     background-color: rgba(0, 0, 0, 0);
-    font-size: 2rem;
     cursor: pointer;
     position: relative;
+
 }
 
 /* 벨 드롭다운 */
 .dropdown-bell {
-    width: 290px;
+    width: 260px;
     background-color: #FFFFFF;
+    /* position: relative; */
     position: absolute;
     display: flex;
     flex-direction: column;
