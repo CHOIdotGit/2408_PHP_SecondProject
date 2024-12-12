@@ -50,21 +50,21 @@
                         <!-- 벨 드롭 메뉴 -->
                         <div class="dropdown-bell" v-show="bellListDropMenu">
                             <a href="#" class="alram">
-                                <img class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px">
+                                <img class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px">
                                 <div class="bell-content">
                                     <p>[미션]배현진(이)의 미션이 등록되었어요!</p>
                                     <p>2024. 12. 04</p>
                                 </div>
                             </a>
                             <a href="#" class="alram">
-                                <img  class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px" >
+                                <img  class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
                                 <div class="bell-content">
                                     <p>[미션]배현진(이)의 미션이 승인을 기다리고 있어요.</p>
                                     <p>2024. 12. 04</p>
                                 </div>
                             </a>
                             <a href="#" class="alram">
-                                <img  class="alram-pro" src="/img/icon-girl-1.png" width="50px" height="50px" >
+                                <img  class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
                                 <div class="bell-content">
                                     <p>[미션]배현진(이)의 지출이 등록되었어요!</p>
                                     <p>2024. 12. 03</p>
@@ -119,8 +119,9 @@ const bellListDropMenu = ref(false);
 
 const bellDropDown = () => {
     console.log('열라라 참께');
-    bellListDropMenu.value = true;
-    dropDownMenu.value = false;
+    bellListDropMenu.value = !bellListDropMenu.value;
+    // bellListDropMenu.value = true;
+    // dropDownMenu.value = false;
     console.log('이거 닫겼나?');
 }
 
