@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Transaction>
  */
-class IncomeFactory extends Factory
+class TransactionFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -16,12 +16,11 @@ class IncomeFactory extends Factory
      */
     public function definition()
     {
-        // Income::select('income_id')->inRandomOrder()->first();
         return [
             'parent_id' => 1,
-            'child_id' => rand(2,4),
-            'in_id' => rand(1,4),
-            'income_code' => rand(0,1),
+            'child_id' => rand(1,3),
+            'category' => rand(0,3),
+            'transaction_code' => rand(0,1),
             'amount' => rand(100,10000),
             'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
             'memo' => null,

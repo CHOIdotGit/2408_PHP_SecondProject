@@ -11,7 +11,8 @@ class ParentModel extends Model {
     use HasFactory, Notifiable, SoftDeletes;
 
     protected $primaryKey = 'parent_id';
-
+    protected $table = 'parents';
+    
     protected $fillable = [
         'account'
         ,'password'

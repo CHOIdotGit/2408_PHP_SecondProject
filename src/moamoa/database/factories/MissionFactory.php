@@ -16,15 +16,14 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
-        // Mission::select('mission_id')->inRandomOrder()->first();
         return [
             'parent_id' => 1,
-            'child_id' => rand(2,4),
-            'ms_id' => rand(1,4),
+            'child_id' => rand(1,3),
+            'category' => rand(0,4),
             'title' => $this->faker->text(50),
             'content' => $this->faker->text(255),
-            'amount' => rand(100,10000),
-            'status' => rand(1,5),
+            'amount' => round(rand(100,50000) / 100) * 100,
+            'status' => rand(0,3),
             'start_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
         ];
     }
