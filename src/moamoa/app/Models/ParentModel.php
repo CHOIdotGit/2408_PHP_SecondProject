@@ -2,33 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-
-class User extends Authenticatable {
+class ParentModel extends Model {
     use HasFactory, Notifiable, SoftDeletes;
 
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'parent_id';
 
     protected $fillable = [
-        'code_id'
-        ,'account'
+        'account'
         ,'password'
-        ,'auth'
         ,'name'
         ,'nick_name'
-        ,'gender'
         ,'email'
         ,'tel'
         ,'profile'
+        ,'family_code'
     ];
     
     protected $hidden = [
-        'password',
-        'refresh_token',
+        'password'
     ];
 }

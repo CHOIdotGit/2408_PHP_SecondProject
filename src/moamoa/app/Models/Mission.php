@@ -14,7 +14,7 @@ class Mission extends Model {
     protected $fillable = [
         'parent_id'
         ,'child_id'
-        ,'ms_id'
+        ,'category'
         ,'title'
         ,'content'
         ,'amount'

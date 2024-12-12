@@ -9,9 +9,9 @@ return new class extends Migration {
   public function up() {
     Schema::create('missions', function (Blueprint $table) {
       $table->id('mission_id');
-      $table->unsignedBigInteger('parent_id')->comment('부모의 user_id를 기입');
-      $table->unsignedBigInteger('child_id')->comment('자식의 user_id를 기입');
-      $table->unsignedBigInteger('ms_id');
+      $table->unsignedBigInteger('parent_id');
+      $table->unsignedBigInteger('child_id');
+      $table->char('category', 1)->comment('0: 학습, 1: 취미, 2: 집안일, 3: 생활습관, 4: 기타');
       $table->string('title', 50);
       $table->string('content');
       $table->bigInteger('amount');

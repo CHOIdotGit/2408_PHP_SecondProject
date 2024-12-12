@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
   public function up() {
     Schema::table('missions', function (Blueprint $table) {
-      $table->foreign('ms_id')->references('ms_id')->on('mission_categories');
+      $table->foreign('child_id')->references('child_id')->on('children')->onDelete('cascade');
     });
   }
   
   public function down() {
     Schema::table('missions', function (Blueprint $table) {
-      $table->dropForeign(['ms_id']);
+      $table->dropForeign(['child_id']);
     });
   }
 };

@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
   public function up() {
-    Schema::create('incomes', function (Blueprint $table) {
-      $table->id('income_id');
-      $table->unsignedBigInteger('parent_id')->comment('부모의 user_id를 기입');
-      $table->unsignedBigInteger('child_id')->comment('자식의 user_id를 기입');
-      $table->unsignedBigInteger('in_id');
-      $table->char('income_code', 1)->comment('0: 수입, 1: 지출');
+    Schema::create('transactions', function (Blueprint $table) {
+      $table->id('transaction_id');
+      $table->unsignedBigInteger('parent_id');
+      $table->unsignedBigInteger('child_id');
+      $table->char('category', 1)->comment('0: 교통비, 1: 취미, 2:쇼핑, 3:기타');
+      $table->char('transaction_code', 1)->comment('0: 수입, 1: 지출');
       $table->bigInteger('amount');
       $table->date('transaction_date');
       $table->string('memo')->nullable();
@@ -21,6 +21,6 @@ return new class extends Migration {
   }
   
   public function down() {
-    Schema::dropIfExists('incomes');
+    Schema::dropIfExists('transactions');
   }
 };
