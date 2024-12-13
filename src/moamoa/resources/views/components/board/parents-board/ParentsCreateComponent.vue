@@ -13,34 +13,35 @@
         <div class="content">
             <p class="title">미션 종류</p>
             <div class="category-btn">
-                <input type="radio" name="category" id="study" checked>
-                    <img class="ms-category" src="img/icon-pencil.png" alt=".">
+                <input type="radio" name="category" id="study" >
+                
+                    <img class="ms-category" src="/img/icon-pencil.png" alt=".">
                 </input>
-                <label for="study">학습</label>
+                <!-- <label for="study">학습</label> -->
             </div>
             <div class="category-btn">
                 <input type="radio" name="category" id="habit" >
                     <img class="ms-category" src="/img/icon-bicycle.png" alt=".">
                 </input>
-                <label for="habit">취미</label>
+                <!-- <label for="habit">취미</label> -->
             </div>
             <div class="category-btn">
                 <input type="radio" name="category" id="housework" >
                     <img class="ms-category" src="/img/icon-cleaner.png" alt=".">
                 </input>
-                <label for="housework">집안일</label>
+                <!-- <label for="housework">집안일</label> -->
             </div>
             <div class="category-btn">
                 <input type="radio" name="category" id="lifestyle" >
                     <img class="ms-category" src="/img/icon-clock.png" alt=".">
                 </input>
-                <label for="lifestyle">생활습관</label>
+                <!-- <label for="lifestyle">생활습관</label> -->
             </div>
             <div class="category-btn">
                 <input type="radio" name="category" id="etc" >
                     <img class="ms-category" src="/img/icon-checklist7.png" alt="">
                 </input>
-                <label for="etc">기타</label>
+                <!-- <label for="etc">기타</label> -->
             </div>
         </div>
         <div class="content">
@@ -132,17 +133,19 @@ span {
     padding-right: 30px;
 }
 
-.category-btn > label {
-    color: #A4D8E1;
+/* .category-btn > label {
+    color: #A4D8E1; */
     /* border: 1px solid #A4D8E1; */
-    font-size: 0.9rem;
+    /* font-size: 0.9rem;
     padding-top: 5px;
 
-}
+} */
 
-.category-btn > input {
+/* .category-btn > input {
     display: none;
-}
+} */
+
+
 
 .ms-category {
     width: 60px;

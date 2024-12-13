@@ -94,7 +94,7 @@ const delCloseModal = () => {
 
 </script>
 
-<style>
+<style scoped>
 .detail-container {
     background-color: #FFFFFF;
     width: 1550px;
