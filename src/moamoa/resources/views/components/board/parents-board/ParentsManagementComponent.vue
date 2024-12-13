@@ -7,14 +7,14 @@
                 </button>
             </div>
     
-            <div class="child-box">
+            <div v-for="item in missionList" :key="item" class="child-box">
                 <div class="d-flex">
                     <div class="profile-img">
                         <img src="/img/icon-boy-2.png">
                     </div>
                 </div>
                 <div class="child">
-                    <h3 class="name">이름</h3>
+                    <h3 class="name">{{ item.child_id }}</h3>
                     <p class="nickname">별명</p>
                     <div>
                         <p class="recent-expenses">가장 최근 지출</p>
@@ -27,7 +27,7 @@
                         <div class="chk-div">
                             <input type="checkbox" id="checkbox1" class="checkbox">
                             <label for="checkbox1">
-                                <p>대기중인 미션 1</p>
+                                <p v>대기중인 미션 2</p>
                             </label>
                         </div>
                         <div class="chk-div">
@@ -48,89 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="child-box">
-                <div class="d-flex">
-                    <div class="profile-img">
-                        <img src="/img/icon-boy-2.png">
-                    </div>
-                </div>
-                <div class="child">
-                    <h3 class="name">이름</h3>
-                    <p class="nickname">별명</p>
-                    <div>
-                        <p class="recent-expenses">가장 최근 지출</p>
-                        <p class="amount">3,800원</p>
-                        <p class="amount">6,100원</p>
-                        <p class="amount">5,400원</p>
-                    </div>
-                    <div class="child-mission">
-                        <p class="mission">승인 대기 중인 미션</p>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox4" class="checkbox">
-                            <label for="checkbox4">
-                                <p>대기중인 미션 4</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox5">
-                            <label for="checkbox5">
-                                <p>대기중인 미션 5</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox6">
-                            <label for="checkbox6">
-                                <p>대기중인 미션 6</p>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="btn-div">
-                        <button class="btn approve">미션 승인</button>
-                    </div>
-                </div>
-            </div>
-            <div class="child-box">
-                <div class="d-flex">
-                    <div class="profile-img">
-                        <img src="/img/icon-boy-2.png">
-                    </div>
-                </div>
-                <div class="child">
-                    <h3 class="name">이름</h3>
-                    <p class="nickname">별명</p>
-                    <div class="expense-box">
-                        <p class="recent-expenses">가장 최근 지출</p>
-                        <p class="amount">3,800원</p>
-                        <p class="amount">6,100원</p>
-                        <p class="amount">5,400원</p>
-                    </div>
-                    <div class="child-mission">
-                        <p class="mission">승인 대기 중인 미션</p>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox7">
-                            <label for="checkbox7">
-                                <p>대기중인 미션 7</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox8">
-                            <label for="checkbox8">
-                                <p>대기중인 미션 8</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox9">
-                            <label for="checkbox9">
-                                <p>대기중인 미션 9</p>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="btn-div">
-                        <button class="btn approve">미션 승인</button>
-                    </div>
-                </div>
-            </div>
-            
+                       
             <div class="btn-border">
                 <button class="btn-page child-list-btn-right">
                     <div class="child-list-triangle"></div>
@@ -141,7 +59,18 @@
 </template>
 <script setup>
 
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
+
+// 미션 리스트
+const missionList = computed(() => store.state.mission.missionList);
+
+// onMount
+onMounted(() => {
+    store.dispatch('mission/missionListPagination');
+});
 
 </script>
 <style scoped>

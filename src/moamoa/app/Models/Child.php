@@ -26,4 +26,8 @@ class Child extends Model {
     protected $hidden = [
         'password'
     ];
+
+    public function missionList() {
+        return $this->hasMany(Mission::class, 'mission_id')->select('title');
+    }
 }

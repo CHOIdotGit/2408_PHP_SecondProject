@@ -22,4 +22,8 @@ class Mission extends Model {
         ,'start_at'
         ,'end_at'
     ];
+
+    public function children() {
+        return $this->belongsTo(Child::class);
+    }
 }

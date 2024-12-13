@@ -11,17 +11,16 @@ import ParentsManagementComponent from '../views/components/board/parents-board/
 
 const routes = [
     {
-        path: '/',
-        redirect: '/parents/boards'
+        // path: '/',
+        // redirect: '/parents/boards'
     },
     // {
     //     path: '/login',
     //     component: 
     // },
     {
-        path: '/parents/boards',
+        path: '/parents/home',
         component: ParentsManagementComponent,
-        // parentsBoards로 변경 예정
     },
     {
         path: '/parents/mission/list',
