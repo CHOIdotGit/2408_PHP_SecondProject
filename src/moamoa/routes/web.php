@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+
+// 이건 마지막 위치
 Route::get('/{any}', function () {
     return view('welcome');
 })->where('any', '.*');

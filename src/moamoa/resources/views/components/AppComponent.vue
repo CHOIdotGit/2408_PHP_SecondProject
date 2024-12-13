@@ -1,4 +1,5 @@
 <template>
+<div :class="{'bg-childs': isChilds, 'bg-parents': isParents}">
     <header>
         <div class="header">
             <div class="logo"></div>
@@ -88,12 +89,16 @@
     <footer>
         <p>© 2024. Moa Co. all rights reserved.</p>
     </footer>
+</div>
 </template>
 
 
 
 <script setup>
 import { ref } from 'vue';
+
+const isChilds = ref(true);
+const isParents = ref(false);
 
 // *******햄버거 드랍 메뉴 *******
 const dropDownMenu = ref(false);
@@ -129,8 +134,8 @@ const bellDropDown = () => {
 
 
 </script>
-<style scoped>
-    @import url("../../css/parentsCommon.css");
+<style>
+    @import url("../../css/common.css");
     @import url("../../css/header.css");
     /* footer */
     footer > p {
