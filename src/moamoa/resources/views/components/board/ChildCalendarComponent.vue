@@ -106,7 +106,7 @@ function nextMonth() {
   dateToday.value = currentDate; // 새로운 객체로 업데이트
 }
 </script>
-<style >
+<style scoped >
 .cal-container {
     width: 93%;
     display: flex;
@@ -285,9 +285,5 @@ pre {
     font-size: 2rem;
 }
 
-body {
-    background-image: url('/img/bck.jpg');
-    /* background-repeat: no-repeat; */
-    background-size: contain;
-}
+
 </style>

@@ -130,7 +130,7 @@ const bellDropDown = () => {
 
 </script>
 <style scoped>
-    @import url("../../css/common.css");
+    @import url("../../css/parentsCommon.css");
     @import url("../../css/header.css");
     /* footer */
     footer > p {

@@ -13,5 +13,8 @@
 }
 
 body {
-    background-color: #A4D8E1;
-}
+        background-image: url('/img/bck.jpg');
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+

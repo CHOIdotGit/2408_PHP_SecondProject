@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'Ownglyph_okticon-Bd';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/Ownglyph_okticon-Bd.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ownglyph_okticon-Bd';
+}
+
+body {
+    background-image: url('/img/child-bck.jpg');
+    /* background-repeat: no-repeat; */
+    /* background-size: cover; */
+}
