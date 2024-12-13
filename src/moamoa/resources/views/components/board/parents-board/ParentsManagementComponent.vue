@@ -1,100 +1,12 @@
 <template>
     <div class="d-flex">
         <div class="container">
-            <div class="btn-border">
-                <button class="btn-page">
-                    <div class="child-list-triangle"></div>
-                </button>
-            </div>
+            <div class="child-list-triangle">◀</div>   
     
-            <div class="child-box">
-                <div class="d-flex">
-                    <div class="profile-img">
-                        <img src="/img/icon-boy-2.png">
-                    </div>
-                </div>
-                <div class="child">
-                    <h3 class="name">이름</h3>
-                    <p class="nickname">별명</p>
-                    <div>
-                        <p class="recent-expenses">가장 최근 지출</p>
-                        <p class="amount">3,800원</p>
-                        <p class="amount">6,100원</p>
-                        <p class="amount">5,400원</p>
-                    </div>
-                    <div class="child-mission">
-                        <p class="mission">승인 대기 중인 미션</p>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox1" class="checkbox">
-                            <label for="checkbox1">
-                                <p>대기중인 미션 1</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox2" class="checkbox">
-                            <label for="checkbox2">
-                                <p>대기중인 미션 2</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox3" class="checkbox">
-                            <label for="checkbox3">
-                                <p>대기중인 미션 3</p>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="btn-div">
-                        <button class="btn approve">미션 승인</button>
-                    </div>
-                </div>
-            </div>
-            <div class="child-box">
-                <div class="d-flex">
-                    <div class="profile-img">
-                        <img src="/img/icon-boy-2.png">
-                    </div>
-                </div>
-                <div class="child">
-                    <h3 class="name">이름</h3>
-                    <p class="nickname">별명</p>
-                    <div>
-                        <p class="recent-expenses">가장 최근 지출</p>
-                        <p class="amount">3,800원</p>
-                        <p class="amount">6,100원</p>
-                        <p class="amount">5,400원</p>
-                    </div>
-                    <div class="child-mission">
-                        <p class="mission">승인 대기 중인 미션</p>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox4" class="checkbox">
-                            <label for="checkbox4">
-                                <p>대기중인 미션 4</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox5">
-                            <label for="checkbox5">
-                                <p>대기중인 미션 5</p>
-                            </label>
-                        </div>
-                        <div class="chk-div">
-                            <input type="checkbox" id="checkbox6">
-                            <label for="checkbox6">
-                                <p>대기중인 미션 6</p>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="btn-div">
-                        <button class="btn approve">미션 승인</button>
-                    </div>
-                </div>
-            </div>
-            <div class="child-box">
-                <div class="d-flex">
-                    <div class="profile-img">
-                        <img src="/img/icon-boy-2.png">
-                    </div>
-                </div>
+            <div class="child-box"> 
+                <div class="blank">-</div>
+                <img class="profile-img" src="/img/icon-boy-2.png" width="120px" height="120px">
+                <div class="blank">-</div>
                 <div class="child">
                     <h3 class="name">이름</h3>
                     <p class="nickname">별명</p>
@@ -130,12 +42,89 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="btn-border">
-                <button class="btn-page child-list-btn-right">
-                    <div class="child-list-triangle"></div>
-                </button>
+
+            <div class="child-box"> 
+                <div class="blank">-</div>
+                <img class="profile-img" src="/img/icon-boy-2.png" width="120px" height="120px">
+                <div class="blank">-</div>
+                <div class="child">
+                    <h3 class="name">이름</h3>
+                    <p class="nickname">별명</p>
+                    <div class="expense-box">
+                        <p class="recent-expenses">가장 최근 지출</p>
+                        <p class="amount">3,800원</p>
+                        <p class="amount">6,100원</p>
+                        <p class="amount">5,400원</p>
+                    </div>
+                    <div class="child-mission">
+                        <p class="mission">승인 대기 중인 미션</p>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox7">
+                            <label for="checkbox7">
+                                <p>대기중인 미션 7</p>
+                            </label>
+                        </div>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox8">
+                            <label for="checkbox8">
+                                <p>대기중인 미션 8</p>
+                            </label>
+                        </div>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox9">
+                            <label for="checkbox9">
+                                <p>대기중인 미션 9</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="btn-div">
+                        <button class="btn approve">미션 승인</button>
+                    </div>
+                </div>
             </div>
+
+            <div class="child-box"> 
+                <div class="blank">-</div>
+                <img class="profile-img" src="/img/icon-boy-2.png" width="120px" height="120px">
+                <div class="blank">-</div>
+                <div class="child">
+                    <h3 class="name">이름</h3>
+                    <p class="nickname">별명</p>
+                    <div class="expense-box">
+                        <p class="recent-expenses">가장 최근 지출</p>
+                        <p class="amount">3,800원</p>
+                        <p class="amount">6,100원</p>
+                        <p class="amount">5,400원</p>
+                    </div>
+                    <div class="child-mission">
+                        <p class="mission">승인 대기 중인 미션</p>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox7">
+                            <label for="checkbox7">
+                                <p>대기중인 미션 7</p>
+                            </label>
+                        </div>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox8">
+                            <label for="checkbox8">
+                                <p>대기중인 미션 8</p>
+                            </label>
+                        </div>
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox9">
+                            <label for="checkbox9">
+                                <p>대기중인 미션 9</p>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="btn-div">
+                        <button class="btn approve">미션 승인</button>
+                    </div>
+                </div>
+            </div>
+            <div class="child-list-triangle">▶</div>   
+            
+           
         </div>
     </div>
 </template>
@@ -147,63 +136,65 @@
 <style scoped>
 /* 메인 화면 */
 .container {
-    width: 1536px;
-    height: 650px;
+    margin-top: 20px;
+    width: 1500px;
+    height: 765px;
     background-color: white;
-    margin: 50px 50px 10px 50px;
     display: flex;
-    gap: 16px;
+    gap: 40px;
     justify-content: center;
     align-items: center;   
 }
 
 /* 플랙스 적용 */
 .d-flex {
+    margin-left: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
+    /* padding-bottom: 40px; */
 }
 
-/* 자녀 프로필 관련 */
-.child-box {
-    margin: 25px 0;
-}
 
 .profile-img {
     display: flex;
     justify-content: center;
-    width: 80px;
-    height: 80px;
-    border: #FFBDD0 solid 5px;
+    width: 120px;
+    height: 120px;
+    border: 5px solid #A2CAAC; 
+    background-color: white;
     border-radius: 50%;
+    padding: 3px;
+    margin-left: 120px;
+
+
 }
 
-.profile-img > img {
-    width: 60px;
-    height: 60px;
-}
 
 .child {
     background-color: white;
-    border: solid #A4D8E1 5px;
+    border: solid #A2CAAC 5px;
     width: 360px;
-    height: 500px;
-    margin-top: 15px;
+    height: 550px;
+    /* margin-top: 15px; */
 }
 
 /* 프로필 텍스트 */
 .name {
-    font-size: 30px;
+    font-size: 2rem;
     margin-top: 5px;
     text-align: center;
-    color: #A4D8E1;
+    color: #000000;
 }
 
+.child-box {
+    margin-bottom: 50px;
+}
 .nickname {
-    font-size: 20px;
+    font-size: 1.5rem;
     margin-top: 5px;
     text-align: center;
-    color: #A4D8E1;
+    color: #000000;
 }
 
 /* .child-mission {
@@ -213,25 +204,25 @@
 } */
 
 .mission {
-    font-size: 25px;
-    margin: 20px 0;
-    text-align: center;
-}
-
-.pre-mission {
-    font-size: 15px;
-    margin-top: 10px;
+    width: 250px;
+    border-bottom: 5px solid #A2CAAC;
+    font-size: 1.7rem;
+    margin-top: 20px;
+    margin-left: 40px;
     text-align: center;
 }
 
 .recent-expenses {
-    font-size: 25px;
-    margin-top: 10px;
+    border-bottom: 5px solid #A2CAAC;
+    width: 200px;
+    font-size: 1.7rem;
+    margin-top: 20px;
+    margin-left: 60px;
     text-align: center;
 }
 
 .amount {
-    font-size: 20px;
+    font-size: 1.5rem;
     margin-top: 10px;
     text-align: center;
 }
@@ -258,17 +249,18 @@
 }
 
 .approve {
-    border: #A4D8E1 solid 5px;
-    background-color: #FFFFFF;
-    color: #A4D8E1;
-    font-size: 20px;
+    border: none;
+    background-color: #a2caac;
+    color: black;
+    font-size: 1.5rem;
 }
 
 .chk-div {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 1.5rem;
 }
 
 /* 기본 체크박스 숨기기 */
@@ -292,15 +284,15 @@
     transform: translateY(-50%);
     width: 20px; /* 체크박스 너비 */
     height: 20px; /* 체크박스 높이 */
-    border: 2px solid #A4D8E1; /* 테두리 색상 */
+    border: 2px solid #a2caac; /* 테두리 색상 */
     border-radius: 4px; /* 모서리 둥글게 */
     background-color: #FFFFFF; /* 배경색 */
 }
 
 /* 체크박스가 체크되었을 때 스타일 */
 .chk-div input[type="checkbox"]:checked + label::before {
-    background-color: #A4D8E1; /* 체크된 배경색 */
-    border-color: #A4D8E1; /* 체크된 테두리 색상 */
+    background-color: #A2CAAC; /* 체크된 배경색 */
+    border-color: #a2caac; /* 체크된 테두리 색상 */
 }
 
 /* 체크 표시 */
@@ -314,34 +306,19 @@
     font-size: 16px; /* 체크 표시 크기 */
 }
 
-
-
-
-
-
-/* 페이지네이션 버튼 */
-.btn-page {
-    background: #A4D8E1;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    width: 60px;
-    height: 60px;
-    margin: 10px;
-    padding: 5px;
-    cursor: pointer;
+.blank {
+    color: transparent;
+    height: 30px;
 }
+
 
 .child-list-triangle {
-    border-top: 25px solid transparent; /* 위 경계 투명 */
-    border-bottom: 25px solid transparent; /* 아래 경계 투명 */
-    border-right: 40px solid #ffffff; /* 오른쪽 경계 색상 */
+    background-color: transparent;
+    /* width: 40px;
+    height: 40px; */
+    color: #A2CAAC;
+    font-size: 4rem;
+    border: none;
 }
-
-.child-list-btn-right {
-    transform: rotate(180deg);
-}
-
 
 </style>

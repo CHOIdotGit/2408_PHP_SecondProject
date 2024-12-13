@@ -41,7 +41,7 @@
                         <pre class="left" @click="prevMonth">◀</pre>
                             <div class="header-display">
                                 <!-- 현재 연월 표시 -->
-                                <p class="display">{{ formattedDate }}</p>
+                                <p class="date-display">{{ formattedDate }}</p>
                             </div>
                         <pre class="right" @click="nextMonth">▶</pre>
                     </div>
@@ -191,10 +191,11 @@ li {
 }
 .sec-header {
     /* position: sticky; */
+    gap: 30px;
     height: 100px;
     line-height: 100px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 10px ;
 }
 .header-display {
@@ -239,11 +240,6 @@ li {
     margin-top: 10px;
 }
 
-.display-selected {
-    text-align: center;
-    padding: 20px;
-    margin-top: 10px;
-}
 
 .right, .left {
     color: #5589e996;
@@ -302,4 +298,7 @@ li {
     padding: 5px;
 }
 
+.date-display {
+    margin-top: 15px;
+}
 </style>
