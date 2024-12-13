@@ -191,28 +191,19 @@ li {
     padding-right: 50px;
 }
 
-
-
-:root {
-    --white: white;
-    --main: #A4D8E1;
-    --accent: #cacaca;
-    --accent-2: #ffbdd0;
-}
-
 .sec-container {
     /* display: flex; */
     height: 700px;
     justify-content: center;
     align-items: center;
-    background: var(--white);
+    background-color: white;
 }
 
 .cal-sec-container {
     width: 1790px;
     height: 750px;
     margin: auto;
-    background: var(--white);   
+    background-color: white;   
     padding: 0 1em;
 }
 
@@ -230,7 +221,7 @@ li {
     align-items: center;
     font-size: 3rem;
     width: 270px;
-    color: var(--accent-2);
+    background-color: white;  
     word-spacing: 0.5rem;
 }
 

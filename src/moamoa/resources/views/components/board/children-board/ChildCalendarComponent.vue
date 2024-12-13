@@ -9,7 +9,7 @@
                 </div>    
             </div>
             
-            <div v-show="showHistory" class="money-history" >
+            <div class="money-history" >
                 <div class="money-title">
                     <li>식비</li>
                     <li>교통비</li>
@@ -59,7 +59,9 @@
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day">
-                            {{ day }}
+                            <p :class="{ 'circle-class': isToday(day) }">
+                                {{ day }}
+                            </p>
                             <p class="minus">-5,000</p>
                             <p class="plus">+3,000</p>
                         </div>
@@ -71,42 +73,60 @@
 
 </template>
 <script setup>
-const showHistory = ref(true);
-import { ref, computed } from "vue";
-// 현재 날짜 상태 관리
-const dateToday = ref(new Date());
-// 현재 연월 표시 (반응형 데이터)
-const formattedDate = computed(() =>
-  dateToday.value.toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    timeZone: "Asia/Seoul",
-  })
-);
-// 해당 월의 시작 요일 계산
-const startDay = computed(() => {
-  const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
-  return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
-});
-// 해당 월의 일수 계산
-const daysInMonth = computed(() => {
-  const year = dateToday.value.getFullYear();
-  const month = dateToday.value.getMonth();
-  return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
-});
-// 이전 월로 이동
-function prevMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  dateToday.value = currentDate; // 새로운 객체로 업데이트
-}
-// 다음 월로 이동
-function nextMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  dateToday.value = currentDate; // 새로운 객체로 업데이트
-}
+    // const showHistory = ref(true);
+    import { ref, computed } from "vue";
+    
+    // 현재 날짜 상태 관리
+    const dateToday = ref(new Date());
+
+    // 현재 연월 표시 (반응형 데이터)
+    const formattedDate = computed(() =>
+        dateToday.value.toLocaleString("ko-KR", {
+            year: "numeric",
+            month: "long",
+            timeZone: "Asia/Seoul",
+        })
+    );
+
+    // 해당 월의 시작 요일 계산
+    const startDay = computed(() => {
+        const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
+        return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
+    });
+
+    // 해당 월의 일수 계산
+    const daysInMonth = computed(() => {
+        const year = dateToday.value.getFullYear();
+        const month = dateToday.value.getMonth();
+        return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
+    });
+
+    // 오늘 날짜인지 확인하는 함수
+    function isToday(day) {
+        const today = new Date();
+        const year = dateToday.value.getFullYear();
+        const month = dateToday.value.getMonth();
+        return (
+            today.getFullYear() === year &&
+            today.getMonth() === month &&
+            today.getDate() === day
+        );
+    }
+
+    // 이전 월로 이동
+    function prevMonth() {
+    const currentDate = new Date(dateToday.value);
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    dateToday.value = currentDate; // 새로운 객체로 업데이트
+    }
+    // 다음 월로 이동
+    function nextMonth() {
+    const currentDate = new Date(dateToday.value);
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    dateToday.value = currentDate; // 새로운 객체로 업데이트
+    }
 </script>
+
 <style scoped >
 .cal-container {
     width: 93%;
@@ -117,14 +137,14 @@ function nextMonth() {
 }
 .nav-section {
     background-color: white;
-    height: 750px;
+    height: 765px;
 }
 .selected-kid {
     margin-left: 30px;
     margin-top: 30px;
     margin-bottom: 30px;
     /* width: 80px; */
-    border: 3px solid #ffBDD0;
+    border: 5px solid #5589e996; 
     background-color: white;
     border-radius: 50%;
     padding: 3px;
@@ -140,7 +160,7 @@ li {
 
 .money-history {
     width: 400px;
-    height: 520px;
+    height: 500px;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
@@ -148,7 +168,7 @@ li {
     grid-template-columns: 1fr 1fr;
     font-size: 1.5rem;
     line-height: 50px;
-    background-color: #ffe7ee;
+    background-color: #5589e996;
 }
 
 .cost  {
@@ -157,29 +177,22 @@ li {
     padding-right: 50px;
 }
 
-:root {
-    --white: white;
-    --main: #ffBDD0;
-    --accent: #CACACA;
-    --accent-2: #ffBDD0;
-}
 .sec-container {
-    /* display: flex; */
     height: 700px;
     justify-content: center;
     align-items: center;
-    background: var(--white);
+    /* background: ; */
 }
 .cal-sec-container {
     width: 1290px;
-    height: 750px;
-    background: var(--white);
+    height: 765px;
+    background-color: white;
     padding: 0 1em;
 }
 .sec-header {
     /* position: sticky; */
-    height: 115px;
-    line-height: 115px;
+    height: 100px;
+    line-height: 100px;
     display: flex;
     justify-content: space-between;
     padding: 10px ;
@@ -192,27 +205,16 @@ li {
     color: black;
     word-spacing: 0.5rem;
 }
-pre {
-    padding: 10px;
-    font-size: 1.2rem;
-    color: var(--accent-2);
-    cursor: pointer;
-}
+
 .days{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding: 0 20px;
     justify-content: space-between;
     align-items: center;
-    padding-top: 15px;
-    div{
-        text-align: center;
-        font-size: 2rem;
-        width: 168px;
-        height: 130px;
-        opacity: 0.5;
-    }
+    /* padding-top: 15px; */
 }
+
 .week{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -224,32 +226,30 @@ pre {
         font-size: 2rem;
         text-align: center;
         line-height: 55px;
-        border-bottom: 7px double #ffBDD0;
+        border-bottom: 7px double #5589e996;
     }
 }
 .days div{
-    border-radius: 50%;
+    text-align: center;
+    font-size: 2rem;
+    width: 130px;
     opacity: 1;
-    height: 95px;
-    /* &:hover {
-        background: var(--accent-2);
-        color: #737373;
-        cursor: pointer;
-    } */
+    height: 90px;
+    margin-left: 20px;
+    margin-top: 10px;
 }
+
 .display-selected {
     text-align: center;
     padding: 20px;
     margin-top: 10px;
 }
-.current-date {
-    background: var(--accent);
-    color: var(--white);
-}
+
 .right, .left {
+    color: #5589e996;
     font-size: 3rem;
-    line-height: 3rem;
-    line-height: 95px;
+    cursor: pointer;
+    
 }
 .minus {
     color: red;
@@ -259,14 +259,13 @@ pre {
     color: blue;
     font-size: 0.9rem;
 }
-.active {
-  background-color: #E2F1F3; /* 활성화된 버튼 배경색 */
-  color: black;
-}
+
 
 .select-kids {
     display: flex;
+    margin: 20px;
 }
+
 .name-plate {
     display: flex;
     flex-direction: column;
@@ -286,5 +285,21 @@ pre {
     font-size: 2rem;
 }
 
+.money-title {
+    height: 500px;
+}
+
+.circle-class {
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block; /* 원 크기 유지 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    line-height: 40px; /* 텍스트를 원 안의 중앙에 위치 */
+    box-sizing: border-box; /* 테두리 포함 */
+    background-color: lightgray;
+    /* margin-bottom: 15px; */
+    padding: 5px;
+}
 
 </style>
