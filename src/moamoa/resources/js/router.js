@@ -1,12 +1,12 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
-import ChildListManagerComponent from '../views/components/parents-board/ChildListManagerComponent.vue';
-import ParentsMissionListComponent from '../views/components/parents-board/ParentsMissionListComponent.vue';
-import ParentsCalendarComponent from '../views/components/parents-board/ParentsCalendarComponent.vue';
-import ParentsCreateComponent from '../views/components/parents-board/ParentsCreateComponent.vue';
-import ParentsUpdateComponent from '../views/components/parents-board/ParentsUpdateComponent.vue';
-import ParentsDetailComponent from '../views/components/parents-board/ParentsDetailComponent.vue';
-import ChildCalendarComponent from '../views/components/children-board/ChildCalendarComponent.vue';
+import ParentsMissionListComponent from '../views/components/board/parents-board/ParentsMissionListComponent.vue';
+import ParentsCalendarComponent from '../views/components/board/parents-board/ParentsCalendarComponent.vue';
+import ParentsCreateComponent from '../views/components/board/parents-board/ParentsCreateComponent.vue';
+import ParentsUpdateComponent from '../views/components/board/parents-board/ParentsUpdateComponent.vue';
+import ParentsDetailComponent from '../views/components/board/parents-board/ParentsDetailComponent.vue';
+import ChildCalendarComponent from '../views/components/board/children-board/ChildCalendarComponent.vue';
+import ParentsManagementComponent from '../views/components/board/parents-board/ParentsManagementComponent.vue';
 
 
 const routes = [
@@ -20,7 +20,7 @@ const routes = [
     // },
     {
         path: '/parents/boards',
-        component: ChildListManagerComponent,
+        component: ParentsManagementComponent,
         // parentsBoards로 변경 예정
     },
     {
