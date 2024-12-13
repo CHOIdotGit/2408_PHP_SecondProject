@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 
-class MissionController extends Controller
+class ParentController extends Controller
 {
     public function index() {
         $missionList = Mission::orderBy('created_at', 'DESC')->paginate(3);
