@@ -27,7 +27,11 @@ class Child extends Model {
         'password'
     ];
 
-    public function missionList() {
-        return $this->hasMany(Mission::class, 'mission_id')->select('title');
+    public function missions() {
+        return $this->hasMany(Mission::class, 'mission_id');
+    }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class, 'child_id');
     }
 }

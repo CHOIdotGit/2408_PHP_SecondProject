@@ -23,7 +23,11 @@ class Mission extends Model {
         ,'end_at'
     ];
 
-    public function children() {
-        return $this->belongsTo(Child::class);
+    public function child() {
+        return $this->belongsTo(Child::class, 'child_id');
+    }
+
+    public function transactions() {
+        return $this->hasMany(Transaction::class, 'child_id', 'child_id');
     }
 }
