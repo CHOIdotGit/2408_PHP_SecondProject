@@ -1,20 +1,25 @@
 import { createStore } from 'vuex';
+import mission from './modules/mission';
 
-const store = createStore({
-    state: {
-        currentPath:'/'
+export default createStore({
+    modules: {
+        mission,
     },
-    mutations: {
-        setCurrentPath(state, path) {
-            state.currentPath = path;
-        }
-    },
-    actions: {
-        updateCurrentPath({ commit }, path) {
-            commit('setCurrentPath', path);
-        }
-    }
 });
 
-
-export default store;
+// const store = createStore({
+//     state: {
+//         currentPath:'/'
+//     },
+//     mutations: {
+//         setCurrentPath(state, path) {
+//             state.currentPath = path;
+//         }
+//     },
+//     actions: {
+//         updateCurrentPath({ commit }, path) {
+//             commit('setCurrentPath', path);
+//         }
+//     }
+// });
+// export default store;

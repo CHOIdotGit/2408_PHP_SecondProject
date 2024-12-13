@@ -8,7 +8,7 @@
                 <img class="profile-img" src="/img/icon-boy-2.png" width="120px" height="120px">
                 <div class="blank">-</div>
                 <div class="child">
-                    <h3 class="name">이름</h3>
+                    <h3 class="name">{{ item.child_id }}</h3>
                     <p class="nickname">별명</p>
                     <div class="expense-box">
                         <p class="recent-expenses">가장 최근 지출</p>
@@ -130,7 +130,18 @@
 </template>
 <script setup>
 
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
+
+// 미션 리스트
+const missionList = computed(() => store.state.mission.missionList);
+
+// onMount
+onMounted(() => {
+    store.dispatch('mission/missionListPagination');
+});
 
 </script>
 <style scoped>
