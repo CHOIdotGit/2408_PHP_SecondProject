@@ -18,17 +18,17 @@
             <div class="data-input">
                 <div>
                     <label for="account">아이디</label> <br>
-                    <input v-model="userInfo.account" type="text" name="account" required>
+                    <input type="text" name="account" required>
                 </div>
                 <div>
                     <label for="password">비밀번호</label> <br>
-                    <input v-model="userInfo.password" type="password" name="password" required>
+                    <input type="password" name="password" required>
                 </div>
             </div>
 
             <!-- 로그인, 회원가입 버튼 DIV -->
             <div class="data-button">
-                <button @click="$store.dispatch('user/login', userInfo)" type="button">로그인</button> <br>
+                <button type="button">로그인</button> <br>
                 <!-- <a href="./register/registerMain.html"><button type="button">회원가입</button></a> -->
             </div>
         </div>
@@ -37,17 +37,17 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue';
-  import { useStore } from 'vuex';
+  // import { reactive } from 'vue';
+  // import { useStore } from 'vuex';
 
-  const store = useStore();
+  // const store = useStore();
 
-  const userInfo = reactive({
-    account: '',
-    password: '',
-  });
+  // const userInfo = reactive({
+  //   account: '',
+  //   password: '',
+  // });
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
 </script>
 
