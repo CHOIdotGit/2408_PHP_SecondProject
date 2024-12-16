@@ -1,6 +1,6 @@
 <template>
-<div :class="{'bg-childs': isChilds, 'bg-parents': isParents}">
-    <header>
+<div :class="{'bg-childs': isChilds, 'bg-parents': isParents, 'bg-auth': isAuth}">
+    <header v-if="!isAuth">
         <HeaderComponent/>
     </header>
 
@@ -11,7 +11,7 @@
     </main>
     
     <!-- footer -->
-    <footer>
+    <footer v-if="!isAuth">
         <p>© 2024. Moa Co. all rights reserved.</p>
     </footer>
 </div>
@@ -25,6 +25,7 @@ import { ref } from 'vue';
 
 const isChilds = ref(true);
 const isParents = ref(false);
+const isAuth = ref(false);
 
 
 

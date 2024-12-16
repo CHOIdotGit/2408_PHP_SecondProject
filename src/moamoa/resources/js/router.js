@@ -8,16 +8,17 @@ import ParentsDetailComponent from '../views/components/board/parents-board/Pare
 import ChildCalendarComponent from '../views/components/board/children-board/ChildCalendarComponent.vue';
 import ParentsManagementComponent from '../views/components/board/parents-board/ParentsManagementComponent.vue';
 import ChildMissionListComponent from '../views/components/board/children-board/ChildMissionListComponent.vue';
+import LoginComponent from '../views/components/auth/LoginComponent.vue';
 
 const routes = [
     {
         // path: '/',
         // redirect: '/parents/boards'
     },
-    // {
-    //     path: '/login',
-    //     component: 
-    // },
+    {
+        path: '/login',
+        component: LoginComponent
+    },
     {
         path: '/parents/home',
         component: ParentsManagementComponent,
