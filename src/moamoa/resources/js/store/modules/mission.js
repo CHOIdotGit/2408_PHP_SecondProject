@@ -42,18 +42,14 @@ export default {
             
 
             
-        axios.get(url)
-        .then(response => {
-            context.commit('setMissionList', response.data.missionList.data);
-            context.commit('setPendingMissions', response.data.pendingMissions || []); // 대기 중인 미션 설정
-            // console.log(response.data.missionList.data);
-        })
-        .catch(error => {
-            console.error('미션 리스트 불러오기 오류', error);
-        }); 
-        // .finally(() => {
-        //     context.commit('setControlFlg', true);
-        // });    
+            axios.get(url)
+            .then(response => {
+                context.commit('setMissionList', response.data.missionList.data);
+                console.log(response.data.missionList.data);
+            })
+            .catch(error => {
+                console.error('미션 리스트 불러오기 오류', error);
+            });    
         }
     },
     getters: {
