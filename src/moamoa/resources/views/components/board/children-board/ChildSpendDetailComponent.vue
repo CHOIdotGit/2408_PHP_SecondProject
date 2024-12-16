@@ -4,7 +4,7 @@
             <div class="content-list">
                 <div class="content">
                     <p class="title">미션 제목</p>
-                    <p class="ms-title">점심 설거지하기</p>
+                    <span class="ms-title"> 올리브영 </span>
                     <div class="date">
                         <span class="ms-date">2024-12-11</span>
                         <span>⁓</span>
@@ -14,49 +14,44 @@
                 <div class="content">
                     <p class="title">미션 종류</p>
                     <div class="category-btn">
-                        <input type="radio" name="category" id="study" checked>
-                            <img class="ms-category" src="img/icon-pencil.png" alt=".">
+                        <input type="radio" name="category" id="meals" checked>
+                            <img class="ms-category" src="img/icon-fastfood.png" alt=".">
                         </input>
-                        <label for="study">학습</label>
+                        <label for="study">식비</label>
                     </div>
                     <div class="category-btn">
                         <input type="radio" name="category" id="habit" >
-                            <img class="ms-category" src="/img/icon-bicycle.png" alt=".">
+                            <img class="ms-category" src="/img/icon-bus.png" alt=".">
                         </input>
-                        <label for="habit">취미</label>
+                        <label for="habit">교통비</label>
                     </div>
                     <div class="category-btn">
                         <input type="radio" name="category" id="housework" >
-                            <img class="ms-category" src="/img/icon-cleaner.png" alt=".">
+                            <img class="ms-category" src="/img/icon-shoppingbag.png" alt=".">
                         </input>
-                        <label for="housework">집안일</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" >
-                            <img class="ms-category" src="/img/icon-clock.png" alt=".">
-                        </input>
-                        <label for="lifestyle">생활습관</label>
+                        <label for="housework">쇼핑</label>
                     </div>
                     <div class="category-btn">
                         <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt="">
+                            <img class="ms-category" src="/img/icon-checklist7.png" alt=".">
                         </input>
-                        <label for="etc">기타</label>
+                        <label for="lifestyle">기타</label>
                     </div>
+                    aa
                 </div>
                 <div class="content">
                     <p class="title">미션 내용</p>
-                    <div class="ms-content">점심먹고 설거지 해놔라. 집에 엄마 없다.</div>
+                    <div class="ms-content">올리브영 갔다가 주연언니랑 쇼핑함</div>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <p class="ms-amount">2,000</p>
+                    <p class="ms-amount">32,000</p>
                 </div>
                 <div class="bottom-btn">
                     <button class="ms-cancel">취소</button>
                     <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                    <button class="create-btn ms-up">수정</button>
-                    <button class="create-btn ms-comfirm">승인</button>
+                    <button class="create-btn ms-up">완료</button>
+                    <button class="create-btn ms-comfirm">수정</button>
                 </div>
             </div>
         </div>
@@ -141,16 +136,18 @@ const delCloseModal = () => {
 /* 미션 제목 */
 .ms-title {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
+    /* height: rem; */
+    /* margin-top: 5px; */
     padding-left: 5px;
 }
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
@@ -177,8 +174,8 @@ span {
 }
 
 .category-btn > label {
-    color: #A2CAAC;
-    /* border: 1px solid #A2CAAC; */
+    color: #5589e996;
+    /* border: 1px solid #5589e996; */
     font-size: 0.9rem;
     padding-top: 5px;
 
@@ -194,7 +191,7 @@ span {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
@@ -206,14 +203,14 @@ span {
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     font-size: 1.3rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;
@@ -238,10 +235,10 @@ span {
 /* 삭제버튼 */
 .ms-del {
     /* margin-left: 250px; */
-    color: #A2CAAC;
+    color: #5589e996;
     background-color: #FFFF;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -258,9 +255,9 @@ span {
 /* 수정버튼 */
 .ms-up {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -270,9 +267,9 @@ span {
 /* 승인버튼 */
 .ms-comfirm {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -306,7 +303,7 @@ span {
     width: 400px;
     height: 500px;
     background-color: #FFFFFF;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     /* margin: 170px; */
     display: flex;
     flex-direction: column;
@@ -361,9 +358,9 @@ span {
 
 .modal-del {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     cursor: pointer;

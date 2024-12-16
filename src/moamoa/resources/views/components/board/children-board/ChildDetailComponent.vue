@@ -55,8 +55,8 @@
                 <div class="bottom-btn">
                     <button class="ms-cancel">취소</button>
                     <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                    <button class="create-btn ms-up">수정</button>
-                    <button class="create-btn ms-comfirm">승인</button>
+                    <button class="create-btn ms-up">완료</button>
+                    <button class="create-btn ms-comfirm">수정</button>
                 </div>
             </div>
         </div>
@@ -141,7 +141,7 @@ const delCloseModal = () => {
 /* 미션 제목 */
 .ms-title {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -150,7 +150,7 @@ const delCloseModal = () => {
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
@@ -177,8 +177,8 @@ span {
 }
 
 .category-btn > label {
-    color: #A2CAAC;
-    /* border: 1px solid #A2CAAC; */
+    color: #5589e996;
+    /* border: 1px solid #5589e996; */
     font-size: 0.9rem;
     padding-top: 5px;
 
@@ -194,7 +194,7 @@ span {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
@@ -206,14 +206,14 @@ span {
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     font-size: 1.3rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;
@@ -238,10 +238,10 @@ span {
 /* 삭제버튼 */
 .ms-del {
     /* margin-left: 250px; */
-    color: #A2CAAC;
+    color: #5589e996;
     background-color: #FFFF;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -258,9 +258,9 @@ span {
 /* 수정버튼 */
 .ms-up {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -270,9 +270,9 @@ span {
 /* 승인버튼 */
 .ms-comfirm {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     border-radius: 0px;
@@ -306,7 +306,7 @@ span {
     width: 400px;
     height: 500px;
     background-color: #FFFFFF;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     /* margin: 170px; */
     display: flex;
     flex-direction: column;
@@ -361,9 +361,9 @@ span {
 
 .modal-del {
     color: #FFFF;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
+    border: 1px solid #5589e996;
     padding: 5px;
     width: 100px;
     cursor: pointer;

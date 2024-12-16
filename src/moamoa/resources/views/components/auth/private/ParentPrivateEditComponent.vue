@@ -167,7 +167,7 @@
   /* 클릭 영역 프리뷰 부분 */
   .profile-preview {
     padding: 10px;
-    width: 200px;
+    width: 220px;
     height: 280px;
     display: flex;
     justify-content: center;

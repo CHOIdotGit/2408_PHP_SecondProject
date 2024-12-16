@@ -26,7 +26,7 @@
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day">
-                            <p :class="{ 'circle-class': isToday(day) }">
+                            <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">
                                 {{ day }}
                             </p>
                             <p class="minus">-5,000</p>
@@ -37,6 +37,47 @@
             </div>
         </div>
     </div>
+
+
+    <!-- ************************* -->
+    <!-- ********상세 모달********* -->
+    <!-- ************************* -->
+    <div class="del-modal-black" v-show="delModal.isOpen">
+        <div class="del-modal-white">
+            <div class="modal-list-container">
+                <div class="modal-mission-title">
+                    <p class="mission-name">제목</p>
+                    <p class="expense-type">종류</p>
+                    <p class="inout-come">분류</p>
+                    <p class="charge">금액</p>
+                    <p class="due-date">작성일자</p>
+                </div>
+                <div class="mission-inserted-list">
+                    <div class="modal-mission-content">
+                        <p class="mission-name">설거지</p>
+                        <p class="expense-type">집안일</p>
+                        <p class="inout-come income">수입</p>
+                        <p class="charge">5,000</p>
+                        <p class="due-date">2024.12.17</p>
+                    </div>
+                    <div class="mission-content">
+                        <div class="modal-mission-content">
+                            <p class="mission-name">올리브영가서 세일하길래 쿠션삼</p>
+                            <p class="expense-type">쇼핑</p>
+                            <span class="inout-come outgo">지출</span>
+                            <p class="charge">32,000</p>
+                            <p class="due-date">2024.12.17</p>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="del-btn">
+                    <button @click="delCloseModal" class="modal-cancel">취소</button>
+                </div>
+            </div>
+        </div>
+
+
 </template>
 
 
@@ -98,7 +139,17 @@ function nextMonth() {
   dateToday.value = currentDate; // 새로운 객체로 업데이트
 }
 
+import { reactive } from "vue";
 
+    const delModal = reactive({ isOpen: false }); // 객체 형태로 관리
+
+    const delOpenModal = () => {
+    delModal.isOpen = true; // 객체 속성을 수정
+    };
+
+    const delCloseModal = () => {
+    delModal.isOpen = false;
+    };
 
 </script>
 
@@ -220,5 +271,103 @@ function nextMonth() {
 
 .date-display {
     margin-top: 15px;
+}
+
+.del-modal-black {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    /* top: 182px;
+    left: 177px; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    /* margin-top: 500px; */
+    justify-content: center;
+}
+
+.del-modal-white {
+    width: 800px;
+    height: 500px;
+    background-color: #FFFFFF;
+    border: 3px solid #a2caac;
+    /* margin: 170px; */
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-content {
+    /* text-align: center;
+    margin: 60px; */
+}
+
+.modal-name {
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.modal-mission-title {
+    display: grid;
+    grid-template-columns: 250px 100px 100px 100px 100px;  
+    height: 40px;
+    gap: 20px;
+    background-color: #F5F5F5;
+    font-size: 1rem;
+    margin: 10px;
+    align-items: center;
+    width: 750px;
+    text-align: center;
+}
+
+.del-guide {
+    font-size: 1.4rem;
+    padding: 15px;
+}
+
+
+.modal-img{
+    width: 100px;
+    height: 100px;
+    background-color: #FFFFFF;
+    border: 3px solid #a2caac;
+    border-radius: 50px;
+    padding: 3px;
+}
+
+
+
+/* 버튼 */
+.modal-cancel {
+    color: #a2caac;
+    background-color: #FFFFFF;
+    font-size: 1.5rem;
+    border: 1px solid #a2caac;
+    padding: 5px;
+    width: 100px;
+    height: 50px;
+    cursor: pointer;
+    margin: 10px;
+    position: absolute;
+    top: 400px;
+    right: 350px;
+}
+
+.modal-mission-content{
+    display: grid;
+    grid-template-columns: 250px 100px 100px 100px 100px;  
+    min-height: 40px;
+    gap: 20px;
+    /* background-color: #F5F5F5; */
+    font-size: 1rem;
+    margin: 10px;
+    align-items: center;
+    width: 1400px;
+    text-align: center;
+    /* border-bottom: 2px solid black; */
 }
 </style>

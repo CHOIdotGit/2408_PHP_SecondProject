@@ -15,35 +15,28 @@
                 <div class="content">
                     <p class="title">미션 종류</p>
                     <div class="category-btn">
-                        <input type="radio" name="category" id="study" >
-                        
-                            <img class="ms-category" src="/img/icon-pencil.png" alt=".">
+                        <input type="radio" name="category" id="meals" >
+                            <img class="ms-category" src="/img/icon-fastfood.png" alt=".">
                         </input>
                         <!-- <label for="study">학습</label> -->
                     </div>
                     <div class="category-btn">
-                        <input type="radio" name="category" id="habit" >
-                            <img class="ms-category" src="/img/icon-bicycle.png" alt=".">
+                        <input type="radio" name="category" id="traffic" >
+                            <img class="ms-category" src="/img/icon-bus.png" alt=".">
                         </input>
                         <!-- <label for="habit">취미</label> -->
                     </div>
                     <div class="category-btn">
-                        <input type="radio" name="category" id="housework" >
-                            <img class="ms-category" src="/img/icon-cleaner.png" alt=".">
+                        <input type="radio" name="category" id="shopping" >
+                            <img class="ms-category" src="/img/icon-shoppingbag.png" alt=".">
                         </input>
                         <!-- <label for="housework">집안일</label> -->
                     </div>
                     <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" >
-                            <img class="ms-category" src="/img/icon-clock.png" alt=".">
+                        <input type="radio" name="category" id="etc" >
+                            <img class="ms-category" src="/img/icon-checklist7.png" alt=".">
                         </input>
                         <!-- <label for="lifestyle">생활습관</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt="">
-                        </input>
-                        <!-- <label for="etc">기타</label> -->
                     </div>
                 </div>
                 <div class="content">
@@ -56,7 +49,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button class="create-btn">취소</button>
-                    <button class="create-btn">등록</button>
+                    <button class="create-btn">작성</button>
                 </div>
             </div>
         </div>
@@ -116,7 +109,7 @@
 /* 미션 제목 */
 .ms-title {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -125,7 +118,7 @@
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
@@ -171,7 +164,7 @@ span {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    background-color: #A2CAAC;
+    background-color: #5589e996;
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
@@ -185,14 +178,14 @@ span {
     padding: 10px;
     outline: none;
     border-radius: 10px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     font-size: 1.5rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -220,7 +213,7 @@ span {
     height: 50px;
     font-size: 1.5rem;
     border: none;
-    background-color: #A2CAAC ;
+    background-color: #5589e996 ;
     margin-bottom: 30px;
 }
 
