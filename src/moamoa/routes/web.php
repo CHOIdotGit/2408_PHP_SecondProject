@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 // Route::post('/parents/mission/list', )
 
 Route::get('/api/parents/home', [ParentController::class, 'index']);
+Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

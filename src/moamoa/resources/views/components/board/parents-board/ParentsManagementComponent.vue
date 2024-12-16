@@ -11,8 +11,8 @@
                     <h3 class="name">{{ item.name }}</h3>
                     <p class="nickname">{{ item.nick_name }}</p>
                     <div class="expense-box">
-                        <router-link to="/parents/spend">
-                            <p @click="$router.push('/parents/mission/list')" class="recent-expenses">지출 내역 ></p>
+                        <router-link to="/parents/spend" style="text-decoration: none; color:black;">
+                            <p class="recent-expenses">지출 내역 ></p>
                         </router-link>
                         <div v-for="transaction in item.transactions.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)" :key="transaction">
                             <div v-if="transaction.amount > 0" class="amount">
@@ -24,7 +24,7 @@
                         </div>
                     </div>
                     <div class="child-mission">
-                        <router-link to="/parents/mission/list">
+                        <router-link to="/parents/mission/list" style="text-decoration: none; color:black;">
                             <p class="mission">승인 대기 중인 미션 ></p>
                         </router-link>
                         <div class="chk-div">
@@ -35,7 +35,7 @@
                                         <div>{{ mission.title }}</div>
                                     </label>
                                 </div>
-                                <div v-else>
+                                <div v-else class="margin-top">
                                     <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
                                 </div>
                             </div>
@@ -184,10 +184,15 @@ onMounted(() => {
 }
 
 .btn-disable {
+    display: none;
     width: 160px;
     height: 40px;
     cursor: default;
     pointer-events: none; /* 클릭 이벤트 막기 */
+}
+
+.margin-top {
+    margin-top: 4rem;
 }
 
 .approve {

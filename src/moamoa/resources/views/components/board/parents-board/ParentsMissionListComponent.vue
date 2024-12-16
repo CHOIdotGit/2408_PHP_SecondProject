@@ -16,63 +16,24 @@
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
-            <div class="mission-inserted-list">
+            <div class="mission-inserted-list" v-for="item in missionList" :key="item.id">
                 <div class="mission-content">
                     <div class="chk-div">
                         <input type="checkbox" id="checkbox9">
                     </div>
-                    <span class="kids-name">김</span>
-                    <p class="state-in-progress">진행중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
+                    <span class="kids-name">{{ item.name }}</span>
+                    <div v-for="mission in item.missions.slice().sort((a, b) => new Date(b.end_at) - new Date(a.end_at)).slice(0, 1)" :key="mission">
+                        <p class="state-in-progress">{{ getStatusLabel(mission.status) }}</p>
+                        <p class="mission-type-selected">{{ getCategoryLabel(mission.category) }}</p>
+                        <p class="mission-name-">{{ mission.title }}</p>
                     </div>
-                    <span class="kids-name">김율</span>
-                    <p class="state-complete">완료</p>
-                    <p class="mission-type-selected">생활습관</p>
-                    <p class="mission-name-">매일 10시에 잠들기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17 ~ 24.12.25</p>
-                </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
+                    <div v-for="transaction in item.transactions" :key="transaction">
+                        <p class="charge">{{ transaction.amount.toLocaleString() }}</p>
                     </div>
-                    <span class="kids-name">배짜장</span>
-                    <p class="state-cancel">취소</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">열여섯글자까지가능하다는데확인용</p>
-                    <p class="charge">35,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
+                    <div v-for="mission in item.missions" :key="mission">
+                        <p class="due-date">{{ mission.start_at }} ~ {{ mission.end_at }}</p>
                     </div>
-                    <span class="kids-name">유노윤호</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
                 </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <span class="kids-name">다아섯글자</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                
             </div>
             <div class="for-buttons">
                 <button class="btn-bottom mission-goback">뒤로가기</button>
@@ -84,6 +45,56 @@
 
 <script setup>
 
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore();
+
+// 미션 리스트 가져오기
+const missionList = computed(() => store.state.child.childInfo);
+
+// category 변환 함수
+const getCategoryLabel = (category) => {
+    switch (category) {
+        case 0:
+            return '학습';
+        case 1:
+            return '취미';
+        case 2:
+            return '집안일';
+        case 3:
+            return '생활습관';
+        case 4:
+            return '기타';
+    }
+    return '';
+};
+
+// status 변환 함수
+const getStatusLabel = (status) => {
+    switch (status) {
+        case 0:
+            return '교통비';
+        case 1:
+            return '취미';
+        case 2:
+            return '쇼핑';
+        case 3:
+            return '기타';
+    }
+    return '';
+};
+
+// child_id가 1인 자녀의 이름을 가져오는 computed property
+const filteredChildName = computed(() => {
+    const child = missionList.value.find(item => item.child_id === 1);
+    return child ? child.name : ''; // child가 존재하면 이름을 반환, 아니면 빈 문자열
+});
+
+
+// onMount
+onMounted(() => {
+    store.dispatch('child/childInfo');
+});
 
 </script>
 

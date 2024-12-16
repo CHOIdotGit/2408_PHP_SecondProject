@@ -16,7 +16,7 @@ export default {
     },
     actions: {
         /**
-         * 미션 리스트 획득
+         * 자녀 정보 획득
          * 
          * @param {*} context commit, state 포함되어있음
          */
@@ -29,8 +29,8 @@ export default {
             
             axios.get(url)
             .then(response => {
-                context.commit('setChildInfo', response.data.childInfo.data);
-                console.log(response.data.childInfo.data);
+                console.log(response.data);
+                context.commit('setChildInfo', response.data.missionList.data);
             })
             .catch(error => {
                 console.error('자녀 정보 불러오기 오류', error);
