@@ -11,7 +11,9 @@
                     <h3 class="name">{{ item.name }}</h3>
                     <p class="nickname">{{ item.nick_name }}</p>
                     <div class="expense-box">
-                        <p class="recent-expenses">가장 최근 지출</p>
+                        <router-link to="/parents/spend">
+                            <p @click="$router.push('/parents/mission/list')" class="recent-expenses">지출 내역 ></p>
+                        </router-link>
                         <div v-for="transaction in item.transactions.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)" :key="transaction">
                             <div v-if="transaction.amount > 0" class="amount">
                                 {{ transaction.amount.toLocaleString() }}원
@@ -22,7 +24,9 @@
                         </div>
                     </div>
                     <div class="child-mission">
-                        <p class="mission">승인 대기 중인 미션</p>
+                        <router-link to="/parents/mission/list">
+                            <p class="mission">승인 대기 중인 미션 ></p>
+                        </router-link>
                         <div class="chk-div">
                             <div v-for="mission in item.missions" :key="mission">
                                 <div v-if="mission.status === 1">
@@ -54,13 +58,6 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 // 미션 리스트 가져오기
-// const missionList = computed(() => store.state.missionList);
-// 미션 리스트 가져오기
-// const missionList = computed(() => {
-//     console.log(store.state.missionList); // 데이터 확인
-//     return store.state.missionList; // Vuex에서 미션 리스트 가져오기
-// });
-
 const missionList = computed(() => store.state.mission.missionList);
 
 

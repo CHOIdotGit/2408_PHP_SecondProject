@@ -5,8 +5,6 @@ export default {
     namespaced:true,
     state: ()=> ({
         missionList: []
-        ,pendingMissions: []
-        ,page: 0
         ,missionDetail: null
         ,lastPageFlg: false
         ,controlFlg: true
@@ -15,15 +13,6 @@ export default {
     mutations: {
         setMissionList(state, missionList) {
             state.missionList = state.missionList.concat(missionList);
-        },
-        setPendingMissions(state, pendingMissions) { // 대기 중인 미션 변이 추가
-            state.pendingMissions = pendingMissions;
-        },
-        setPage(state, page) {
-            state.page = page;
-        },
-        setLastPageFlg(state, flg) {
-            state.lastPageFlg = flg;
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;

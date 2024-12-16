@@ -1,9 +1,10 @@
 import { createStore } from 'vuex';
 import mission from './modules/mission';
+import child from './modules/child';
 
 export default createStore({
     modules: {
-        mission,
+        mission, child,
     },
 });
 

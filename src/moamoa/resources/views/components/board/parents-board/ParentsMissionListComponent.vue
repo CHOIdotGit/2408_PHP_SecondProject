@@ -72,17 +72,7 @@
                     <p class="charge">3,000</p>
                     <p class="due-date">2024.12.17</p>
                 </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <span class="kids-name">박초롱초롱빛나리</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
+                
             </div>
             <div class="for-buttons">
                 <button class="btn-bottom mission-goback">뒤로가기</button>
