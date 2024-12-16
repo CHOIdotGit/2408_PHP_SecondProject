@@ -29,7 +29,7 @@
             <!-- 로그인, 회원가입 버튼 DIV -->
             <div class="data-button">
                 <button type="button">로그인</button> <br>
-                <!-- <a href="./register/registerMain.html"><button type="button">회원가입</button></a> -->
+                <button type="button">회원가입</button>
             </div>
         </div>
 
@@ -46,8 +46,6 @@
   //   account: '',
   //   password: '',
   // });
-
-  // console.log(userInfo);
 
 </script>
 
