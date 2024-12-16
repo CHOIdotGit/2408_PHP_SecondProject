@@ -7,7 +7,7 @@ import ParentsUpdateComponent from '../views/components/board/parents-board/Pare
 import ParentsDetailComponent from '../views/components/board/parents-board/ParentsDetailComponent.vue';
 import ChildCalendarComponent from '../views/components/board/children-board/ChildCalendarComponent.vue';
 import ParentsManagementComponent from '../views/components/board/parents-board/ParentsManagementComponent.vue';
-
+import ChildMissionListComponent from '../views/components/board/children-board/ChildMissionListComponent.vue';
 
 const routes = [
     {
@@ -46,6 +46,11 @@ const routes = [
         path: '/child/calendar',
         component: ChildCalendarComponent,
     },
+    {
+        path: '/child/mission/list',
+        component: ChildMissionListComponent,
+    },
+    
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,

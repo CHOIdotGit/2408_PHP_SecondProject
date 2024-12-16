@@ -23,8 +23,8 @@
 import HeaderComponent from './layout/HeaderComponent.vue';
 import { ref } from 'vue';
 
-const isChilds = ref(false);
-const isParents = ref(true);
+const isChilds = ref(true);
+const isParents = ref(false);
 
 
 
