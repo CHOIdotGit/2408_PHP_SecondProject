@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ParentController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Auth 관련
+Route::post('/api/login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout');
+// 
+
 // Route::post('/parents/mission/list', )
 
 Route::get('/api/parents/home', [ParentController::class, 'index']);

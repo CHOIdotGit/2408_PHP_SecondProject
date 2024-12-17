@@ -38,8 +38,17 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'parents',
         ],
+        'parents' => [
+            'driver' => 'session',
+            'provider' => 'parents', 
+        ],
+        'children' => [
+            'driver' => 'session',
+            'provider' => 'children',
+        ],
+    
     ],
 
     /*
@@ -60,15 +69,18 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
-
         // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\User::class,
         // ],
+        'parents' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\ParentModel::class,  // 부모 모델
+        ],
+        'children' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Child::class,  // 자녀 모델
+        ],
     ],
 
     /*

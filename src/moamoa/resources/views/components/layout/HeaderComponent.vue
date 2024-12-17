@@ -38,7 +38,7 @@
                     <div class="dropdown" v-show="dropDownMenu">
                         <a href="#" class="info-page">개인정보 수정</a>
                         <a href="#" class="info-page">가족정보</a>
-                        <button class="logout-btn">로그아웃</button>
+                        <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
                     </div>
                 </div> 
                 

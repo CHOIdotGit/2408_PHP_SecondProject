@@ -1,6 +1,6 @@
 <template>
-<div :class="{'bg-childs': isChilds, 'bg-parents': isParents, 'bg-auth': isAuth}">
-    <header v-if="!isAuth">
+<div :class="{'bg-childs': isChilds, 'bg-parents': isParents, 'bg-auth': !isAuth}">
+    <header v-if="isAuth">
         <HeaderComponent/>
     </header>
 
@@ -11,7 +11,7 @@
     </main>
     
     <!-- footer -->
-    <footer v-if="!isAuth">
+    <footer v-if="isAuth">
         <p>© 2024. Moa Co. all rights reserved.</p>
     </footer>
 </div>
@@ -21,12 +21,15 @@
 
 <script setup>
 import HeaderComponent from './layout/HeaderComponent.vue';
-import { ref } from 'vue';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
 
-const isChilds = ref(false);
-const isParents = ref(true);
-const isAuth = ref(false);
+const store = useStore();
 
+// 로그인 상태 체크
+const isAuth = computed(() => store.state.auth.authFlg);
+const isParents = computed(() => store.state.auth.parentFlg);
+const isChilds = computed(() => store.state.auth.childFlg);
 
 
 

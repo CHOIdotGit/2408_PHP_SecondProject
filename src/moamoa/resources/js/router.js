@@ -17,20 +17,47 @@ import ParentsSpendListComponent from '../views/components/board/parents-board/P
 import ChildSpendCreateComponent from '../views/components/board/children-board/ChildSpendCreateComponent.vue';
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
+import { useStore } from "vuex";
 
+const chkAuth = (to, from, next) => {
+    const store = useStore();
+
+    // 로그인 상태 변수
+    const authFlg = store.state.auth.authFlg;
+    const parentFlg = store.state.auth.parentFlg;
+    const childFlg = store.state.auth.childFlg;
+
+    // 비인증용 경로 변수
+    const notAuthPath = (to.path === '/' || to.path === '/login');
+
+    if(authFlg && notAuthPath) { // 인증 유저가 비인증 페이지에 접근했는가?
+        if(parentFlg) { // 그 인증 유저가 부모인가?
+            next('/parents/home');
+        }else if(childFlg) { // 그 인증 유저가 자녀인가?
+            next('/children/home');
+        }
+    }else if(!authFlg && !notAuthPath) { // 비인증 유저가 인증 페이지에 접근했는가?
+        next('/login');
+    }else { // 그 이외는 통과
+        next();
+    }
+};
 
 const routes = [
     {
-        // path: '/',
-        // redirect: '/parents/boards'
+        path: '/',
+        redirect: '/login',
+        beforeEnter: chkAuth,
     },
     {
         path: '/login',
-        component: LoginComponent
+        component: LoginComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/parents/home',
         component: ParentsManagementComponent,
+        beforeEnter: chkAuth,
     },
     {
         path: '/parents/mission/list',

@@ -17,19 +17,24 @@
             <!-- 아이디, 비밀번호 입력 DIV -->
             <div class="data-input">
                 <div>
+                    <div v-if="$store.state.auth.errMsg !== null" class="err-msg">
+                      <p v-for="item in $store.state.auth.errMsg" :key="item">
+                        {{ item }}
+                      </p>
+                    </div>
                     <label for="account">아이디</label> <br>
-                    <input type="text" name="account" required>
+                    <input v-model="userInfo.account" type="text" name="account" required>
                 </div>
                 <div>
                     <label for="password">비밀번호</label> <br>
-                    <input type="password" name="password" required>
+                    <input v-model="userInfo.password" type="password" name="password" required>
                 </div>
             </div>
 
             <!-- 로그인, 회원가입 버튼 DIV -->
             <div class="data-button">
-                <button type="button">로그인</button> <br>
-                <button type="button">회원가입</button>
+                <button type="button" @click="$store.dispatch('auth/login', userInfo)">로그인</button> <br>
+                <!-- <button type="button">회원가입</button> -->
             </div>
         </div>
 
@@ -37,16 +42,12 @@
 </template>
 
 <script setup>
-  // import { reactive } from 'vue';
-  // import { useStore } from 'vuex';
+  import { reactive } from 'vue';
 
-  // const store = useStore();
-
-  // const userInfo = reactive({
-  //   account: '',
-  //   password: '',
-  // });
-
+  const userInfo = reactive({
+    account: '',
+    password: '',
+  });
 </script>
 
 <style scoped>
@@ -140,6 +141,12 @@
     width: 470px;
     max-width: 45vw;
     font-size: 1.9rem;
+  }
+
+  .err-msg {
+    font-size: 0.8rem;
+    padding: 10px 0;
+    color: red;
   }
 
   /* 모바일 설정: 화면 너비가 일정 크기 이하일 때 */

@@ -6,11 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Child extends Model {
+class Child extends Authenticatable {
     use HasFactory, Notifiable, SoftDeletes;
 
     protected $primaryKey = 'child_id';
+    protected $guards = 'children';
+    protected $table = 'children';
 
     protected $fillable = [
         'parent_id'
