@@ -3,12 +3,12 @@ import axios from "axios";
 export default {
     namespaced:true,
     state: ()=> ({
-        childInfo: []
+        missionInfo: []
         ,controlFlg: true
     }),
     mutations: {
-        setChildInfo(state, childInfo) {
-            state.childInfo = state.childInfo.concat(childInfo);
+        setMissionInfo(state, missionInfo) {
+            state.missionInfo = state.missionInfo.concat(missionInfo);
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
@@ -20,7 +20,7 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        childInfo(context) {
+        missionInfo(context) {
             context.commit('setControlFlg', false);
             
             const url = '/api/parents/mission/list';
@@ -29,11 +29,11 @@ export default {
             
             axios.get(url)
             .then(response => {
-                console.log(response.data);
-                context.commit('setChildInfo', response.data.missionList.data);
+                console.log(response.data.missionInfo.data);
+                context.commit('setMissionInfo', response.data.missionInfo.data);
             })
             .catch(error => {
-                console.error('자녀 정보 불러오기 오류', error);
+                console.error('미션 정보 불러오기 오류', error);
             });    
         }
     },

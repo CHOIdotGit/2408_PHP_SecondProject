@@ -16,7 +16,7 @@
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
-            <div class="mission-inserted-list" v-for="item in missionList" :key="item.id">
+            <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
                 <div class="mission-content">
                     <div class="chk-div">
                         <input type="checkbox" id="checkbox9">
@@ -26,59 +26,7 @@
                         <p class="state-in-progress">{{ getStatusLabel(mission.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryLabel(mission.category) }}</p>
                         <p class="mission-name-">{{ mission.title }}</p>
-            <!-- <div v-if="missionList" class="mission-inserted-list">
-                <div v-for="item in missionList" :key ="item"  class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <span class="kids-name">{{ item.children.name }}</span>
-                    <p class="state-in-progress">{{ item.missions.status }}</p>
-                    <button @click="$router.replace('/parents/detail')" class="mission-type-selected">{{ item.missions.name }}</button>
-                    <p class="mission-name-">{{ item.missions.content }}</p>
-                    <p class="charge">{{ item.missions.amount }}</p>
-                    <p class="due-date">{{ item.missions.start_at }}</p>
-                </div> -->
-
-                <!-- <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <div v-for="transaction in item.transactions" :key="transaction">
-                        <p class="charge">{{ transaction.amount.toLocaleString() }}</p>
-                    </div>
-                    <div v-for="mission in item.missions" :key="mission">
-                        <p class="due-date">{{ mission.start_at }} ~ {{ mission.end_at }}</p>
-                    </div>
-                </div>
-                    <span class="kids-name">유노윤호</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <span class="kids-name">다아섯글자</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
-                    </div>
-                    <span class="kids-name">박초롱초롱빛나리</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p>
-                    <p class="mission-name-">고양이돌보기</p>
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div> -->
+            
             </div>
             <div class="for-buttons">
                 <router-link to="/parents/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
@@ -88,6 +36,12 @@
     </div>
 </div>
 </div>
+            <div class="for-buttons margin-top">
+                <button class="btn-bottom mission-goback">뒤로가기</button>
+                <button class="btn-bottom mission-insert">+ 등록</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -100,50 +54,48 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 // 미션 리스트 가져오기
-const missionList = computed(() => store.state.child.childInfo);
+const missionInfo = computed(() => store.state.child.missionInfo);
 
-// category 변환 함수
-const getCategoryLabel = (category) => {
-    switch (category) {
-        case 0:
-            return '학습';
-        case 1:
-            return '취미';
-        case 2:
-            return '집안일';
-        case 3:
-            return '생활습관';
-        case 4:
-            return '기타';
-    }
-    return '';
+// 상태를 문자열로 변환하는 함수
+const getStatusText = (status) => {
+    const statusMapping = {
+        0: '진행중',
+        1: '대기중',
+        2: '완료',
+        3: '취소',
+    };
+    return statusMapping[status]; // 기본값 없이 반환
 };
 
-// status 변환 함수
-const getStatusLabel = (status) => {
+// 카테고리를 문자열로 변환하는 함수
+const getCategoryText = (category) => {
+    const categoryMapping = {
+        0: '학습',
+        1: '취미',
+        2: '집안일',
+        3: '생활습관',
+        4: '기타',
+    };
+    return categoryMapping[category]; // 기본값 없이 반환
+};
+
+// status 값에 따라 class 변화
+const getStatusClass = (status) => {
     switch (status) {
-        case 0:
-            return '교통비';
-        case 1:
-            return '취미';
-        case 2:
-            return '쇼핑';
-        case 3:
-            return '기타';
+        case '0': // 진행중
+            return 'state-in-progress';
+        case '1': // 대기중
+            return 'state-waiting';
+        case '2': // 완료
+            return 'state-complete';
+        case '3': // 취소
+            return 'state-cancel';
     }
-    return '';
 };
-
-// child_id가 1인 자녀의 이름을 가져오는 computed property
-const filteredChildName = computed(() => {
-    const child = missionList.value.find(item => item.child_id === 1);
-    return child ? child.name : ''; // child가 존재하면 이름을 반환, 아니면 빈 문자열
-});
-
 
 // onMount
 onMounted(() => {
-    store.dispatch('child/childInfo');
+    store.dispatch('child/missionInfo');
 });
 
 </script>
@@ -160,12 +112,12 @@ onMounted(() => {
 .list-container {
     margin-top: 20px;
     width: 1500px;
-    height: 765px;
+    height: 740px;
     background-color: white;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;   
 }
 
@@ -254,7 +206,11 @@ onMounted(() => {
 }
 
 .mission-inserted-list {
-    height: 800px;
+    height: 60px;
     display: grid;
+}
+
+.margin-top {
+    margin-top: 20px;
 }
 </style>

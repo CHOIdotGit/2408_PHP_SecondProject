@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChildInfoController;
 use App\Http\Controllers\ParentController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,7 @@ Route::get('/api/parents/detail/{id}', [ParentController::class, 'show']);
 //부모 미션 작성 페이지
 Route::post('/api/parents/mission/create', [ParentController::class, 'store']);
 
+Route::get('/api/parents/mission/list', [ChildInfoController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

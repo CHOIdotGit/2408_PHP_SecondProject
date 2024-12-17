@@ -2,7 +2,7 @@
     <div class="d-flex">
         <div class="container">
             <div class="child-list-triangle">◀</div>   
-    
+            
             <div v-for="item in missionList" :key="item" class="child-box"> 
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
@@ -27,17 +27,17 @@
                         <router-link to="/parents/mission/list" style="text-decoration: none; color:black;">
                             <p class="mission">승인 대기 중인 미션 ></p>
                         </router-link>
-                        <div class="chk-div">
-                            <div v-for="mission in item.missions" :key="mission">
-                                <div v-if="mission.status === 1">
+                        <div v-if="item.missions.length > 0" class="chk-div">
+                            <div v-for="mission in item.missions.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)" :key="mission">
+                                <div v-if="mission.status === '1'">
                                     <input type="checkbox" class="checkbox">
                                     <label>
-                                        <div>{{ mission.title }}</div>
+                                        <div class="mission-title">{{ mission.title }}</div>
                                     </label>
                                 </div>
-                                <div v-else class="margin-top">
-                                    <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
-                                </div>
+                            </div>
+                            <div v-if="!item.missions.some(m => m.status === '1')" class="margin-top">
+                                <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
                             </div>
                         </div>
                     </div>
@@ -57,6 +57,10 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
+// const item = ref({
+//     missions: [] // 초기값 설정
+// });
+
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
 
@@ -64,6 +68,7 @@ const missionList = computed(() => store.state.mission.missionList);
 onMounted(() => {
     store.dispatch('mission/missionListPagination');
     store.commit('mission/resetMissionList'); // 상태 초기화
+    // console.log(item.value.missions);
 });
 
 
@@ -73,11 +78,11 @@ onMounted(() => {
 .container {
     margin-top: 20px;
     width: 1500px;
-    height: 765px;
+    height: 740px;
     background-color: white;
     display: flex;
     gap: 40px;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;   
 }
 
@@ -101,10 +106,11 @@ onMounted(() => {
     border-radius: 50%;
     padding: 3px;
     margin-left: 120px;
-
-
 }
 
+.mission-title{
+    height: 40px;
+}
 
 .child {
     background-color: white;
@@ -204,6 +210,7 @@ onMounted(() => {
 
 .chk-div {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     margin-top: 10px;
