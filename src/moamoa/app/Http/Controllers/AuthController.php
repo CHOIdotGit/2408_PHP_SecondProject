@@ -96,9 +96,18 @@ class AuthController extends Controller {
     $responseData = [
       'success' => true
       ,'msg' => '로그아웃 성공'
-      ,'csrf_token' => csrf_token()
+      // ,'csrf_token' => csrf_token()
     ];
 
     return response()->json($responseData, 200);
+  }
+
+  /**
+   * CSRF 토큰 발행
+   * 
+   * @return JSON CSRF_TOKEN
+   */
+  public function settingCsrfToken() {
+    return response()->json(['csrf_token' => csrf_token()], 200);
   }
 }

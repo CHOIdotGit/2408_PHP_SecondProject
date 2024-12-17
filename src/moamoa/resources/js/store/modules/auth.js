@@ -64,7 +64,7 @@ export default {
       })
       .catch(err => {
         console.error(err);
-        // 400: 유효성 검사 실패, 401: 일치 아이디 or 비밀번호 없음 
+        // 422: 유효성 검사 실패, 401: 일치 아이디 or 비밀번호 없음 
         let errMsg = [];
         const errorData = err.response.data;
         
@@ -104,16 +104,16 @@ export default {
         // alert('로그아웃 완료');
 
         // 백에서 만든 새 CSRF 토큰을 담기
-        const csrfToken = res.data.csrf_token;
+        // const csrfToken = res.data.csrf_token;
 
         // 쿠키에 갱신된 데이터를 세팅
         // document.cookie = `XSRF-TOKEN=${csrfToken}; path=/`;
 
         // 새로운 CSRF 토큰을 meta 태그에 세팅
-        document.querySelector('meta[name="csrf-token"]').setAttribute('content', csrfToken);
+        // document.querySelector('meta[name="csrf-token"]').setAttribute('content', csrfToken);
 
         // axios 헤더에 CSRF 토큰을 갱신
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
+        // axios.defaults.headers.common['X-CSRF-TOKEN'] = csrfToken;
       })
       .catch(err => {
         // console.error(err);
@@ -131,7 +131,18 @@ export default {
 
         router.replace('/login');
       });
-    }
+    },
+
+    /**
+     * 아이디 중복 검사 처리
+     * 
+     * @param {*} context
+     * @param {*} account
+     */
+    // chkDupAccount(context, account) {
+    //   // const url = '/api/auth/chkDupAccount';
+    //   console.log(account);
+    // },
   },
 
   getters: {
