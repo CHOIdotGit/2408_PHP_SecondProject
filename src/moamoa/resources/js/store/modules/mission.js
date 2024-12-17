@@ -17,6 +17,9 @@ export default {
         setControlFlg(state, flg) {
             state.controlFlg = flg;
         },
+        resetMissionList(state) {
+            state.missionList = [];
+        }
     },
     actions: {
         /**
@@ -33,8 +36,8 @@ export default {
             
             axios.get(url)
             .then(response => {
-                context.commit('setMissionList', response.data.missionList.data);
-                console.log(response.data.missionList.data);
+                context.commit('setMissionList', response.data.missionList);
+                // console.log(response.data.missionList);
             })
             .catch(error => {
                 console.error('미션 리스트 불러오기 오류', error);

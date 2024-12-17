@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
-use App\Models\Mission;
 use App\Models\ParentModel;
 use Illuminate\Http\Request;
 
@@ -22,8 +21,12 @@ class ParentController extends Controller
         //                         ->paginate(3);
         $missionList = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
                                 ->where('children.parent_id', $parent->parent_id)
+                                ->whereBetween('child_id', [1, 3])
                                 ->with(['missions', 'transactions'])
-                                ->paginate(3);
+                                ->get();
+
+        
+        
 
         // $pendingMissions = Mission::select('title') // title만 선택
         //                     ->where('parent_id', $parent->parent_id)
@@ -37,7 +40,7 @@ class ParentController extends Controller
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
-            ,'missionList' => $missionList->toArray()   
+            ,'missionList' => $missionList
             // ,'pendingMissions' => $pendingMissions   
             // ,'pendingMessage' => $pendingMessage   
         ];

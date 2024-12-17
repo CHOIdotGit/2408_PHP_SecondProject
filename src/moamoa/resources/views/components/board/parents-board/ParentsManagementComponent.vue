@@ -3,7 +3,7 @@
         <div class="container">
             <div class="child-list-triangle">◀</div>   
     
-            <div v-for="item in missionList" :key="item.id" class="child-box"> 
+            <div v-for="item in missionList" :key="item" class="child-box"> 
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
                 <div class="blank">-</div>
@@ -60,10 +60,10 @@ const store = useStore();
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
 
-
 // onMount
 onMounted(() => {
     store.dispatch('mission/missionListPagination');
+    store.commit('mission/resetMissionList'); // 상태 초기화
 });
 
 
