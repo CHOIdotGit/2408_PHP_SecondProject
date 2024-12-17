@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ParentController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,8 @@ Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout
 
 Route::get('/api/parents/home', [ParentController::class, 'index']);
 Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
+Route::get('/api/child/calendar', [CalendarController::class, 'index']);
+// Route::get('/api/child/calendar/{id}', [CalendarController::class, 'show']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

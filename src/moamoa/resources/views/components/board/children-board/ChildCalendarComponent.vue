@@ -4,29 +4,27 @@
             <div class="select-kids">
                 <img class=selected-kid src="/img/icon-boy-1.png" alt="" width="120px" height="120px">
                 <div class="name-plate">
-                    <p class="name-plate-name">최상민</p>
-                    <p class="name-plate-nickname">조장님</p>
+                    <p class="name-plate-name"> {{ calendarData.name }}</p>
+                    <p class="name-plate-nickname">{{ calendarData.nick_name}}</p>
                 </div>    
             </div>
             
             <div class="money-history" >
                 <div class="money-title">
+                    <li>교통비</li>
                     <li>식비</li>
-                    <li>교통비</li>
                     <li>쇼핑</li>
-                    <li>교통비</li>
-                    <li>보너스</li>
+                    <li>기타</li>
                     <li>미션</li>
                     <li>총합</li>
                 </div>
                 <div class="money-cost">
                     <ul>
-                        <li class="cost">7,000원</li>
-                        <li class="cost">15,000원</li>
-                        <li class="cost">12,000원</li>
-                        <li class="cost">8,000원</li>
-                        <li class="cost">15,000원</li>
-                        <li class="cost">40,000원</li>
+                        <li class="cost">{{ sidebarTraffic.toLocaleString() }} 원</li>
+                        <li class="cost">{{ sidebarMeal.toLocaleString() }} 원</li>
+                        <li class="cost">{{ sidebarShopping.toLocaleString() }} 원</li>
+                        <li class="cost">{{ sidebarEtc.toLocaleString() }} 원</li>
+                        <li class="cost">{{ sidebarMission.toLocaleString() }} 원</li>
                         <li class="cost">6,000원</li>
                     </ul>
                 </div>
@@ -109,76 +107,93 @@
             </div>
         </div>
 
-            
+    
 
 
 </template>
 <script setup>
-    // const showHistory = ref(true);
-    import { ref, computed } from "vue";
-    
-    // 현재 날짜 상태 관리
-    const dateToday = ref(new Date());
+import { ref, computed, reactive, onMounted } from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
 
-    // 현재 연월 표시 (반응형 데이터)
-    const formattedDate = computed(() =>
-        dateToday.value.toLocaleString("ko-KR", {
-            year: "numeric",
-            month: "long",
-            timeZone: "Asia/Seoul",
-        })
-    );
+// 현재 날짜 상태 관리
+const dateToday = ref(new Date());
 
-    // 해당 월의 시작 요일 계산
-    const startDay = computed(() => {
-        const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
-        return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
-    });
+// 현재 연월 표시 (반응형 데이터)
+const formattedDate = computed(() =>
+  dateToday.value.toLocaleString("ko-KR", {
+    year: "numeric",
+    month: "long",
+    timeZone: "Asia/Seoul",
+  })
+);
 
-    // 해당 월의 일수 계산
-    const daysInMonth = computed(() => {
-        const year = dateToday.value.getFullYear();
-        const month = dateToday.value.getMonth();
-        return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
-    });
+// 해당 월의 시작 요일 계산
+const startDay = computed(() => {
+  const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
+  return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
+});
 
-    // 오늘 날짜인지 확인하는 함수
-    function isToday(day) {
-        const today = new Date();
-        const year = dateToday.value.getFullYear();
-        const month = dateToday.value.getMonth();
-        return (
-            today.getFullYear() === year &&
-            today.getMonth() === month &&
-            today.getDate() === day
-        );
-    }
+// 해당 월의 일수 계산
+const daysInMonth = computed(() => {
+  const year = dateToday.value.getFullYear();
+  const month = dateToday.value.getMonth();
+  return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
+});
 
-    // 이전 월로 이동
-    function prevMonth() {
-    const currentDate = new Date(dateToday.value);
-    currentDate.setMonth(currentDate.getMonth() - 1);
-    dateToday.value = currentDate; // 새로운 객체로 업데이트
-    }
-    // 다음 월로 이동
-    function nextMonth() {
-    const currentDate = new Date(dateToday.value);
-    currentDate.setMonth(currentDate.getMonth() + 1);
-    dateToday.value = currentDate; // 새로운 객체로 업데이트
-    }
+// 오늘 날짜인지 확인하는 함수
+function isToday(day) {
+  const today = new Date();
+  const year = dateToday.value.getFullYear();
+  const month = dateToday.value.getMonth();
+  return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+}
 
-    import { reactive } from "vue";
+// 이전 월로 이동
+function prevMonth() {
+  const currentDate = new Date(dateToday.value);
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  dateToday.value = currentDate;
+}
 
-    const delModal = reactive({ isOpen: false }); // 객체 형태로 관리
+// 다음 월로 이동
+function nextMonth() {
+  const currentDate = new Date(dateToday.value);
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  dateToday.value = currentDate;
+}
 
-    const delOpenModal = () => {
-    delModal.isOpen = true; // 객체 속성을 수정
-    };
+// 모달 상태 관리
+const delModal = reactive({ isOpen: false });
 
-    const delCloseModal = () => {
-    delModal.isOpen = false;
-    };
+const delOpenModal = () => {
+  delModal.isOpen = true;
+};
 
+const delCloseModal = () => {
+  delModal.isOpen = false;
+};
+
+// -----------------------
+
+const store = useStore();
+const calendarData = computed(() => store.state.calendar.calendarInfo);
+const sidebarMeal = computed(() => store.state.calendar.calendarMeal);
+const sidebarTraffic = computed(() => store.state.calendar.calendarTraffic);
+const sidebarShopping = computed(() => store.state.calendar.calendarShopping);
+const sidebarEtc = computed(() => store.state.calendar.calendarEtc);
+const sidebarMission = computed(() => store.state.calendar.calendarMission);
+
+
+onMounted(() => {
+  store.dispatch("calendar/calendarInfo");
+  store.dispatch("calendar/calendarMeal");
+  store.dispatch("calendar/calendarTraffic");
+  store.dispatch("calendar/calendarShopping");
+  store.dispatch("calendar/calendarEtc");
+  store.dispatch("calendar/calendarMission");
+  
+});
 
 </script>
 
@@ -383,11 +398,6 @@ li {
     align-items: center;
     justify-content: center;
 
-}
-
-.modal-content {
-    /* text-align: center;
-    margin: 60px; */
 }
 
 .modal-name {
