@@ -26,6 +26,22 @@
                         <p class="state-in-progress">{{ getStatusLabel(mission.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryLabel(mission.category) }}</p>
                         <p class="mission-name-">{{ mission.title }}</p>
+            <!-- <div v-if="missionList" class="mission-inserted-list">
+                <div v-for="item in missionList" :key ="item"  class="mission-content">
+                    <div class="chk-div">
+                        <input type="checkbox" id="checkbox9">
+                    </div>
+                    <span class="kids-name">{{ item.children.name }}</span>
+                    <p class="state-in-progress">{{ item.missions.status }}</p>
+                    <button @click="$router.replace('/parents/detail')" class="mission-type-selected">{{ item.missions.name }}</button>
+                    <p class="mission-name-">{{ item.missions.content }}</p>
+                    <p class="charge">{{ item.missions.amount }}</p>
+                    <p class="due-date">{{ item.missions.start_at }}</p>
+                </div> -->
+
+                <!-- <div class="mission-content">
+                    <div class="chk-div">
+                        <input type="checkbox" id="checkbox9">
                     </div>
                     <div v-for="transaction in item.transactions" :key="transaction">
                         <p class="charge">{{ transaction.amount.toLocaleString() }}</p>
@@ -34,16 +50,50 @@
                         <p class="due-date">{{ mission.start_at }} ~ {{ mission.end_at }}</p>
                     </div>
                 </div>
+                    <span class="kids-name">유노윤호</span>
+                    <p class="state-waiting">대기중</p>
+                    <p class="mission-type-selected">집안일</p>
+                    <p class="mission-name-">고양이돌보기</p>
+                    <p class="charge">3,000</p>
+                    <p class="due-date">2024.12.17</p>
+                </div>
+                <div class="mission-content">
+                    <div class="chk-div">
+                        <input type="checkbox" id="checkbox9">
+                    </div>
+                    <span class="kids-name">다아섯글자</span>
+                    <p class="state-waiting">대기중</p>
+                    <p class="mission-type-selected">집안일</p>
+                    <p class="mission-name-">고양이돌보기</p>
+                    <p class="charge">3,000</p>
+                    <p class="due-date">2024.12.17</p>
+                </div>
+                <div class="mission-content">
+                    <div class="chk-div">
+                        <input type="checkbox" id="checkbox9">
+                    </div>
+                    <span class="kids-name">박초롱초롱빛나리</span>
+                    <p class="state-waiting">대기중</p>
+                    <p class="mission-type-selected">집안일</p>
+                    <p class="mission-name-">고양이돌보기</p>
+                    <p class="charge">3,000</p>
+                    <p class="due-date">2024.12.17</p>
+                </div> -->
             </div>
             <div class="for-buttons">
-                <button class="btn-bottom mission-goback">뒤로가기</button>
-                <button class="btn-bottom mission-insert">+ 등록</button>
+                <router-link to="/parents/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
+                <router-link to="/parents/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link>
             </div>
         </div>
     </div>
+</div>
+</div>
 </template>
 
 <script setup>
+import { replace } from 'lodash';
+
+
 
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';

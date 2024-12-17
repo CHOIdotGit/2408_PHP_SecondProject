@@ -1,64 +1,50 @@
 <template>
-    <div class="main-container">
-        <div class="detail-container">
-            <div class="content-list">
-                <div class="content">
-                    <p class="title">미션 제목</p>
-                    <p class="ms-title">점심 설거지하기</p>
-                    <div class="date">
-                        <span class="ms-date">2024-12-11</span>
-                        <span>⁓</span>
-                        <span class="ms-date">2024-12-11</span>
-                    </div>
-                </div>
-                <div class="content">
-                    <p class="title">미션 종류</p>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="study" checked>
-                            <img class="ms-category" src="img/icon-pencil.png" alt=".">
-                        </input>
-                        <label for="study">학습</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="habit" >
-                            <img class="ms-category" src="/img/icon-bicycle.png" alt=".">
-                        </input>
-                        <label for="habit">취미</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="housework" >
-                            <img class="ms-category" src="/img/icon-cleaner.png" alt=".">
-                        </input>
-                        <label for="housework">집안일</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" >
-                            <img class="ms-category" src="/img/icon-clock.png" alt=".">
-                        </input>
-                        <label for="lifestyle">생활습관</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt="">
-                        </input>
-                        <label for="etc">기타</label>
-                    </div>
-                </div>
-                <div class="content">
-                    <p class="title">미션 내용</p>
-                    <div class="ms-content">점심먹고 설거지 해놔라. 집에 엄마 없다.</div>
-                </div>
-                <div class="content">
-                    <p class="title">금액(원)</p>
-                    <p class="ms-amount">2,000</p>
-                </div>
-                <div class="bottom-btn">
-                    <button class="ms-cancel">취소</button>
-                    <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                    <button class="create-btn ms-up">수정</button>
-                    <button class="create-btn ms-comfirm">승인</button>
-                </div>
+    <div v-if="missionDetail"  class="detail-container">
+        <div class="content">
+            <p  class="title">미션 제목</p>
+            <p class="ms-title">{{ missionDetail.title }}</p>
+            <div class="date">
+                <span class="ms-date">{{ missionDetail.start_at }}</span>
+                <span>⁓</span>
+                <span class="ms-date">{{ missionDetail.end_at }}</span>
             </div>
+        </div>
+        <div class="content">
+            <p class="title">미션 종류</p>
+            <div class="category-btn" v-for="index in categories" :key="index">
+                <img class="ms-category-img" :src="index.img" alt=".">
+                <p>{{ index.name }}</p>
+            </div>
+            <!-- <div class="category-btn">
+                <img class="ms-category-img" src="/img/icon-bicycle.png" alt=".">
+                <p>취미</p>
+            </div>
+            <div class="category-btn">
+                <img class="ms-category-img" src="/img/icon-cleaner.png" alt=".">
+                <p>집안일</p>  
+            </div>
+            <div class="category-btn">
+                <img class="ms-category-img" src="/img/icon-clock.png" alt=".">
+                <p>생활습관</p>
+            </div>
+            <div class="category-btn">
+                <img class="ms-category-img" src="/img/icon-checklist7.png" alt=".">
+                <p>기타</p>
+            </div> -->
+        </div>
+        <div class="content">
+            <p class="title">미션 내용</p>
+            <div class="ms-content">{{ missionDetail.content}}</div>
+        </div>
+        <div class="content">
+            <p class="title">금액(원)</p>
+            <p class="ms-amount">{{ missionDetail.amount.toLocaleString()}}</p>
+        </div>
+        <div class="create-btn">
+            <button @click="$router.push('/parents/mission/list')" class="ms-cancel">뒤로가기</button>
+            <button @click="delOpenModal" class="ms-del">삭제</button>
+            <button class="ms-up">수정</button>
+            <button class="ms-comfirm">승인</button>
         </div>
     </div>
     <!-- ************************* -->
@@ -68,8 +54,8 @@
         <div class="del-modal-white">
             <div class="modal-content">
                 <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
-                <p class="modal-name">최상민</p>
-                <p class="modal-ms-title">미션 : 설거지 하기</p>
+                <p class="modal-name"></p>
+                <p class="modal-ms-title">미션 : </p>
                 <div class="del-guide">해당 미션이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
@@ -82,8 +68,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, ref, onMounted  } from 'vue';
+import { useStore } from 'vuex';
 
+const categories = [
+    { name: '학습' , img:'/img/icon-pencil.png' },
+    { name: '취미' , img:'/img/icon-bicycle.png' },
+    { name: '집안일' , img:'/img/icon-cleaner.png' },
+    { name: '생활습관' , img:'/img/icon-clock.png' },
+    { name: '기타' , img:'/img/icon-checklist7.png' },
+]
+
+
+// *****삭제 모달창********** 
 const delModal = ref(false);
 
 const delOpenModal = () => {
@@ -93,6 +90,14 @@ const delOpenModal = () => {
 const delCloseModal = () => {
     delModal.value = false;
 }
+
+// *****미션 상세 정보******
+const store = useStore();
+const missionDetail = computed(() => store.state.mission.missionDetail);
+onMounted(() => {
+    store.dispatch('mission/showMissionDetail');
+});
+
 
 
 </script>
@@ -172,32 +177,24 @@ span {
 .category-btn {
     display: flex;
     flex-direction: column;
-    text-align: center;
-    padding-right: 30px;
+    width: 80px;
+    height: 80px;
+    background-color: #c9cfca;
+    border-radius: 50px;
+    align-items: center;
+    margin-right: 20px;
+    
 }
 
-.category-btn > label {
-    color: #A2CAAC;
-    /* border: 1px solid #A2CAAC; */
-    font-size: 0.9rem;
-    padding-top: 5px;
 
-}
-
-.category-btn > input {
-    display: none;
-}
-
-.ms-category {
-    width: 60px;
-    height: 60px;
-    background-size: cover;
+.ms-category-img {
+    margin-top: 13px;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
     background-repeat: no-repeat;
     border: none;
-    background-color: #A2CAAC;
-    cursor: pointer;
-    border-radius: 50px;
-    padding: 5px;
+
 }
 
 /* 미션 내용 */

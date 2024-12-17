@@ -28,6 +28,10 @@
             </div>
             <div class="item">
                 <a href="#" class="item-btn">통계</a>
+                    <div class="child-dropdown">
+                        <p class="child">배현진</p>
+                        <p class="child">김주연</p>
+                    </div>
             </div>
             <div class="drop-bar">
                 <div class="item">

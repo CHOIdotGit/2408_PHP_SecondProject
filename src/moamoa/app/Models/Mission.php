@@ -30,4 +30,8 @@ class Mission extends Model {
     public function transactions() {
         return $this->hasMany(Transaction::class, 'child_id', 'child_id');
     }
+    
+    protected function serializeDate(\DateTimeInterface $date) {
+        return $date->format('Y-m-d H:i:s');
+    }
 }

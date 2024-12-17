@@ -124,8 +124,8 @@ const routes = [
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
-    },
-    
+    }
+        
 
 ];
 

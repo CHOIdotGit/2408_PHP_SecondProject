@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Mission;
 use App\Models\Child;
 use App\Models\ParentModel;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 
 class ParentController extends Controller
 {
@@ -54,4 +55,37 @@ class ParentController extends Controller
     //     // 미션 제목을 배열로 반환
     //     return response()->json($missionTile);
     // }
+
+    // ************************************************
+    // **********부모 미션 상세 페이지 불러오기**********
+    // ************************************************
+    public function show(Request $request) {
+        // $parent = ParentModel::find(1);
+        $MissionDetail = Mission::select('missions.title', 'missions.content', 'missions.amount', 'missions.start_at', 'missions.end_at')
+                                ->where('missions.parent_id', 1)
+                                ->first();
+
+        $responseData = [
+            'sucesse' => true
+            ,'msg' => '자식 미션 상세 불러오기 성공'
+            ,'missionDetail' => $MissionDetail->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // ************************************************
+    // **************부모 미션 작성 페이지 **************
+    // ************************************************
+    public function store(Request $request) {
+        $insertMission = $request->only(['title', 'start_at', 'end_at', 'category', 'content']);
+
+        $MissionDetail = Mission::create($insertMission);
+
+        $responseData = [
+            'sucesse' => true
+            ,'msg' => '미션 등록 성공'
+            ,'createMission' => $MissionDetail->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
 }

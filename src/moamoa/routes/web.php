@@ -28,6 +28,16 @@ Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
 // Route::get('/api/child/calendar/{id}', [CalendarController::class, 'show']);
 
+//부모 미션 리스트
+Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
+
+//부모 미션 상세 페이지
+Route::get('/api/parents/detail/{id}', [ParentController::class, 'show']);
+
+//부모 미션 작성 페이지
+Route::post('/api/parents/mission/create', [ParentController::class, 'store']);
+
+
 // 이건 마지막 위치
 Route::get('/{any}', function () {
     return view('welcome');
