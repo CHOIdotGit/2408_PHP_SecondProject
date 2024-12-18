@@ -5,6 +5,7 @@ export default {
     namespaced:true,
     state: ()=> ({
         missionList: []
+        ,missionInfo: []
         ,missionDetail: null
         ,lastPageFlg: false
         ,controlFlg: true
@@ -14,6 +15,9 @@ export default {
     mutations: {
         setMissionList(state, missionList) {
             state.missionList = state.missionList.concat(missionList);
+        },
+        setMissionInfo(state, missionInfo) {
+            state.missionInfo = state.missionInfo.concat(missionInfo);
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
@@ -52,6 +56,25 @@ export default {
             });    
         },
 
+        /**
+         * 미션 정보 획득
+         * 
+         * @param {*} context commit, state 포함되어있음
+         */
+        missionInfo(context) {
+            context.commit('setControlFlg', false);
+            
+            const url = '/api/parents/mission/list';
+            
+            axios.get(url)
+            .then(response => {
+                console.log(response.data.missionInfo.data);
+                context.commit('setMissionInfo', response.data.missionInfo.data);
+            })
+            .catch(error => {
+                console.error('미션 정보 불러오기 오류', error);
+            });    
+        },
 
         // ***************************
         // 부모 미션 상세 페이지
