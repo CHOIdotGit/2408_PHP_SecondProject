@@ -18,7 +18,7 @@ class ChildInfoController extends Controller
                                     , ['missions.child_id', 1]
                                 ])
                                 ->latest()
-                                ->paginate(5);
+                                ->paginate(15);
 
         $responseData = [
             'success' => true

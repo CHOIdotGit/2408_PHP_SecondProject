@@ -5,7 +5,7 @@
                 <button class="btn-top mission-delete">삭제</button>
                 <button class="btn-top mission-confirm">승인</button>
             </div>
-            <div class="mission-title">
+            <div class="mission-title-bar">
                 <div class="chk-div">
                     <input type="checkbox" id="checkbox9">
                 </div>
@@ -16,45 +16,36 @@
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
-            <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
-                <div class="mission-content">
-                    <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
+            <div class="scroll">
+                <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
+                    <div class="mission-content">
+                        <div class="chk-div">
+                            <input type="checkbox" id="checkbox9">
+                        </div>
+                        <span class="kids-name">{{ item.child.name }}</span>
+                        <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
+                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
+                        <p class="mission-title">{{ item.title }}</p>
+                        <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
+                        <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                     </div>
-                    <span class="kids-name">{{ item.name }}</span>
-                    <div v-for="mission in item.missions.slice().sort((a, b) => new Date(b.end_at) - new Date(a.end_at)).slice(0, 1)" :key="mission">
-                        <p class="state-in-progress">{{ getStatusLabel(mission.status) }}</p>
-                        <p class="mission-type-selected">{{ getCategoryLabel(mission.category) }}</p>
-                        <p class="mission-name-">{{ mission.title }}</p>
-            
+                </div>
             </div>
-            <div class="for-buttons">
+            <div class="for-buttons margin-top">
                 <router-link to="/parents/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
                 <router-link to="/parents/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-            <div class="for-buttons margin-top">
-                <button class="btn-bottom mission-goback">뒤로가기</button>
-                <button class="btn-bottom mission-insert">+ 등록</button>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { replace } from 'lodash';
-
-
-
 import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
 // 미션 리스트 가져오기
-const missionInfo = computed(() => store.state.child.missionInfo);
+const missionInfo = computed(() => store.state.mission.missionInfo);
 
 // 상태를 문자열로 변환하는 함수
 const getStatusText = (status) => {
@@ -95,7 +86,7 @@ const getStatusClass = (status) => {
 
 // onMount
 onMounted(() => {
-    store.dispatch('child/missionInfo');
+    store.dispatch('mission/missionInfo');
 });
 
 </script>
@@ -118,10 +109,10 @@ onMounted(() => {
     flex-direction: column;
     gap: 20px;
     /* justify-content: center; */
-    align-items: center;   
+    align-items: center;
 }
 
-.mission-title {
+.mission-title-bar {
     display: grid;
     grid-template-columns: 40px 190px 90px 90px 320px 90px 300px;
     height: 60px;
@@ -212,5 +203,14 @@ onMounted(() => {
 
 .margin-top {
     margin-top: 20px;
+}
+
+.scroll {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 </style>
