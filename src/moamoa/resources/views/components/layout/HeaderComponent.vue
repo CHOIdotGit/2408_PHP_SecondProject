@@ -3,36 +3,19 @@
         <div class="logo"></div>
         <div class="navi-bar">
             <div class="item">
-                <a href="#" class="item-btn">홈</a>
+                <router-link to="/parents/home" class=menu-btn><p class="item-btn">홈</p></router-link>
             </div>
-            <div class="item">
-                <a href="#" class="item-btn">지출</a>
-                    <div class="child-dropdown">
-                        <p class="child">배현진</p>
-                        <p class="child">김주연</p>
+            <div class="item" v-for="index in headerMenu" :key="index">
+                <p class="item-btn" >{{ index }}</p>
+                    <div class="child-dropdown" v-if="parentFlg === 'true'" >
+                        <p class="child" v-for="child in children">{{ child.name }}</p>
                     </div>
             </div>
             <div class="item">
-                <a href="#" class="item-btn">미션</a>
-                    <div class="child-dropdown">
-                        <p class="child">배현진</p>
-                        <p class="child">김주연</p>
-                    </div>
+                <p class="item-btn">통계</p>
             </div>
-            <div class="item">
-                <a href="#" class="item-btn">캘린더</a>
-                    <div class="child-dropdown">
-                        <p class="child">배현진</p>
-                        <p class="child">김주연</p>
-                    </div>
-            </div>
-            <div class="item">
-                <a href="#" class="item-btn">통계</a>
-                    <div class="child-dropdown">
-                        <p class="child">배현진</p>
-                        <p class="child">김주연</p>
-                    </div>
-            </div>
+
+            <!-- 햄버거/ 알람 -->
             <div class="drop-bar">
                 <div class="item">
                     <button @click="hamDropDown" class="hamburger-btn">
@@ -40,8 +23,8 @@
                     </button>
                     <!-- 햄버거 드롭 메뉴 -->
                     <div class="dropdown" v-show="dropDownMenu">
-                        <a href="#" class="info-page">개인정보 수정</a>
-                        <a href="#" class="info-page">가족정보</a>
+                        <router-link to=""><p class="info-page">개인정보 수정</p></router-link>
+                        <router-link to=""><p class="info-page">가족정보</p></router-link>
                         <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
                     </div>
                 </div> 
@@ -52,11 +35,11 @@
                     </button>
                     <!-- 벨 드롭 메뉴 -->
                     <div class="dropdown-bell" v-show="bellListDropMenu">
-                        <a href="#" class="alram">
-                            <img class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px">
-                            <div class="bell-content">
-                                <p>[미션]배현진(이)의 미션이 등록되었어요!</p>
-                                <p>2024. 12. 04</p>
+                        <a href="#" class="alram" v-for="item in bellContent" :key="item">
+                            <img class="alram-pro" :src="item.img" width="50px" height="50px">
+                            <div  class="bell-content">
+                                <p>[미션](이)의 미션이 등록되었어요!</p>
+                                <p></p>
                             </div>
                         </a>
                         <a href="#" class="alram">
@@ -82,7 +65,14 @@
 </template>
 <script setup>
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+// *******미션 알람*******
+
+
+// 헤더 메뉴
+const headerMenu = 
+    ['지출', '미션', '캘린더'];
+
 
 // *******햄버거 드랍 메뉴 *******
 const dropDownMenu = ref(false);
@@ -115,6 +105,9 @@ const bellDropDown = () => {
 }
 
 </script>
-<style>
+<style scoped>
+.menu-btn {
+    text-decoration: none;
+}
     
 </style>

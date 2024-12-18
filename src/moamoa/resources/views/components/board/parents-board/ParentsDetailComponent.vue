@@ -11,26 +11,10 @@
         </div>
         <div class="content">
             <p class="title">미션 종류</p>
-            <div class="category-btn" v-for="index in categories" :key="index">
+            <div :class="category-btn"  v-for="index in categories" :key="index">
                 <img class="ms-category-img" :src="index.img" alt=".">
                 <p>{{ index.name }}</p>
             </div>
-            <!-- <div class="category-btn">
-                <img class="ms-category-img" src="/img/icon-bicycle.png" alt=".">
-                <p>취미</p>
-            </div>
-            <div class="category-btn">
-                <img class="ms-category-img" src="/img/icon-cleaner.png" alt=".">
-                <p>집안일</p>  
-            </div>
-            <div class="category-btn">
-                <img class="ms-category-img" src="/img/icon-clock.png" alt=".">
-                <p>생활습관</p>
-            </div>
-            <div class="category-btn">
-                <img class="ms-category-img" src="/img/icon-checklist7.png" alt=".">
-                <p>기타</p>
-            </div> -->
         </div>
         <div class="content">
             <p class="title">미션 내용</p>
@@ -78,6 +62,7 @@ const categories = [
     { name: '생활습관' , img:'/img/icon-clock.png' },
     { name: '기타' , img:'/img/icon-checklist7.png' },
 ]
+
 
 
 // *****삭제 모달창********** 

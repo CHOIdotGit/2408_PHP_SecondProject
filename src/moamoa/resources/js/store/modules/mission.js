@@ -1,5 +1,6 @@
 
-import axios from 'axios';
+import axios from '../../axios';
+import router from '../../router';
 
 export default {
     namespaced:true,
@@ -10,6 +11,7 @@ export default {
         ,lastPageFlg: false
         ,controlFlg: true
         ,missionId: null
+        ,bellContent: []
 
     }),
     mutations: {
@@ -27,9 +29,15 @@ export default {
         },    
         setMissionDetail(state, missionDetail) {
             state.missionDetail = missionDetail;
-        }
-        ,setMissionId(state, missionId) {
+        },
+        setMissionId(state, missionId) {
             state.missionId = missionId;
+        },
+        setbellContent(state, bellContent) { // 헤더 알림창
+            state.bellContent = bellContent;
+        },
+        setMissonListUnshift(state, missionList) { //미션 리스트 항목 추가
+            state.missionList.unshift(missionList);
         },
         
 
@@ -99,16 +107,20 @@ export default {
         createMission(context, data) {
             context.commit('setControlFlg', false)
             const url  = '/api/parents/mission/create';
+            console.log(data, url);
             const formData = new FormData();
             formData.append('title', data.title);
             formData.append('start_at', data.start_at);
             formData.append('end_at', data.end_at);
             formData.append('category', data.category);
             formData.append('content', data.content);
+            formData.append('content', data.amount);
 
             axios.post(url, formData)
             .then(response => {
-                router.replace('/api/parents/mission/list');
+                console.log('미션 등록 ^^');
+                context.commit('setMissonListUnshift', response.data.missionList);
+                router.replace('/api/parents/detail');
             })
             .catch(error => {
                 console.log('미션 등록 실패 ㅠㅠ', error);
@@ -116,7 +128,12 @@ export default {
             .finally(() => {
                 context.commit('setControlFlg', true);
             })
-        }
+        },
+        // ***************************
+        // 부모 미션 등록 알람->(다음에)
+        // ***************************
+     
+
     },
 
     getters: {

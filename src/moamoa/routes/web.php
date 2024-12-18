@@ -23,12 +23,11 @@ Route::post('/api/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout');
 // 
 
-// Route::post('/parents/mission/list', )
-
-Route::get('/api/parents/home', [ParentController::class, 'index']);
-Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
+// 자녀 달력
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
-// Route::get('/api/child/calendar/{id}', [CalendarController::class, 'show']);
+
+// 부모 홈
+Route::get('/api/parents/home', [ParentController::class, 'index']);
 
 //부모 미션 리스트
 Route::get('/api/parents/mission/list', [ParentController::class, 'index']);
@@ -39,6 +38,7 @@ Route::get('/api/parents/detail/{id}', [ParentController::class, 'show']);
 //부모 미션 작성 페이지
 Route::post('/api/parents/mission/create', [ParentController::class, 'store']);
 
+// 
 Route::get('/api/parents/mission/list', [ChildInfoController::class, 'index']);
 
 // 이건 마지막 위치

@@ -25,7 +25,7 @@
 
                     <!-- 학습(category = 0) -->
                     <div class="category-btn">
-                        <input type="radio" name="category" id="study" v-bind:value="0" @click="checked"></input>
+                        <input type="radio" name="category" id="study" :value="0" ></input>
                         <label for="study" class="ms-category-btn">
                         <img class="ms-category-img" src="/img/icon-pencil.png" alt=".">
                         <p>학습</p>
@@ -33,7 +33,7 @@
                     </div>
                     <!-- 취미 (category = 1) -->
                     <div class="category-btn">
-                        <input type="radio" name="category" id="habit" v-bind:value="1" @click="checked"></input>
+                        <input type="radio" name="category" id="habit" :value="1"></input>
                         <label for="habit" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-bicycle.png" alt=".">
                             <p>취미</p>
@@ -41,7 +41,7 @@
                     </div>
                     <!-- 집안일(category = 2) -->
                     <div class="category-btn">
-                        <input type="radio" name="category" id="housework" v-bind:value="2" ></input>
+                        <input type="radio" name="category" id="housework" :value="2" ></input>
                         <label for="housework" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-cleaner.png" alt=".">
                             <p>집안일</p>  
@@ -49,7 +49,7 @@
                     </div>
                     <!-- 생활습관(category = 3) -->
                     <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" v-bind:value="3" ></input>
+                        <input type="radio" name="category" id="lifestyle" :value="3" ></input>
                         <label for="lifestyle" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-clock.png" alt=".">
                             <p>생활습관</p>
@@ -57,7 +57,7 @@
                     </div>
                     <!-- 기타(category = 4) -->
                     <div class="category-btn">
-                        <input type="radio" name="category" id="etc" v-bind:value="4" ></input>
+                        <input type="radio" name="category" id="etc" :value="4" ></input>
                         <label for="etc" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-checklist7.png" alt=".">
                             <p>기타</p>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push('/parents/mission/list')" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('/parents/mission/list', missionCreate)" class="create-btn">등록</button>
+                    <button @click="$store.dispatch('/parents/detail', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
         </div>
