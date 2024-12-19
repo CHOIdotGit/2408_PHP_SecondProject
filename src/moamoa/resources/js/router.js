@@ -24,7 +24,6 @@ import ChildRegistComponent from '../views/components/auth/regist/ChildRegistCom
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 import ParentRegistCodeComponent from '../views/components/auth/regist/ParentRegistCodeComponent.vue';
 import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
-import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
