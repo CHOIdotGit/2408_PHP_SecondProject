@@ -2,13 +2,16 @@
     <div class="header">
         <div class="logo"></div>
         <div class="navi-bar">
+            <!-- 부모/자녀에 따라 홈 경로 변경 -->
             <div class="item">
-                <router-link to="/parents/home" class=menu-btn><p class="item-btn">홈</p></router-link>
+                <router-link v-if="$store.state.auth.authFlg === 'true'" to="/parent/home" class=link-deco><p class="item-btn">홈</p></router-link>
+                <router-link v-else to="/child/home" class=link-deco><p class="item-btn">홈</p></router-link>
             </div>
+            <!-- 지출/미션/캘린터 메뉴 -->
             <div class="item" v-for="index in headerMenu" :key="index">
                 <p class="item-btn" >{{ index }}</p>
-                    <div class="child-dropdown" v-if="parentFlg === 'true'" >
-                        <p class="child" v-for="child in children">{{ child.name }}</p>
+                    <div class="child-dropdown" v-if="$store.state.auth.authFlg === 'true'">
+                        <p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p>
                     </div>
             </div>
             <div class="item">
@@ -23,8 +26,8 @@
                     </button>
                     <!-- 햄버거 드롭 메뉴 -->
                     <div class="dropdown" v-show="dropDownMenu">
-                        <router-link to=""><p class="info-page">개인정보 수정</p></router-link>
-                        <router-link to=""><p class="info-page">가족정보</p></router-link>
+                        <router-link to="" class="link-deco"><p class="info-page">개인정보 수정</p></router-link>
+                        <router-link to="" class="link-deco"><p class="info-page">가족정보</p></router-link>
                         <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
                     </div>
                 </div> 
@@ -64,14 +67,29 @@
     <hr class="header-hr">
 </template>
 <script setup>
+import { computed, ref, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
 
-import { computed, ref } from 'vue';
 // *******미션 알람*******
 
 
 // 헤더 메뉴
 const headerMenu = 
     ['지출', '미션', '캘린더'];
+
+
+// 헤더 메뉴 자녀 이름 출력
+const store = useStore();
+const childNameList = computed(() => store.state.header.childNameList);
+onBeforeMount(() => {
+    if(store.state.header.childNameList.length < 1){
+        store.dispatch('header/childNameList');
+        console.log('애들이름출력');
+
+    }
+})
+
+
 
 
 // *******햄버거 드랍 메뉴 *******
@@ -106,7 +124,7 @@ const bellDropDown = () => {
 
 </script>
 <style scoped>
-.menu-btn {
+.link-deco {
     text-decoration: none;
 }
     

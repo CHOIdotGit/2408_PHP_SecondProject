@@ -129,11 +129,8 @@ export default {
                 context.commit('setControlFlg', true);
             })
         },
-        // ***************************
-        // 부모 미션 등록 알람->(다음에)
-        // ***************************
-     
 
+        
     },
 
     getters: {

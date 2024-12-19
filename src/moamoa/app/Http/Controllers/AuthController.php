@@ -54,7 +54,7 @@ class AuthController extends Controller {
         'success' => true
         ,'msg' => '부모 로그인 성공'
         ,'user' => $parent->toArray()
-        ,'redirect_to' => 'parents/home'
+        ,'redirect_to' => 'parent/home'
       ];
 
       return response()->json($responseData, 200);

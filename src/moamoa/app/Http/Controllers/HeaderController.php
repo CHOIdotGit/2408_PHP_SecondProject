@@ -28,9 +28,17 @@ public function index() {
     // ************************************************
     // ************헤더 자녀 이름 목록 출력**************
     // ************************************************ 
+    $childNameList = Child::select('name')
+                            ->where('parent_id', 1)
+                            ->get();
+
+    $responseData = [
+        'success' => true
+        ,'msg' => '자녀 이름 목록 출력'
+        ,'childNameList' => $childNameList
+    ];
+    return response()->json($responseData, 200);
+                            
 }
-public function getChildNameList(Request $request) {
-    
-    return $request;
-}
+
 }

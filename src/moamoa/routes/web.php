@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,9 @@ Route::get('/api/parent/spend/list', [TransactionController::class, 'index']);
 
 // 자녀 미션 리스트 페이지
 Route::get('/api/child/mission/list', [MissionController::class, 'index']);
+
+// 헤더 관련(드랍메뉴 자녀이름 출력)
+Route::get('/api/parent/header', [HeaderController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

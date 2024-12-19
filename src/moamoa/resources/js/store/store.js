@@ -1,14 +1,15 @@
 import { createStore } from 'vuex';
 import mission from './modules/mission';
 import calendar from './modules/calendar';
-
 import auth from './modules/auth';
+import header from './modules/header';
 
 export default createStore({
     modules: {
         mission,
         calendar,
         auth,
+        header,
     },
 });
 

@@ -63,6 +63,7 @@
     left: 10px;
     position: relative;
     left: 50px;
+    cursor: pointer;
 }
 
 .item:hover .child-dropdown {
