@@ -11,15 +11,14 @@ class TransactionController extends Controller
     public function index() {
         // 예제
         $parent = ParentModel::find(1);
-        $transactionList = Transaction::select('transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date')
+        $transactionList = Transaction::select('transactions.parent_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date', 'transactions.transaction_code')
                                 ->with('child')
                                 ->where([
                                     ['transactions.parent_id', $parent->parent_id]
-                                    , ['transactions.child_id', 1]
-                                    , ['transactions.transaction_code', 1]
+                                    , ['transactions.transaction_code', '1']
                                 ])
-                                ->latest()
-                                ->paginate(15);
+                                ->orderBy('transactions.transaction_date' ,'DESC')
+                                ->paginate(30);
 
         // $transactionInfo = Transaction::select('transactions.child_id', 'transactions.status', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.start_at', 'transactions.end_at')
         //                         ->with('child')

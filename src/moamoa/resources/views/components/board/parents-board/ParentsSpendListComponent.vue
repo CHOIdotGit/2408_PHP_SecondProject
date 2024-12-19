@@ -1,99 +1,64 @@
 <template>
     <div class="container">
         <div class="list-container">
-            <!-- <div class="for-buttons">
-                <button class="btn-top mission-delete">삭제</button>
-            </div> -->
-            <div class="mission-title">
+            <div class="mission-title-bar">
                 <span class="mission-name">자녀이름</span>
-                <span class="status">종류</span>
-                <p class="mission-type">제목</p>
+                <span class="category">종류</span>
+                <p class="title">제목</p>
                 <p class="charge">금액</p>
                 <p class="due-date">소비일자</p>
             </div>
-            <div class="mission-inserted-list">
-                <div class="mission-content">
-                    <span class="mission-name">박초롱초롱빛나</span>
-                    <p class="state-waiting">쇼핑</p>
-                    <p class="mission-type-selected">올리브영가서 세일이길래 쿠션샀음</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
-                </div>
-                <div class="mission-content">
-                    <span class="mission-name">몽</span>
-                    <p class="state-waiting">대기중</p>
-                    <p class="mission-type-selected">집안일</p> 
-                    <p class="charge">3,000</p>
-                    <p class="due-date">2024.12.17</p>
+            <div class="scroll">
+                <div v-for="item in transactionList" :key="item" class="mission-inserted-list">
+                    <div class="mission-content">
+                        <span class="name">{{ item.child.name }}</span>
+                        <p class="category">{{ getCategoryText(item.category) }}</p>
+                        <p class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p class="charge">{{ item.amount.toLocaleString() }}원</p>
+                        <p class="due-date">{{ item.transaction_date }}</p>
+                    </div>
                 </div>
             </div>
-            <!-- <div class="for-buttons">
-                <button class="btn-bottom mission-goback">뒤로가기</button>
-                <button class="btn-bottom mission-insert">+ 등록</button>
-            </div> -->
+            <div class="for-buttons">
+                <button class="btn-bottom mission-go-back">뒤로가기</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
 
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
+
+// 거래 리스트 가져오기
+const transactionList = computed(() => store.state.transaction.transactionList);
+
+const getCategoryText = (category) => {
+    const categoryMapping = {
+        0: '교통비',
+        1: '취미',
+        2: '쇼핑',
+        3: '기타',
+    };
+    return categoryMapping[category]; // 기본값 없이 반환
+};
+
+// 특정 글자 길이 이후 '...'으로 표기
+const maxLength = 20;
+
+const getTruncatedTitle =(title) => {
+  return title.length > maxLength 
+    ? title.substring(0, maxLength) + '...' 
+    : title;
+};
+
+// onMount
+onMounted(() => {
+    store.dispatch('transaction/transactionListPagination');
+});
 </script>
 
 <style scoped>
@@ -108,7 +73,7 @@
 .list-container {
     margin-top: 20px;
     width: 1500px;
-    height: 765px;
+    height: 740px;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -117,32 +82,30 @@
     align-items: center;   
 }
 
-.mission-title {
+.mission-title-bar {
     display: grid;
-    grid-template-columns:250px 90px 400px 90px 300px;
+    grid-template-columns:200px 90px 300px 90px 300px;
     height: 60px;
-    gap: 50px;
+    gap: 100px;
     background-color: #F5F5F5;
     font-size: 2rem;
     margin: 10px;
     align-items: center;
     width: 1400px;
-    /* margin-top: 70px; */
+    margin-top: 70px;
     text-align: center;
 }
 
 .mission-content {
     display: grid;
-    grid-template-columns: 250px 90px 400px 90px 300px;
-    min-height: 80px;
-    gap: 50px;
-    /* background-color: #F5F5F5; */
+    grid-template-columns: 200px 90px 300px 90px 300px;
+    min-height: 60px;
+    gap: 100px;
     font-size: 1.3rem;
     margin: 10px;
     align-items: center;
     width: 1400px;
     text-align: center;
-    /* border-bottom: 2px solid black; */
 }
 
 .for-buttons{
@@ -167,7 +130,7 @@
     font-size: 1.5rem;
     border: none;
     background-color:#5589e996 ;
-    margin-bottom: 30px;
+    margin: 30px 0;
 }
 
 #checkbox9 {
@@ -176,9 +139,13 @@
 
 
 .mission-inserted-list {
-    height: 550px;
+    height: 60px;
     display: grid;
-    overflow-y: auto;
 }
 
+.scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 380px;
+}
 </style>

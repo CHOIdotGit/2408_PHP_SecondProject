@@ -3,10 +3,12 @@ import mission from './modules/mission';
 import calendar from './modules/calendar';
 import auth from './modules/auth';
 import header from './modules/header';
+import transaction from './modules/transaction';
 
 export default createStore({
     modules: {
         mission,
+        transaction,
         calendar,
         auth,
         header,
