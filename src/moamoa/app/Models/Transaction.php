@@ -21,7 +21,9 @@ class Transaction extends Model {
         ,'memo'
     ];
 
-
+    public function child() {
+        return $this->belongsTo(Child::class, 'child_id');
+    }
     
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');

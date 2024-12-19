@@ -18,6 +18,7 @@ import ChildSpendCreateComponent from '../views/components/board/children-board/
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
 import { useStore } from "vuex";
+import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();

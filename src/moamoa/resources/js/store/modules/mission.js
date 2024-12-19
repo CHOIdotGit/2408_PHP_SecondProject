@@ -51,7 +51,7 @@ export default {
         missionListPagination(context) {
             context.commit('setControlFlg', false);
             
-            const url = '/api/parents/home';
+            const url = '/api/parent/home';
             
         
             axios.get(url)
@@ -72,7 +72,7 @@ export default {
         missionInfo(context) {
             context.commit('setControlFlg', false);
             
-            const url = '/api/parents/mission/list';
+            const url = '/api/parent/mission/list';
             
             axios.get(url)
             .then(response => {
@@ -89,7 +89,7 @@ export default {
         // ***************************
         showMissionDetail(context, id) {
             console.log(id);
-            const url = '/api/parents/detail/'+ id ;
+            const url = '/api/parent/mission/detail/'+ id ;
             axios.get(url, id)
             .then(response => {
                 console.log(response.data.missionDetail);
@@ -106,7 +106,7 @@ export default {
         // ***************************
         createMission(context, data) {
             context.commit('setControlFlg', false)
-            const url  = '/api/parents/mission/create';
+            const url  = '/api/parent/mission/create';
             console.log(data, url);
             const formData = new FormData();
             formData.append('title', data.title);

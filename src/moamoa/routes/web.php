@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ChildInfoController;
-use App\Http\Controllers\ParentController;
+use App\Http\Controllers\MissionController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,22 +27,22 @@ Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
 
 // 부모 홈
-Route::get('/api/parent/home', [ParentController::class, 'index']);
+Route::get('/api/parent/home', [MissionController::class, 'index']);
 
-//부모 미션 리스트
-Route::get('/api/parent/mission/list', [ParentController::class, 'index']);
+// 부모 미션 리스트
+Route::get('/api/parent/mission/list', [MissionController::class, 'index']);
 
-//부모 미션 상세 페이지
-Route::get('/api/parent/detail/{id}', [ParentController::class, 'show']);
+// 부모 미션 상세 페이지
+Route::get('/api/parent/detail/{id}', [MissionController::class, 'show']);
 
-//부모 미션 작성 페이지
-Route::post('/api/parent/mission/create', [ParentController::class, 'store']);
+// 부모 미션 작성 페이지
+Route::post('/api/parent/mission/create', [MissionController::class, 'store']);
 
-// 
-Route::get('/api/parent/mission/list', [ChildInfoController::class, 'index']);
+// 부모 지출 리스트 페이지
+Route::get('/api/parent/spend/list', [TransactionController::class, 'index']);
 
 // 자녀 미션 리스트 페이지
-Route::get('/api/child/mission/list', [ChildInfoController::class, 'index']);
+Route::get('/api/child/mission/list', [MissionController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

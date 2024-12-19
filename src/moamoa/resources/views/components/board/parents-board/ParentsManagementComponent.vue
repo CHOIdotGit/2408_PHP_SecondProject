@@ -14,7 +14,7 @@
                         <router-link to="/parents/spend" style="text-decoration: none; color:black;">
                             <p class="recent-expenses">지출 내역 ></p>
                         </router-link>
-                        <div v-for="transaction in item.transactions.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)" :key="transaction">
+                        <div v-for="transaction in item.transactions" :key="transaction">
                             <div v-if="transaction.amount > 0" class="amount">
                                 {{ transaction.amount.toLocaleString() }}원
                             </div>
@@ -27,22 +27,22 @@
                         <router-link to="/parents/mission/list" style="text-decoration: none; color:black;">
                             <p class="mission">승인 대기 중인 미션 ></p>
                         </router-link>
-                        <div v-if="item.missions.length > 0" class="chk-div">
-                            <div v-for="mission in item.missions.slice().sort((a, b) => new Date(b.created_at) - new Date(a.created_at)).slice(0, 3)" :key="mission">
-                                <div v-if="mission.status === '1'">
-                                    <input type="checkbox" class="checkbox">
-                                    <label>
-                                        <div class="mission-title">{{ mission.title }}</div>
+                        <div class="chk-div">
+                            <div v-if="item.missions.length === 0" class="margin-top">
+                                <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
+                            </div>
+                            <div v-else>
+                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission">
+                                    <input type="checkbox" class="checkbox" :id="'checkbox-' + mission.mission_id">
+                                    <label :for="'checkbox-' + mission.mission_id">
+                                        <div class="mission-title">{{ getTruncatedTitle(mission.title) }}</div>
                                     </label>
                                 </div>
                             </div>
-                            <div v-if="!item.missions.some(m => m.status === '1')" class="margin-top">
-                                <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
-                            </div>
                         </div>
                     </div>
-                    <div class="btn-div">
-                        <button class="btn approve" :class="{'btn-disable': !item.missions.some(m => m.status === 1)}">미션 승인</button>
+                    <div class="btn-div" :class="{ 'btn-disable': item.missions.length === 0 }">
+                        <button class="btn approve">미션 승인</button>
                     </div>
                 </div>
             </div>
@@ -57,12 +57,17 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-// const item = ref({
-//     missions: [] // 초기값 설정
-// });
-
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
+
+// 12글자 이후 '...'으로 표기
+const maxLength = 12;
+
+const getTruncatedTitle =(title) => {
+  return title.length > maxLength 
+    ? title.substring(0, maxLength) + '...' 
+    : title;
+};
 
 // onMount
 onMounted(() => {
@@ -82,7 +87,7 @@ onMounted(() => {
     background-color: white;
     display: flex;
     gap: 40px;
-    /* justify-content: center; */
+    justify-content: center;
     align-items: center;   
 }
 
@@ -109,6 +114,9 @@ onMounted(() => {
 }
 
 .mission-title{
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
     height: 40px;
 }
 
@@ -138,11 +146,9 @@ onMounted(() => {
     color: #000000;
 }
 
-/* .child-mission {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-} */
+.child-mission {
+    height: 184px;
+}
 
 .mission {
     width: 250px;
@@ -151,6 +157,16 @@ onMounted(() => {
     margin-top: 20px;
     margin-left: 40px;
     text-align: center;
+}
+
+.mission-box {
+    height: 45px;
+}
+
+.d-flex-start {
+    display: flex;
+    justify-content: start;
+    margin-left: 2rem;
 }
 
 .recent-expenses {
@@ -179,7 +195,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 20px; */
     vertical-align: middle;
 }
 
@@ -211,10 +227,14 @@ onMounted(() => {
 .chk-div {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     margin-top: 10px;
     font-size: 1.5rem;
+}
+
+.chk-div-box {
+    margin-left: 2rem;
 }
 
 /* 기본 체크박스 숨기기 */
@@ -227,6 +247,8 @@ onMounted(() => {
     position: relative;
     padding-left: 30px; /* 체크박스 공간 확보 */
     cursor: pointer;
+    display: flex;
+    justify-content: start;
 }
 
 /* 체크박스의 사용자 정의 스타일 */
@@ -265,7 +287,6 @@ onMounted(() => {
     height: 30px;
 }
 
-
 .child-list-triangle {
     background-color: transparent;
     /* width: 40px;
@@ -274,5 +295,8 @@ onMounted(() => {
     font-size: 4rem;
     border: none;
 }
-
+.text-center{
+    text-align: center;
+    margin-top: 60px;
+}
 </style>
