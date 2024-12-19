@@ -27,15 +27,10 @@ class ParentController extends Controller
                                 ->whereBetween('child_id', [1, 3])
                                 ->with(['missions', 'transactions'])
                                 ->get();
+    
 
 
-        // 헤더 메뉴에 알림 드랍 메뉴 데이터
-        $bellContent = Child::select('children.child_id','children.name')
-                                ->where('children.parent_id', $parent->parent_id)
-                                ->with(['missions', 'transactions'])
-                                // ->orderBy('missions.created_at', 'DESC')
-                                ->limit(3)
-                                ->get();
+
                                 
 
         // $pendingMissions = Mission::select('title') // title만 선택
@@ -51,7 +46,6 @@ class ParentController extends Controller
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
             ,'missionList' => $missionList
-            ,'bellContent' => $bellContent
             // ,'pendingMissions' => $pendingMissions   
             // ,'pendingMessage' => $pendingMessage   
         ];
@@ -101,4 +95,6 @@ class ParentController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+
 }
