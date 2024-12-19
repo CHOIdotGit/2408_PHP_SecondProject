@@ -32,9 +32,9 @@ const chkAuth = (to, from, next) => {
 
     if(authFlg && notAuthPath) { // 인증 유저가 비인증 페이지에 접근했는가?
         if(parentFlg) { // 그 인증 유저가 부모인가?
-            next('/parents/home');
+            next('/parent/home');
         }else if(childFlg) { // 그 인증 유저가 자녀인가?
-            next('/children/home');
+            next('/child/home');
         }
     }else if(!authFlg && !notAuthPath) { // 비인증 유저가 인증 페이지에 접근했는가?
         next('/login');
@@ -44,6 +44,7 @@ const chkAuth = (to, from, next) => {
 };
 
 const routes = [
+    // 기본 페이지 -> 로그인 페이지
     {
         path: '/',
         redirect: '/login',
@@ -54,70 +55,93 @@ const routes = [
         component: LoginComponent,
         beforeEnter: chkAuth,
     },
+    // 부모 페이지 모음
+    // 홈페이지
     {
-        path: '/parents/home',
+        path: '/parent/home',
         component: ParentsManagementComponent,
         beforeEnter: chkAuth,
     },
+    // 부모 미션 리스트 페이지
     {
-        path: '/parents/mission/list',
+        path: '/parent/mission/list',
         component: ParentsMissionListComponent,
     },
+    // 부모 미션 작성 페이지
+    {
+        path: '/parent/mission/create',
+        component: ParentsCreateComponent,
+    },
+    // 부모 미션 수정 페이지
+    {
+        path: '/parent/mission/update',
+        component: ParentsUpdateComponent,
+    },
+    // 부모 미션 상세 페이지
+    {
+        path: '/parent/mission/detail',
+        component: ParentsDetailComponent,
+    },
+    // 부모 지출 리스트 페이지
+    {
+        path: '/parent/spend/list',
+        component: ParentsSpendListComponent,
+    },
+    // 부모 달력 페이지
+    {
+        path: '/parent/calendar',
+        component: ParentsCalendarComponent,
+    },
+    // 자녀 페이지 모음
+    // 자녀 홈페이지
+    {
+        path: '/child/home',
+        component: ChildHomeComponent,
+    },
+    // 자녀 미션 리스트 페이지
     {
         path: '/child/mission/list',
         component: ChildMissionListComponent,
     },
-    {
-        path: '/parents/calendar',
-        component: ParentsCalendarComponent,
-    },
-    {
-        path: '/child/calendar',
-        component: ChildCalendarComponent,
-    },
-    {
-        path: '/parents/mission/create',
-        component: ParentsCreateComponent,
-    },
+    // 자녀 미션 작성 페이지
     {
         path: '/child/mission/create',
         component: ChildCreateComponent,
     },
+    // 자녀 미션 상세 페이지
     {
-        path: '/parents/update',
-        component: ParentsUpdateComponent,
-    },
-    {
-        path: '/child/update',
-        component: ChildUpdateComponent,
-    },
-    {
-        path: '/parents/detail',
-        component: ParentsDetailComponent,
-    },
-    {
-        path: '/child/detail',
+        path: '/child/mission/detail',
         component: ChildDetailComponent,
     },
+    // 자녀 미션 수정 페이지
     {
-        path: '/child/spend',
+        path: '/child/mission/update',
+        component: ChildUpdateComponent,
+    },
+    // 자녀 지출 리스트 페이지
+    {
+        path: '/child/spend/list',
         component: ChildSpendListComponent,
     },
-    {
-        path: '/parents/spend',
-        component: ParentsSpendListComponent,
-    },
+    // 자녀 지출 작성 페이지
     {
         path: '/child/spend/create',
         component: ChildSpendCreateComponent,
     },
+    // 자녀 지출 상세 페이지
     {
         path: '/child/spend/detail',
         component: ChildSpendDetailComponent,
     },
+    // 자녀 지출 수정 페이지
     {
         path: '/child/spend/update',
         component: ChildSpendUpdateComponent,
+    },
+    // 자녀 달력 페이지
+    {
+        path: '/child/calendar',
+        component: ChildCalendarComponent,
     },
 
     
