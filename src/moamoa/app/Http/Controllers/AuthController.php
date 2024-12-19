@@ -155,8 +155,9 @@ class AuthController extends Controller {
   /**
    * 회원가입 정보 임시 저장
    * 
+   * @param Request $request
    * 
-   * 
+   * @return JSON $responseData
    */
   public function saveRegistInfo(Request $request) {
     // TODO: 유효성 검사 수행헤야함
@@ -177,13 +178,10 @@ class AuthController extends Controller {
     $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     $randomString = substr(str_shuffle($characters), 0, 6);
     
-
     // 부모테이블 가족코드를 조회하여 중복확인
 
     // 전화번호 끝 두자리 자르기
     // $phone = substr($request->phone, -2);
-
-
 
     return response()->json(['randomString' => $randomString]);
   }
