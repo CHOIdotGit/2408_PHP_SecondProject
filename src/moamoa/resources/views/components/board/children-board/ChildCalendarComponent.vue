@@ -1,5 +1,5 @@
 <template>
-    <div class="cal-container">
+    <div class="cal-container" v-if="calendarData">
         <div class="nav-section">
             <div class="select-kids">
                 <img class=selected-kid src="/img/icon-boy-1.png" alt="" width="120px" height="120px">
@@ -11,21 +11,23 @@
             
             <div class="money-history" >
                 <div class="money-title">
-                    <li>교통비</li>
-                    <li>식비</li>
-                    <li>쇼핑</li>
-                    <li>기타</li>
-                    <li>미션</li>
-                    <li>총합</li>
+                    <ul>
+                        <li class="cost-title">교통비</li>
+                        <li class="cost-title">식비</li>
+                        <li class="cost-title">쇼핑</li>
+                        <li class="cost-title">기타</li>
+                        <li class="cost-title">미션</li>
+                        <li class="cost-title">총합</li>
+                    </ul>
                 </div>
                 <div class="money-cost">
                     <ul>
-                        <li class="cost">{{ sidebarTraffic.toLocaleString() }} 원</li>
-                        <li class="cost">{{ sidebarMeal.toLocaleString() }} 원</li>
-                        <li class="cost">{{ sidebarShopping.toLocaleString() }} 원</li>
-                        <li class="cost">{{ sidebarEtc.toLocaleString() }} 원</li>
-                        <li class="cost">{{ sidebarMission.toLocaleString() }} 원</li>
-                        <li class="cost">6,000원</li>
+                        <li class="cost">{{ Number(sidebarData.traffic).toLocaleString() }} 원</li>
+                        <li class="cost">{{ Number(sidebarData.meal).toLocaleString() }} 원</li>
+                        <li class="cost">{{ Number(sidebarData.shopping).toLocaleString() }} 원</li>
+                        <li class="cost">{{ Number(sidebarData.etc).toLocaleString() }} 원</li>
+                        <li class="cost">{{ Number(sidebarMission).toLocaleString() }} 원</li>
+                        <li class="cost">{{ totalAmount.toLocaleString() }} 원</li>
                     </ul>
                 </div>
             </div>
@@ -61,7 +63,7 @@
                                 {{ day }}
                             </p>
                             <p class="minus">-5,000</p>
-                            <p class="plus">+3,000</p>
+                            <p class="plus">+ 7,000</p>
                         </div>
                     </div>
                 </div>
@@ -112,7 +114,8 @@
 
 </template>
 <script setup>
-import { ref, computed, reactive, onMounted } from "vue";
+
+import { ref, computed, reactive, onBeforeMount } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 
@@ -127,6 +130,7 @@ const formattedDate = computed(() =>
     timeZone: "Asia/Seoul",
   })
 );
+
 
 // 해당 월의 시작 요일 계산
 const startDay = computed(() => {
@@ -150,18 +154,19 @@ function isToday(day) {
 }
 
 // 이전 월로 이동
-function prevMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() - 1);
+async function prevMonth() {
+  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
+  await store.dispatch("calendar/calendarInfo", dateToday.value);
   dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
-function nextMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() + 1);
+async function nextMonth() {
+  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
+  await store.dispatch("calendar/calendarInfo", dateToday.value);
   dateToday.value = currentDate;
 }
+
 
 // 모달 상태 관리
 const delModal = reactive({ isOpen: false });
@@ -177,23 +182,30 @@ const delCloseModal = () => {
 // -----------------------
 
 const store = useStore();
-const calendarData = computed(() => store.state.calendar.calendarInfo);
-const sidebarMeal = computed(() => store.state.calendar.calendarMeal);
-const sidebarTraffic = computed(() => store.state.calendar.calendarTraffic);
-const sidebarShopping = computed(() => store.state.calendar.calendarShopping);
-const sidebarEtc = computed(() => store.state.calendar.calendarEtc);
-const sidebarMission = computed(() => store.state.calendar.calendarMission);
+const calendarData = computed(() => store.state.calendar.calendarInfo.calendarData);
+const sidebarData = computed(()=> store.state.calendar.calendarInfo.sidebarData);
+const sidebarMission = computed(() => store.state.calendar.calendarInfo.sidebarMission);
 
-
-onMounted(() => {
-  store.dispatch("calendar/calendarInfo");
-  store.dispatch("calendar/calendarMeal");
-  store.dispatch("calendar/calendarTraffic");
-  store.dispatch("calendar/calendarShopping");
-  store.dispatch("calendar/calendarEtc");
-  store.dispatch("calendar/calendarMission");
-  
+const totalAmount = computed(() => {
+    return (
+        (Number(sidebarMission.value) || 0) - (
+            (Number(sidebarData.value.traffic) || 0) +
+            (Number(sidebarData.value.meal) || 0) +
+            (Number(sidebarData.value.shopping) || 0) +
+            (Number(sidebarData.value.etc) || 0)
+        )
+    );
 });
+
+onBeforeMount(() => {
+    store.dispatch("calendar/calendarInfo", dateToday.value);
+  });
+
+
+// 월 넘어갈때 내역도 넘어가게
+
+
+
 
 </script>
 
@@ -220,13 +232,7 @@ onMounted(() => {
     padding: 3px;
 }
 
-li {
-    height: 50px;
-    font-size: 1.5rem;
-    margin-left: 30px;
-    line-height: 50px;
-    margin-top: 20px;
-}
+
 
 .money-history {
     width: 400px;
@@ -235,16 +241,29 @@ li {
     margin-right: 20px;
     margin-top: 20px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 170px 200px;
     font-size: 1.5rem;
     line-height: 50px;
     background-color: #5589e996;
 }
 
+.cost-title {
+    height: 50px;
+    font-size: 1.5rem;
+    margin-left: 30px;
+    line-height: 50px;
+    margin-top: 20px;
+}
+
 .cost  {
     list-style-type: none;
     text-align: right;
-    padding-right: 50px;
+    /* padding-right: 50px; */
+    height: 50px;
+    font-size: 1.5rem;
+    margin-left: 30px;
+    line-height: 50px;
+    margin-top: 20px;
 }
 
 .sec-container {
@@ -353,8 +372,21 @@ li {
 
 .money-title {
     height: 500px;
+    height: 50px;
+    font-size: 1.5rem;
+    margin-left: 30px;
+    line-height: 50px;
+    margin-top: 20px;
 }
 
+.money-cost {
+    height: 500px;
+    height: 50px;
+    font-size: 1.5rem;
+    margin-left: 30px;
+    line-height: 50px;
+    margin-top: 20px;
+}
 .circle-class {
     width: 50px; 
     height: 50px;

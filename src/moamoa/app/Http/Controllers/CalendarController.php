@@ -6,67 +6,68 @@ use App\Models\Child;
 use App\Models\Mission;
 use App\Models\Transaction;
 use Carbon\Carbon;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $startOfMonth = Carbon::now()->startOfMonth()->toDateString();
-        $endOfMonth = Carbon::now()->endOfMonth()->toDateString();
+        Log::debug($request->all());
+        $targetDate = Carbon::createFromDate($request->year, $request->month, 1);
+
+        $startDate = $targetDate->startOfMonth()->format('Y-m-d');
+        $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
 
 
         $calendarData = Child::select('children.name', 'children.nick_name')
                             ->where('children.parent_id', 1)
                             ->first();
                             
-        $sidebarTraffic = Transaction::where([
-                                                ['transaction_date' , '>=' , '$startOfMonth']
-                                                ,['transaction_date' , '<=' , '$endOfMonth']
-                                                ,['category',0]
-                                                ,['parent_id', 1]
-                                            ]) ->sum('amount');
-        
-        $sidebarMeal = Transaction::where([
-                                            ['transaction_date' , '>=' , '2024-12-01']
-                                            ,['transaction_date' , '<=' , '2024-12-31']
-                                            ,['category',1]
-                                            ,['parent_id', 1]
-                                        ]) ->sum('amount');  
-                            
+        $categories = [0 => 'traffic', 1 => 'meal', 2 => 'shopping', 3 => 'etc'];
+        $sidebarData = [];
 
-        $sidebarShopping = Transaction:: where([
-                                                ['transaction_date' , '>=' , '2024-12-01']
-                                                ,['transaction_date' , '<=' , '2024-12-31']
-                                                ,['category',2]
-                                                ,['parent_id', 1]
-                                            ])->sum('amount');
+        // 카테고리 별 합산
+        foreach($categories as $category => $key){
+            $sidebarData[$key] = Transaction::where('parent_id', 1)
+            ->where('category', $category)
+            ->whereBetween('transaction_date', [$startDate, $endDate])
+            ->sum('amount');
+        }
 
-        $sidebarEtc = Transaction:: where([
-                                            ['transaction_date' , '>=' , '2024-12-01']
-                                            ,['transaction_date' , '<=' , '2024-12-31']
-                                            ,['category',3]
-                                            ,['parent_id', 1]
-                                        ])->sum('amount');   
+        // 일별 전체 지출 합산
+        $dailyIncomeData = Mission::selectRaw('start_at, SUM(amount) as income')
+                                ->whereBetween('start_at', [$startDate, $endDate])
+                                ->groupBy('start_at')
+                                ->orderBy('start_at')
+                                ->get();
 
-        $sidebarMission = Mission::where([
-                                            ['start_at', '>=' , '2024-12-01']
-                                            ,['end_at', '<=' , '2024-12-31']
-                                            ,['parent_id', 1]
-                                        ])->sum('amount');
+        // 미션 합계
+        $sidebarMission = Mission::where('parent_id',1)
+                    ->whereBetween('start_at',[$startDate, $endDate])
+                    ->sum('amount');
 
-                        
 
         return response()->json([
             'success' => true,
-            'msg' => '캘린더 이름 획득 성공',
+            'msg' => '캘린더 성공',
             'calendarData' => $calendarData,
-            'sidebarMeal' => $sidebarMeal,
-            'sidebarTraffic' => $sidebarTraffic,
-            'sidebarShopping' => $sidebarShopping,
-            'sidebarEtc' => $sidebarEtc,
+            'sidebarData' => $sidebarData,
             'sidebarMission' => $sidebarMission,
+            'dailyIncomeData' => $dailyIncomeData,
+            
         ], 200);
     }
 
+
+        // public function getSidebarData(Request $request)
+        // {
+        //     $validator = Validator::make($request->all(), [
+        //         'year' => 'required|integer',
+        //         'month' => 'required|integer|min:1|max:12',
+        //     ]);
+
+            
+        // }
 }
