@@ -19,9 +19,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Auth 관련
-Route::get('/api/csrf-token', [AuthController::class, 'settingCsrfToken']);
 Route::post('/api/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout');
+Route::get('/api/csrf-token', [AuthController::class, 'settingCsrfToken'])->name('auth.csrf.token');
+
+Route::prefix('/api/auth')->group(function () {
+    Route::get('/chkAccount/{account}', [AuthController::class, 'chkAccount'])->name('auth.chk.account');
+    Route::post('/saveRegistInfo', [AuthController::class, 'saveRegistInfo'])->name('auth.save.regist.info');
+});
 // 
 
 // 자녀 달력

@@ -19,7 +19,9 @@
       </div>
 
       <div class="next-btn">
-        <button type="button">메인페이지로 >&nbsp;</button>
+        <router-link to="/login">
+          <button type="button">메인페이지로 >&nbsp;</button>
+        </router-link>
       </div>
     </div>
   </div>

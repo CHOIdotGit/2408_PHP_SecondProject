@@ -18,6 +18,12 @@ import ChildSpendCreateComponent from '../views/components/board/children-board/
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
 import { useStore } from "vuex";
+import SelectRegistComponent from '../views/components/auth/regist/SelectRegistComponent.vue';
+import ParentRegistComponent from '../views/components/auth/regist/ParentRegistComponent.vue';
+import ChildRegistComponent from '../views/components/auth/regist/ChildRegistComponent.vue';
+import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
+import ParentRegistCodeComponent from '../views/components/auth/regist/ParentRegistCodeComponent.vue';
+import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 
 const chkAuth = (to, from, next) => {
@@ -29,12 +35,15 @@ const chkAuth = (to, from, next) => {
     const childFlg = store.state.auth.childFlg;
 
     // 비인증용 경로 변수
-    const notAuthPath = (to.path === '/' || to.path === '/login');
+    const notAuthPath = (to.path === '/' || to.path === '/login' || to.path === '/regist/main' 
+        || to.path === '/regist/parent' || to.path === '/regist/child' || to.path === '/regist/parent/code'
+        || to.path === '/regist/complete'
+    );
 
     if(authFlg && notAuthPath) { // 인증 유저가 비인증 페이지에 접근했는가?
         if(parentFlg) { // 그 인증 유저가 부모인가?
             next('/parent/home');
-        }else if(childFlg) { // 그 인증 유저가 자녀인가?
+        }else if(childFlg) { // 아니면 자녀인가?
             next('/child/home');
         }
     }else if(!authFlg && !notAuthPath) { // 비인증 유저가 인증 페이지에 접근했는가?
@@ -51,9 +60,40 @@ const routes = [
         redirect: '/login',
         beforeEnter: chkAuth,
     },
+    // 로그인 페이지
     {
         path: '/login',
         component: LoginComponent,
+        beforeEnter: chkAuth,
+    },
+    // 회원가입 선택 페이지
+    {
+        path: '/regist/main',
+        component: SelectRegistComponent,
+        beforeEnter: chkAuth,
+    },
+    // 부모 회원가입 정보입력 페이지
+    {
+        path: '/regist/parent',
+        component: ParentRegistComponent,
+        beforeEnter: chkAuth,
+    },
+    // 부모 회원가입 코드뷰 페이지
+    {
+        path: '/regist/parent/code',
+        component: ParentRegistCodeComponent,
+        beforeEnter: chkAuth,
+    },
+    // 자녀 회원가입 정보입력 페이지
+    {
+        path: '/regist/child',
+        component: ChildRegistComponent,
+        beforeEnter: chkAuth,
+    },
+    // 회원가입 완료 페이지
+    {
+        path: '/regist/complete',
+        component: CompleteRegistComponent,
         beforeEnter: chkAuth,
     },
     // 부모 페이지 모음
@@ -98,6 +138,7 @@ const routes = [
     {
         path: '/child/home',
         component: ChildHomeComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 미션 리스트 페이지
     {

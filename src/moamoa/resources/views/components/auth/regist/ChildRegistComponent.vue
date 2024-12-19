@@ -21,34 +21,34 @@
       <!-- 회원가입 입력 폼 1 -->
       <div class="data-form">
           <label for="name">이름</label>
-          <input type="text" name="name" id="name">
+          <input type="text" name="name" id="name" autocomplete="off" required>
 
           <label for="account">아이디</label>
           <div class="account-group">
-              <input type="text" name="account" id="account">
+              <input type="text" name="account" id="account" autocomplete="off" required>
               <button type="button" class="dup-btn">중복확인</button>
           </div>
           
           <label for="password">비밀번호</label>
-          <input type="password" name="password" id="password">
+          <input type="password" name="password" id="password" autocomplete="off" required>
           
           <label for="password_chk">비밀번호 확인</label>
-          <input type="password" name="password_chk" id="password_chk">
+          <input type="password" name="password_chk" id="password_chk" autocomplete="off" required>
           
           <label for="email">이메일</label>
-          <input type="email" name="email" id="email">
+          <input type="email" name="email" id="email" autocomplete="off" required>
       </div>
       
       <!-- 회원가입 입력 폼 2 -->
       <div class="data-form">
           <label for="nick_name">닉네임</label>
-          <input type="text" name="nick_name" id="nick_name">
+          <input type="text" name="nick_name" id="nick_name" autocomplete="off">
 
           <label for="tel">전화번호</label>
-          <input type="tel" name="tel" id="tel">
+          <input type="number" name="tel" id="tel" autocomplete="off" required>
 
           <label for="fam_code">가족코드</label>
-          <input type="text" name="fam_code" id="fam_code">
+          <input type="text" name="fam_code" id="fam_code" autocomplete="off" required>
 
           <div class="next-btn position-relative">
               <button type="button">다음 단계로 >&nbsp;</button>
@@ -65,6 +65,22 @@
 </script>
 
 <style scoped>
+  /* 증감 UI 제거 */
+  input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+  input[type="number"]::-moz-spin-button {
+    display: none;
+  }
+  
   /* 폼 기본 설정 */
   input, button {
     outline: none; /* 아웃라인 제거 */
@@ -73,7 +89,7 @@
   }
 
   /* 커서 손모양으로 변경 */
-  a, button {
+  a, button, .profile-preview {
     cursor: pointer;
   }
 

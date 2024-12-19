@@ -34,7 +34,9 @@
             <!-- 로그인, 회원가입 버튼 DIV -->
             <div class="data-button">
                 <button type="button" @click="$store.dispatch('auth/login', userInfo)">로그인</button> <br>
-                <!-- <button type="button">회원가입</button> -->
+                <router-link to="/regist/main">
+                  <button type="button">회원가입</button>
+                </router-link>
             </div>
         </div>
 
@@ -44,6 +46,7 @@
 <script setup>
   import { reactive } from 'vue';
 
+  // 회원 정보 ---------------------------------------------------------------------------------------------
   const userInfo = reactive({
     account: '',
     password: '',

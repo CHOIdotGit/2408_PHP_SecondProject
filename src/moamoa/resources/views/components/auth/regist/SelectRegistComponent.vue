@@ -16,10 +16,15 @@
       <div class="data-form">
           <!-- 버튼 DIV -->
           <div class="data-button">
-              <button type="button">보호자</button> <br>
+            <router-link to="/regist/parent">
+              <button type="button">보호자</button>
+            </router-link>
           </div>
+          
           <div class="data-button">
+            <!-- <router-link to="/regist/child"> -->
               <button type="button">자녀</button>
+            <!-- </router-link> -->
           </div>
       </div>
   </div>

@@ -6,9 +6,7 @@ use App\Models\Child;
 use App\Models\ParentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Throwable;
@@ -153,7 +151,7 @@ class AuthController extends Controller {
   }
 
   /**
-   * 회원가입 정보 임시 저장
+   * 회원가입 정보 저장
    * 
    * @param Request $request
    * 
@@ -161,28 +159,103 @@ class AuthController extends Controller {
    */
   public function saveRegistInfo(Request $request) {
     // TODO: 유효성 검사 수행헤야함
+    
 
-    return response()->json(['success' => true], 200);
+    // 인서트 데이터 세팅
+    $insertData = $request->only('account', 'name', 'tel', 'email');
+    $insertData['password'] = Hash::make($request->password);
+
+    // 사용자가 추가로 닉네임을 입력했다면
+    if($request->nick_name) {
+      $insertData['nick_name'] = $request->nick_name;
+    }
+
+    // 사용자가 추가로 프로필 사진을 올렸다면
+    if($request->profile) {
+      $insertData['profile'] = '/'.$request->file('profile')->store('profile');
+    }
+
+    // 부모 체크
+    if($request->auth && $request->auth === 'parent') {
+      // 랜덤코드 생성
+      while(true) {
+        // 랜덤코드를 만들 내부 함수 호출
+        $family_code = $this->addFamilyCode();
+
+        // 가족코드 중복 검사, 없을시 반복멈춤
+        if(!($this->authRepository->findDuplicateFamilyCode($family_code))) {
+          break;
+        }
+      }
+
+      // 만든 가족코드를 생성 데이터에 삽입
+      $insertData['family_code'] = $family_code;
+
+      // 부모 레코드 생성
+      try {
+        $parent = $this->authRepository->createParent($insertData);
+      }catch(Throwable $th) {
+        return response()->json(['error' => '부모 레코드 생성 실패: ' . $th->getMessage()], 500);
+      }
+
+      // 리스폰스 데이터 작성
+      $responseData = [
+        'data' => $parent->toArray()
+        ,'redirect_to' => '/regist/parent/code'
+      ];
+
+      return response()->json($responseData, 200);
+    } 
+    else { // 자녀일시 처리
+      // 자녀 레코드 생성
+      try {
+        $child = $this->authRepository->createChild($insertData);
+      }catch(Throwable $th) {
+        return response()->json(['error' => '자녀 레코드 생성 실패: ' . $th->getMessage()], 500);
+      }
+
+      // 리스폰스 데이터 작성
+      $responseData = [
+        'data' => $child->toArray()
+        ,'redirect_to' => '/regist/child/match'
+      ];
+      
+      return response()->json($responseData, 200);
+    }
+
   }
 
   /**
-   * 랜덤 가족코드 생성
    * 
-   * @param Request $request
+   * axios 미사용 내부 호출용 함수
    * 
-   * @return JSON $responseData
    */
 
-  public function registCode(Request $request) {
-    // 대문자와 숫자를 포함한 6자리 랜덤 문자열 생성
-    $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    $randomString = substr(str_shuffle($characters), 0, 6);
+  // 가족 코드 생성
+  private function addFamilyCode() {
+    // 영대문자와 숫자를 각각 정의
+    $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $numbers = '0123456789';
     
-    // 부모테이블 가족코드를 조회하여 중복확인
-
-    // 전화번호 끝 두자리 자르기
-    // $phone = substr($request->phone, -2);
-
-    return response()->json(['randomString' => $randomString]);
+    // 영문 4개, 숫자 4개를 섞어놓기 위한 배열 초기화
+    $characters = [];
+    
+    // 배열에 랜덤 영문 4개와
+    for($i = 0; $i < 4; $i++) {
+        $characters[] = $letters[rand(0, strlen($letters) - 1)];
+    }
+    
+    // 랜덤 숫자 4개 각각 담음
+    for($i = 0; $i < 4; $i++) {
+        $characters[] = $numbers[rand(0, strlen($numbers) - 1)];
+    }
+    
+    // 이 각각 담긴 배열을 섞어서
+    shuffle($characters);
+    
+    // 문자열로 변환해 8자 코드로 변환
+    $randomString = implode('', $characters);
+    
+    return $randomString;
   }
 }

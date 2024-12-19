@@ -14,10 +14,10 @@
     <!-- 입력 폼 DIV -->
     <div class="data-form position-relative">
       <div class="data-info">
-        <p>OOO 님의 가족코드</p>
+        <p>{{ $store.state.auth.registInfo.name }} 님의 가족코드</p>
 
         <div class="fam-code">
-          <p>49AC7D3L</p>
+          <p>{{ $store.state.auth.registInfo.family_code }}</p>
         </div>
         
         <span class="mini-text">
@@ -26,13 +26,23 @@
       </div>
 
       <div class="next-btn">
-          <button type="button">다음 >&nbsp;</button>
+          <button @click="nextComplete" type="button">다음 >&nbsp;</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import router from '../../../../js/router';
+
+
+  const nextComplete = () => {
+    // 페이지를 넘어가기전에 세션에 담긴 회원정보를 없애야함
+    sessionStorage.clear();
+
+    // 회원가입 완료페이지로 이동
+    router.replace('/regist/complete');
+  }
 
 </script>
 
