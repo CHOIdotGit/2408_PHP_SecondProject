@@ -2,7 +2,7 @@
     <div class="d-flex">
         <div class="container">
             <div class="child-list-triangle">◀</div>   
-            
+            <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
             <div v-for="item in missionList" :key="item" class="child-box"> 
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
@@ -11,9 +11,7 @@
                     <h3 class="name">{{ item.name }}</h3>
                     <p class="nickname">{{ item.nick_name }}</p>
                     <div class="expense-box">
-                        <router-link to="/parents/spend" style="text-decoration: none; color:black;">
-                            <p class="recent-expenses">지출 내역 ></p>
-                        </router-link>
+                        <p class="recent-expenses" @click="goSpendList">지출 내역 ></p>
                         <div>
                             <div v-if="item.transactions.length === 0">
                                 <p class="no-amount">최근 지출한 금액이 없습니다.</p>
@@ -26,9 +24,7 @@
                         </div>
                     </div>
                     <div class="child-mission">
-                        <router-link to="/parents/mission/list" style="text-decoration: none; color:black;">
-                            <p class="mission">승인 대기 중인 미션 ></p>
-                        </router-link>
+                        <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
                         <div class="chk-div">
                             <div v-if="item.missions.length === 0" class="margin-top">
                                 <p class="no-mission">대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
@@ -54,13 +50,24 @@
 </template>
 <script setup>
 
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const router = useRouter();
+// const route = useRoute();
 
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
+const currentChildId = computed(() => store.state.mission.childId);
+
+watch(
+    () => currentChildId.value,
+    (newChildId) => {
+        console.log('updated childId in component:', newChildId);
+    }
+);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -71,10 +78,31 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
+const goMissionList = (childId) => {
+    console.log('선택된 childId:', childId);
+    store.dispatch('mission/missionInfo', childId)
+        .then(() => {
+            console.log('store.state.mission.childId:', store.state.mission.childId);
+            router.push('/parent/mission/list');
+        })
+        .catch(error => console.error('Error:', error));
+};
+const goSpendList = () => {
+    // 거래 정보를 가져오는 액션 호출
+    store.dispatch('transaction/transactionListPagination')
+    .then(() => {
+        // 액션이 완료된 후 라우팅
+        router.push('/parent/spend/list');
+    })
+    .catch(error => {
+        console.error('거래 정보 가져오다가 도적 만남', error);
+    })
+};
+
 // onMount
 onMounted(() => {
-    store.dispatch('mission/missionListPagination');
     store.commit('mission/resetMissionList'); // 상태 초기화
+    store.dispatch('mission/missionListPagination');
     // console.log(item.value.missions);
 });
 </script>
@@ -157,6 +185,7 @@ onMounted(() => {
     margin-top: 20px;
     margin-left: 40px;
     text-align: center;
+    cursor: pointer;
 }
 
 .mission-box {
@@ -176,6 +205,7 @@ onMounted(() => {
     margin-top: 20px;
     margin-left: 60px;
     text-align: center;
+    cursor: pointer;
 }
 
 .amount {

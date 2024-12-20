@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ParentModel;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
     public function index() {
         // 예제
-        $parent = ParentModel::find(1);
+        $parent = Auth::guard('parents')->user();
         $transactionList = Transaction::select('transactions.parent_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date', 'transactions.transaction_code')
                                 ->with('child')
                                 ->where([

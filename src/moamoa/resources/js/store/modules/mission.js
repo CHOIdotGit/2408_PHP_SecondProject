@@ -1,4 +1,5 @@
 
+import { set } from 'lodash';
 import axios from '../../axios';
 import router from '../../router';
 
@@ -6,12 +7,13 @@ export default {
     namespaced:true,
     state: ()=> ({
         missionList: []
-        ,missionInfo: []
+        ,missionInfo: null
         ,missionDetail: null
         ,lastPageFlg: false
         ,controlFlg: true
         ,missionId: null
         ,bellContent: []
+        ,childId: null
 
     }),
     mutations: {
@@ -19,7 +21,8 @@ export default {
             state.missionList = state.missionList.concat(missionList);
         },
         setMissionInfo(state, missionInfo) {
-            state.missionInfo = state.missionInfo.concat(missionInfo);
+            state.missionInfo = missionInfo;
+            console.log('mutation setMissionInfo called with:', missionInfo);
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
@@ -39,11 +42,17 @@ export default {
         setMissonListUnshift(state, missionList) { //미션 리스트 항목 추가
             state.missionList.unshift(missionList);
         },
+        setChildId(state, childId) {
+            state.childId = childId;
+            console.log('mutation setChildId called with:', childId);
+        }
         
 
     },
     actions: {
         /**
+         * 부모 홈 페이지
+         * 
          * 미션 리스트 획득
          * 
          * @param {*} context commit, state 포함되어있음
@@ -65,19 +74,28 @@ export default {
         },
 
         /**
+         * 미션 리스트 페이지
+         * 
          * 미션 정보 획득
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        missionInfo(context) {
+        missionInfo(context, id) {
             context.commit('setControlFlg', false);
             
-            const url = '/api/parent/mission/list';
+            const url = '/api/parent/mission/list/' + id;
             
-            axios.get(url)
+            axios.get(url, { params: { id } })
             .then(response => {
-                console.log(response.data.missionInfo.data);
-                context.commit('setMissionInfo', response.data.missionInfo.data);
+                console.log('Fetched missions for child ID:', id);
+
+                const missionInfo = response.data.missionInfo.data;
+                const childId = missionInfo.child_id || id;
+    
+                context.commit('setMissionInfo', missionInfo);
+                context.commit('setChildId', childId);
+    
+                console.log('Updated child ID in state:', context.state.mission.childId);
             })
             .catch(error => {
                 console.error('미션 정보 불러오기 오류', error);

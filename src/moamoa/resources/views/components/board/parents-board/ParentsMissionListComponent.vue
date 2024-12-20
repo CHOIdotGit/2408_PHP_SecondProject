@@ -43,8 +43,10 @@
 <script setup>
 import { values } from 'lodash';
 import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 const store = useStore();
+const route = useRoute();
 
 // ***체크박스 선택하기***
 // 선택된 체크박스 데이터
@@ -116,7 +118,8 @@ const getStatusClass = (status) => {
 
 // onMount
 onMounted(() => {
-    store.dispatch('mission/missionInfo');
+    const childId = route.params.id; // URL에서 자녀 ID 가져오기
+    store.dispatch('mission/missionInfo', childId);
 });
 
 </script>

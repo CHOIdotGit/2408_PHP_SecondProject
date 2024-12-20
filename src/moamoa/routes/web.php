@@ -36,7 +36,7 @@ Route::get('/api/child/calendar', [CalendarController::class, 'index']);
 Route::get('/api/parent/home', [MissionController::class, 'index']);
 
 // 부모 미션 리스트
-Route::get('/api/parent/mission/list', [MissionController::class, 'index']);
+Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index']);
 
 // 부모 미션 상세 페이지
 Route::get('/api/parent/detail/{id}', [MissionController::class, 'show']);
