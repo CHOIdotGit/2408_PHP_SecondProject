@@ -75,6 +75,11 @@
     font-size: 1.2rem;
 }
 
+.link-deco {
+    text-decoration: none;
+    color: #000;
+}
+
 
 .child:hover {
     background-color: #f3f5f5;

@@ -4,14 +4,36 @@
         <div class="navi-bar">
             <!-- 부모/자녀에 따라 홈 경로 변경 -->
             <div class="item">
-                <router-link v-if="$store.state.auth.authFlg === 'true'" to="/parent/home" class=link-deco><p class="item-btn">홈</p></router-link>
-                <router-link v-else to="/child/home" class=link-deco><p class="item-btn">홈</p></router-link>
+                <router-link v-if="$store.state.auth.authFlg" to="/parent/home" class=link-deco><p class="item-btn">홈</p></router-link>
+                <router-link v-else to="/child/home" class=link-deco><p class="item-btn" >홈</p></router-link>
             </div>
-            <!-- 지출/미션/캘린터 메뉴 -->
-            <div class="item" v-for="index in headerMenu" :key="index">
+            <!-- v-for를 이용한 지출/미션/캘린터 메뉴 -->
+            <!-- 문제점: router-link 어려움 -->
+            <!-- <div class="item" v-for="index in headerMenu" :key="index">
                 <p class="item-btn" >{{ index }}</p>
-                    <div class="child-dropdown" v-if="$store.state.auth.authFlg === 'true'">
-                        <p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p>
+                    <div class="child-dropdown" v-if="$store.state.auth.authFlg === true">
+                        <router-link to=""><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                    </div>
+            </div> -->
+
+            <div class="item">
+                <router-link to="/parent/spend/list/" class=link-deco><p class="item-btn" >지출</p></router-link>
+                    <div class="child-dropdown" v-if="$store.state.auth.authFlg">
+                        <router-link to="/child/spend/list/" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                    </div>
+            </div>
+
+            <div class="item">
+                <router-link to="/parent/mission/list" class=link-deco><p class="item-btn" >미션</p></router-link>
+                    <div class="child-dropdown" v-if="$store.state.auth.authFlg">
+                        <router-link to="/child/mission/list" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                    </div>
+            </div>
+
+            <div class="item">
+                <router-link to="/parent/calendar" class=link-deco><p class="item-btn" >캘린더</p></router-link>
+                    <div class="child-dropdown" v-if="$store.state.auth.authFlg">
+                        <router-link to="/child/calendar" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
             </div>
             <div class="item">
@@ -81,12 +103,12 @@ const headerMenu =
 // 헤더 메뉴 자녀 이름 출력
 const store = useStore();
 const childNameList = computed(() => store.state.header.childNameList);
+
 onBeforeMount(() => {
-    if(store.state.header.childNameList.length < 1){
+    // if(store.state.header.childNameList.length < 1){
         store.dispatch('header/childNameList');
         console.log('애들이름출력');
-
-    }
+    // }
 })
 
 
@@ -123,9 +145,7 @@ const bellDropDown = () => {
 }
 
 </script>
-<style scoped>
-.link-deco {
-    text-decoration: none;
-}
+<style>
+
     
 </style>

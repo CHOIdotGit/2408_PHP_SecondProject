@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
+use App\Models\ParentModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HeaderController extends Controller
 {
@@ -28,8 +30,13 @@ public function index() {
     // ************************************************
     // ************헤더 자녀 이름 목록 출력**************
     // ************************************************ 
-    $childNameList = Child::select('name')
-                            ->where('parent_id', 1)
+    //Auth 가 로그인한 유저의 정보를 담고 있고, guard가 어떤 테이블인지(children, parents )
+    $parent = Auth::guard('parents')->user();
+    // $parentId = ParentModel::where('parent_id', $parent->parent_id)->first();
+    $childNameList = Child::select('name', 'created_at')
+                            ->where('parent_id', $parent->parent_id)
+                            // ->groupBy('parent_id')
+                            ->orderBy('created_at')
                             ->get();
 
     $responseData = [
