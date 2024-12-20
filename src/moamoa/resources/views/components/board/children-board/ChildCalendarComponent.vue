@@ -26,8 +26,8 @@
                         <li class="cost">{{ Number(sidebarData.meal).toLocaleString() }} 원</li>
                         <li class="cost">{{ Number(sidebarData.shopping).toLocaleString() }} 원</li>
                         <li class="cost">{{ Number(sidebarData.etc).toLocaleString() }} 원</li>
-                        <li class="cost">{{ Number(sidebarMission).toLocaleString() }} 원</li>
-                        <li class="cost">{{ totalAmount.toLocaleString() }} 원</li>
+                        <li class="cost" >{{ Number(sidebarMission).toLocaleString() }} 원</li>
+                        <li class="cost" >{{ totalAmount.toLocaleString() }} 원</li>
                     </ul>
                 </div>
             </div>
@@ -59,11 +59,10 @@
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day" >
-                            <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">
-                                {{ day }}
-                            </p>
-                            <p class="minus">-5,000</p>
-                            <p class="plus">+ 7,000</p>
+                            <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
+                            <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
+                            <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
+                            <!-- '2024-12-' + String(i).padStart(2,'0')); -->
                         </div>
                     </div>
                 </div>
@@ -119,6 +118,24 @@ import { ref, computed, reactive, onBeforeMount } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
 
+const store = useStore();
+const calendarData = computed(() => store.state.calendar.calendarInfo.calendarData);
+const sidebarData = computed(()=> store.state.calendar.calendarInfo.sidebarData);
+const sidebarMission = computed(() => store.state.calendar.calendarInfo.sidebarMission);
+const dailyIncomeData = computed(() => store.state.calendar.calendarInfo.dailyIncomeData);
+const dailyOutgoData = computed(()=> store.state.calendar.calendarInfo.dailyOutgoData);
+
+const totalAmount = computed(() => {
+    return (
+        (Number(sidebarMission.value) || 0) - (
+            (Number(sidebarData.value.traffic) || 0) +
+            (Number(sidebarData.value.meal) || 0) +
+            (Number(sidebarData.value.shopping) || 0) +
+            (Number(sidebarData.value.etc) || 0)
+        )
+    );
+});
+
 // 현재 날짜 상태 관리
 const dateToday = ref(new Date());
 
@@ -167,7 +184,6 @@ async function nextMonth() {
   dateToday.value = currentDate;
 }
 
-
 // 모달 상태 관리
 const delModal = reactive({ isOpen: false });
 
@@ -181,31 +197,23 @@ const delCloseModal = () => {
 
 // -----------------------
 
-const store = useStore();
-const calendarData = computed(() => store.state.calendar.calendarInfo.calendarData);
-const sidebarData = computed(()=> store.state.calendar.calendarInfo.sidebarData);
-const sidebarMission = computed(() => store.state.calendar.calendarInfo.sidebarMission);
 
-const totalAmount = computed(() => {
-    return (
-        (Number(sidebarMission.value) || 0) - (
-            (Number(sidebarData.value.traffic) || 0) +
-            (Number(sidebarData.value.meal) || 0) +
-            (Number(sidebarData.value.shopping) || 0) +
-            (Number(sidebarData.value.etc) || 0)
-        )
-    );
-});
 
 onBeforeMount(() => {
     store.dispatch("calendar/calendarInfo", dateToday.value);
   });
 
 
-// 월 넘어갈때 내역도 넘어가게
+// 각 날짜에 맞는 값입력
+function getYearMonth(day) {
+  return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
 
-
-
+function getDailyIncomeExpense(day, data, incomFlg) {
+    const item = data.find(item => item.target_at === getYearMonth(day));
+    const symbol =incomFlg ? '+' : '-';
+    return item ? symbol + Number(item.income).toLocaleString() : '';
+}
 
 </script>
 
@@ -395,7 +403,7 @@ onBeforeMount(() => {
     text-align: center; /* 텍스트 가운데 정렬 */
     line-height: 40px; /* 텍스트를 원 안의 중앙에 위치 */
     box-sizing: border-box; /* 테두리 포함 */
-    background-color: lightgray;
+    background-color: #5589e996;
     /* margin-bottom: 15px; */
     padding: 5px;
 }

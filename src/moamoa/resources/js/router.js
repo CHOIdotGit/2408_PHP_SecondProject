@@ -17,6 +17,7 @@ import ParentsSpendListComponent from '../views/components/board/parents-board/P
 import ChildSpendCreateComponent from '../views/components/board/children-board/ChildSpendCreateComponent.vue';
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
+import ParentsStatsComponent from '../views/components/board/parents-board/ParentsStatsComponent.vue';
 import { useStore } from "vuex";
 import SelectRegistComponent from '../views/components/auth/regist/SelectRegistComponent.vue';
 import ParentRegistComponent from '../views/components/auth/regist/ParentRegistComponent.vue';
@@ -131,6 +132,11 @@ const routes = [
     {
         path: '/parent/calendar',
         component: ParentsCalendarComponent,
+    },
+    // 부모 통계 페이지
+    {
+        path: '/parent/stats',
+        component: ParentsStatsComponent,
     },
     // 자녀 페이지 모음
     // 자녀 홈페이지

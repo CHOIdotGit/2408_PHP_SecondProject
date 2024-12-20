@@ -41,16 +41,7 @@ export default {
     actions: {
         // 캘린더에서 이름불러오기
         calendarInfo(context, objDate) {
-            // const url = '/api/child/calendar?year=' + objDate.getFullYear() + '&month=' + (objDate.getMonth() + 1);
-            // // console.log(url)
-            // axios.get(url)
-            // .then(response => {
-            //     console.log(response.data);
-            //     context.commit('setCalendarInfo', response.data);
-            // })
-            // .catch(error => {
-            //     console.log(' 달력 이름X', error);
-            // })
+            
 
             return new Promise((resolve, reject) => {
                 const url = '/api/child/calendar?year=' + objDate.getFullYear() + '&month=' + (objDate.getMonth() + 1);
@@ -75,7 +66,6 @@ export default {
                 params: {year, month},
             })
             .then((response) => {
-                // console.log(response.data.sidebarData);
 
                 commit("setSidebarData",  JSON.stringify(response.data.sidebarData));
             })
@@ -110,6 +100,9 @@ export default {
                     console.error("일별 수입 데이터를 불러오지 못했습니다:", error);
                 });
         },
+
+        // 일별 지출 합계
+
 
         
     },
