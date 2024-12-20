@@ -7,7 +7,7 @@
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
-                    <input type="checkbox" id="checkbox9">
+                    <input type="checkbox" id="checkAll" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
                 <span class="kids-name">자녀이름</span>
                 <span class="status">상태</span>
@@ -20,7 +20,8 @@
                 <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
                         <div class="chk-div">
-                            <input type="checkbox" id="checkbox9">
+                            <input v-model="checkboxItem" type="checkbox" :value="item.mission_id" name="checkbox">
+                            <p>{{item.mission_id}}</p>                        
                         </div>
                         <span class="kids-name">{{ item.child.name }}</span>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
@@ -40,12 +41,41 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { values } from 'lodash';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
+// ***체크박스 선택하기***
+// 선택된 체크박스 데이터
+const checkboxItem = ref([]); // 모두 선택되면 전체 체크박스에도 선택 표시하기 위해서
+
+// 모든 체크박스가 선택되었는지 확인 (computed : 반응형 데이터로 다루기 위해)
+const isAllChecked = computed(() => {
+    return checkboxItem.value.length > 0 && missionInfo.value.every((item) => checkboxItem.value.includes(item.mission_id));
+});
+
+const checkAll = (e) => {
+    if(e.target.checked) {
+        checkboxItem.value = missionInfo.value.map(item => item.mission_id);
+        console.log('체크박스 모두 선택');
+        console.log('체크박스 선택된 데이터 : ', missionInfo.value.length);
+    } else {
+        checkboxItem.value = []; //전체 해제
+        console.log('체크박스 모두 해제');
+    }
+}
+
+// 체크박스 모두 선택
+// const checkboxItem = ref(false);
+// const checkAll = () => {
+//     checkboxItem.value = !checkboxItem.value;
+//     console.log('체크박스 선택');
+// }
+
 // 미션 리스트 가져오기
 const missionInfo = computed(() => store.state.mission.missionInfo);
+console.log('missionInfo : ', store.state.mission.missionInfo);
 
 // 상태를 문자열로 변환하는 함수
 const getStatusText = (status) => {
@@ -164,7 +194,7 @@ onMounted(() => {
     margin-bottom: 30px;
 }
 
-#checkbox9 {
+#checkbox {
     margin: 15px;
 }
 

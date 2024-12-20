@@ -23,7 +23,7 @@ class MissionController extends Controller
             $child->setRelation('transactions', $child->transactions()->latest()->limit(3)->get());
         }
         
-        $missionInfo = Mission::select('missions.child_id','missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
+        $missionInfo = Mission::select('missions.mission_id','missions.child_id','missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
                                 ->with('child')
                                 ->where([
                                     ['missions.parent_id', $parent->parent_id]
