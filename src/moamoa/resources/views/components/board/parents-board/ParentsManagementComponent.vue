@@ -14,12 +14,14 @@
                         <router-link to="/parents/spend" style="text-decoration: none; color:black;">
                             <p class="recent-expenses">지출 내역 ></p>
                         </router-link>
-                        <div v-for="transaction in item.transactions" :key="transaction">
-                            <div v-if="transaction.amount > 0" class="amount">
-                                {{ transaction.amount.toLocaleString() }}원
+                        <div>
+                            <div v-if="item.transactions.length === 0">
+                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
                             </div>
                             <div v-else>
-                                <p>최근 지출한 금액이 없습니다.</p>
+                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
+                                    {{ transaction.amount.toLocaleString() }}원
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -29,7 +31,7 @@
                         </router-link>
                         <div class="chk-div">
                             <div v-if="item.missions.length === 0" class="margin-top">
-                                <p>대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
+                                <p class="no-mission">대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
                             </div>
                             <div v-else>
                                 <div class="chk-div-box" v-for="mission in item.missions" :key="mission">
@@ -46,7 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="child-list-triangle">▶</div>   
+            <div class="child-list-triangle">▶</div>
         </div>
     </div>
 </template>
@@ -75,8 +77,6 @@ onMounted(() => {
     store.commit('mission/resetMissionList'); // 상태 초기화
     // console.log(item.value.missions);
 });
-
-
 </script>
 <style scoped>
 /* 메인 화면 */
@@ -181,6 +181,12 @@ onMounted(() => {
 .amount {
     font-size: 1.5rem;
     margin-top: 10px;
+    text-align: center;
+}
+
+.no-amount {
+    font-size: 1.5rem;
+    margin: 50px 0;
     text-align: center;
 }
 
@@ -298,5 +304,10 @@ onMounted(() => {
 .text-center{
     text-align: center;
     margin-top: 60px;
+}
+
+.no-mission {
+    text-align: center;
+
 }
 </style>

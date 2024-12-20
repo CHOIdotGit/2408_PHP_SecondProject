@@ -4,17 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\Mission;
-use App\Models\ParentModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MissionController extends Controller
 {
     public function index() {
         // 예제
-        $parent = ParentModel::find(1);
+        $parent = Auth::guard('parents')->user();
         $missionList = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
                                 ->where('children.parent_id', $parent->parent_id)
-                                ->whereBetween('child_id', [1, 3])
                                 ->get();
 
 
@@ -31,9 +30,7 @@ class MissionController extends Controller
                                 ])
                                 ->latest()
                                 ->paginate(15);
-                                
-
-        
+       
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
