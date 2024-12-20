@@ -29,8 +29,9 @@
                             <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">
                                 {{ day }}
                             </p>
-                            <p class="minus">-5,000</p>
-                            <p class="plus">+3,000</p>
+                            <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
+                            <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
+                            
                         </div>
                     </div>
                 </div>
@@ -83,10 +84,14 @@
 
 <script setup>
 
-const showHistory = ref(true);
+import { ref, computed, reactive, onBeforeMount } from "vue";
+import axios from "axios";
+import { useStore } from "vuex";
 
+const store = useStore();
+const dailyIncomeData = computed(() => store.state.calendar.calendarInfo.dailyIncomeData);
+const dailyOutgoData = computed(()=> store.state.calendar.calendarInfo.dailyOutgoData);
 
-import { ref, computed } from "vue";
 
 // 현재 날짜 상태 관리
 const dateToday = ref(new Date());
@@ -99,6 +104,7 @@ const formattedDate = computed(() =>
     timeZone: "Asia/Seoul",
   })
 );
+
 
 // 해당 월의 시작 요일 계산
 const startDay = computed(() => {
@@ -115,41 +121,56 @@ const daysInMonth = computed(() => {
 
 // 오늘 날짜인지 확인하는 함수
 function isToday(day) {
-        const today = new Date();
-        const year = dateToday.value.getFullYear();
-        const month = dateToday.value.getMonth();
-        return (
-            today.getFullYear() === year &&
-            today.getMonth() === month &&
-            today.getDate() === day
-        );
-    }
+  const today = new Date();
+  const year = dateToday.value.getFullYear();
+  const month = dateToday.value.getMonth();
+  return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+}
 
 // 이전 월로 이동
-function prevMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  dateToday.value = currentDate; // 새로운 객체로 업데이트
+async function prevMonth() {
+  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
+  await store.dispatch("calendar/calendarInfo", dateToday.value);
+  dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
-function nextMonth() {
-  const currentDate = new Date(dateToday.value);
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  dateToday.value = currentDate; // 새로운 객체로 업데이트
+async function nextMonth() {
+  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
+  await store.dispatch("calendar/calendarInfo", dateToday.value);
+  dateToday.value = currentDate;
 }
 
-import { reactive } from "vue";
+// 모달 상태 관리
+const delModal = reactive({ isOpen: false });
 
-    const delModal = reactive({ isOpen: false }); // 객체 형태로 관리
+const delOpenModal = () => {
+  delModal.isOpen = true;
+};
 
-    const delOpenModal = () => {
-    delModal.isOpen = true; // 객체 속성을 수정
-    };
+const delCloseModal = () => {
+  delModal.isOpen = false;
+};
 
-    const delCloseModal = () => {
-    delModal.isOpen = false;
-    };
+// -----------------------
+
+
+
+onBeforeMount(() => {
+    store.dispatch("calendar/calendarInfo", dateToday.value);
+  });
+
+
+// 각 날짜에 맞는 값입력
+function getYearMonth(day) {
+  return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+}
+
+function getDailyIncomeExpense(day, data, incomFlg) {
+    const item = data.find(item => item.target_at === getYearMonth(day));
+    const symbol =incomFlg ? '+' : '-';
+    return item ? symbol + Number(item.income).toLocaleString() : '';
+}
 
 </script>
 

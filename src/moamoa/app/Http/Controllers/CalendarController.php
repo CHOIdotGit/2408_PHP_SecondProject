@@ -37,10 +37,17 @@ class CalendarController extends Controller
         }
 
         // 일별 전체 지출 합산
-        $dailyIncomeData = Mission::selectRaw('start_at, SUM(amount) as income')
+        $dailyIncomeData = Mission::selectRaw('start_at as target_at, SUM(amount) as income')
                                 ->whereBetween('start_at', [$startDate, $endDate])
                                 ->groupBy('start_at')
                                 ->orderBy('start_at')
+                                ->get();
+
+        // 일별 전체 지출 합산
+        $dailyOutgoData = Transaction::selectRaw('transaction_date as target_at, SUM(amount) as income')
+                                ->whereBetween('transaction_date', [$startDate, $endDate])
+                                ->groupBy('transaction_date')
+                                ->orderBy('transaction_date')
                                 ->get();
 
         // 미션 합계
@@ -48,6 +55,7 @@ class CalendarController extends Controller
                     ->whereBetween('start_at',[$startDate, $endDate])
                     ->sum('amount');
 
+        
 
         return response()->json([
             'success' => true,
@@ -56,6 +64,7 @@ class CalendarController extends Controller
             'sidebarData' => $sidebarData,
             'sidebarMission' => $sidebarMission,
             'dailyIncomeData' => $dailyIncomeData,
+            'dailyOutgoData' => $dailyOutgoData,
             
         ], 200);
     }
