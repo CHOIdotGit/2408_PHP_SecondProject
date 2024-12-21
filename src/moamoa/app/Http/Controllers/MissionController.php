@@ -40,11 +40,9 @@ class MissionController extends Controller
     // ************************************************
     // **********부모 미션 상세 페이지 불러오기**********
     // ************************************************
-    public function show(Request $request) {
+    public function show($mission_id) {
         // $parent = ParentModel::find(1);
-        $MissionDetail = Mission::select('missions.title', 'missions.content', 'missions.amount', 'missions.start_at', 'missions.end_at')
-                                ->where('missions.parent_id', 1)
-                                ->first();
+        $MissionDetail = Mission::find($mission_id);
 
         $responseData = [
             'sucesse' => true

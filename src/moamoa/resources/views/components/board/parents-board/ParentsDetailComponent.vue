@@ -1,7 +1,7 @@
 <template>
     <div v-if="missionDetail"  class="detail-container">
-        <div class="content">
-            <p  class="title">미션 제목</p>
+        <div class="content" >
+            <p class="title">미션 제목</p>
             <p class="ms-title">{{ missionDetail.title }}</p>
             <div class="date">
                 <span class="ms-date">{{ missionDetail.start_at }}</span>
@@ -25,7 +25,7 @@
             <p class="ms-amount">{{ missionDetail.amount.toLocaleString()}}</p>
         </div>
         <div class="create-btn">
-            <button @click="$router.push('/parents/mission/list')" class="ms-cancel">뒤로가기</button>
+            <button @click="$router.push('/parent/mission/list')" class="ms-cancel">뒤로가기</button>
             <button @click="delOpenModal" class="ms-del">삭제</button>
             <button class="ms-up">수정</button>
             <button class="ms-comfirm">승인</button>
@@ -49,6 +49,7 @@
         </div>
     </div>
 
+    
 </template>
 
 <script setup>

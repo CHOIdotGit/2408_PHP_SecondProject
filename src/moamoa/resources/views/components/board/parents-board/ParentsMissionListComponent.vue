@@ -7,7 +7,7 @@
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
-                    <input type="checkbox" id="checkAll" name="checkAll" @change="checkAll" :checked="isAllChecked">
+                    <input type="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
                 <span class="kids-name">자녀이름</span>
                 <span class="status">상태</span>
@@ -18,12 +18,12 @@
             </div>
             <div class="scroll">
                 <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
-                    <div class="mission-content">
+                    <div class="mission-content"> 
                         <div class="chk-div">
-                            <input v-model="checkboxItem" type="checkbox" :value="item.mission_id" name="checkbox">
-                            <p>{{item.mission_id}}</p>                        
+                            <input v-model="checkboxItem" class="checkbox" type="checkbox" :value="item.mission_id" name="checkbox">
+                            {{item.mission_id}}
                         </div>
-                        <span class="kids-name">{{ item.child.name }}</span>
+                        <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-title">{{ item.title }}</p>
@@ -33,15 +33,14 @@
                 </div>
             </div>
             <div class="for-buttons margin-top">
-                <router-link to="/parents/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
-                <router-link to="/parents/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link>
+                <router-link to="/parent/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
+                <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { values } from 'lodash';
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
@@ -56,6 +55,7 @@ const checkboxItem = ref([]); // 모두 선택되면 전체 체크박스에도 �
 const isAllChecked = computed(() => {
     return checkboxItem.value.length > 0 && missionInfo.value.every((item) => checkboxItem.value.includes(item.mission_id));
 });
+
 
 const checkAll = (e) => {
     if(e.target.checked) {
@@ -121,6 +121,11 @@ onMounted(() => {
     const childId = route.params.id; // URL에서 자녀 ID 가져오기
     store.dispatch('mission/missionInfo', childId);
 });
+
+
+const getMissionId = (mission_id) => {
+    store.dispatch('mission/showMissionDetail', mission_id);
+}
 
 </script>
 
@@ -197,8 +202,10 @@ onMounted(() => {
     margin-bottom: 30px;
 }
 
-#checkbox {
+.checkbox {
     margin: 15px;
+    width: 16px;
+    height: 16px;
 }
 
 .state-in-progress {

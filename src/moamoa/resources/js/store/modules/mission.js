@@ -105,14 +105,14 @@ export default {
         // ***************************
         // 부모 미션 상세 페이지
         // ***************************
-        showMissionDetail(context, id) {
-            console.log(id);
-            const url = '/api/parent/mission/detail/'+ id ;
-            axios.get(url, id)
+        showMissionDetail(context, mission_id) {
+            const url = '/api/parent/mission/detail/'+ mission_id ;
+            axios.get(url)
             .then(response => {
                 console.log(response.data.missionDetail);
                 context.commit('setMissionDetail', response.data.missionDetail);
-                context.commit('setMissionId', id);
+                context.commit('setMissionId', mission_id);
+                console.log(response.data.missionId);
                 })
             .catch(error => {
                 console.log('미션 상세 페이지 불러오기 오류', error);

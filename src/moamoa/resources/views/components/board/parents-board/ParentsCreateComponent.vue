@@ -76,8 +76,8 @@
                     <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" min="0" maxlength="7" required>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/parents/mission/list')" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('/parents/detail', missionCreate)" class="create-btn">등록</button>
+                    <button @click="$router.push('/parent/mission/list')" class="create-btn">취소</button>
+                    <button @click="$store.dispatch('/parent/mission/detail', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
         </div>
