@@ -3,6 +3,7 @@
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HeaderController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,7 @@ Route::prefix('/api/auth')->group(function () {
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
 
 // 부모 홈
-Route::get('/api/parent/home', [MissionController::class, 'index']);
+Route::get('/api/parent/home', [HomeController::class, 'index']);
 
 // 부모 미션 리스트
 Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index']);

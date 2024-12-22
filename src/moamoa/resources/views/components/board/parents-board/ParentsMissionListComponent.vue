@@ -17,13 +17,14 @@
                 <p class="due-date">기한</p>
             </div>
             <div class="scroll">
-                <div v-for="item in missionInfo" :key="item" class="mission-inserted-list">
+                <div v-if="missionList && missionList.length" v-for="item in missionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content"> 
                         <div class="chk-div">
                             <input v-model="checkboxItem" class="checkbox" type="checkbox" :value="item.mission_id" name="checkbox">
                             {{item.mission_id}}
                         </div>
                         <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
+                        <!-- 버튼 말고 p태그 그냥 두는 것은 어떠세요? -->
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-title">{{ item.title }}</p>
@@ -41,11 +42,14 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 const store = useStore();
 const route = useRoute();
+
+// 라우터에서 쿼리 파라미터 받기
+const childId = route.query.child_id;
 
 // ***체크박스 선택하기***
 // 선택된 체크박스 데이터
@@ -76,8 +80,8 @@ const checkAll = (e) => {
 // }
 
 // 미션 리스트 가져오기
-const missionInfo = computed(() => store.state.mission.missionInfo);
-console.log('missionInfo : ', store.state.mission.missionInfo);
+const missionList = computed(() => store.state.mission.missionList);
+console.log('missionList : ', store.state.mission.missionList);
 
 // 상태를 문자열로 변환하는 함수
 const getStatusText = (status) => {
@@ -118,10 +122,19 @@ const getStatusClass = (status) => {
 
 // onMount
 onMounted(() => {
-    const childId = route.params.id; // URL에서 자녀 ID 가져오기
-    store.dispatch('mission/missionInfo', childId);
+    // const childId = route.query.child_id; // 위에 이미 설정되어 있음
+    store.commit('mission/resetState'); // 상태 초기화
+    if(childId) {
+        store.dispatch('mission/missionList', childId)
+            .then(response => {
+                // Proxy 객체를 배열로 변환
+                store.commit('mission/setMissionList', JSON.parse(JSON.stringify(response.data.missionList)));
+            })
+            .catch(error => {
+                console.error('Error fetching mission list:', error);
+            });
+    }
 });
-
 
 const getMissionId = (mission_id) => {
     store.dispatch('mission/showMissionDetail', mission_id);

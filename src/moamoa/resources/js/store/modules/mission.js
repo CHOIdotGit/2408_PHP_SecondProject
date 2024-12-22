@@ -7,7 +7,7 @@ export default {
     namespaced:true,
     state: ()=> ({
         missionList: []
-        ,missionInfo: null
+        ,parentHome: []
         ,missionDetail: null
         ,lastPageFlg: false
         ,controlFlg: true
@@ -17,19 +17,24 @@ export default {
 
     }),
     mutations: {
-        setMissionList(state, missionList) {
-            state.missionList = state.missionList.concat(missionList);
+        setParentHome(state, parentHome) {
+            state.parentHome = state.parentHome.concat(parentHome);
+            // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
         },
-        setMissionInfo(state, missionInfo) {
-            state.missionInfo = missionInfo;
-            console.log('mutation setMissionInfo called with:', missionInfo);
+        setMissionList(state, missionList) {
+            state.missionList = missionList;
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
         },
-        resetMissionList(state) {
-            state.missionList = [];
-        },    
+        // Vuex 상태 초기화 하는 함수
+        resetState(state) {
+            state.missionList = null; // 미션 리스트 초기화
+            state.childId = null; // 자녀 ID 초기화
+            state.controlFlg = true; // 제어 플래그 초기화
+            state.parentHome = [];
+            // 필요한 상태 변수 추가로 초기화
+        },
         setMissionDetail(state, missionDetail) {
             state.missionDetail = missionDetail;
         },
@@ -44,7 +49,6 @@ export default {
         },
         setChildId(state, childId) {
             state.childId = childId;
-            console.log('mutation setChildId called with:', childId);
         }
         
 
@@ -57,7 +61,7 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        missionListPagination(context) {
+        parentHome(context) {
             context.commit('setControlFlg', false);
             
             const url = '/api/parent/home';
@@ -65,8 +69,8 @@ export default {
         
             axios.get(url)
             .then(response => {
-                context.commit('setMissionList', response.data.missionList);
-                // console.log(response.data.missionList);
+                context.commit('setParentHome', response.data.parentHome);
+                // console.log(response.data.parentHome);
             })
             .catch(error => {
                 console.error('미션 리스트 불러오기 오류', error);
@@ -74,28 +78,25 @@ export default {
         },
 
         /**
-         * 미션 리스트 페이지
+         * 부모 미션 리스트 페이지
          * 
          * 미션 정보 획득
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        missionInfo(context, id) {
+        missionList(context, child_id) {
             context.commit('setControlFlg', false);
             
-            const url = '/api/parent/mission/list/' + id;
-            
-            axios.get(url, { params: { id } })
+            const url = '/api/parent/mission/list/' + child_id;
+                        
+            axios.get(url)
             .then(response => {
-                console.log('Fetched missions for child ID:', id);
-
-                const missionInfo = response.data.missionInfo.data;
-                const childId = missionInfo.child_id || id;
-    
-                context.commit('setMissionInfo', missionInfo);
-                context.commit('setChildId', childId);
-    
-                console.log('Updated child ID in state:', context.state.mission.childId);
+                console.log('응답 데이터 확인',response.data.missionList.data)
+                   
+                context.commit('setMissionList', response.data.missionList.data);
+                context.commit('setChildId', child_id);
+                
+                console.log('자녀 확인', context.state.child_id);
             })
             .catch(error => {
                 console.error('미션 정보 불러오기 오류', error);

@@ -105,7 +105,7 @@ const routes = [
     },
     // 부모 미션 리스트 페이지
     {
-        path: '/parent/mission/list',
+        path: '/parent/mission/list/:id',
         component: ParentsMissionListComponent,
     },
     // 부모 미션 작성 페이지

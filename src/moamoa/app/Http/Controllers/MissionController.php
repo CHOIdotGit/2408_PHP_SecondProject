@@ -9,30 +9,21 @@ use Illuminate\Support\Facades\Auth;
 
 class MissionController extends Controller
 {
-    public function index() {
+    public function index($id) {
         // 예제
         $parent = Auth::guard('parents')->user();
-        $missionList = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
-                                ->where('children.parent_id', $parent->parent_id)
-                                ->get();
-
-
-        foreach($missionList as $child) {
-            $child->setRelation('missions', $child->missions()->latest()->where('missions.status', 1)->limit(3)->get());
-            $child->setRelation('transactions', $child->transactions()->latest()->limit(3)->get());
-        }
-        
-        $missionInfo = Mission::select('missions.mission_id','missions.child_id','missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
-                                ->with('child')
-                                ->where('missions.parent_id', $parent->parent_id)
-                                ->latest()
-                                ->paginate(15);
        
+        $missionList = Mission::select('missions.mission_id', 'missions.child_id', 'missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
+                                    ->with('child')
+                                    ->where('missions.parent_id', $parent->parent_id)
+                                    ->where('missions.child_id', $id)
+                                    ->latest()
+                                    ->paginate(15);
+                
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
-            ,'missionList' => $missionList
-            ,'missionInfo' => $missionInfo
+            ,'missionList' => $missionList->toArray()
         ];
         return response()->json($responseData, 200);
     }
@@ -42,10 +33,11 @@ class MissionController extends Controller
     // ************************************************
     public function show($mission_id) {
         // $parent = ParentModel::find(1);
+        
         $MissionDetail = Mission::find($mission_id);
-
+        
         $responseData = [
-            'sucesse' => true
+            'success' => true
             ,'msg' => '자식 미션 상세 불러오기 성공'
             ,'missionDetail' => $MissionDetail->toArray()
         ];
@@ -64,7 +56,7 @@ class MissionController extends Controller
 
 
         $responseData = [
-            'sucesse' => true
+            'success' => true
             ,'msg' => '미션 등록 성공'
             ,'createMission' => $MissionDetail->toArray()
         ];

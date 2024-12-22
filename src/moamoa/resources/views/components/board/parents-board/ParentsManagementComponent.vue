@@ -3,7 +3,7 @@
         <div class="container">
             <div class="child-list-triangle">◀</div>   
             <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
-            <div v-for="item in missionList" :key="item" class="child-box"> 
+            <div v-for="item in parentHome" :key="item" class="child-box"> 
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
                 <div class="blank">-</div>
@@ -56,18 +56,12 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const router = useRouter();
-// const route = useRoute();
+const route = useRoute();
+// const child_id = route.query.child_id;
+
 
 // 미션 리스트 가져오기
-const missionList = computed(() => store.state.mission.missionList);
-const currentChildId = computed(() => store.state.mission.childId);
-
-watch(
-    () => currentChildId.value,
-    (newChildId) => {
-        console.log('updated childId in component:', newChildId);
-    }
-);
+const parentHome = computed(() => store.state.mission.parentHome);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -78,15 +72,26 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
-const goMissionList = (childId) => {
-    console.log('선택된 childId:', childId);
-    store.dispatch('mission/missionInfo', childId)
-        .then(() => {
-            console.log('store.state.mission.childId:', store.state.mission.childId);
-            router.push('/parent/mission/list');
-        })
-        .catch(error => console.error('Error:', error));
+const goMissionList = (id) => {
+    router.push(`/parent/mission/list/${id}`)
+    .then(response => {
+        console.log('전체 응답:', response);  // 응답 구조를 확인
+        console.log('Mission List:', response.data.missionList);
+        context.commit('setMissionList', response.data.missionList);
+    })
+    .catch(error => {
+        console.error('Error fetching mission list:', error);
+        if (error.response) {
+            console.log('응답 오류:', error.response);  // 응답 오류의 상세 정보
+        } else if (error.request) {
+            console.log('요청 오류:', error.request);  // 요청이 보내졌지만 응답이 없을 때
+        } else {
+            console.log('네트워크 또는 설정 오류:', error.message);  // 다른 오류 메시지
+        }
+    
+    });
 };
+
 const goSpendList = () => {
     // 거래 정보를 가져오는 액션 호출
     store.dispatch('transaction/transactionListPagination')
@@ -101,8 +106,8 @@ const goSpendList = () => {
 
 // onMount
 onMounted(() => {
-    store.commit('mission/resetMissionList'); // 상태 초기화
-    store.dispatch('mission/missionListPagination');
+    store.commit('mission/resetState'); // 상태 초기화
+    store.dispatch('mission/parentHome');
     // console.log(item.value.missions);
 });
 </script>
