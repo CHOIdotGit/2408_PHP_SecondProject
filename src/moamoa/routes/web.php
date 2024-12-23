@@ -47,6 +47,9 @@ Route::get('/api/parent/mission/detail/{id}', [MissionController::class, 'show']
 // 부모 미션 작성 페이지
 Route::post('/api/parent/mission/create', [MissionController::class, 'store']);
 
+// 부모 미션 삭제 페이지
+Route::delete('/api/parent/mission/detail/{id}', [MissionController::class, 'destroy']);
+
 // 부모 지출 리스트 페이지
 Route::get('/api/parent/spend/list', [TransactionController::class, 'index']);
 
@@ -55,6 +58,7 @@ Route::get('/api/child/mission/list', [MissionController::class, 'index']);
 
 // 헤더 관련(드랍메뉴 자녀이름 출력)
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
+
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

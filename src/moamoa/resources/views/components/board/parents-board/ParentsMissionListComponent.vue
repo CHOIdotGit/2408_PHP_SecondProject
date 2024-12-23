@@ -141,6 +141,7 @@ onMounted(() => {
     }
 });
 
+// 미션아이디 확인해서 상세 페이지 이동하기 위해서
 const getMissionId = (mission_id) => {
     console.log('미션 아이디 획득', mission_id);
     store.dispatch('mission/showMissionDetail', mission_id);

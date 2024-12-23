@@ -63,4 +63,20 @@ class MissionController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+    // ************************************************
+    // **************부모 미션 삭제 페이지 **************
+    // ************************************************
+    public function destroy() {
+        $deleteMission = Mission::destroy(1);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '미션 삭제 성공'
+            ,'createMission' => $deleteMission
+        ];
+        return response()->json($responseData, 200);
+
+
+    }
 }

@@ -11,10 +11,11 @@
         </div>
         <div class="content">
             <p class="title">미션 종류</p>
-            <div :class="category-btn"  v-for="index in categories" :key="index">
-                <img class="ms-category-img" :src="index.img" alt="." v-if="categoryImg">
-                <p>{{ index.name }}</p>
+            <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
+                <img class="ms-category-img" :src="item.img" >
+                <p>{{ item.name }}</p>
             </div>
+                <p>{{ missionDetail.category }}</p>
         </div>
         <div class="content">
             <p class="title">미션 내용</p>
@@ -22,7 +23,7 @@
         </div>
         <div class="content">
             <p class="title">금액(원)</p>
-            <!-- <p class="ms-amount">{{ missionDetail.amount.toLocaleString()}}</p> -->
+            <p class="ms-amount">{{ missionDetail.amount}}</p>
         </div>
         <div class="create-btn">
             <button @click="$router.push('/parent/mission/list')" class="ms-cancel">뒤로가기</button>
@@ -39,12 +40,12 @@
             <div class="modal-content">
                 <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
                 <p class="modal-name"></p>
-                <p class="modal-ms-title">미션 : </p>
+                <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
                 <div class="del-guide">해당 미션이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="" class="modal-del">삭제</button>
+                <button @click="missionDelete" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -56,22 +57,37 @@
 import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
 
-const categories = reactive({
-    name: '학습' , img:'/img/icon-pencil.png'
-    ,name: '취미' , img:'/img/icon-bicycle.png'
-    ,name: '집안일' , img:'/img/icon-cleaner.png'
-    ,name: '생활습관' , img:'/img/icon-clock.png'
-    ,name: '기타' , img:'/img/icon-checklist7.png'
-})
+// *****미션 상세 정보******
+const store = useStore();
+const missionDetail = computed(() => store.state.mission.missionDetail);
+onMounted(() => {
+    store.dispatch('mission/showMissionDetail', store.state.mission.missionId);
+});
+
+
+//**미션 카테고리 정보 출력***
+const category = computed(() => store.state.mission.missionDetail.category);
+
+
+const categories = reactive([
+    {name: '학습' , img:'/img/icon-pencil.png', index : 0}
+    ,{name: '취미' , img:'/img/icon-bicycle.png', index : 1}
+    ,{name: '집안일' , img:'/img/icon-cleaner.png', index : 2}
+    ,{name: '생활습관' , img:'/img/icon-clock.png', index : 3}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : 4}
+]);
 
 
 
+// const categories = [
+//     { name: '학습' , img:'/img/icon-pencil.png' },
+//     { name: '취미' , img:'/img/icon-bicycle.png' },
+//     { name: '집안일' , img:'/img/icon-cleaner.png' },
+//     { name: '생활습관' , img:'/img/icon-clock.png' },
+//     { name: '기타' , img:'/img/icon-checklist7.png' },
 
-// { name: '학습' , img:'/img/icon-pencil.png' },
-// { name: '취미' , img:'/img/icon-bicycle.png' },
-// { name: '집안일' , img:'/img/icon-cleaner.png' },
-// { name: '생활습관' , img:'/img/icon-clock.png' },
-// { name: '기타' , img:'/img/icon-checklist7.png' },
+// ],
+
 
 
 // *****삭제 모달창********** 
@@ -85,12 +101,7 @@ const delCloseModal = () => {
     delModal.value = false;
 }
 
-// *****미션 상세 정보******
-const store = useStore();
-const missionDetail = computed(() => store.state.mission.missionDetail);
-onMounted(() => {
-    store.dispatch('mission/showMissionDetail', store.state.mission.missionId);
-});
+
 
 
 
@@ -168,7 +179,7 @@ span {
 }
 
 /* 미션 종류 카테고리 이미지 */
-.category-btn {
+.categorybtn {
     display: flex;
     flex-direction: column;
     width: 80px;
@@ -180,6 +191,10 @@ span {
     
 }
 
+/* db에 저장된 카테고리 표시 */
+.categorybtn-green {
+    background-color: #A2CAAC;
+}
 
 .ms-category-img {
     margin-top: 13px;
