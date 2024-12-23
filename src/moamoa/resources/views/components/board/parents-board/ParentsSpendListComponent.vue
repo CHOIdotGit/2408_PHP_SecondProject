@@ -9,9 +9,9 @@
                 <p class="due-date">소비일자</p>
             </div>
             <div class="scroll">
-                <div v-for="item in transactionList" :key="item" class="mission-inserted-list">
+                <div v-if="transactionList && transactionList.length" v-for="item in transactionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
-                        <span class="name">{{ item.child.name }}</span>
+                        <span @click="goTransactionDetail(item.transaction_id)" class="name">{{ item.child.name }}</span>
                         <p class="category">{{ getCategoryText(item.category) }}</p>
                         <p class="title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
@@ -35,6 +35,10 @@ const store = useStore();
 
 // 거래 리스트 가져오기
 const transactionList = computed(() => store.state.transaction.transactionList);
+// console.log('transactionList : ', store.state.transaction.transactionList);
+
+// 자녀 id 파라미터 세팅
+const childId = computed(() => store.state.mission.childId);
 
 const getCategoryText = (category) => {
     const categoryMapping = {
@@ -55,9 +59,15 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
+const goTransactionDetail = (transaction_id) => {
+    store.dispatch('transaction/showTransactionDetail', transaction_id);
+}
+
 // onMount
 onMounted(() => {
-    store.dispatch('transaction/transactionListPagination');
+    if(childId.value) {
+        store.dispatch('transaction/transactionList', childId.value);
+    }
 });
 </script>
 
@@ -147,5 +157,9 @@ onMounted(() => {
     overflow-y: auto;
     overflow-x: hidden;
     height: 380px;
+}
+
+.name {
+    cursor: pointer;
 }
 </style>

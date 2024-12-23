@@ -24,7 +24,6 @@
                             {{item.mission_id}}
                         </div>
                         <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
-                        <!-- 버튼 말고 p태그 그냥 두는 것은 어떠세요? -->
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-title">{{ item.title }}</p>
@@ -42,12 +41,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 // import { useRouter } from 'vue-router';
-import router from '../../../../js/router.js';
 import { useStore } from 'vuex';
-// const router = useRouter();
+import router from '../../../../js/router.js';
 const store = useStore();
+// const router = useRouter();
 // const router = useRouter();
 
 // 라우터에서 쿼리 파라미터 받기

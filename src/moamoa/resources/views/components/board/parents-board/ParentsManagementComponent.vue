@@ -11,7 +11,7 @@
                     <h3 class="name">{{ item.name }}</h3>
                     <p class="nickname">{{ item.nick_name }}</p>
                     <div class="expense-box">
-                        <p class="recent-expenses" @click="goSpendList">지출 내역 ></p>
+                        <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
                         <div>
                             <div v-if="item.transactions.length === 0">
                                 <p class="no-amount">최근 지출한 금액이 없습니다.</p>
@@ -25,7 +25,7 @@
                     </div>
                     <div class="child-mission">
                         <!-- <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p> -->
-                        <p class="mission" @click="moveMission(item.child_id)">승인 대기 중인 미션 ></p>
+                        <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
                         <div class="chk-div">
                             <div v-if="item.missions.length === 0" class="margin-top">
                                 <p class="no-mission">대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
@@ -60,12 +60,6 @@ const router = useRouter();
 const route = useRoute();
 // const child_id = route.query.child_id;
 
-
-const moveMission = (id) => {
-    store.dispatch('mission/missionList', id);
-    router.push(`/parent/mission/list/${id}`);
-};
-
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
 
@@ -73,9 +67,14 @@ const parentHome = computed(() => store.state.mission.parentHome);
 const maxLength = 12;
 
 const getTruncatedTitle =(title) => {
-  return title.length > maxLength 
+    return title.length > maxLength 
     ? title.substring(0, maxLength) + '...' 
     : title;
+};
+
+// 미션 리스트로 이동
+const goMissionList = (child_id) => {
+    store.dispatch('mission/missionList', child_id);
 };
 
 // const goMissionList = (id) => {
@@ -98,16 +97,10 @@ const getTruncatedTitle =(title) => {
 //     });
 // };
 
-const goSpendList = () => {
+// 지출 리스트로 이동
+const goSpendList = (child_id) => {
     // 거래 정보를 가져오는 액션 호출
-    store.dispatch('transaction/transactionListPagination')
-    .then(() => {
-        // 액션이 완료된 후 라우팅
-        router.push('/parent/spend/list');
-    })
-    .catch(error => {
-        console.error('거래 정보 가져오다가 도적 만남', error);
-    })
+    store.dispatch('transaction/transactionList', child_id);
 };
 
 // onMount

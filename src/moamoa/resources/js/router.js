@@ -24,6 +24,7 @@ import ParentRegistComponent from '../views/components/auth/regist/ParentRegistC
 import ChildRegistComponent from '../views/components/auth/regist/ChildRegistComponent.vue';
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
+import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -117,8 +118,13 @@ const routes = [
     },
     // 부모 지출 리스트 페이지
     {
-        path: '/parent/spend/list',
+        path: '/parent/spend/list/:id',
         component: ParentsSpendListComponent,
+    },
+    // 부모 지출 상세 페이지
+    {
+        path: '/parent/spend/detail/:id',
+        component: ParentsSpendDetailComponent,
     },
     // 부모 달력 페이지
     {
