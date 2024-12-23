@@ -5,7 +5,7 @@
             <!-- 부모/자녀에 따라 홈 경로 변경 -->
             <div class="item">
                 <router-link v-if="$store.state.auth.authFlg" to="/parent/home" class=link-deco><p class="item-btn">홈</p></router-link>
-                <router-link v-else to="/child/home" class=link-deco><p class="item-btn" >홈</p></router-link>
+                <router-link v-else to="/child/home" class="link-deco"><p class="item-btn" >홈</p></router-link>
             </div>
             <!-- v-for를 이용한 지출/미션/캘린터 메뉴 -->
             <!-- 문제점: router-link 어려움 -->
@@ -17,23 +17,23 @@
             </div> -->
 
             <div class="item">
-                <router-link to="/parent/spend/list/" class=link-deco><p class="item-btn" >지출</p></router-link>
+                <router-link to="/parent/spend/list/" class="link-deco"><p class="item-btn" >지출</p></router-link>
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
-                        <router-link to="/child/spend/list/" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                        <router-link to="/child/spend/list/" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
             </div>
 
             <div class="item">
-                <router-link to="/parent/mission/list" class=link-deco><p class="item-btn" >미션</p></router-link>
+                <router-link to="/parent/mission/list" class="link-deco"><p class="item-btn" >미션</p></router-link>
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
-                        <router-link to="/child/mission/list" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                        <router-link to="/child/mission/list" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
             </div>
 
             <div class="item">
-                <router-link to="/parent/calendar" class=link-deco><p class="item-btn" >캘린더</p></router-link>
+                <router-link to="/parent/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link>
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
-                        <router-link to="/child/calendar" class=link-deco><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
+                        <router-link to="/child/calendar" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
             </div>
             <div class="item">

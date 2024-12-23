@@ -40,6 +40,7 @@ class MissionController extends Controller
             'success' => true
             ,'msg' => '자식 미션 상세 불러오기 성공'
             ,'missionDetail' => $MissionDetail->toArray()
+        
         ];
         return response()->json($responseData, 200);
     }

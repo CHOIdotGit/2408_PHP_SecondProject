@@ -8,13 +8,15 @@ export default {
     state: ()=> ({
         missionList: []
         ,parentHome: []
-        ,missionDetail: null
         ,lastPageFlg: false
         ,controlFlg: true
-        ,missionId: null
         ,bellContent: []
-        ,childId: null
-
+        // 미션 관련 -------------------------------------------------------------
+        ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
+        // ,missionDetail: sessionStorage.getItem('missionDetail') ? JSON.parse(sessionStorage.getItem('missionDetail')) : []
+        ,missionDetail: []
+        ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
+        
     }),
     mutations: {
         setParentHome(state, parentHome) {
@@ -94,9 +96,12 @@ export default {
                 console.log('응답 데이터 확인',response.data.missionList.data)
                    
                 context.commit('setMissionList', response.data.missionList.data);
+
+                // 세션 스토리지에 자녀ID 세팅
+                sessionStorage.setItem('child_id', child_id);
                 context.commit('setChildId', child_id);
                 
-                console.log('자녀 확인', context.state.child_id);
+                console.log('자녀 확인', context.state.childId);
             })
             .catch(error => {
                 console.error('미션 정보 불러오기 오류', error);
@@ -107,16 +112,24 @@ export default {
         // 부모 미션 상세 페이지
         // ***************************
         showMissionDetail(context, mission_id) {
-            const url = '/api/parent/mission/detail/'+ mission_id ;
-            axios.get(url)
+            const url = '/api/parent/mission/detail/'+ mission_id;
+            // console.log(url);
+
+            axios.get(url, mission_id)
             .then(response => {
                 console.log(response.data.missionDetail);
+                // sessionStorage.setItem('missionDetail', JSON.stringify(response.data.missionDetail));
+                sessionStorage.setItem('missionId', mission_id);
                 context.commit('setMissionDetail', response.data.missionDetail);
                 context.commit('setMissionId', mission_id);
-                console.log(response.data.missionId);
+                router.push('/parent/mission/detail/'+ mission_id);
+                console.log('미션아이디', mission_id);
+
+                // sessionStorage.removeItem('missionDetail'); // 다른페이지로 이동시 디테일 정보 제거
                 })
             .catch(error => {
                 console.log('미션 상세 페이지 불러오기 오류', error);
+                
             });
         },
 

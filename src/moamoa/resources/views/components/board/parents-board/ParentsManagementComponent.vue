@@ -24,7 +24,8 @@
                         </div>
                     </div>
                     <div class="child-mission">
-                        <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                        <!-- <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p> -->
+                        <p class="mission" @click="moveMission(item.child_id)">승인 대기 중인 미션 ></p>
                         <div class="chk-div">
                             <div v-if="item.missions.length === 0" class="margin-top">
                                 <p class="no-mission">대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
@@ -60,6 +61,11 @@ const route = useRoute();
 // const child_id = route.query.child_id;
 
 
+const moveMission = (id) => {
+    store.dispatch('mission/missionList', id);
+    router.push(`/parent/mission/list/${id}`);
+};
+
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
 
@@ -72,25 +78,25 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
-const goMissionList = (id) => {
-    router.push(`/parent/mission/list/${id}`)
-    .then(response => {
-        console.log('전체 응답:', response);  // 응답 구조를 확인
-        console.log('Mission List:', response.data.missionList);
-        context.commit('setMissionList', response.data.missionList);
-    })
-    .catch(error => {
-        console.error('Error fetching mission list:', error);
-        if (error.response) {
-            console.log('응답 오류:', error.response);  // 응답 오류의 상세 정보
-        } else if (error.request) {
-            console.log('요청 오류:', error.request);  // 요청이 보내졌지만 응답이 없을 때
-        } else {
-            console.log('네트워크 또는 설정 오류:', error.message);  // 다른 오류 메시지
-        }
+// const goMissionList = (id) => {
+//     router.push(`/parent/mission/list/${id}`)
+//     .then(response => {
+//         console.log('전체 응답:', response);  // 응답 구조를 확인
+//         console.log('Mission List:', response.data.missionList);
+//         context.commit('setMissionList', response.data.missionList);
+//     })
+//     .catch(error => {
+//         console.error('Error fetching mission list:', error);
+//         if (error.response) {
+//             console.log('응답 오류:', error.response);  // 응답 오류의 상세 정보
+//         } else if (error.request) {
+//             console.log('요청 오류:', error.request);  // 요청이 보내졌지만 응답이 없을 때
+//         } else {
+//             console.log('네트워크 또는 설정 오류:', error.message);  // 다른 오류 메시지
+//         }
     
-    });
-};
+//     });
+// };
 
 const goSpendList = () => {
     // 거래 정보를 가져오는 액션 호출

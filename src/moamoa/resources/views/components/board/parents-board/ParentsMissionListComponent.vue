@@ -43,13 +43,18 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+// import { useRouter } from 'vue-router';
+import router from '../../../../js/router.js';
 import { useStore } from 'vuex';
+// const router = useRouter();
 const store = useStore();
-const route = useRoute();
+// const router = useRouter();
 
 // 라우터에서 쿼리 파라미터 받기
-const childId = route.query.child_id;
+// const childId = router.query.child_id;
+
+// 자녀 id 파라미터 세팅
+const childId = computed(() => store.state.mission.childId);
 
 // ***체크박스 선택하기***
 // 선택된 체크박스 데이터
@@ -123,20 +128,21 @@ const getStatusClass = (status) => {
 // onMount
 onMounted(() => {
     // const childId = route.query.child_id; // 위에 이미 설정되어 있음
-    store.commit('mission/resetState'); // 상태 초기화
-    if(childId) {
-        store.dispatch('mission/missionList', childId)
-            .then(response => {
-                // Proxy 객체를 배열로 변환
-                store.commit('mission/setMissionList', JSON.parse(JSON.stringify(response.data.missionList)));
-            })
-            .catch(error => {
-                console.error('Error fetching mission list:', error);
-            });
+    // store.commit('mission/resetState'); // 상태 초기화
+    if(childId.value) {
+        store.dispatch('mission/missionList', childId.value);
+            // .then(response => {
+            //     Proxy 객체를 배열로 변환
+            //     store.commit('mission/setMissionList', JSON.parse(JSON.stringify(response.data.missionList)));
+            // })
+            // .catch(error => {
+            //     console.error('Error fetching mission list:', error);
+            // });
     }
 });
 
 const getMissionId = (mission_id) => {
+    console.log('미션 아이디 획득', mission_id);
     store.dispatch('mission/showMissionDetail', mission_id);
 }
 

@@ -120,7 +120,7 @@ const routes = [
     },
     // 부모 미션 상세 페이지
     {
-        path: '/parent/mission/detail',
+        path: '/parent/mission/detail/:id',
         component: ParentsDetailComponent,
     },
     // 부모 지출 리스트 페이지

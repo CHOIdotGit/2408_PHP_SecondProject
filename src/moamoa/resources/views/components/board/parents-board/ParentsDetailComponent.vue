@@ -12,7 +12,7 @@
         <div class="content">
             <p class="title">미션 종류</p>
             <div :class="category-btn"  v-for="index in categories" :key="index">
-                <img class="ms-category-img" :src="index.img" alt=".">
+                <img class="ms-category-img" :src="index.img" alt="." v-if="categoryImg">
                 <p>{{ index.name }}</p>
             </div>
         </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="content">
             <p class="title">금액(원)</p>
-            <p class="ms-amount">{{ missionDetail.amount.toLocaleString()}}</p>
+            <!-- <p class="ms-amount">{{ missionDetail.amount.toLocaleString()}}</p> -->
         </div>
         <div class="create-btn">
             <button @click="$router.push('/parent/mission/list')" class="ms-cancel">뒤로가기</button>
@@ -53,17 +53,25 @@
 </template>
 
 <script setup>
-import { computed, ref, onMounted  } from 'vue';
+import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
 
-const categories = [
-    { name: '학습' , img:'/img/icon-pencil.png' },
-    { name: '취미' , img:'/img/icon-bicycle.png' },
-    { name: '집안일' , img:'/img/icon-cleaner.png' },
-    { name: '생활습관' , img:'/img/icon-clock.png' },
-    { name: '기타' , img:'/img/icon-checklist7.png' },
-]
+const categories = reactive({
+    name: '학습' , img:'/img/icon-pencil.png'
+    ,name: '취미' , img:'/img/icon-bicycle.png'
+    ,name: '집안일' , img:'/img/icon-cleaner.png'
+    ,name: '생활습관' , img:'/img/icon-clock.png'
+    ,name: '기타' , img:'/img/icon-checklist7.png'
+})
 
+
+
+
+// { name: '학습' , img:'/img/icon-pencil.png' },
+// { name: '취미' , img:'/img/icon-bicycle.png' },
+// { name: '집안일' , img:'/img/icon-cleaner.png' },
+// { name: '생활습관' , img:'/img/icon-clock.png' },
+// { name: '기타' , img:'/img/icon-checklist7.png' },
 
 
 // *****삭제 모달창********** 
@@ -81,7 +89,7 @@ const delCloseModal = () => {
 const store = useStore();
 const missionDetail = computed(() => store.state.mission.missionDetail);
 onMounted(() => {
-    store.dispatch('mission/showMissionDetail');
+    store.dispatch('mission/showMissionDetail', store.state.mission.missionId);
 });
 
 
