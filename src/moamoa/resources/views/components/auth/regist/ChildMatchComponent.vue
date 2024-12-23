@@ -16,8 +16,9 @@
       <div class="data-info">
         <span>
           <div class="icon-img">
-            <img src="/img/profile-icon/icon-girl-5.png">
-          </div>OOO 님의 <br>자녀가 맞으십니까?
+            <!-- <img src="/img/profile-icon/icon-girl-5.png"> -->
+            <img :src="parent.profile">
+          </div><span class="color-green">{{ parent.name }}</span> 님의 <br>자녀가 맞으십니까?
         </span>
 
         <span class="mini-text">
@@ -25,8 +26,8 @@
         </span>
 
         <div class="btn-group">
-          <button type="button">뒤로가기</button>
-          <button type="button">맞습니다</button>
+          <button @click="$store.commit('auth/setRegistFlg', true);" type="button">뒤로가기</button>
+          <button @click="nextComplete" type="button">맞습니다</button>
         </div>
       </div>
     </div>
@@ -34,10 +35,31 @@
 </template>
 
 <script setup>
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
 
+  const store = useStore();
+  const parent = computed(() => store.state.auth.parentInfo);
+  const props = defineProps({
+    registInfo: Object,
+  });
+
+  // 맞습니다 버튼
+  const nextComplete = () => {
+    // 가입정보에 매칭부모 아이디를 추가
+    props.registInfo.parent_id = parent.value.parent_id;
+
+    // 회원가입 수행
+    store.dispatch('auth/storeUser', props.registInfo);
+  }
 </script>
 
 <style scoped>
+
+  .color-green {
+    color:#008000;
+  }
+
   /* 폼 기본 설정 */
   input, button {
     outline: none; /* 아웃라인 제거 */

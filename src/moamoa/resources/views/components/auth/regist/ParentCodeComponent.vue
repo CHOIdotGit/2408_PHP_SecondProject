@@ -14,10 +14,10 @@
     <!-- 입력 폼 DIV -->
     <div class="data-form position-relative">
       <div class="data-info">
-        <p>{{ $store.state.auth.registInfo.name }} 님의 가족코드</p>
+        <p>{{ props.registInfo.name }} 님의 가족코드</p>
 
         <div class="fam-code">
-          <p>{{ $store.state.auth.registInfo.family_code }}</p>
+          <p>{{ familyCode }}</p>
         </div>
         
         <span class="mini-text">
@@ -33,15 +33,17 @@
 </template>
 
 <script setup>
-import router from '../../../../js/router';
+import { computed, defineProps } from 'vue';
+import { useStore } from 'vuex';
 
-
+  const store = useStore(); 
+  const props = defineProps({
+    registInfo: Object,
+  });
+  const familyCode = computed(() => store.state.auth.familyCode);
   const nextComplete = () => {
-    // 페이지를 넘어가기전에 세션에 담긴 회원정보를 없애야함
-    sessionStorage.clear();
-
-    // 회원가입 완료페이지로 이동
-    router.replace('/regist/complete');
+    props.registInfo.family_code = familyCode;
+    store.dispatch('auth/storeUser', props.registInfo);
   }
 
 </script>

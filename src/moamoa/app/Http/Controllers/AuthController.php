@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreParentRequest;
 use App\Models\Child;
 use App\Models\ParentModel;
 use Illuminate\Http\Request;
@@ -21,8 +22,6 @@ class AuthController extends Controller {
    * @return JSON $responseData
    */
   public function login(Request $request) {
-    // $user = ParentModel::find(1);
-    
     // 유효성 검사
     // $validator = Validator::make(
     //   $request->only('account', 'password')
@@ -157,10 +156,7 @@ class AuthController extends Controller {
    * 
    * @return JSON $responseData
    */
-  public function saveRegistInfo(Request $request) {
-    // TODO: 유효성 검사 수행헤야함
-    
-
+  public function storeUser(Request $request) {
     // 인서트 데이터 세팅
     $insertData = $request->only('account', 'name', 'tel', 'email');
     $insertData['password'] = Hash::make($request->password);
@@ -173,23 +169,13 @@ class AuthController extends Controller {
     // 사용자가 추가로 프로필 사진을 올렸다면
     if($request->profile) {
       $insertData['profile'] = '/'.$request->file('profile')->store('profile');
+    }else {
+      // 프로필 사진이 없는 경우 랜덤 디폴트 이미지로 설정
     }
 
-    // 부모 체크
-    if($request->auth && $request->auth === 'parent') {
-      // 랜덤코드 생성
-      while(true) {
-        // 랜덤코드를 만들 내부 함수 호출
-        $family_code = $this->addFamilyCode();
-
-        // 가족코드 중복 검사, 없을시 반복멈춤
-        if(!($this->authRepository->findDuplicateFamilyCode($family_code))) {
-          break;
-        }
-      }
-
-      // 만든 가족코드를 생성 데이터에 삽입
-      $insertData['family_code'] = $family_code;
+    // 부모는 발급한 가족코드가 있음
+    if($request->family_code) {
+      $insertData['family_code'] = $request->family_code;
 
       // 부모 레코드 생성
       try {
@@ -200,13 +186,18 @@ class AuthController extends Controller {
 
       // 리스폰스 데이터 작성
       $responseData = [
-        'data' => $parent->toArray()
-        ,'redirect_to' => '/regist/parent/code'
+        'success' => true,
+        'msg' => '부모 회원작성 성공',
+        // 'data' => $parent->toArray()
       ];
 
       return response()->json($responseData, 200);
-    } 
-    else { // 자녀일시 처리
+    }
+
+    // 자녀는 연결할 부모ID를 가지고 있음
+    if($request->parent_id) {
+      $insertData['parent_id'] = $request->parent_id;
+
       // 자녀 레코드 생성
       try {
         $child = $this->authRepository->createChild($insertData);
@@ -216,15 +207,64 @@ class AuthController extends Controller {
 
       // 리스폰스 데이터 작성
       $responseData = [
-        'data' => $child->toArray()
-        ,'redirect_to' => '/regist/child/match'
+        'success' => true,
+        'msg' => '자녀 회원작성 성공',
+        // 'data' => $child->toArray()
       ];
       
       return response()->json($responseData, 200);
     }
 
+    return response()->json(['error' => '예기치 못한 문제 발생'], 500);
   }
 
+  /**
+   * 부모 가족코드 발급
+   * 
+   * @return JSON family_code
+   */
+  public function parentRegistCode() {
+    // 중복이 나지않게 반복 처리
+    while(true) {
+      // 랜덤코드를 만들 내부 함수 호출
+      $family_code = $this->addFamilyCode();
+
+      // 가족코드 중복 검사, 없을시 반복멈춤
+      if(!($this->authRepository->findDuplicateFamilyCode($family_code))) {
+        break;
+      }
+    }
+
+    return response()->json(['family_code' => $family_code], 200);
+  }
+
+  /**
+   * 가족코드 부모 검사
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function childRegistMatching(Request $request) {
+    if($request->fam_code && (mb_strlen($request->fam_code) === 8)) {
+      $parent = $this->authRepository->findParentByFamilyCode($request->fam_code);
+      if($parent) {
+        $responseData = [ 
+          'success' => true,
+          'msg' => '부모 매칭 성공',
+          'parent' => $parent->toArray()
+        ];
+
+        return response()->json($responseData, 200);
+      }
+    }
+
+    return response()->json([
+      'success' => false,
+      'msg' => '해당하는 코드는 존재하지 않는 코드입니다.',
+    ], 200);
+  }
+  
   /**
    * 
    * axios 미사용 내부 호출용 함수
@@ -240,14 +280,18 @@ class AuthController extends Controller {
     // 영문 4개, 숫자 4개를 섞어놓기 위한 배열 초기화
     $characters = [];
     
-    // 배열에 랜덤 영문 4개와
+    // 중복제외 배열에 랜덤 영문 4개와
     for($i = 0; $i < 4; $i++) {
-        $characters[] = $letters[rand(0, strlen($letters) - 1)];
+      $randomStr = $letters[rand(0, strlen($letters) - 1)];
+      $characters[] = $randomStr;
+      substr_replace($letters, mb_strpos($letters, $randomStr), 1);
     }
     
-    // 랜덤 숫자 4개 각각 담음
+    // 중복제외 랜덤 숫자 4개 각각 담음
     for($i = 0; $i < 4; $i++) {
-        $characters[] = $numbers[rand(0, strlen($numbers) - 1)];
+      $randomNum = $numbers[rand(0, strlen($numbers) - 1)];
+      $characters[] = $randomNum;
+      substr_replace($numbers, mb_strpos($numbers, $randomNum), 1);
     }
     
     // 이 각각 담긴 배열을 섞어서

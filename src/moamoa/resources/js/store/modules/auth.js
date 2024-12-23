@@ -13,26 +13,26 @@ export default {
   namespaced: true,
 
   state: ()=> ({
-    // userInfo: {} ,
-    // userInfo: localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : {} ,
-
     // 로그인 상태 관련 ---------------------------------------------------------------------------------------
     authFlg: sessionStorage.getItem('authFlg') ? true : false, // 로그인 상태 체크
-    parentFlg: sessionStorage.getItem('parentFlg') ? sessionStorage.getItem('parentFlg') : false, // 로그인 계정이 부모인지 체크
-    childFlg: sessionStorage.getItem('childFlg') ? sessionStorage.getItem('childFlg') : false, // 로그인 계정이 자녀인지 체크
+    parentFlg: sessionStorage.getItem('parentFlg') ? true : false, // 로그인 계정이 부모인지 체크
+    childFlg: sessionStorage.getItem('childFlg') ? true : false, // 로그인 계정이 자녀인지 체크
     // 에러 메세지 관련 ---------------------------------------------------------------------------------------
     errMsg: null,
     // 모달 관련 ---------------------------------------------------------------------------------------------
     modalText: '',
     modalColor: '',
     // 회원가입 관련 ---------------------------------------------------------------------------------------------
-    registInfo : sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {},
+    registFlg: true,
+    parentInfo: {},
+    familyCode: null,
+    preview: {
+      imgFlg: false,
+      url: null,
+    },
   }),
 
   mutations: {
-    // setUserInfo(state, userInfo) {
-    //   state.userInfo = userInfo;
-    // },
     setAuthFlg(state, authFlg) {
       state.authFlg = authFlg;
     },
@@ -51,8 +51,31 @@ export default {
     setModalColor(state, modalColor) {
       state.modalColor = modalColor;
     },
-    setRegistInfo(state, registInfo) {
-      state.registInfo = registInfo;
+    setRegistFlg(state, registFlg) {
+      state.registFlg = registFlg;
+    },
+    setParentInfo(state, parentInfo) {
+      state.parentInfo = parentInfo;
+    },
+    setFamilyCode(state, familyCode) {
+      state.familyCode = familyCode;
+    },
+    setPreviewFlg(state, flg) {
+      state.preview.imgFlg = flg;
+    },
+    setPreviewUrl(state, preview) {
+      state.preview.url = preview;
+    },
+    
+    // 가입정보 초기화
+    resetRegist(state) {
+      state.registFlg = true;
+      state.parentInfo = {};
+      state.familyCode = null;
+      state.preview = {
+        imgFlg: false,
+        url: null,
+      };
     },
   },
 
@@ -72,6 +95,8 @@ export default {
       .then(res => {
         // 세션에 담아둔 유저 정보를 쓸 예정
         // localStorage.setItem('userInfo', JSON.stringify(res.data.user));
+        // context.commit('setUserInfo', res.data.user);
+        
         sessionStorage.setItem('authFlg', true);
         context.commit('setAuthFlg', true);
 
@@ -82,36 +107,14 @@ export default {
         sessionStorage.setItem('childFlg', res.data.user.family_code ? false : true);
         context.commit('setChildFlg', res.data.user.family_code ? false : true);
 
-        // context.commit('setUserInfo', res.data.user);
         // console.log(res.data.user);
 
         router.replace(res.data.redirect_to);
       })
       .catch(err => {
+        // TODO: 예외처리 헤야함
         // console.error(err);
         // 422: 유효성 검사 실패, 401: 일치 아이디 or 비밀번호 없음 
-        let errMsg = [];
-        const errorData = err.response.data;
-        
-        if(err.response.status === 422) {
-          // 유효성 검사 에러
-          if(errorData.data.account) { // 계정 틀림
-            errMsg.push(errorData.data.account[0]);
-          }
-
-          if(errorData.data.password) { // 비밀번호 틀림
-            errMsg.push(errorData.data.password[0]);
-          }
-        }else if(err.response.status === 401) {
-          // 비밀번호 에러
-          errMsg.push(errorData.msg);
-        }else {
-          errMsg.push('예기치 못한 오류 발생.');
-        }
-
-        context.commit('setErrMsg', errMsg);
-        // console.log(errorData);
-        // alert(errMsg);
       });
     },
 
@@ -129,6 +132,7 @@ export default {
         // alert('로그아웃 완료');
 
         // --------------------------------- V001 del start --------------------------------------------
+        // 수동 CSRF 토큰 발행
         // 백에서 만든 새 CSRF 토큰을 담기
         // const csrfToken = res.data.csrf_token;
 
@@ -194,17 +198,27 @@ export default {
      * @param {*} context
      * @param {*} registInfo
      */
-    saveRegistInfo(context, registInfo) {
-      const url = '/api/auth/saveRegistInfo';
+    storeUser(context, registInfo) {
+      const url = '/api/auth/storeUser';
       const config = {
         headers: {
-          // 파일 전송을 할수도 있기에 멀티파트폼 데이터 세팅
+          // 파일 생성을 할수도 있기에 멀티파트폼 데이터 세팅
           'Content-Type': 'multipart/form-data',
         }
       };
 
       // 전송용 폼데이터 생성
       const data = new FormData();
+
+      // 자녀는 parent_id가 있음
+      if(registInfo.parent_id) {
+        data.append('parent_id', registInfo.parent_id);
+      }
+
+      // 부모는 family_code를 가지고 있음
+      if(registInfo.family_code) {
+        data.append('family_code', registInfo.family_code);
+      }
 
       // 입력된 프로필 사진 정보가 있다면
       if(registInfo.profile) {
@@ -215,31 +229,92 @@ export default {
       if(registInfo.nick_name) {
         data.append('nick_name', registInfo.nick_name);
       }
+
+      // 나머지 필수 데이터 삽입
       data.append('name', registInfo.name);
       data.append('account', registInfo.account);
       data.append('password', registInfo.password);
       data.append('password_chk', registInfo.password_chk);
       data.append('email', registInfo.email);
       data.append('tel', registInfo.tel);
-      data.append('auth', registInfo.auth);
 
+      // 레코드 생성
       axios.post(url, data, config)
       .then(res => {
         // console.log(res.data);
 
-        // 세션에 데이터를 세팅
-        sessionStorage.setItem('registInfo', JSON.stringify(res.data.data));
-        context.commit('setRegistInfo', res.data.data);
+        // state값 초기화
+        context.commit('resetRegist');
 
-        // 지정된 다음 페이지로 이동
-        router.replace(res.data.redirect_to);
+        // 회원가입 완료 페이지로 이동
+        router.replace('/regist/complete');
       })
       .catch(err => {
-        // console.error(err);
+        console.error(err);
       });
     },
-  },
 
+    /**
+     * 부모 가족코드 발급
+     * 
+     * @param {*} context 
+     */
+    parentRegistCode(context) {
+      const url = '/api/auth/parentRegistCode';
+
+      axios.get(url)
+      .then(res => {
+        // 발급된 가족코드를 state에 세팅
+        context.commit('setFamilyCode', res.data.family_code);
+
+        // 코드 발급 페이지로 전환
+        context.commit('setRegistFlg', false);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    },
+
+    /**
+     * 자녀 회원가입 부모 매칭
+     * 
+     * @param {*} context 
+     * @param {*} registInfo 
+     */
+    childRegistMatching(context, registInfo) {
+      const url= '/api/auth/childRegistMatching';
+      const data = JSON.stringify(registInfo);
+  
+      axios.post(url, data)
+      .then(res => {
+        // console.log(res.data.parent);
+
+        // 담겨온 부모 정보를 state에 세티
+        context.commit('setParentInfo', res.data.parent);
+
+        // 매칭 페이지로 전환
+        context.commit('setRegistFlg', false);
+
+        // 데이터에 추가 정보 삽입
+        // registInfo.parent_id = res.data.parent.parent_id;
+        // registInfo.parent_name = res.data.parent.name;
+        // registInfo.parent_profile = res.data.parent.profile;
+        
+        // console.log(registInfo);
+
+        // 넣은걸 스토리지에 세팅
+        // sessionStorage.setItem('registInfo', JSON.stringify(registInfo));
+        // context.commit('setRegistInfo', registInfo);
+
+        // 매칭 페이지로 이동
+        // router.replace('/regist/child/matching');
+        // context.commit('setRegistInfo', registInfo);
+      }).catch(err => {
+        console.error(err);
+      });
+    },
+
+  },
   getters: {
 
   },

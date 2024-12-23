@@ -22,9 +22,9 @@
           </div>
           
           <div class="data-button">
-            <!-- <router-link to="/regist/child"> -->
+            <router-link to="/regist/child">
               <button type="button">자녀</button>
-            <!-- </router-link> -->
+            </router-link>
           </div>
       </div>
   </div>

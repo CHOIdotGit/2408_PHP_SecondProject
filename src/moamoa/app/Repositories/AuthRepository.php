@@ -3,7 +3,6 @@
 namespace App\Repositories;
 
 class AuthRepository extends Repositories {
-  
   // 아이디 중복 체크
   public function findDuplicateAccount($account) {
     $parent = $this->parent->where('account', $account)->first();
@@ -19,5 +18,10 @@ class AuthRepository extends Repositories {
 
     // true : 중복 있음, false : 중복 없음
     return ($parent) ? true : false;
+  }
+
+  // 가족 코드로 부모 찾기
+  public function findParentByFamilyCode($family_code) {
+    return $this->parent->where('family_code', $family_code)->first();
   }
 }
