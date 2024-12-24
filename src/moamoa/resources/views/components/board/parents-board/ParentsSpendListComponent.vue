@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="for-buttons">
-                <button class="btn-bottom mission-go-back">뒤로가기</button>
+                <router-link to="/parent/home" class="h-50"><button class="btn-bottom mission-go-back">뒤로가기</button></router-link>
             </div>
         </div>
     </div>
@@ -99,7 +99,6 @@ onMounted(() => {
     gap: 100px;
     background-color: #F5F5F5;
     font-size: 2rem;
-    margin: 10px;
     align-items: center;
     width: 1400px;
     margin-top: 70px;
@@ -112,7 +111,6 @@ onMounted(() => {
     min-height: 60px;
     gap: 100px;
     font-size: 1.3rem;
-    margin: 10px;
     align-items: center;
     width: 1400px;
     text-align: center;
@@ -123,6 +121,7 @@ onMounted(() => {
     justify-content: right;
     gap: 30px;
     margin-left: 1170px;
+    height: 50px;
 }
 
 .btn-top {
@@ -140,7 +139,7 @@ onMounted(() => {
     font-size: 1.5rem;
     border: none;
     background-color:#5589e996 ;
-    margin: 30px 0;
+    cursor: pointer;
 }
 
 #checkbox9 {
@@ -156,7 +155,7 @@ onMounted(() => {
 .scroll {
     overflow-y: auto;
     overflow-x: hidden;
-    height: 380px;
+    height: 420px;
 }
 
 .name {

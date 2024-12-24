@@ -16,11 +16,16 @@ export default {
         // ,missionDetail: sessionStorage.getItem('missionDetail') ? JSON.parse(sessionStorage.getItem('missionDetail')) : []
         ,missionDetail: []
         ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
+        ,childHome: []
         
     }),
     mutations: {
         setParentHome(state, parentHome) {
             state.parentHome = state.parentHome.concat(parentHome);
+            // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
+        },
+        setChildHome(state, childHome) {
+            state.childHome = childHome;
             // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
         },
         setMissionList(state, missionList) {
@@ -35,6 +40,7 @@ export default {
             state.childId = null; // 자녀 ID 초기화
             state.controlFlg = true; // 제어 플래그 초기화
             state.parentHome = [];
+            state.childHome = [];
             // 필요한 상태 변수 추가로 초기화
         },
         setMissionDetail(state, missionDetail) {
@@ -79,7 +85,27 @@ export default {
                 // console.log(response.data.parentHome);
             })
             .catch(error => {
-                console.error('미션 리스트 불러오기 오류', error);
+                console.error('부모 미션 리스트 불러오기 오류', error);
+            });    
+        },
+
+        /**
+         * 자녀 홈 페이지
+         * 
+         * @param {*} context 
+         */
+        childHome(context) {
+            context.commit('setControlFlg', false);
+            
+            const url = '/api/child/home';
+            
+            axios.get(url)
+            .then(response => {
+                context.commit('setChildHome', response.data.childHome.missions);
+                // console.log(response.data);
+            })
+            .catch(error => {
+                console.error('자녀 미션 리스트 불러오기 오류', error);
             });    
         },
 

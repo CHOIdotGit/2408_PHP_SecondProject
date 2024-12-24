@@ -56,6 +56,9 @@ Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index'
 // 부모 지출 상세 페이지
 Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show']);
 
+// 자녀 홈
+Route::get('/api/child/home', [HomeController::class, 'show']);
+
 // 자녀 미션 리스트 페이지
 Route::get('/api/child/mission/list', [MissionController::class, 'index']);
 

@@ -26,7 +26,7 @@
             <p class="ms-amount">{{ missionDetail.amount}}</p>
         </div>
         <div class="create-btn">
-            <button @click="$router.push('/parent/mission/list')" class="ms-cancel">뒤로가기</button>
+            <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
             <button @click="delOpenModal" class="ms-del">삭제</button>
             <button class="ms-up">수정</button>
             <button class="ms-comfirm">승인</button>
@@ -89,6 +89,10 @@ const delCloseModal = () => { //모달창 닫기
     delModal.value = false;
 }
 
+// 뒤로가기
+const goBack = (child_id) => {
+    store.dispatch('mission/missionList', child_id);
+}
 // *****미션 삭제*******
 const deleteMission = (mission_id) => {
     console.log('삭제 요청 mission_id : ', mission_id)

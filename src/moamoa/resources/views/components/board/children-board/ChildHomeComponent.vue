@@ -33,21 +33,13 @@
                 <div class="mission-box">
                     <div class="Recently-registered-mission missions">
                         <p class="mission-title">최근 등록된 미션</p>
-                        <p class="mission-content">미션1</p>
-                        <p class="mission-content">미션2</p>
-                        <p class="mission-content">미션3</p>
-                        <p class="mission-content">미션4</p>
-                        <p class="mission-content">미션5</p>
-                        <p class="mission-content">미션6</p>
+                        <p v-if="!(homeMission.status === '0')" class="mission-content">최근 등록된 미션이 없습니다</p>
+                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p>
                     </div>
                     <div class="Recently-completed-mission missions">
                         <p class="mission-title">최근 완료한 미션</p>
-                        <p class="mission-content">미션1</p>
-                        <p class="mission-content">미션2</p>
-                        <p class="mission-content">미션3</p>
-                        <p class="mission-content">미션4</p>
-                        <p class="mission-content">미션5</p>
-                        <p class="mission-content">미션6</p>
+                        <p v-if="!(homeMission.status === '2')" class="mission-content">최근 완료한 미션이 없습니다</p>
+                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p>
                     </div>
                 </div>
             </div>
@@ -57,6 +49,20 @@
 
 <script setup>
 
+import { computed, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+// 미션 들고오기
+const homeMission = computed(() => store.state.mission.childHome)
+console.log('자녀 홈 미션', homeMission.value);
+
+// 마운트
+onBeforeMount(() => {
+    // store.commit('mission/resetState');
+    store.dispatch('mission/childHome');
+})
 </script>
 
 <style scoped>
