@@ -26,6 +26,10 @@ class Mission extends Model {
     public function child() {
         return $this->belongsTo(Child::class, 'child_id');
     }
+
+    public function parent() {
+        return $this->belongsTo(ParentModel::class, 'parent_id');
+    }
     
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
