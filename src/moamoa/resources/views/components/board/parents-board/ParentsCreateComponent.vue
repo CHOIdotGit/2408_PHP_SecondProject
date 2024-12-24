@@ -14,55 +14,56 @@
                 </div>
                 <div class="content" >
                     <p class="title">미션 종류</p>
-                    <!-- 실패... -->
-                    <!-- 학습 (category = 0)-->
-                    <!-- <div class="category-btn" v-for="(category, index) in categories" :key="index" >
-                        <input type="radio" :id="'category-' + index" :value="index" v-model="checkedcategory" class="category-input"></input>
-                        <label :for="'category-' + ind class="ms-category-btn"ex" @click="checkedcategory(index)" :class="{ active: checkedcategoryIndex === index}" class="category-label">
-                            <img class="ms-category-img" :src="category.image" alt="." />
+                    <!-- 카테로리 v-for -->
+                    <div class="category-btn" v-for="item in categories" :key="item">
+                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
+                            <img class="ms-category-img" :src="item.img" >
+                            <p>{{ item.name }}</p>
+                            <p>{{ item.index }}</p>
                         </label>
-                    </div> -->
+                    </div>
 
                     <!-- 학습(category = 0) -->
-                    <div class="category-btn">
+                    <!-- <div class="category-btn">
                         <input type="radio" name="category" id="study" :value="0" ></input>
                         <label for="study" class="ms-category-btn">
                         <img class="ms-category-img" src="/img/icon-pencil.png" alt=".">
                         <p>학습</p>
                         </label>
-                    </div>
+                    </div> -->
                     <!-- 취미 (category = 1) -->
-                    <div class="category-btn">
+                    <!-- <div class="category-btn">
                         <input type="radio" name="category" id="habit" :value="1"></input>
                         <label for="habit" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-bicycle.png" alt=".">
                             <p>취미</p>
                         </label>
-                    </div>
+                    </div> -->
                     <!-- 집안일(category = 2) -->
-                    <div class="category-btn">
+                    <!-- <div class="category-btn">
                         <input type="radio" name="category" id="housework" :value="2" ></input>
                         <label for="housework" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-cleaner.png" alt=".">
                             <p>집안일</p>  
                         </label>
-                    </div>
+                    </div> -->
                     <!-- 생활습관(category = 3) -->
-                    <div class="category-btn">
+                    <!-- <div class="category-btn">
                         <input type="radio" name="category" id="lifestyle" :value="3" ></input>
                         <label for="lifestyle" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-clock.png" alt=".">
                             <p>생활습관</p>
                         </label>
-                    </div>
+                    </div> -->
                     <!-- 기타(category = 4) -->
-                    <div class="category-btn">
+                    <!-- <div class="category-btn">
                         <input type="radio" name="category" id="etc" :value="4" ></input>
                         <label for="etc" class="ms-category-btn">
                             <img class="ms-category-img" src="/img/icon-checklist7.png" alt=".">
                             <p>기타</p>
                         </label>
-                    </div>
+                    </div> -->
                 </div>
                 
 
@@ -89,13 +90,27 @@
 import { reactive, ref } from 'vue';
 
 
-// const categories =  [
-//     { name: '학습', image: '/img/icon-pencil.png' },
-//     { name: '취미', image: '/img/icon-bicycle.png' },
-//     { name: '집안일', image: '/img/icon-cleaner.png' },
-//     { name: '생활습관', image: '/img/icon-clock.png' },
-//     { name: '기타', image: '/img/icon-checklist7.png' },
-// ],
+const categories = reactive([
+    {name: '학습' , img:'/img/icon-pencil.png', index : 0}
+    ,{name: '취미' , img:'/img/icon-bicycle.png', index : 1}
+    ,{name: '집안일' , img:'/img/icon-cleaner.png', index : 2}
+    ,{name: '생활습관' , img:'/img/icon-clock.png', index : 3}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : 4}
+]);
+
+const radioCategories = ref('');
+
+const clickCategory = (e, index) => {
+    // const btnLabel = document.querySelectorAll('.ms-category-btn');
+    // if(btnLabel.classList.contains('category-btn-chk')) {
+    //     btnLabel.classList.remove('category-btn-chk');
+    // }
+    // document.querySelector('#study-'+index).checked = true;
+    // e.target.classList.add('category-btn-chk');
+    
+}
+
+const checkedcategory = ref(true);
 
 // const checkedcategoryIndex = ref(null);
 
@@ -113,15 +128,6 @@ const missionCreate = reactive({
     content: '',
     amount: '',
 });
-
-
-
-
-
-
-
-
-
 
 
 </script>
@@ -233,11 +239,14 @@ span {
 }
 
 /* 선택된 카테고리 */
-.category-btn > input[type=radio]:checked + label {
+/* .category-btn > input[type=radio]:checked + label {
     background-color: #A2CAAC;
     border-radius: 50px;
-}
+} */
 
+.checked-category-btn {
+    background-color: #A2CAAC;
+}
 
 
 
