@@ -48,7 +48,7 @@ Route::get('/api/parent/mission/detail/{id}', [MissionController::class, 'show']
 Route::post('/api/parent/mission/create', [MissionController::class, 'store']);
 
 // 부모 미션 삭제 페이지
-Route::delete('/api/parent/mission/detail/{id}', [MissionController::class, 'destroy']);
+Route::delete('/api/parent/mission/delete/{id}', [MissionController::class, 'destroy']);
 
 // 부모 지출 리스트 페이지
 Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index']);

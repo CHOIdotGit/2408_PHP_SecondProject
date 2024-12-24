@@ -52,6 +52,10 @@ export default {
         setChildId(state, childId) {
             state.childId = childId;
         },
+        // 삭제된 mission_id 를 제거한 missionList 받아오기
+        deleteMission(state, missionId) {
+            state.missionList = state.missionList.filter(mission => mission.mission_id !== missionId ); 
+        },
         
 
     },
@@ -92,21 +96,21 @@ export default {
             const url = '/api/parent/mission/list/' + child_id;
                         
             axios.get(url)
-            .then(response => {
-                // console.log('응답 데이터 확인', response.data.missionList.data);
-                   
-                context.commit('setMissionList', response.data.missionList.data);
+                .then(response => {
+                    // console.log('응답 데이터 확인', response.data.missionList.data);
+                    
+                    context.commit('setMissionList', response.data.missionList.data);
 
-                // 세션 스토리지에 자녀ID 세팅
-                sessionStorage.setItem('child_id', child_id);
-                context.commit('setChildId', child_id);
-                router.push('/parent/mission/list/' + child_id);
-                
-                // console.log('자녀 확인', context.state.childId);
-            })
-            .catch(error => {
-                console.error('미션 정보 불러오기 오류', error);
-            });    
+                    // 세션 스토리지에 자녀ID 세팅
+                    sessionStorage.setItem('child_id', child_id);
+                    context.commit('setChildId', child_id);
+                    router.push('/parent/mission/list/' + child_id);
+                    
+                    // console.log('자녀 확인', context.state.childId);
+                })
+                .catch(error => {
+                    console.error('미션 정보 불러오기 오류', error);
+                });    
         },
 
         // ***************************
@@ -117,21 +121,21 @@ export default {
             // console.log(url);
 
             axios.get(url, mission_id)
-            .then(response => {
-                console.log(response.data.missionDetail);
-                // sessionStorage.setItem('missionDetail', JSON.stringify(response.data.missionDetail));
-                sessionStorage.setItem('missionId', mission_id);
-                context.commit('setMissionDetail', response.data.missionDetail);
-                context.commit('setMissionId', mission_id);
-                router.push('/parent/mission/detail/'+ mission_id);
-                console.log('미션아이디', mission_id);
+                .then(response => {
+                    console.log(response.data.missionDetail);
+                    // sessionStorage.setItem('missionDetail', JSON.stringify(response.data.missionDetail));
+                    sessionStorage.setItem('missionId', mission_id);
+                    context.commit('setMissionDetail', response.data.missionDetail);
+                    context.commit('setMissionId', mission_id);
 
-                // sessionStorage.removeItem('missionDetail'); // 다른페이지로 이동시 디테일 정보 제거
-                })
-            .catch(error => {
-                console.log('미션 상세 페이지 불러오기 오류', error);
-                
-            });
+                    router.push('/parent/mission/detail/'+ mission_id);
+
+                    // sessionStorage.removeItem('missionDetail'); // 다른페이지로 이동시 디테일 정보 제거
+                    })
+                .catch(error => {
+                    console.log('미션 상세 페이지 불러오기 오류', error);
+                    
+                });
         },
 
         // ***************************
@@ -150,20 +154,39 @@ export default {
             formData.append('content', data.amount);
 
             axios.post(url, formData)
-            .then(response => {
-                console.log('미션 등록 ^^');
-                context.commit('setMissonListUnshift', response.data.missionList);
-                router.replace('/api/parents/detail');
-            })
-            .catch(error => {
-                console.log('미션 등록 실패 ㅠㅠ', error);
-            })
-            .finally(() => {
-                context.commit('setControlFlg', true);
-            })
+                .then(response => {
+                    console.log('미션 등록 ^^');
+                    context.commit('setMissonListUnshift', response.data.missionList);
+                    router.replace('/api/parent/mission/detail/'+`${id}`);
+                })
+                .catch(error => {
+                    console.log('미션 등록 실패 ㅠㅠ', error);
+                })
+                .finally(() => {
+                    context.commit('setControlFlg', true);
+                })
         },
 
+        // ***************************
+        // 부모 미션 삭제 페이지
+        // ***************************
+        deleteMission(context, mission_id, child_id) {
         
+            const url = '/api/parent/mission/delete/' + mission_id;
+            console.log(url);
+            axios.delete(url)
+                .then(response => {
+                    context.commit('deleteMission', response.data.deleteMission);
+                    context.commit('setChildId', child_id)
+                    router.replace('/parent/mission/list/' + sessionStorage.child_id);
+                    console.log('자녀아이디 확인', '/parent/mission/list/' + sessionStorage.child_id );
+                })
+                .catch(error => {
+                    console.log('미션 삭제 안됨', error);
+                })
+                },
+
+
     },
 
     getters: {

@@ -50,11 +50,9 @@ class MissionController extends Controller
     // ************************************************
     public function store(Request $request) {
         $insertMission = $request->only(['title', 'start_at', 'end_at', 'category', 'content','amount']);
-        $insertMission['parent_id'] = 1; //일단 부모 id=1 고정
-        $insertMission['child_id'] = 1;  //일단 자녀 id=1고정
+
         $MissionDetail = Mission::create($insertMission);
                                     
-
 
         $responseData = [
             'success' => true
@@ -67,13 +65,13 @@ class MissionController extends Controller
     // ************************************************
     // **************부모 미션 삭제 페이지 **************
     // ************************************************
-    public function destroy() {
-        $deleteMission = Mission::destroy(1);
+    public function destroy($mission_id) {
+        $deleteMission = Mission::destroy($mission_id);
 
         $responseData = [
             'success' => true
             ,'msg' => '미션 삭제 성공'
-            ,'createMission' => $deleteMission
+            ,'deleteMission' => $deleteMission
         ];
         return response()->json($responseData, 200);
 

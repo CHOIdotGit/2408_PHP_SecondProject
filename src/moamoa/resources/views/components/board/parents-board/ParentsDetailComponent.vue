@@ -45,7 +45,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="missionDelete" class="modal-del">삭제</button>
+                <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -78,30 +78,24 @@ const categories = reactive([
 ]);
 
 
-
-// const categories = [
-//     { name: '학습' , img:'/img/icon-pencil.png' },
-//     { name: '취미' , img:'/img/icon-bicycle.png' },
-//     { name: '집안일' , img:'/img/icon-cleaner.png' },
-//     { name: '생활습관' , img:'/img/icon-clock.png' },
-//     { name: '기타' , img:'/img/icon-checklist7.png' },
-
-// ],
-
-
-
 // *****삭제 모달창********** 
 const delModal = ref(false);
 
-const delOpenModal = () => {
+const delOpenModal = () => { //모달창 열기
     delModal.value = true;
 }
 
-const delCloseModal = () => {
+const delCloseModal = () => { //모달창 닫기
     delModal.value = false;
 }
 
-
+// *****미션 삭제*******
+const deleteMission = (mission_id) => {
+    console.log('삭제 요청 mission_id : ', mission_id)
+    store.dispatch('mission/deleteMission', mission_id);
+    
+    
+}
 
 
 

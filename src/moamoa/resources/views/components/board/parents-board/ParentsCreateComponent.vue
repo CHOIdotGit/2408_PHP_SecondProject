@@ -73,7 +73,7 @@
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" min="0" maxlength="7" required>
+                    <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" required>
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push('/parent/mission/list')" class="create-btn">취소</button>
@@ -111,8 +111,15 @@ const missionCreate = reactive({
     end_at: '',
     category: '',
     content: '',
-    amount: ''
+    amount: '',
 });
+
+
+
+
+
+
+
 
 
 
