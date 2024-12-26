@@ -99,14 +99,14 @@
                             <p class="charge">32,000</p>
                             <p class="due-date">2024.12.17</p>
                         </div>
-                        </div>
                     </div>
                 </div>
-                <div class="del-btn">
-                    <button @click="delCloseModal" class="modal-cancel">취소</button>
-                </div>
+            </div>
+            <div class="del-btn">
+                <button @click="delCloseModal" class="modal-cancel">취소</button>
             </div>
         </div>
+    </div>
 
     
 

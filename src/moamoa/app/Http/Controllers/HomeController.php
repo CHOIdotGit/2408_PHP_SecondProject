@@ -81,6 +81,7 @@ class HomeController extends Controller
         $transactionAmount = $childHome->transactions()
                                 ->select('transactions.transaction_id', 'transactions.child_id', 'transactions.amount')
                                 ->whereNull('transactions.deleted_at')
+                                ->where('transactions.transaction_code', '1')
                                 ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
                                 ->orderBy('transactions.amount', 'DESC') // 가장 큰 지출
                                 ->first();
@@ -89,6 +90,7 @@ class HomeController extends Controller
         $mostUsedCategory = $childHome->transactions()
                                 ->select('transactions.category', DB::raw('COUNT(*) as count')) // 카테고리와 해당 카테고리 개수를 가져옴
                                 ->whereNull('transactions.deleted_at')
+                                ->where('transactions.transaction_code', '1')
                                 ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
                                 ->groupBy('transactions.category') // 카테고리 기준으로 그룹화
                                 ->orderBy('count', 'DESC') // 사용 횟수 기준으로 내림차순 정렬
@@ -97,6 +99,7 @@ class HomeController extends Controller
         // 해당 월(예시, 12월 한 달)의 지출 총 합
         $totalAmount = $childHome->transactions()
                                 ->whereNull('transactions.deleted_at')
+                                ->where('transactions.transaction_code', '1')
                                 ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
                                 ->sum('transactions.amount');
 
@@ -107,13 +110,14 @@ class HomeController extends Controller
                                 ->sum('missions.amount');
         
         // 관계 데이터 설정
-        $childHome->setRelation('missions', $missions);
+        // $childHome->setRelation('missions', $missions);
             
 
         $responseData = [
             'success' => true
             ,'msg' => '자녀 홈페이지 로드 성공'
             ,'childHome' => $childHome
+            ,'missions' => $missions
             ,'transactionAmount' => $transactionAmount
             ,'mostUsedCategory' => $mostUsedCategory
             ,'totalAmount' => $totalAmount

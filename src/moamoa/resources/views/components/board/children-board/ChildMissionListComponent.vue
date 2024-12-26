@@ -15,7 +15,7 @@
                 <p class="due-date">기한</p>
             </div>
             <div class="mission-inserted-list scroll">
-                <div v-for="item in missionInfo" :key="item" class="mission-content">
+                <div v-for="item in missionList" :key="item" class="mission-content">
                     <div class="chk-div">
                         <input type="checkbox" id="checkbox9">
                     </div>
@@ -41,7 +41,7 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 // 미션 리스트 가져오기
-const missionInfo = computed(() => store.state.mission.missionInfo);
+const missionList = computed(() => store.state.mission.missionList);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -90,7 +90,7 @@ const getTruncatedTitle =(title) => {
 
 // onMount
 onMounted(() => {
-    store.dispatch('mission/missionInfo');
+    store.dispatch('mission/missionList');
 });
 </script>
 
