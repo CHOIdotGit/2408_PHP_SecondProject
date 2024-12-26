@@ -13,6 +13,10 @@ export default {
         ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
         ,transactionDetail: []
         ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
+        ,mostSpendAmount: 0
+        ,mostUsedCategory: ''
+        ,totalAmount: 0
+        ,totalExpenses: 0
     }),
     mutations: {
         setTransactionList(state, transactionList) {
@@ -33,6 +37,18 @@ export default {
         },
         setTransactionDetail(state, transactionDetail) {
             state.transactionDetail = transactionDetail;
+        },
+        setMostSpendAmount(state, mostSpendAmount) {
+            state.mostSpendAmount = mostSpendAmount;
+        },
+        setMostUseCategory(state, mostUsedCategory) {
+            state.mostUsedCategory = mostUsedCategory;
+        },
+        setTotalAmount(state, totalAmount) {
+            state.totalAmount = totalAmount;
+        },
+        setTotalExpenses(state, totalExpenses) {
+            state.totalExpenses = totalExpenses;
         },
     },
     actions: {
@@ -73,8 +89,23 @@ export default {
             .catch(error => {
                 console.log('지출 상세 페이지 불러오기 오류', error);
             }) 
-        }
-       
+        },
+
+        // 자녀 홈 지출 관련
+        childHomeTransaction(context) {
+            const url = '/api/child/home';
+            axios.get(url)
+            .then(response => {
+                context.commit('setMostSpendAmount', response.data.transactionAmount);
+                context.commit('setMostUseCategory', response.data.mostUsedCategory);
+                context.commit('setTotalAmount', response.data.totalAmount);
+                context.commit('setTotalExpenses', response.data.totalExpenses);
+                // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
+            })
+            .catch(error => {
+                console.error('지출 금액 불러오기 실패', error);
+            })
+        },
     },
 
     getters: {
