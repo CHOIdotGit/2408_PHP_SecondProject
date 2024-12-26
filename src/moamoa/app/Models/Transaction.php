@@ -14,6 +14,7 @@ class Transaction extends Model {
     protected $fillable = [
         'parent_id'
         ,'child_id'
+        ,'title'
         ,'category'
         ,'transaction_code'
         ,'amount'
