@@ -31,7 +31,6 @@
                     </ul>
                 </div>
             </div>
-            
         </div>
         <div class="cal-sec-container">
             <div class="sec-container">
@@ -59,7 +58,7 @@
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day" >
-                            <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
+                            <p @click="handleDayClick(day)" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
                             <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
                             <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
                             <!-- '2024-12-' + String(i).padStart(2,'0')); -->
@@ -69,7 +68,6 @@
             </div>
         </div>
     </div>
-
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
     <!-- ************************* -->
@@ -84,21 +82,15 @@
                     <p class="due-date">작성일자</p>
                 </div>
                 <div class="mission-inserted-list">
-                    <div class="modal-mission-content">
-                        <p class="mission-name">설거지</p>
-                        <p class="expense-type">집안일</p>
-                        <p class="inout-come income">수입</p>
-                        <p class="charge">5,000</p>
-                        <p class="due-date">2024.12.17</p>
+                    <div v-if="transactions.length === 0" class="modal-mission-content">
+                        <p>작성된 내용이 없습니다.</p>
                     </div>
-                    <div class="mission-content">
-                        <div class="modal-mission-content">
-                            <p class="mission-name">올리브영가서 세일하길래 쿠션삼</p>
-                            <p class="expense-type">쇼핑</p>
-                            <span class="inout-come outgo">지출</span>
-                            <p class="charge">32,000</p>
-                            <p class="due-date">2024.12.17</p>
-                        </div>
+                    <div v-else v-for="item in transactions" :key="item" class="modal-mission-content">
+                        <p class="mission-name">{{ item.title }}</p>
+                        <p class="expense-type">{{ item.category }}</p>
+                        <p class="inout-come income">{{ item.transaction_code }}</p>
+                        <p class="charge">{{ item.amount }}</p>
+                        <p class="due-date">{{ item.transaction_date }}</p>
                     </div>
                 </div>
             </div>
@@ -107,10 +99,6 @@
             </div>
         </div>
     </div>
-
-    
-
-
 </template>
 <script setup>
 
@@ -141,67 +129,86 @@ const dateToday = ref(new Date());
 
 // 현재 연월 표시 (반응형 데이터)
 const formattedDate = computed(() =>
-  dateToday.value.toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    timeZone: "Asia/Seoul",
-  })
+    dateToday.value.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        timeZone: "Asia/Seoul",
+    })
 );
 
 
 // 해당 월의 시작 요일 계산
 const startDay = computed(() => {
-  const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
-  return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
+    const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
+    return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
 });
 
 // 해당 월의 일수 계산
 const daysInMonth = computed(() => {
-  const year = dateToday.value.getFullYear();
-  const month = dateToday.value.getMonth();
-  return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
+    const year = dateToday.value.getFullYear();
+    const month = dateToday.value.getMonth();
+    return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
 });
 
 // 오늘 날짜인지 확인하는 함수
 function isToday(day) {
-  const today = new Date();
-  const year = dateToday.value.getFullYear();
-  const month = dateToday.value.getMonth();
-  return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+    const today = new Date();
+    const year = dateToday.value.getFullYear();
+    const month = dateToday.value.getMonth();
+    return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
 }
 
 // 이전 월로 이동
 async function prevMonth() {
-  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-  await store.dispatch("calendar/calendarInfo", dateToday.value);
-  dateToday.value = currentDate;
+    const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
+    await store.dispatch("calendar/calendarInfo", dateToday.value);
+    dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
 async function nextMonth() {
-  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-  await store.dispatch("calendar/calendarInfo", dateToday.value);
-  dateToday.value = currentDate;
+    const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
+    await store.dispatch("calendar/calendarInfo", dateToday.value);
+    dateToday.value = currentDate;
 }
 
 // 모달 상태 관리
 const delModal = reactive({ isOpen: false });
 
 const delOpenModal = () => {
-  delModal.isOpen = true;
+    delModal.isOpen = true;
 };
 
 const delCloseModal = () => {
-  delModal.isOpen = false;
+    delModal.isOpen = false;
+};
+
+// 현재 날짜를 기준으로 year와 month 계산
+// 현재 날짜와 월을 동적으로 처리
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
+const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줘야 함
+
+
+// 모달 날짜별 데이터 들고오기
+const transactions = computed(() => store.state.calendar.transactions);
+
+// handleDayClick 함수 정의
+const handleDayClick = (day) => {
+  // year, month는 현재 달력을 기반으로 동적으로 가져옵니다
+  const selectedDate = { year: currentYear, month: currentMonth, day };
+
+  // Vuex 액션 호출
+  store.dispatch('calendar/transactions', selectedDate);
+  delOpenModal(); // 모달 열기
 };
 
 // -----------------------
 
-
-
 onBeforeMount(() => {
     store.dispatch("calendar/calendarInfo", dateToday.value);
-  });
+    store.dispatch("calendar/transactions", { year, month });
+});
 
 
 // 각 날짜에 맞는 값입력

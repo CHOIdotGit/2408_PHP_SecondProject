@@ -34,6 +34,8 @@ Route::prefix('/api/auth')->group(function () {
 
 // 자녀 달력
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
+// 자녀 달력 모달
+Route::get('/api/child/calendar', [CalendarController::class, 'show']);
 
 // 부모 홈
 Route::get('/api/parent/home', [HomeController::class, 'index']);

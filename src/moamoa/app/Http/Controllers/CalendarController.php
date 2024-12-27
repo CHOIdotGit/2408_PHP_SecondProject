@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         // 자녀 달력 페이지
         $parent = Auth::guard('parents')->user();
         $child = Auth::guard('children')->user();
@@ -78,27 +77,8 @@ class CalendarController extends Controller
                                 ->where('children.child_id', $child->child_id)
                                 ->first();
                                 
-
-        // 요청에서 날짜 가져오기    
-        $date = $request->input('date'); // 'YYYY-MM-DD' 형식이어야 함
-
-        // 날짜를 파싱 (유효한 형식인지 확인)
-        // Carbon::parse() 메서드는 주어진 날짜 문자열을 Carbon 객체로 변환
-        $parsedDate = Carbon::parse($date);
-
-        // 해당 날짜의 거래 데이터 가져오기                        
-        $transactions = $childInfo->transactions()
-        ->whereDate('created_at', $parsedDate)
-        ->whereNull('deleted_at')
-        ->get();
+ 
         
-
-        // 날짜가 없는 경우 예외 처리
-        if (!$date) {
-            return response()->json([
-                'message' => '날짜를 선택해주세요.'
-            ], 400);    
-        }            
 
         return response()->json([
             'success' => true,
@@ -107,10 +87,39 @@ class CalendarController extends Controller
             'sidebarData' => $sidebarData,
             'sidebarMission' => $sidebarMission,
             'dailyIncomeData' => $dailyIncomeData,
-            'dailyOutgoData' => $dailyOutgoData,
-            'date' => $date,
-            'transactions' => $transactions,
-            
+            'dailyOutgoData' => $dailyOutgoData,        
+        ], 200);
+    }
+    public function show(Request $request) {
+        // 자녀 달력 모달 설정
+        // 쿼리 파라미터로 year, month 를 받기
+        $year = $request->input('year');
+        $month = $request->input('month');
+        
+        // 유효성 검사
+        if (!$year || !$month) {
+            return response()->json(['message' => 'year, month를 모두 제공해야 합니다.'], 400);
+        }
+
+        // 날짜 계산 (예: 2024-12-25 형식으로 변환)
+        $date = Carbon::create($year, $month);
+
+        // 자녀 정보 가져오기
+        $child = Auth::guard('children')->user();
+        $childInfo = Child::select('children.child_id', 'children.name')
+                        ->where('children.child_id', $child->child_id)
+                        ->first();
+
+        $transactions = $childInfo->transactions()
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
+                                ->whereNull('transactions.deleted_at')
+                                ->where('transactions.transaction_date', $date) // 날짜 조건 적용
+                                ->get();
+
+        return response()->json([
+            'success' => true,
+            'msg' => '캘린더 성공',
+            'transactions' => $transactions
         ], 200);
     }
 
