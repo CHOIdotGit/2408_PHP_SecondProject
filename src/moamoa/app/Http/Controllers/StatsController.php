@@ -2,36 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class StatsController extends Controller
 {
     public function index(Request $request)
+    
     {
-        // 요청 데이터 유효성 검사
-        $validated = $request->validate([
-            'year' => 'required|integer|min:2000|max:'.date('Y'),
-            'month' => 'required|integer|min:1|max:12'
-        ]);
+        
+        $child = Auth::guard('children')->user();
+        
+        // 자녀 홈페이지 데이터 불러오기
+        $year = $request->input('year', Carbon::now()->year);
+        $month = $request->input('month', Carbon::now()->month);
 
-        // Carbon을 사용하여 해당 월의 시작과 끝 날짜 설정
-        $targetDate = Carbon::createFromDate($validated['year'], $validated['month'], 1);
+        // 시작일, 종료일 계산
+        $startOfMonth = Carbon::create($year, $month, 1)->startOfDay(); // 해당 월의 첫 날
+        $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
-        $startDate = $targetDate->startOfMonth()->format('Y-m-d');
-        $endDate = $targetDate->endOfMonth()->format('Y-m-d');
 
-        // 가장 큰 지출 내역 조회
-        $biggestUse = Transaction::whereBetween('transaction_date', [$startDate, $endDate])
-                                ->orderBy('amount', 'DESC') // 내림차순 정렬
+        $childHome = Child::select('children.child_id', 'children.name')
+                                    ->where('children.child_id', $child->child_id)
+                                    ->first();
+                                    
+        // 자녀 홈, 가장 큰 지출
+        $transactionAmount = $childHome->transactions()
+                                ->select('transactions.transaction_id', 'transactions.child_id', 'transactions.amount')
+                                ->whereNull('transactions.deleted_at')
+                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+                                ->orderBy('transactions.amount', 'DESC') // 가장 큰 지출
                                 ->first();
 
-        // 결과 반환
-        return response()->json([
-            'success' => true,
-            'msg' => '통계 성공',
-            'biggestUse' => $biggestUse
-        ], 200);
+        // 자녀 홈, 가장 많이 사용한 카테고리
+        $mostUsedCategory = $childHome->transactions()
+                                ->select('transactions.category', DB::raw('COUNT(*) as count')) // 카테고리와 해당 카테고리 개수를 가져옴
+                                ->whereNull('transactions.deleted_at')
+                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+                                ->groupBy('transactions.category') // 카테고리 기준으로 그룹화
+                                ->orderBy('count', 'DESC') // 사용 횟수 기준으로 내림차순 정렬
+                                ->first(); // 가장 많이 사용된 카테고리 가져오기
+
+        // 해당 월(예시, 12월 한 달)의 지출 총 합
+        $totalAmount = $childHome->transactions()
+                                ->whereNull('transactions.deleted_at')
+                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
+                                ->sum('transactions.amount');
+
+        // 해당 월(예시, 12월 한 달)의 용돈 총 합
+        $totalExpenses = $childHome->missions()
+                                ->whereNull('missions.deleted_at')
+                                ->whereBetween('missions.created_at', [$startOfMonth, $endOfMonth])
+                                ->sum('missions.amount');
+        
+        
+        $responseData = [
+            'success' => true
+            ,'msg' => '자녀 홈페이지 로드 성공'
+            ,'transactionAmount' => $transactionAmount
+            ,'mostUsedCategory' => $mostUsedCategory
+            ,'totalAmount' => $totalAmount
+            ,'totalExpenses' => $totalExpenses
+        ];
+        return response()->json($responseData, 200);
+
+    
     }
 }
