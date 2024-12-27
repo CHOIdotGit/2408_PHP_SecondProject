@@ -47,10 +47,14 @@ Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index'])
 Route::get('/api/parent/mission/detail/{id}', [MissionController::class, 'show']);
 
 // 부모 미션 작성 페이지
-Route::post('/api/parent/mission/create', [MissionController::class, 'store']);
+Route::post('/api/parent/mission/create/{child_id}', [MissionController::class, 'store']);
+// Route::get('/api/parent/mission/create/{child_id}', [MissionController::class, 'create']);
 
 // 부모 미션 삭제 페이지
 Route::delete('/api/parent/mission/delete/{id}', [MissionController::class, 'destroy']);
+
+// 부모 미션 수정 페이지
+Route::patch('/api/parent/mission/update/{id}', [MissionController::class, 'update']);
 
 // 부모 지출 리스트 페이지
 Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index']);

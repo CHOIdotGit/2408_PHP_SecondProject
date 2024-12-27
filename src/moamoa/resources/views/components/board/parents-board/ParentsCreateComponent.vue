@@ -4,16 +4,17 @@
             <div class="content-list">
                 <div class="content">
                     <p class="title">미션 제목</p>
-                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
+                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus>
                     <div class="date">
-                        <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  required>
+                        <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  >
                         <span>⁓</span>
-                        <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  required>
+                        <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01" >
                         <!-- value="today" -->
                     </div>
                 </div>
                 <div class="content" >
                     <p class="title">미션 종류</p>
+                    <p>{{ typeof(radioCategories) }}</p>
                     <!-- 카테로리 v-for -->
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
@@ -21,6 +22,7 @@
                             <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
                             <p>{{ item.index }}</p>
+                            
                         </label>
                     </div>
 
@@ -74,11 +76,11 @@
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" required>
+                    <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push('/parent/mission/list')" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('/parent/mission/detail', missionCreate)" class="create-btn">등록</button>
+                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
         </div>
@@ -88,14 +90,17 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
 
 
 const categories = reactive([
-    {name: '학습' , img:'/img/icon-pencil.png', index : 0}
-    ,{name: '취미' , img:'/img/icon-bicycle.png', index : 1}
-    ,{name: '집안일' , img:'/img/icon-cleaner.png', index : 2}
-    ,{name: '생활습관' , img:'/img/icon-clock.png', index : 3}
-    ,{name: '기타' , img:'/img/icon-checklist7.png', index : 4}
+    {name: '학습' , img:'/img/icon-pencil.png', index : "0"}
+    ,{name: '취미' , img:'/img/icon-bicycle.png', index : "1"}
+    ,{name: '집안일' , img:'/img/icon-cleaner.png', index : "2"}
+    ,{name: '생활습관' , img:'/img/icon-clock.png', index : "3"}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : "4"}
 ]);
 
 const radioCategories = ref('');
@@ -124,9 +129,10 @@ const missionCreate = reactive({
     title: '',
     start_at: today, // 오늘 날짜
     end_at: '',
-    category: '',
+    category: radioCategories,
     content: '',
     amount: '',
+    child_id: route.params.child_id,
 });
 
 

@@ -103,12 +103,12 @@ const routes = [
     },
     // 부모 미션 작성 페이지
     {
-        path: '/parent/mission/create',
+        path: '/parent/mission/create/:child_id',
         component: ParentsCreateComponent,
     },
     // 부모 미션 수정 페이지
     {
-        path: '/parent/mission/update',
+        path: '/parent/mission/update/:mission_id',
         component: ParentsUpdateComponent,
     },
     // 부모 미션 상세 페이지

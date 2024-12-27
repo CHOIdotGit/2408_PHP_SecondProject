@@ -12,29 +12,32 @@
                 <span class="kids-name">자녀이름</span>
                 <span class="status">상태</span>
                 <p class="mission-type">종류</p>
+                
                 <p class="mission-name">미션이름</p>
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
             <div class="scroll">
                 <div v-if="missionList && missionList.length" v-for="item in missionList" :key="item" class="mission-inserted-list">
-                    <div class="mission-content"> 
+                    <div class="mission-content">
                         <div class="chk-div">
                             <input v-model="checkboxItem" class="checkbox" type="checkbox" :value="item.mission_id" name="checkbox">
                             {{item.mission_id}}
                         </div>
                         <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
-                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
+                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}{{typeof(item.category)}}</p>
                         <p class="mission-title">{{ item.title }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
+                        
                     </div>
                 </div>
             </div>
             <div class="for-buttons margin-top">
                 <router-link to="/parent/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
-                <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link>
+                <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
+                <button @click="getChildId(childId)" class="btn-bottom mission-insert">+ 등록</button>
             </div>
         </div>
     </div>
@@ -44,7 +47,6 @@
 import { computed, onMounted, ref } from 'vue';
 // import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import router from '../../../../js/router.js';
 const store = useStore();
 // const router = useRouter();
 // const router = useRouter();
@@ -101,11 +103,11 @@ const getStatusText = (status) => {
 // 카테고리를 문자열로 변환하는 함수
 const getCategoryText = (category) => {
     const categoryMapping = {
-        0: '학습',
-        1: '취미',
-        2: '집안일',
-        3: '생활습관',
-        4: '기타',
+        "0": '학습',
+        "1": '취미',
+        "2": '집안일',
+        "3": '생활습관',
+        "4": '기타',
     };
     return categoryMapping[category]; // 기본값 없이 반환
 };
@@ -144,6 +146,12 @@ onMounted(() => {
 const getMissionId = (mission_id) => {
     console.log('미션 아이디 획득', mission_id);
     store.dispatch('mission/showMissionDetail', mission_id);
+}
+
+// 자녀 아이디 확인해서 작성 페이지로 이동하기 위해서
+const getChildId = (child_id) => {
+    console.log('자녀 아이디 확인', child_id)
+    store.dispatch('mission/goCreateMission', child_id);
 }
 
 </script>

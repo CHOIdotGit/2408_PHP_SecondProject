@@ -28,7 +28,7 @@
         <div class="create-btn">
             <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
             <button @click="delOpenModal" class="ms-del">삭제</button>
-            <button class="ms-up">수정</button>
+            <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
             <button class="ms-comfirm">승인</button>
         </div>
     </div>
@@ -65,7 +65,7 @@ onMounted(() => {
 });
 
 
-//**미션 카테고리 정보 출력***
+//****미션 카테고리 정보 출력****
 const category = computed(() => store.state.mission.missionDetail.category);
 
 
@@ -97,11 +97,13 @@ const goBack = (child_id) => {
 const deleteMission = (mission_id) => {
     console.log('삭제 요청 mission_id : ', mission_id)
     store.dispatch('mission/deleteMission', mission_id);
-    
-    
 }
 
-
+// *****미션 수정*******
+const goUpdate = (mission_id) => {
+    console.log('수정 요청 mission_id : ', mission_id);
+    store.dispatch('mission/goUpdateMission', mission_id);
+}
 
 </script>
 

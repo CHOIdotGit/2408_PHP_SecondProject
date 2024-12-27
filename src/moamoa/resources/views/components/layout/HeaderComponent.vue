@@ -18,6 +18,7 @@
 
             <div class="item">
                 <router-link to="/parent/spend/list/" class="link-deco"><p class="item-btn" >지출</p></router-link>
+                <!-- <router-link v-else to="/child/spend/list/" class="link-deco"><p class="item-btn" >지출</p></router-link> -->
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
                         <router-link to="/child/spend/list/" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
@@ -25,6 +26,7 @@
 
             <div class="item">
                 <router-link to="/parent/mission/list" class="link-deco"><p class="item-btn" >미션</p></router-link>
+                <!-- <router-link v-else to="/child/mission/list" class="link-deco"><p class="item-btn" >미션</p></router-link> -->
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
                         <router-link to="/child/mission/list" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
@@ -32,6 +34,7 @@
 
             <div class="item">
                 <router-link to="/parent/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link>
+                <!-- <router-link v-else to="/child/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link> -->
                     <div class="child-dropdown" v-if="$store.state.auth.authFlg">
                         <router-link to="/child/calendar" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
                     </div>
