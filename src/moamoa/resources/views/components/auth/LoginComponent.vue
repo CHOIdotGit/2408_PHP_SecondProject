@@ -17,17 +17,29 @@
             <!-- 아이디, 비밀번호 입력 DIV -->
             <div class="data-input">
                 <div>
-                    <div v-if="$store.state.auth.errMsg !== null" class="err-msg">
-                      <p v-for="item in $store.state.auth.errMsg" :key="item">
-                        {{ item }}
-                      </p>
+                    <!-- 공용 에러 메세지 -->
+                    <div v-if="errMsg.common" class="err-msg">
+                      <span> {{ errMsg.common }} </span>
                     </div>
-                    <label for="account">아이디</label> <br>
-                    <input v-model="userInfo.account" type="text" name="account" required>
+                    
+                    <label for="account">
+                      아이디 &nbsp;
+                      <span v-if="errMsg.account" class="err-msg">
+                        {{ errMsg.account }}
+                      </span>
+                    </label>
+                    <!-- <br> -->
+                    <input v-model="userInfo.account" :class="{ 'err-border' : errMsg.account }" type="text" name="account" required>
                 </div>
                 <div>
-                    <label for="password">비밀번호</label> <br>
-                    <input v-model="userInfo.password" type="password" name="password" required>
+                    <label for="password">
+                      비밀번호 &nbsp;
+                      <span v-if="errMsg.password" class="err-msg">
+                        {{ errMsg.password }}
+                      </span>
+                    </label> 
+                    <!-- <br> -->
+                    <input v-model="userInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" required>
                 </div>
             </div>
 
@@ -44,12 +56,47 @@
 </template>
 
 <script setup>
-  import { reactive } from 'vue';
+  import { computed, reactive, onMounted, onBeforeUnmount } from 'vue';
+  import { onBeforeRouteLeave } from 'vue-router';
+  import { useStore } from 'vuex';
+
+  const store = useStore();
+
+  // 에러 정보 ---------------------------------------------------------------------------------------------
+  const errMsg = computed(() => store.state.auth.errMsg);
 
   // 회원 정보 ---------------------------------------------------------------------------------------------
   const userInfo = reactive({
     account: '',
     password: '',
+  });
+  
+  // 이동 반응 이벤트 ---------------------------------------------------------------------------------------------
+
+  // 예외 정보 리셋
+  const clearState = () => {
+    // 들어간 값이 하나라도 있으면 리셋
+    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+      store.commit('auth/resetErrMsg');
+    }
+  };
+  
+  // 페이지가 로드되면 DOM에 이벤트 추가
+  onMounted(() => {
+    window.addEventListener('popstate', clearState());
+    window.addEventListener('beforeunload', clearState);
+  });
+
+  // 다음 컴포넌트로 넘어갈 때 이벤트를 제거
+  onBeforeUnmount(() => {
+    window.removeEventListener('popstate', clearState());
+    window.removeEventListener('beforeunload', clearState);
+  });
+
+  // 다른 페이지로 이동 시 작동함
+  onBeforeRouteLeave((to, from, next) => {
+    clearState();
+    next();
   });
 </script>
 
@@ -146,10 +193,24 @@
     font-size: 1.9rem;
   }
 
+  /* 에러 메시지용 세팅 */
+  /* 라벨 끝쪽에 출력 배치 */
+  label { 
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* 메세지 설정 */
   .err-msg {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     padding: 10px 0;
-    color: red;
+    color: #ff0000;
+  }
+
+  /* 빨간 테두리, 추가입력하면 사라짐 */
+  .err-border:invalid {
+    border: 2px solid rgba(255, 0, 0, 0.6);
+    box-shadow: 0 0 5px #ff0000;
   }
 
   /* 모바일 설정: 화면 너비가 일정 크기 이하일 때 */

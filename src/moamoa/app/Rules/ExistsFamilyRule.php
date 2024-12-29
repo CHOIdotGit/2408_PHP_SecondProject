@@ -40,6 +40,6 @@ class ExistsFamilyRule implements Rule {
    * @return string
    */
   public function message() {
-    return '해당 계정은 존재하지 않는 계정입니다.';
+    return '해당 계정은 존재하지 않습니다.';
   }
 }

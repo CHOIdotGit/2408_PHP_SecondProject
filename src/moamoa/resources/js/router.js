@@ -25,6 +25,7 @@ import ChildRegistComponent from '../views/components/auth/regist/ChildRegistCom
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
+import ParentCodeComponent from '../views/components/auth/regist/ParentCodeComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -36,7 +37,8 @@ const chkAuth = (to, from, next) => {
 
     // 비인증용 경로 변수
     const notAuthPath = (to.path === '/' || to.path === '/login' || to.path === '/regist/main' 
-        || to.path === '/regist/parent' || to.path === '/regist/child' || to.path === '/regist/complete'
+        || to.path === '/regist/parent' || to.path === '/regist/child' 
+        // || to.path === '/regist/complete'
     );
 
     if(authFlg && notAuthPath) { // 인증 유저가 비인증 페이지에 접근했는가?
@@ -75,6 +77,12 @@ const routes = [
     {
         path: '/regist/parent',
         component: ParentRegistComponent,
+        beforeEnter: chkAuth,
+    },
+    // 부모 코드뷰 페이지
+    {
+        path: '/regist/parent/code',
+        component: ParentCodeComponent,
         beforeEnter: chkAuth,
     },
     // 자녀 회원가입 정보입력 페이지

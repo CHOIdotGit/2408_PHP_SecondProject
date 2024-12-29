@@ -13,7 +13,7 @@ class AuthRequest extends FormRequest {
   public function rules() {
     $rules = [
       // 영문 대소문자 시작 및 숫자조합 6 ~ 18글자
-      // 'account' => ['required', 'between:6,18', 'regex:^[a-zA-Z][a-z0-9]$'] 
+      // 'account' => ['required', 'between:6,18', 'regex:^[a-zA-Z][a-zA-Z0-9]$'] 
       // 영대문자 및 숫자 반드시 포함 6 ~ 20글자 
       // ,'password' => ['required', 'between:6,20', 'regex:/^[a-zA-Z0-9!@]+$/']
       
@@ -31,10 +31,11 @@ class AuthRequest extends FormRequest {
     elseif($this->routeIs('auth.store.user')) {
       // 유니크 ID가 두 테이블(부모, 자녀)에 존재하는지 검사
       $rules['account'][] = new UniqueFamilyRule;
-      $rules['password_chk'] = ['same:password'];
-      $rules['name'] = ['required', 'between:1,20'];
-      $rules['email'] = ['required', 'email'];
+      $rules['password_chk'] = ['required', 'same:password'];
+      $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
+      $rules['email'] = ['required'];
       $rules['tel'] = ['required'];
+      $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
       $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'];
       $rules['family_code'] = ['nullable', 'unique:parents,family_code'];
     }
@@ -45,10 +46,14 @@ class AuthRequest extends FormRequest {
   public function messages() {
     return [
       'account.required' => '아이디를 입력해주세요.'
-      ,'account.regex' => '영문 및 숫자조합 6~20 자만 입력가능 합니다.'
+      ,'account.regex' => '아이디 형식이 맞지 않습니다.'
       ,'password.required' => '비밀번호를 입력해주세요.'
-      ,'password_chk.same' => '비밀번호와 비밀번호 확인이 일치하지 않습니다.'
+      ,'password.regex' => '비밀번호 형식이 맞지 않습니다.'
+      ,'password_chk.required' => '비밀번호 확인을 입력해주세요.'
+      ,'password_chk.same' => '비밀번호가 서로 일치하지 않습니다.'
       ,'name.required' => '이름을 입력해주세요.'
+      ,'name.regex' => '단어 형식이 맞지 않습니다.'
+      ,'nick_name.regex' => '단어 형식이 맞지 않습니다.'
       ,'email.required' => '이메일을 입력해주세요.'
       ,'tel.required' => '전화번호를 입력해주세요.'
     ];

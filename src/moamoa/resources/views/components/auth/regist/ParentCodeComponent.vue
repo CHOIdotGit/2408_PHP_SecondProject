@@ -14,10 +14,10 @@
     <!-- 입력 폼 DIV -->
     <div class="data-form position-relative">
       <div class="data-info">
-        <p>{{ props.registInfo.name }} 님의 가족코드</p>
+        <p>{{ parentInfo.name }} 님의 가족코드</p>
 
         <div class="fam-code">
-          <p>{{ familyCode }}</p>
+          <p>{{ parentInfo.familyCode }}</p>
         </div>
         
         <span class="mini-text">
@@ -26,25 +26,21 @@
       </div>
 
       <div class="next-btn">
-          <button @click="nextComplete" type="button">다음 >&nbsp;</button>
+        <router-link to="/regist/complete">
+          <button type="button">다음 >&nbsp;</button>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 import { useStore } from 'vuex';
 
   const store = useStore(); 
-  const props = defineProps({
-    registInfo: Object,
-  });
-  const familyCode = computed(() => store.state.auth.familyCode);
-  const nextComplete = () => {
-    props.registInfo.family_code = familyCode;
-    store.dispatch('auth/storeUser', props.registInfo);
-  }
+  
+  const parentInfo = computed(() => store.state.auth.parentInfo);
 
 </script>
 

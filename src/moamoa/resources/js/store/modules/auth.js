@@ -5,9 +5,9 @@
  * 
  * 241212 V001 김현석 초기구축
  */
-
 import axios from "../../axios"
 import router from "../../router";
+// import forge from 'node-forge';
 
 export default {
   namespaced: true,
@@ -18,21 +18,33 @@ export default {
     parentFlg: sessionStorage.getItem('parentFlg') ? true : false, // 로그인 계정이 부모인지 체크
     childFlg: sessionStorage.getItem('childFlg') ? true : false, // 로그인 계정이 자녀인지 체크
     // 에러 메세지 관련 ---------------------------------------------------------------------------------------
-    errMsg: null,
+    errMsg: {
+      common: null,
+      account: null,
+      password: null,
+      password_chk: null,
+      name: null,
+      nick_name: null,
+      email: null,
+      tel: null,
+    },
     // 모달 관련 ---------------------------------------------------------------------------------------------
     modalText: '',
-    modalColor: '',
-    // 회원가입 관련 ---------------------------------------------------------------------------------------------
-    registFlg: true,
-    parentInfo: {},
-    familyCode: null,
-    preview: {
+    modalColor: false,
+    // 회원가입 관련 -----------------------------------------------------------------------------------------
+    // familyCode: null, // 부모에서 발급한 가족코드
+    
+    registInfo: localStorage.getItem('registInfo') ? JSON.parse(localStorage.getItem('registInfo')) : {}, // 가입폼 정보
+    registFlg: true, // 자녀 페이지 전환용 플래그
+    parentInfo: {}, // 부모 정보
+    preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false,
       url: null,
     },
   }),
 
   mutations: {
+    // 로그인 상태 관련 ------------------------------------------------------------------------------------------
     setAuthFlg(state, authFlg) {
       state.authFlg = authFlg;
     },
@@ -42,23 +54,25 @@ export default {
     setChildFlg(state, childFlg) {
       state.childFlg = childFlg;
     },
-    setErrMsg(state, errMsg) {
-      state.errMsg = errMsg;
-    },
+    // 모달 관련 ------------------------------------------------------------------------------------------------
     setModalText(state, modalText) {
       state.modalText = modalText;
     },
     setModalColor(state, modalColor) {
       state.modalColor = modalColor;
     },
+    // 회원가입 관련 ---------------------------------------------------------------------------------------------
+    setRegistInfo(state, registInfo) {
+      state.registInfo = registInfo;
+    },
+    // setFamilyCode(state, familyCode) {
+    //   state.familyCode = familyCode;
+    // },
     setRegistFlg(state, registFlg) {
       state.registFlg = registFlg;
     },
     setParentInfo(state, parentInfo) {
       state.parentInfo = parentInfo;
-    },
-    setFamilyCode(state, familyCode) {
-      state.familyCode = familyCode;
     },
     setPreviewFlg(state, flg) {
       state.preview.imgFlg = flg;
@@ -66,15 +80,56 @@ export default {
     setPreviewUrl(state, preview) {
       state.preview.url = preview;
     },
-    
+    // 예외 메세지 관련 ------------------------------------------------------------------------------------------
+    setErrMsgCommon(state, errMsg) {
+      state.errMsg.common = errMsg;
+    },
+    setErrMsgAccount(state, errMsg) {
+      state.errMsg.account = errMsg;
+    },
+    setErrMsgPassword(state, errMsg) {
+      state.errMsg.password = errMsg;
+    },
+    setErrMsgPasswordChk(state, errMsg) {
+      state.errMsg.password_chk = errMsg;
+    },
+    setErrMsgName(state, errMsg) {
+      state.errMsg.name = errMsg;
+    },
+    setErrMsgNickName(state, errMsg) {
+      state.errMsg.nick_name = errMsg;
+    },
+    setErrMsgEmail(state, errMsg) {
+      state.errMsg.email = errMsg;
+    },
+    setErrMsgTel(state, errMsg) {
+      state.errMsg.tel = errMsg;
+    },
+    // 초기화 관련 ------------------------------------------------------------------------------------------
+
     // 가입정보 초기화
     resetRegist(state) {
+      // state.familyCode = null;
+      state.registInfo = {};
       state.registFlg = true;
       state.parentInfo = {};
-      state.familyCode = null;
       state.preview = {
         imgFlg: false,
         url: null,
+      };
+    },
+
+    // 예외 메세지 초기화
+    resetErrMsg(state) {
+      state.errMsg = {
+        common: null,
+        account: null,
+        password: null,
+        passwordChk: null,
+        name: null,
+        nick_name: null,
+        email: null,
+        tel: null,
       };
     },
   },
@@ -93,9 +148,6 @@ export default {
 
       axios.post(url, data)
       .then(res => {
-        // 세션에 담아둔 유저 정보를 쓸 예정
-        // localStorage.setItem('userInfo', JSON.stringify(res.data.user));
-        // context.commit('setUserInfo', res.data.user);
         
         sessionStorage.setItem('authFlg', true);
         context.commit('setAuthFlg', true);
@@ -107,14 +159,34 @@ export default {
         sessionStorage.setItem('childFlg', res.data.user.family_code ? false : true);
         context.commit('setChildFlg', res.data.user.family_code ? false : true);
 
-        // console.log(res.data.user);
-
         router.replace(res.data.redirect_to);
       })
       .catch(err => {
-        // TODO: 예외처리 헤야함
-        // console.error(err);
-        // 422: 유효성 검사 실패, 401: 일치 아이디 or 비밀번호 없음 
+        // 다시 시도할 경우를 대비해 메세지 초기화
+        context.commit('resetErrMsg');
+
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+        // console.log(err.response.data.error);
+
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          if(errData.account) {
+            context.commit('setErrMsgAccount', errData.account[0]);
+          }
+
+          if(errData.password) {
+            context.commit('setErrMsgPassword', errData.password[0]);
+          }
+        }
+        // 로그인 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
       });
     },
 
@@ -171,23 +243,17 @@ export default {
      * @param {*} account
      */
     chkAccount(context, account) {
-      // console.log('값: ' + (account === '' ? 'yes' : account));
-
-      // 입력한 아이디 값이 있을 시
-      if(account !== '') {
+      if(account === undefined || account === '' || account === null) {
+        context.commit('setModalText', '아이디를 입력해주세요.');
+        context.commit('setModalColor', false);
+      }else {
         const url = '/api/auth/chkAccount/'+ account;
         axios.get(url)
         .then(res => {
           // console.log(res.data);
           context.commit('setModalText', res.data.msg);
-          context.commit('setModalColor', res.data.color);
-        })
-        .catch(err => {
-          // console.error(err);
+          context.commit('setModalColor', res.data.color ? true : false);
         });
-      }else { // 아무것도 입력 안할 시
-        context.commit('setModalText', '아이디를 입력해주세요.');
-        context.commit('setModalColor', 'color-red');
       }
     },
 
@@ -210,68 +276,61 @@ export default {
       // 전송용 폼데이터 생성
       const data = new FormData();
 
-      // 자녀는 parent_id가 있음
-      if(registInfo.parent_id) {
-        data.append('parent_id', registInfo.parent_id);
-      }
-
-      // 부모는 family_code를 가지고 있음
-      if(registInfo.family_code) {
-        data.append('family_code', registInfo.family_code);
-      }
-
-      // 입력된 프로필 사진 정보가 있다면
-      if(registInfo.profile) {
-        data.append('profile', registInfo.profile);
-      }
-      
-      // 입력된 닉네임 정보가 있다면
-      if(registInfo.nick_name) {
-        data.append('nick_name', registInfo.nick_name);
-      }
-
-      // 나머지 필수 데이터 삽입
-      data.append('name', registInfo.name);
-      data.append('account', registInfo.account);
-      data.append('password', registInfo.password);
-      data.append('password_chk', registInfo.password_chk);
-      data.append('email', registInfo.email);
-      data.append('tel', registInfo.tel);
+      // 각 데이터에 값을 넣음
+      Object.entries(registInfo).forEach(([key, val]) => {
+        if(val) {
+          data.append(key, val);
+        }
+      });
 
       // 레코드 생성
       axios.post(url, data, config)
       .then(res => {
-        // console.log(res.data);
+        console.log(res.data);
 
-        // state값 초기화
-        context.commit('resetRegist');
-
-        // 회원가입 완료 페이지로 이동
-        router.replace('/regist/complete');
+        // 부모가입일경우 값을 반환함
+        if(res.data.parent) {
+          context.commit('setParentInfo', res.data.parent);
+        }
+        // 회원가입 다음 페이지로 이동
+        router.replace(res.data.redirect_to);
       })
       .catch(err => {
-        console.error(err);
-      });
-    },
+        // 다시 시도할 경우를 대비해 메세지 초기화
+        context.commit('resetErrMsg');
 
-    /**
-     * 부모 가족코드 발급
-     * 
-     * @param {*} context 
-     */
-    parentRegistCode(context) {
-      const url = '/api/auth/parentRegistCode';
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+        // console.log(err.response.data.error);
 
-      axios.get(url)
-      .then(res => {
-        // 발급된 가족코드를 state에 세팅
-        context.commit('setFamilyCode', res.data.family_code);
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          // 에러 정보값 세팅
+          const errInfo = {
+            account: 'setErrMsgAccount',
+            password: 'setErrMsgPassword',
+            password_chk: 'setErrMsgPasswordChk',
+            name: 'setErrMsgName',
+            email: 'setErrMsgEmail',
+            nick_name: 'setErrMsgNickName',
+            tel: 'setErrMsgTel',
+          };
 
-        // 코드 발급 페이지로 전환
-        context.commit('setRegistFlg', false);
-      })
-      .catch(err => {
-        console.error(err);
+          // 돌려서 있는것만 데이터 담음
+          Object.entries(errData).forEach(([key, val]) => {
+            if(val && errInfo[key]) {
+              context.commit(errInfo[key], val[0]);
+            }
+          });
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
       });
     },
 
@@ -289,7 +348,7 @@ export default {
       .then(res => {
         // console.log(res.data.parent);
 
-        // 담겨온 부모 정보를 state에 세티
+        // 담겨온 부모 정보를 state에 세팅
         context.commit('setParentInfo', res.data.parent);
 
         // 매칭 페이지로 전환

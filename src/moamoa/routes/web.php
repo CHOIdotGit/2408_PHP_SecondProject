@@ -27,7 +27,6 @@ Route::get('/api/csrf-token', [AuthController::class, 'settingCsrfToken'])->name
 Route::prefix('/api/auth')->group(function () {
     Route::get('/chkAccount/{account}', [AuthController::class, 'chkAccount'])->name('auth.chk.account');
     Route::post('/childRegistMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.regist.matching');
-    Route::get('/parentRegistCode', [AuthController::class, 'parentRegistCode'])->name('auth.parent.regist.code');
     Route::post('/storeUser', [AuthController::class, 'storeUser'])->name('auth.store.user');
 });
 // 

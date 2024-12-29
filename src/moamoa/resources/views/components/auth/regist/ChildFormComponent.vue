@@ -13,7 +13,9 @@
         
         <label for="file">
           <div class="profile-preview">
-            <img v-if="preview.imgFlg" :src="preview.url" width="200" height="280">
+            <div v-if="preview.imgFlg" class="profile-img">
+              <img :src="preview.url">
+            </div>
             <span v-else>클릭하여 <br>사진 선택</span>
           </div>
         </label>
@@ -172,11 +174,6 @@ import { useStore } from 'vuex';
   /* 커서 손모양으로 변경 */
   a, button, .profile-preview {
     cursor: pointer;
-  }
-
-  /* 이미지 미리보기용 */
-  .profile-preview > img {
-    border: 2px solid #E8E8E8;
   }
 
   /* ////// 모달 관련 제어 ////// */
@@ -339,6 +336,21 @@ import { useStore } from 'vuex';
     margin-top: 5px;
   }
 
+  /* 이미지 표시 영역 */
+  .profile-img {
+    width: 180px;
+    height: 180px; 
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  /* 이미지 영역 */
+  .profile-img > img {
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+  }
+
   /* 중복확인 영역 */
   .account-group {
     display: flex;
@@ -346,6 +358,7 @@ import { useStore } from 'vuex';
     max-width: 80vw;
   }
 
+  /* 중복 확인 인풋 우측 여백 제거 */
   .account-group input {
     padding-right: 0;
   }

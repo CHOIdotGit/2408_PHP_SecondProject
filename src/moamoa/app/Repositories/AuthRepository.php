@@ -20,8 +20,18 @@ class AuthRepository extends Repositories {
     return ($parent) ? true : false;
   }
 
-  // 가족 코드로 부모 찾기
+  // 가족 코드로 부모 정보 획득
   public function findParentByFamilyCode($family_code) {
     return $this->parent->select('family_code')->where('family_code', $family_code)->first();
+  }
+
+  // 계정이름으로 부모 정보 획득
+  public function findParentByAccount($account) {
+    return $this->parent->select('account', 'password')->where('account', $account)->first();
+  }
+
+  // 계정이름으로 자녀 정보 획득
+  public function findChildByAccount($account) {
+    return $this->child->select('account', 'password')->where('account', $account)->first();
   }
 }
