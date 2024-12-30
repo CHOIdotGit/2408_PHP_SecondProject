@@ -33,8 +33,8 @@ export default {
     modalColor: false,
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     // familyCode: null, // 부모에서 발급한 가족코드
-    
-    registInfo: localStorage.getItem('registInfo') ? JSON.parse(localStorage.getItem('registInfo')) : {}, // 가입폼 정보
+    userInfo: {}, // 로그인 유저 정보
+    registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입폼 정보
     registFlg: true, // 자녀 페이지 전환용 플래그
     parentInfo: {}, // 부모 정보
     preview: { // 프로필 사진 미리보기용 세팅
@@ -79,6 +79,9 @@ export default {
     },
     setPreviewUrl(state, preview) {
       state.preview.url = preview;
+    },
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
     },
     // 예외 메세지 관련 ------------------------------------------------------------------------------------------
     setErrMsgCommon(state, errMsg) {
@@ -148,7 +151,6 @@ export default {
 
       axios.post(url, data)
       .then(res => {
-        
         sessionStorage.setItem('authFlg', true);
         context.commit('setAuthFlg', true);
 
@@ -286,14 +288,14 @@ export default {
       // 레코드 생성
       axios.post(url, data, config)
       .then(res => {
-        console.log(res.data);
+        console.log(res.data.data);
 
-        // 부모가입일경우 값을 반환함
-        if(res.data.parent) {
-          context.commit('setParentInfo', res.data.parent);
-        }
-        // 회원가입 다음 페이지로 이동
-        router.replace(res.data.redirect_to);
+        // // 부모가입일경우 값을 반환함
+        // if(res.data.parent) {
+        //   context.commit('setParentInfo', res.data.parent);
+        // }
+        // // 회원가입 다음 페이지로 이동
+        // router.replace(res.data.redirect_to);
       })
       .catch(err => {
         // 다시 시도할 경우를 대비해 메세지 초기화
@@ -372,6 +374,29 @@ export default {
         console.error(err);
       });
     },
+
+    loginUser(context) {
+      const url = '/api/auth/loginUser';
+
+      axios.post(url)
+      .then(res => {
+        
+        // 세팅된 플래그값이 없으면
+        if(!(sessionStorage.getItem('authFlg') && sessionStorage.getItem('parentFlg') && sessionStorage.getItem('childFlg'))) {
+          sessionStorage.setItem('authFlg', true);
+          context.commit('setAuthFlg', true);
+  
+          // 로그인한 계정에 가족코드가 있으면 부모이고, 없으면 자녀
+          sessionStorage.setItem('parentFlg', res.data.user.family_code ? true : false);
+          context.commit('setParentFlg', res.data.user.family_code ? true : false);
+          
+          sessionStorage.setItem('childFlg', res.data.user.family_code ? false : true);
+          context.commit('setChildFlg', res.data.user.family_code ? false : true);
+        }
+        
+        context.commit('setUserInfo', res.data.user);
+      });
+    }
 
   },
   getters: {

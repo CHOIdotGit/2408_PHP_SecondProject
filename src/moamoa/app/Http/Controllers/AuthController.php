@@ -20,7 +20,7 @@ class AuthController extends Controller {
    * @return JSON $responseData
    */
   public function login(AuthRequest $request) {
-    // 입력값이 하나라도 없을경우 예외 반환
+    // 입력값이 둘중 하나라도 없을경우 예외 반환
     if($request->missing(['account', 'password'])) {
       return response()->json([
         'success' => false
@@ -51,6 +51,7 @@ class AuthController extends Controller {
           $responseData = [
             'success' => true
             ,'msg' => '부모 로그인 성공'
+            ,'user' => $parent
             ,'redirect_to' => 'parent/home'
           ];
         }else { //아니면 자녀 로그인
@@ -59,6 +60,7 @@ class AuthController extends Controller {
           $responseData = [
             'success' => true
             ,'msg' => '자녀 로그인 성공'
+            ,'user' => $child
             ,'redirect_to' => 'child/home'
           ];
         }
@@ -242,28 +244,21 @@ class AuthController extends Controller {
     return response()->json([
       'success' => false,
       'msg' => '해당하는 코드는 존재하지 않는 코드입니다.',
-    ], 200);
+    ], 401);
   }
-  
-  /**
-   * 
-   * axios 미사용 내부 호출용 함수
-   * 
-   */
 
-  // 가족 코드 생성
-  private function addFamilyCode() {
-    // 영대문자와 숫자를 각각 정의
-    $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $numbers = '0123456789';
+  public function loginUser() {
+    if(Auth::guard('parents')->check()) {
+      $user = Auth::guard('parents')->user();
+    }elseif(Auth::guard('children')->check()) {
+      $user = Auth::guard('children')->user();
+    }
 
-    // 각 카테고리에서 중복 없이 4개씩 선택
-    $randomLetters = Str::random(4, $letters); // 영대문 4개
-    $randomNumbers = Str::random(4, $numbers); // 숫자 4개
+    $responseData = [
+      'success' => true,
+      'user' => $user,
+    ];
 
-    // 섞어서 랜덤 8자리 문자열 생성
-    $randomString = str_shuffle($randomLetters . $randomNumbers);
-    
-    return $randomString;
+    return response()->json($responseData, 200);
   }
 }
