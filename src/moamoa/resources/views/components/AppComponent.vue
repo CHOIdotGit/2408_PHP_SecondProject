@@ -1,5 +1,5 @@
 <template>
-<div :class="{'bg-childs': isChilds, 'bg-parents': isParents, 'bg-auth': !isAuth}">
+<div :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }">
     <header v-if="isAuth">
         <HeaderComponent/>
     </header>
@@ -31,11 +31,10 @@ const isAuth = computed(() => store.state.auth.authFlg);
 const isParents = computed(() => store.state.auth.parentFlg);
 const isChilds = computed(() => store.state.auth.childFlg);
 
-
-
-
-
 </script>
+
+
+
 <style>
     @import url("../../css/common.css");
     @import url("../../css/header.css");

@@ -15,8 +15,8 @@ export default {
   state: ()=> ({
     // 로그인 상태 관련 ---------------------------------------------------------------------------------------
     authFlg: sessionStorage.getItem('authFlg') ? true : false, // 로그인 상태 체크
-    parentFlg: sessionStorage.getItem('parentFlg') ? true : false, // 로그인 계정이 부모인지 체크
-    childFlg: sessionStorage.getItem('childFlg') ? true : false, // 로그인 계정이 자녀인지 체크
+    parentFlg: sessionStorage.getItem('parentFlg') ? sessionStorage.getItem('parentFlg') : false, // 로그인 계정이 부모인지 체크
+    childFlg: sessionStorage.getItem('childFlg') ? sessionStorage.getItem('childFlg') : false, // 로그인 계정이 자녀인지 체크
     // 에러 메세지 관련 ---------------------------------------------------------------------------------------
     errMsg: {
       common: null,
