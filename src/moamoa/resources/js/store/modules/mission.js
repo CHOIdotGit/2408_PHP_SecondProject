@@ -14,7 +14,7 @@ export default {
         // 미션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         // ,missionDetail: sessionStorage.getItem('missionDetail') ? JSON.parse(sessionStorage.getItem('missionDetail')) : []
-        ,missionDetail: []
+        ,missionDetail: {}
         ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
         ,childHome: []
         
@@ -250,12 +250,13 @@ export default {
         goUpdateMission(context, mission_id) {
             const url = '/api/parent/mission/detail/'+ mission_id;
             // console.log(url);
+
+            
             axios.get(url)
                 .then(response => {
                     context.commit('setMissionDetail', response.data.missionDetail);
                     // sessionStorage.setItem('missionId', 'mission_id');
                     context.commit('setMissionId', mission_id);
-                    router.push('/parent/mission/update/'+ mission_id);
                 })
                 .catch(error => {
                     console.log('미션 수정 페이지로 이동 못함', error);
@@ -265,21 +266,34 @@ export default {
         // ***************************
         // 부모 미션 수정 페이지
         // ***************************
-        // UpdateMission(context, mission_id) {
-        //     const url = '/api/parent/mission/update/' + mission_id;
-        //     // console.log(url);
+        UpdateMission(context, updateInfo) {
+            const data = JSON.stringify(updateInfo);
+            // console.log(updateInfo);
+            const url = '/api/parent/mission/update/' + updateInfo.mission_id;
+            // console.log(url);
+            // const updateData = new FormData();
+            // updateData.append('title', updateInfo.title);
+            // updateData.append('start_at', updateInfo.start_at);
+            // updateData.append('end_at', updateInfo.end_at);
+            // updateData.append('category', updateInfo.category);
+            // updateData.append('content', updateInfo.content);
+            // updateData.append('amount', updateInfo.amount);
 
-        //     axios.patch(url)
-        //         .then(response => {
-        //             context.commit('setMissionDetail', response.data.updateMission);
-        //             context.commit('setMissionId', mission_id);
-        //             console.log('vue에서 미션 아이디 확인', response.data.updateMission.mission_id);
-        //             router.replace('/parent/mission/update/' + mission_id);
-        //         })
-        //         .catch(error => {
-        //             console.log('미션 수정 에러', error);
-        //         })
-        // },
+            // console.log(updateData);
+            //patch 는 FormData 사용안함. header에서 첨부터 json을 기본으로 하는데
+            //json 배열로 데이터를 보내줘야함. 
+            axios.patch(url, data)
+            .then(response => {
+                console.log('미션 수정 성공 :', response.data);
+                context.commit('setMissionDetail', response.data.updateMission);
+                
+                router.push('/parent/mission/detail/' + data.mission_id);
+
+            })
+            .catch(error => {
+                console.log('미션 수정 에러', error);
+            })
+        },
 
     },
 

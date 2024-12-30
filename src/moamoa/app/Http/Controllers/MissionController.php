@@ -6,6 +6,7 @@ use App\Models\Child;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MissionController extends Controller
 {
@@ -105,9 +106,9 @@ class MissionController extends Controller
     // **************부모 미션 수정 페이지 **************
     // ************************************************
     public function update(Request $request) {
+        Log::debug('update', $request->all());
         $updateMission = Mission::find($request->mission_id);
 
-        
         $updateMission->title = $request->title;
         $updateMission->category = $request->category;
         $updateMission->content = $request->content;

@@ -4,7 +4,7 @@
             <div class="content-list">
                 <div class="content">
                     <p class="title">미션 제목</p>
-                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus>
+                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
                     <div class="date">
                         <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  >
                         <span>⁓</span>
@@ -25,47 +25,6 @@
                             
                         </label>
                     </div>
-
-                    <!-- 학습(category = 0) -->
-                    <!-- <div class="category-btn">
-                        <input type="radio" name="category" id="study" :value="0" ></input>
-                        <label for="study" class="ms-category-btn">
-                        <img class="ms-category-img" src="/img/icon-pencil.png" alt=".">
-                        <p>학습</p>
-                        </label>
-                    </div> -->
-                    <!-- 취미 (category = 1) -->
-                    <!-- <div class="category-btn">
-                        <input type="radio" name="category" id="habit" :value="1"></input>
-                        <label for="habit" class="ms-category-btn">
-                            <img class="ms-category-img" src="/img/icon-bicycle.png" alt=".">
-                            <p>취미</p>
-                        </label>
-                    </div> -->
-                    <!-- 집안일(category = 2) -->
-                    <!-- <div class="category-btn">
-                        <input type="radio" name="category" id="housework" :value="2" ></input>
-                        <label for="housework" class="ms-category-btn">
-                            <img class="ms-category-img" src="/img/icon-cleaner.png" alt=".">
-                            <p>집안일</p>  
-                        </label>
-                    </div> -->
-                    <!-- 생활습관(category = 3) -->
-                    <!-- <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" :value="3" ></input>
-                        <label for="lifestyle" class="ms-category-btn">
-                            <img class="ms-category-img" src="/img/icon-clock.png" alt=".">
-                            <p>생활습관</p>
-                        </label>
-                    </div> -->
-                    <!-- 기타(category = 4) -->
-                    <!-- <div class="category-btn">
-                        <input type="radio" name="category" id="etc" :value="4" ></input>
-                        <label for="etc" class="ms-category-btn">
-                            <img class="ms-category-img" src="/img/icon-checklist7.png" alt=".">
-                            <p>기타</p>
-                        </label>
-                    </div> -->
                 </div>
                 
 
@@ -79,7 +38,7 @@
                     <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/parent/mission/list')" class="create-btn">취소</button>
+                    <button @click="$router.replace('/parent/mission/list/${child_id}')" class="create-btn">취소</button>
                     <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>

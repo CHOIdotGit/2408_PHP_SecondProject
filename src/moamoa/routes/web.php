@@ -53,7 +53,7 @@ Route::post('/api/parent/mission/create/{child_id}', [MissionController::class, 
 Route::delete('/api/parent/mission/delete/{id}', [MissionController::class, 'destroy']);
 
 // 부모 미션 수정 페이지
-Route::patch('/api/parent/mission/update/{id}', [MissionController::class, 'update']);
+Route::patch('/api/parent/mission/update/{mission_id}', [MissionController::class, 'update']);
 
 // 부모 지출 리스트 페이지
 Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index']);

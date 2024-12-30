@@ -56,9 +56,12 @@
 <script setup>
 import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
 // *****미션 상세 정보******
 const store = useStore();
+const router = useRouter();
+
 const missionDetail = computed(() => store.state.mission.missionDetail);
 onMounted(() => {
     store.dispatch('mission/showMissionDetail', store.state.mission.missionId);
@@ -103,6 +106,7 @@ const deleteMission = (mission_id) => {
 const goUpdate = (mission_id) => {
     console.log('수정 요청 mission_id : ', mission_id);
     store.dispatch('mission/goUpdateMission', mission_id);
+    router.push('/parent/mission/update/'+ mission_id);
 }
 
 </script>

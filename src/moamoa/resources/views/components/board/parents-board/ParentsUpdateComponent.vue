@@ -1,10 +1,10 @@
 <template>
-    <div  class="main-container" v-if="missionDetail">
+    <div  class="main-container">
         <div class="create-container">
             <div class="content-list">
                 <div class="content" >
                     <p class="title">미션 제목</p>
-                    <input type="text" v-model="missionDetail.title" class="ms-title" id="ms-title" maxlength="10" autofocus>
+                    <input type="text" v-model="missionDetail.title" value="" class="ms-title" id="ms-title" maxlength="10" autofocus>
                     
                     <div class="date">
                         <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01"  >
@@ -17,7 +17,7 @@
                     <p class="title">미션 종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
-                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === category}, 'ms-category-btn']">
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
                             <p>{{ item.index }}</p>
@@ -37,8 +37,8 @@
                     <!-- {{ missionDetail.amount}} -->
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/parent/mission/detail/${mission_is}')" class="create-btn">취소</button>
-                    <button class="create-btn">수정</button>
+                    <button @click="$router.push('/parent/mission/detail/${mission_id}')" class="create-btn">취소</button>
+                    <button @click="getUpdateMission" class="create-btn">수정</button>
                 </div>
             </div>
         </div>
@@ -47,20 +47,33 @@
 
 <script setup>
 import { useStore } from 'vuex';
-import { computed, onMounted, reactive  } from 'vue';
+import { computed, onBeforeMount, reactive  } from 'vue';
 import { useRoute } from 'vue-router';
-import mission from '../../../../js/store/modules/mission';
+// import mission from '../../../../js/store/modules/mission';
 
 const route = useRoute();
-
-// *****미션 상세 정보******
 const store = useStore();
-const missionDetail = computed(() => store.state.mission.missionDetail);
-onMounted(() => {
+
+onBeforeMount(() => {
     const mission_id = route.params.mission_id;
     console.log('수정할 mission id 획득 : ', mission_id);
-    store.dispatch('mission/goUpdateMission', mission_id);//mission_id 불러오기
+    store.dispatch('mission/goUpdateMission', mission_id); //mission_id 불러오기
 });
+
+// *****미션 상세 정보******
+const missionDetail = store.state.mission.missionDetail;
+
+
+// 미션 내용 수정
+// const upDateMission = reactive({
+//     title: ''
+//     ,content: ''
+//     ,category: ''
+//     ,amount: 0
+//     ,start_at: ''
+//     ,end_at: ''
+//     ,mission_id: route.params.mission_id
+// });
 
 const categories = reactive([
     {name: '학습' , img:'/img/icon-pencil.png', index: "0"}
@@ -69,6 +82,10 @@ const categories = reactive([
     ,{name: '생활습관' , img:'/img/icon-clock.png', index: "3"}
     ,{name: '기타' , img:'/img/icon-checklist7.png', index: "4"}
 ]);
+
+const getUpdateMission = () => {
+    store.dispatch('mission/UpdateMission', missionDetail);
+};
 
 
 
@@ -169,7 +186,11 @@ span {
 }
 
 /* db에 저장된 카테고리 표시 */
-.categorybtn-green {
+/* .categorybtn-green {
+    background-color: #A2CAAC;
+} */
+
+.checked-category-btn {
     background-color: #A2CAAC;
 }
 
