@@ -33,11 +33,11 @@ class AuthRequest extends FormRequest {
       $rules['account'][] = new UniqueFamilyRule;
       $rules['password_chk'] = ['required', 'same:password'];
       $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
-      $rules['email'] = ['required'];
-      $rules['tel'] = ['required'];
-      $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
+      $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
+      $rules['tel'] = ['required', 'regex:/^\d{10,11}$/']; // 10 ~ 11자의 숫자
+      $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/']; // 첫문자는 영문대소문자한글 그뒤는 숫자포함
       $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'];
-      $rules['family_code'] = ['nullable', 'unique:parents,family_code'];
+      $rules['family_code'] = ['nullable', 'unique:parents,family_code', 'regex:/^[A-Z0-9]{8}$/']; // 영대문숫자 8자리
     }
 
     return $rules;
@@ -55,7 +55,10 @@ class AuthRequest extends FormRequest {
       ,'name.regex' => '단어 형식이 맞지 않습니다.'
       ,'nick_name.regex' => '단어 형식이 맞지 않습니다.'
       ,'email.required' => '이메일을 입력해주세요.'
+      ,'email.regex' => '단어 형식이 맞지 않습니다.'
       ,'tel.required' => '전화번호를 입력해주세요.'
+      ,'tel.regex' => '숫자 형식이 맞지 않습니다.'
+      ,'family_code.regex' => '단어 형식이 맞지 않습니다.'
     ];
   }
 

@@ -27,11 +27,11 @@ class AuthRepository extends Repositories {
 
   // 계정이름으로 부모 정보 획득
   public function findParentByAccount($account) {
-    return $this->parent->select('account', 'password')->where('account', $account)->first();
+    return $this->parent->where('account', $account)->first();
   }
 
   // 계정이름으로 자녀 정보 획득
   public function findChildByAccount($account) {
-    return $this->child->select('account', 'password')->where('account', $account)->first();
+    return $this->child->where('account', $account)->first();
   }
 }
