@@ -45,6 +45,7 @@ class HomeController extends Controller
     }
     public function show(Request $request) {
         $child = Auth::guard('children')->user();
+
         if(!$child) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
@@ -60,7 +61,6 @@ class HomeController extends Controller
         $childHome = Child::select('children.child_id', 'children.name')
                                     ->where('children.child_id', $child->child_id)
                                     ->first();
-
         // 관계 데이터 추가
         // missions 관계에 날짜 조건 추가
         $missions = $childHome->missions()

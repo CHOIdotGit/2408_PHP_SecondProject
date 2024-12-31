@@ -12,11 +12,11 @@
                     <canvas ref="chartCanvas"></canvas>
                 </div>
                 <div class="notice-section">
-                    <p>가장 큰 지출 : {{ mostSpendAmount && mostSpendAmount !== 0 
-                            ? Number(mostSpendAmount).toLocaleString() + '원' 
+                    <p>가장 큰 지출 : {{ mostSpendAmount.amount && mostSpendAmount.amount !== 0 
+                            ? Number(mostSpendAmount.amount).toLocaleString() + '원' 
                             : '최근 소비한 내역이 없습니다.' }}   </p>
-                    <p>가장 많이 쓴 카테고리 : {{ mostUsedCategory 
-                            ? getCategoryText(mostUsedCategory) 
+                    <p>가장 많이 쓴 카테고리 : {{ mostUsedCategory.category 
+                            ? getCategoryText(mostUsedCategory.category) 
                             : '최근 사용한 카테고리가 없습니다.' }} </p>
                     <p>지출 총합 : {{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
                     <p>용돈 총합 : {{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
@@ -27,7 +27,7 @@
                     그래프들어갈자리
                 </div>
                 <div class="notice-section">
-                    <p>가장 큰 지출 : 54,000   </p>
+                    <p>가장 큰 지출 : </p>
                     <p>가장 많이 쓴 카테고리 : 쇼핑</p>
                     <p>지출 총합 : 270,000</p>
                     <p>용돈 총합 : 300,00</p>
@@ -63,17 +63,17 @@ const homeMission = computed(() => store.state.mission.childHome)
 // console.log('자녀 홈 미션', homeMission.value);
 
 // 가장 큰 지출과 가장 많이 사용한 카테고리
-const mostSpendAmount = computed(() => store.state.transaction.childHomeTransaction);
+const mostSpendAmount = computed(() => store.state.transaction.mostSpendAmount);
 const mostUsedCategory = computed(() => store.state.transaction.mostUsedCategory);
 const totalAmount = computed(() => store.state.transaction.totalAmount);
 const totalExpenses = computed(() => store.state.transaction.totalExpenses);
 
 const getCategoryText = (category) => {
     const categoryMapping = {
-        0: '교통비',
-        1: '취미',
-        2: '쇼핑',
-        3: '기타',
+        "0": '교통비',
+        "1": '취미',
+        "2": '쇼핑',
+        "3": '기타',
     };
     return categoryMapping[category]; // 기본값 없이 반환
 };
