@@ -7,33 +7,36 @@
         </div>
         <div class="stat-section">  
             <div class="each-part">
-                <div class="graph-section">
-                     <!-- 그래프를 표시할 canvas 요소 -->
+                <div class="graph-section" >
+                    <!-- 그래프를 표시할 canvas 요소 -->
                     <canvas ref="chartCanvas"></canvas>
                 </div>
-                <div class="notice-section">
-                    <p>가장 큰 지출 : {{ mostSpendAmount.amount && mostSpendAmount.amount !== 0 
-                            ? Number(mostSpendAmount.amount).toLocaleString() + '원' 
+                <!-- <div class="notice-section" v-if="childNameList.length > 0" v-for="item in statis" :key="item">
+                  {{ item.mostSpendAmount }}
+                    <p>{{item.name}} {{ item.mostSpendAmount && item.mostSpendAmount !== 0 
+                            ? Number(item.mostSpendAmount).toLocaleString() + '원' 
                             : '최근 소비한 내역이 없습니다.' }}   </p>
-                    <p>가장 많이 쓴 카테고리 : {{ mostUsedCategory.category 
-                            ? getCategoryText(mostUsedCategory.category) 
+                            
+                    <p>가장 많이 쓴 카테고리 : {{ item.mostUsedCategory 
+                            ? getCategoryText(item.mostUsedCategory) 
                             : '최근 사용한 카테고리가 없습니다.' }} </p>
-                    <p>지출 총합 : {{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
-                    <p>용돈 총합 : {{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
-                </div>
+                    <p>지출 총합 : {{ item.totalAmount ? Number(item.totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
+                    <p>용돈 총합 : {{ item.totalExpenses ? Number(item.totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
+                </div> -->
             </div>
             <div class="each-part">
                 <div class="graph-section">
                     그래프들어갈자리
                 </div>
                 <div class="notice-section">
-                    <p>가장 큰 지출 : </p>
+                    <p>가장 큰 지출 : {{  }}</p>
                     <p>가장 많이 쓴 카테고리 : 쇼핑</p>
-                    <p>지출 총합 : 270,000</p>
-                    <p>용돈 총합 : 300,00</p>
+                    <p>지출 총합 : {{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
+                    <p>용돈 총합 : {{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
+                    
                 </div>
             </div>
-            <div class="each-part">
+            <!-- <div class="each-part">
                 <div class="graph-section">
                     그래프들어갈자리
                 </div>
@@ -43,7 +46,7 @@
                     <p>지출 총합 : 270,000</p>
                     <p>용돈 총합 : 300,00</p>
                 </div>
-            </div>
+            </div> -->
             
         </div>
     </div>
@@ -62,11 +65,23 @@ const store = useStore();
 const homeMission = computed(() => store.state.mission.childHome)
 // console.log('자녀 홈 미션', homeMission.value);
 
+// 자녀 수 확인
+const childNameList = computed(() => store.state.header.childNameList);
+console.log('자녀 수 확인', childNameList.name);
+
+
 // 가장 큰 지출과 가장 많이 사용한 카테고리
-const mostSpendAmount = computed(() => store.state.transaction.mostSpendAmount);
+const mostSpendAmount = computed(() => store.state.transaction.mostSpendAmount.child.child_id);
 const mostUsedCategory = computed(() => store.state.transaction.mostUsedCategory);
 const totalAmount = computed(() => store.state.transaction.totalAmount);
 const totalExpenses = computed(() => store.state.transaction.totalExpenses);
+
+const statis = computed(() => [
+  { name: "가장 큰 지출 :", value: mostSpendAmount.transactions_max_amount},
+  { name: "가장 많이 쓴 카데고리 :", value: mostUsedCategory.category},
+  { name: "지출 총합 :", value: totalAmount},
+  { name: "용돈 총합 :", value: totalExpenses},
+])
 
 const getCategoryText = (category) => {
     const categoryMapping = {

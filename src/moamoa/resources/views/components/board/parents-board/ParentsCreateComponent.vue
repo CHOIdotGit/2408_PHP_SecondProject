@@ -14,15 +14,12 @@
                 </div>
                 <div class="content" >
                     <p class="title">미션 종류</p>
-                    <p>{{ typeof(radioCategories) }}</p>
                     <!-- 카테로리 v-for -->
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
-                            <p>{{ item.index }}</p>
-                            
                         </label>
                     </div>
                 </div>
@@ -115,7 +112,7 @@ const missionCreate = reactive({
 }
 
 .content-list {
-    display: grid;
+    /* display: grid; */
     margin-top: 100px;
     margin-left: 20px;
     justify-content: center;

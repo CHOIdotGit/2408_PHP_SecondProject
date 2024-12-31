@@ -25,7 +25,7 @@ class CalendarController extends Controller
 
 
         $calendarData = Child::select('children.name', 'children.nick_name')
-                            ->where('children.parent_id', 1)
+                            ->where('children.parent_id', $parent->parent_id)
                             ->first();
         
         // 부모 예시
@@ -43,11 +43,13 @@ class CalendarController extends Controller
 
         // 카테고리 별 합산
         foreach($categories as $category => $key){
-            $sidebarData[$key] = Transaction::where('parent_id', 1)
+            $sidebarData[$key] = Transaction::where('parent_id', $parent->parent_id)
             ->where('category', $category)
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->sum('amount');
         }
+
+
 
         // 일별 전체 지출 합산
         $dailyIncomeData = Mission::selectRaw('start_at as target_at, SUM(amount) as income')
@@ -64,9 +66,11 @@ class CalendarController extends Controller
                                 ->get();
 
         // 미션 합계
-        $sidebarMission = Mission::where('parent_id',1)
+        $sidebarMission = Mission::where('parent_id', $parent->parent_id)
                     ->whereBetween('start_at',[$startDate, $endDate])
                     ->sum('amount');
+
+
 
         // // 모달 지출 내역
         // $usageModal = Transaction::select()

@@ -23,7 +23,7 @@ class Transaction extends Model {
     ];
 
     public function child() {
-        return $this->belongsTo(Child::class, 'child_id');
+        return $this->belongsTo(Child::class, 'child_id', 'child_id');
     }
 
     public function parent() {

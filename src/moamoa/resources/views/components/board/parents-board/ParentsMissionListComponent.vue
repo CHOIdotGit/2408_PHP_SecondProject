@@ -26,7 +26,7 @@
                         </div>
                         <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
-                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}{{typeof(item.category)}}</p>
+                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-title">{{ item.title }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
@@ -63,15 +63,15 @@ const checkboxItem = ref([]); // 모두 선택되면 전체 체크박스에도 �
 
 // 모든 체크박스가 선택되었는지 확인 (computed : 반응형 데이터로 다루기 위해)
 const isAllChecked = computed(() => {
-    return checkboxItem.value.length > 0 && missionInfo.value.every((item) => checkboxItem.value.includes(item.mission_id));
+    return checkboxItem.value.length > 0 && missionList.value.every((item) => checkboxItem.value.includes(item.mission_id));
 });
 
 
 const checkAll = (e) => {
     if(e.target.checked) {
-        checkboxItem.value = missionInfo.value.map(item => item.mission_id);
+        checkboxItem.value = missionList.value.map(item => item.mission_id);
         console.log('체크박스 모두 선택');
-        console.log('체크박스 선택된 데이터 : ', missionInfo.value.length);
+        console.log('체크박스 선택된 데이터 : ', missionList.value.length);
     } else {
         checkboxItem.value = []; //전체 해제
         console.log('체크박스 모두 해제');

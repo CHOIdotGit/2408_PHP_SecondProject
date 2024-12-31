@@ -119,6 +119,7 @@ export default {
             if (!year || !month) {
                 // year, month가 있는지 확인
                 console.error('Year, month 값이 필요합니다.');
+                console.log(year, month);
                 return;
             }
             axios
@@ -127,10 +128,10 @@ export default {
                     // 서버 응답에서 미션 데이터를 Vuex 상태에 저장
                     commit('setTransactions', response.data.transactions);
                     // commit('setSelectedDate', response.data.date); 
-                  })
-                  .catch(error => {
+                })
+                .catch(error => {
                     console.error('캘린더 데이터를 불러오는 도중 오류 발생', error);
-                  });
+                });
         }
         
     },

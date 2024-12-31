@@ -35,7 +35,7 @@ class Child extends Authenticatable {
     }
 
     public function transactions() {
-        return $this->hasMany(Transaction::class, 'child_id');
+        return $this->hasMany(Transaction::class, 'child_id', 'child_id');
     }
     
     protected function serializeDate(\DateTimeInterface $date) {

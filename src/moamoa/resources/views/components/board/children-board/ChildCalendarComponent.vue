@@ -207,7 +207,7 @@ const handleDayClick = (day) => {
 
 onBeforeMount(() => {
     store.dispatch("calendar/calendarInfo", dateToday.value);
-    store.dispatch("calendar/transactions", { year, month });
+    // store.dispatch("calendar/transactions", { year, month });
 });
 
 

@@ -35,10 +35,10 @@ const store = useStore();
 
 // 거래 리스트 가져오기
 const transactionList = computed(() => store.state.transaction.transactionList);
-// console.log('transactionList : ', store.state.transaction.transactionList);
+console.log('transactionList : ', store.state.transaction.transactionList);
 
 // 자녀 id 파라미터 세팅
-const childId = computed(() => store.state.mission.childId);
+const childId = computed(() => store.state.transaction.childId);
 
 const getCategoryText = (category) => {
     const categoryMapping = {
