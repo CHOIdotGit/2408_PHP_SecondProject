@@ -6,11 +6,13 @@
         {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <script src="{{ asset('js/app.js') }}" defer> </script>
+        {{-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --}}
         <title>moamoa</title>
     </head>
     <body>
         <div id="app">
             <APP-Component></APP-Component>
+            
         </div>
         
     </body>

@@ -3,6 +3,7 @@
         <div class="graph-btn">
             <button @click="setChartType('week')">주간</button>
             <button @click="setChartType('month')">월간</button>  
+            <button @click="test='doughnut'; renderChart();"> {{test}}</button>
         </div>
         <div class="stat-section">  
             <div class="each-part">
@@ -50,8 +51,10 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import Chart from 'chart.js/auto';
+
 
 const store = useStore();
 
@@ -75,71 +78,85 @@ const getCategoryText = (category) => {
     return categoryMapping[category]; // 기본값 없이 반환
 };
 
+// ✅ **Chart.js 관련 설정**
+const chartCanvas = ref(null);
+let chartInstance = null;
+
+const chartData = ref({
+  labels: ['1주', '2주', '3주', '4주'],
+  datasets: [
+    {
+      label: '주차별 소비 합계',
+      data: [15000, 30000, 45000, 60000], // 예시 데이터
+      backgroundColor: 'rgba(75, 192, 192, 0.2)',
+      borderColor: 'rgba(75, 192, 192, 1)',
+      borderWidth: 1,
+    },
+  ],
+});
+
+const test = ref ("bar");
+const renderChart = () => {
+  if (chartInstance) {
+    chartInstance.destroy(); // 기존 차트 제거
+  }
+
+  chartInstance = new Chart
+  
+  
+  
+  (chartCanvas.value.getContext('2d'), {
+    type: test.value,
+    data: chartData.value,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: '지출 금액 (원)',
+          },
+        },
+        x: {
+          title: {
+            display: true,
+            text: '주차',
+          },
+        },
+      },
+    },
+  });
+};
+
+// ✅ **그래프 타입 전환**
+const setChartType = (type) => {
+  if (type === 'week') {
+    chartData.value.labels = ['1주', '2주', '3주', '4주'];
+    chartData.value.datasets[0].data = [15000, 70000, 45000, 90000]; // 예시 주간 데이터
+  } else {
+    chartData.value.labels = ['1월', '2월', '3월', '4월'];
+    chartData.value.datasets[0].data = [120000, 150000, 90000, 130000]; // 예시 월간 데이터
+  }
+
+  renderChart();
+};
+
 // 마운트
 onBeforeMount(() => {
     // store.commit('mission/resetState');
-    store.dispatch('mission/childHome');
+    // store.dispatch('mission/childHome');
+    store.dispatch('transaction/childHomeTransaction');
 })
 onMounted(() => {
-    store.dispatch('transaction/childHomeTransaction');
-
+    renderChart();
 })
-
-import { Chart, registerables } from 'chart.js';
-
-// Chart.js 모듈 등록
-Chart.register(...registerables);
-
-
-
-export default {
-  name: 'ParentStatsComponent',
-  data() {
-    return {
-      chart: null, // 차트 객체 저장
-      chartType: 'week', // 기본 차트 타입
-      chartData: {
-        week: [12, 19, 3, 5, 2, 3],
-        month: [45, 67, 32, 87, 21, 44]
-      }
-    };
-  },
-  mounted() {
-    this.renderChart(); // 컴포넌트가 마운트되면 차트 렌더링
-  },
-  methods: {
-    renderChart() {
-      if (this.chart) {
-        this.chart.destroy(); // 기존 차트 파괴
-      }
-      const ctx = this.$refs.chartCanvas.getContext('2d');
-      this.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['1주차', '2주차', '3주차', '4주차', '5주차'],
-          datasets: [{
-            label: '지출 금액',
-            data: this.chartData[this.chartType],
-            borderWidth: 5,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)'
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    },
-    setChartType(type) {
-      this.chartType = type;
-      this.renderChart(); // 차트 새로 렌더링
-    }
-  }
-};
 
 </script>
 
@@ -196,6 +213,11 @@ export default {
         font-size: 1.2rem;
         border: none;
     }
+}
+
+.graph-section canvas {
+  width: 100%;
+  height: 120%;
 }
 
 </style>
