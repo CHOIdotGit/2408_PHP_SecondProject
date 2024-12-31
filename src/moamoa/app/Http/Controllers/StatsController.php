@@ -15,7 +15,7 @@ class StatsController extends Controller
     
     {
         
-        $child = Auth::guard('children')->user();
+        $parent = Auth::guard('parents')->user();
         
         // 자녀 홈페이지 데이터 불러오기
         $year = $request->input('year', Carbon::now()->year);
@@ -26,9 +26,13 @@ class StatsController extends Controller
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
 
+        // $childHome = Child::select('children.child_id', 'children.name')
+        //                             ->where('children.parent_id', $parent->parent_id)
+        //                             ->find();
+                                    
         $childHome = Child::select('children.child_id', 'children.name')
-                                    ->where('children.child_id', $child->child_id)
-                                    ->first();
+                            ->where('children.parent_id', $parent->parent_id)
+                            ->get();
                                     
         // 자녀 홈, 가장 큰 지출
         $transactionAmount = $childHome->transactions()

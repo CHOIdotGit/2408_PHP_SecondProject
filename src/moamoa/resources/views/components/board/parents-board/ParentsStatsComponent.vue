@@ -11,11 +11,11 @@
                     <canvas ref="chartCanvas"></canvas>
                 </div>
                 <div class="notice-section">
-                    <p>가장 큰 지출 : {{ mostSpendAmount && mostSpendAmount !== 0 
-                            ? Number(mostSpendAmount).toLocaleString() + '원' 
+                    <p>가장 큰 지출 : {{ mostSpendAmount.amount && mostSpendAmount.amount !== 0 
+                            ? Number(mostSpendAmount.amount).toLocaleString() + '원' 
                             : '최근 소비한 내역이 없습니다.' }}   </p>
-                    <p>가장 많이 쓴 카테고리 : {{ mostUsedCategory 
-                            ? getCategoryText(mostUsedCategory) 
+                    <p>가장 많이 쓴 카테고리 : {{ mostUsedCategory.category 
+                            ? getCategoryText(mostUsedCategory.category) 
                             : '최근 사용한 카테고리가 없습니다.' }} </p>
                     <p>지출 총합 : {{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
                     <p>용돈 총합 : {{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
@@ -26,7 +26,7 @@
                     그래프들어갈자리
                 </div>
                 <div class="notice-section">
-                    <p>가장 큰 지출 : 54,000   </p>
+                    <p>가장 큰 지출 : </p>
                     <p>가장 많이 쓴 카테고리 : 쇼핑</p>
                     <p>지출 총합 : 270,000</p>
                     <p>용돈 총합 : 300,00</p>
@@ -60,17 +60,17 @@ const homeMission = computed(() => store.state.mission.childHome)
 // console.log('자녀 홈 미션', homeMission.value);
 
 // 가장 큰 지출과 가장 많이 사용한 카테고리
-const mostSpendAmount = computed(() => store.state.transaction.childHomeTransaction);
+const mostSpendAmount = computed(() => store.state.transaction.mostSpendAmount);
 const mostUsedCategory = computed(() => store.state.transaction.mostUsedCategory);
 const totalAmount = computed(() => store.state.transaction.totalAmount);
 const totalExpenses = computed(() => store.state.transaction.totalExpenses);
 
 const getCategoryText = (category) => {
     const categoryMapping = {
-        0: '교통비',
-        1: '취미',
-        2: '쇼핑',
-        3: '기타',
+        "0": '교통비',
+        "1": '취미',
+        "2": '쇼핑',
+        "3": '기타',
     };
     return categoryMapping[category]; // 기본값 없이 반환
 };
@@ -78,12 +78,10 @@ const getCategoryText = (category) => {
 // 마운트
 onBeforeMount(() => {
     // store.commit('mission/resetState');
-    store.dispatch('mission/childHome');
+    // store.dispatch('mission/childHome');
+    store.dispatch('transaction/parentStats');
 })
-onMounted(() => {
-    store.dispatch('transaction/childHomeTransaction');
 
-})
 
 import { Chart, registerables } from 'chart.js';
 
@@ -92,54 +90,54 @@ Chart.register(...registerables);
 
 
 
-export default {
-  name: 'ParentStatsComponent',
-  data() {
-    return {
-      chart: null, // 차트 객체 저장
-      chartType: 'week', // 기본 차트 타입
-      chartData: {
-        week: [12, 19, 3, 5, 2, 3],
-        month: [45, 67, 32, 87, 21, 44]
-      }
-    };
-  },
-  mounted() {
-    this.renderChart(); // 컴포넌트가 마운트되면 차트 렌더링
-  },
-  methods: {
-    renderChart() {
-      if (this.chart) {
-        this.chart.destroy(); // 기존 차트 파괴
-      }
-      const ctx = this.$refs.chartCanvas.getContext('2d');
-      this.chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['1주차', '2주차', '3주차', '4주차', '5주차'],
-          datasets: [{
-            label: '지출 금액',
-            data: this.chartData[this.chartType],
-            borderWidth: 5,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)'
-          }]
-        },
-        options: {
-          scales: {
-            y: {
-              beginAtZero: true
-            }
-          }
-        }
-      });
-    },
-    setChartType(type) {
-      this.chartType = type;
-      this.renderChart(); // 차트 새로 렌더링
-    }
-  }
-};
+// export default {
+//   name: 'ParentStatsComponent',
+//   data() {
+//     return {
+//       chart: null, // 차트 객체 저장
+//       chartType: 'week', // 기본 차트 타입
+//       chartData: {
+//         week: [12, 19, 3, 5, 2, 3],
+//         month: [45, 67, 32, 87, 21, 44]
+//       }
+//     };
+//   },
+//   mounted() {
+//     this.renderChart(); // 컴포넌트가 마운트되면 차트 렌더링
+//   },
+//   methods: {
+//     renderChart() {
+//       if (this.chart) {
+//         this.chart.destroy(); // 기존 차트 파괴
+//       }
+//       const ctx = this.$refs.chartCanvas.getContext('2d');
+//       this.chart = new Chart(ctx, {
+//         type: 'bar',
+//         data: {
+//           labels: ['1주차', '2주차', '3주차', '4주차', '5주차'],
+//           datasets: [{
+//             label: '지출 금액',
+//             data: this.chartData[this.chartType],
+//             borderWidth: 5,
+//             backgroundColor: 'rgba(75, 192, 192, 0.2)',
+//             borderColor: 'rgba(75, 192, 192, 1)'
+//           }]
+//         },
+//         options: {
+//           scales: {
+//             y: {
+//               beginAtZero: true
+//             }
+//           }
+//         }
+//       });
+//     },
+//     setChartType(type) {
+//       this.chartType = type;
+//       this.renderChart(); // 차트 새로 렌더링
+//     }
+//   }
+// };
 
 </script>
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -60,6 +61,9 @@ Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index'
 
 // 부모 지출 상세 페이지
 Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show']);
+
+// 부모 통계 페이지
+Route::get('/api/parent/stats', [StatsController::class, 'index']);
 
 // 자녀 홈
 Route::get('/api/child/home', [HomeController::class, 'show']);

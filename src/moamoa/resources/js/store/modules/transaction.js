@@ -41,7 +41,7 @@ export default {
         setMostSpendAmount(state, mostSpendAmount) {
             state.mostSpendAmount = mostSpendAmount;
         },
-        setMostUseCategory(state, mostUsedCategory) {
+        setMostUsedCategory(state, mostUsedCategory) {
             state.mostUsedCategory = mostUsedCategory;
         },
         setTotalAmount(state, totalAmount) {
@@ -58,7 +58,7 @@ export default {
          * @param {*} context commit, state 포함되어있음
          */
         transactionList(context, child_id) {
-            context.commit('setControlFlg', false);
+            // context.commit('setControlFlg', false);
             
             const url = '/api/parent/spend/list/' + child_id;
             
@@ -97,28 +97,28 @@ export default {
             axios.get(url)
             .then(response => {
                 context.commit('setMostSpendAmount', response.data.transactionAmount);
-                context.commit('setMostUseCategory', response.data.mostUsedCategory);
+                context.commit('setMostUsedCategory', response.data.mostUsedCategory);
+                console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
                 context.commit('setTotalAmount', response.data.totalAmount);
                 context.commit('setTotalExpenses', response.data.totalExpenses);
+                
                 // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
             })
             .catch(error => {
                 console.error('지출 금액 불러오기 실패', error);
             })
         },
+        // 부모 통계 불러오기
         parentStats(context) {
             const url = '/api/parent/stats';
             axios
                 .get(url)
                 .then((response) => {
-                    const stats = response.data || {};
-
-                    context.commit('setMostSpendAmount', stats.transactionAmount?.amount || 0);
-                    context.commit('setMostUseCategory', stats.mostUsedCategory?.category || '');
-                    context.commit('setTotalAmount', stats.totalAmount || 0);
-                    context.commit('setTotalExpenses', stats.totalExpenses || 0);
-
-                    console.log('부모 통계 데이터 성공적으로 불러옴:', stats);
+                    context.commit('setMostSpendAmount', response.data.transactionAmount);
+                    context.commit('setMostUsedCategory', response.data.mostUsedCategory);
+                    // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
+                    context.commit('setTotalAmount', response.data.totalAmount);
+                    context.commit('setTotalExpenses', response.data.totalExpenses);
                 })
                 .catch((error) => {
                     console.error('부모 통계 데이터 불러오기 실패:', error.response?.data?.message || error.message);
@@ -127,9 +127,9 @@ export default {
     },
 
     getters: {
-        getMostSpendAmount: (state) => state.mostSpendAmount,
-        getMostUsedCategory: (state) => state.mostUsedCategory,
-        getTotalAmount: (state) => state.totalAmount,
-        getTotalExpenses: (state) => state.totalExpenses,
+        // getMostSpendAmount: (state) => state.mostSpendAmount,
+        // getMostUsedCategory: (state) => state.mostUsedCategory,
+        // getTotalAmount: (state) => state.totalAmount,
+        // getTotalExpenses: (state) => state.totalExpenses,
     },
 }
