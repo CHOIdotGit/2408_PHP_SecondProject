@@ -129,14 +129,14 @@ export default {
                         
             axios.get(url)
                 .then(response => {
-                    
+                    console.log(response.data.missionList.data);
                     context.commit('setMissionList', response.data.missionList.data);
                     // console.log('응답 데이터 확인', response.data.missionList.data);
                     
                     // 세션 스토리지에 자녀ID 세팅
                     sessionStorage.setItem('child_id', child_id);
                     context.commit('setChildId', child_id);
-                    router.push('/parent/mission/list/' + child_id);
+                    // router.push('/parent/mission/list/' + child_id);
                     
                     // console.log('자녀 확인', context.state.childId);
                 })

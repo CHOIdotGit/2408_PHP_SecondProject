@@ -1,0 +1,26 @@
+<template>
+    <div class="item" v-for="item in baseMenuInfo" :key="item">
+        <router-link :to="item.path" class="link-deco"><p class="item-btn">{{ item.name }}</p></router-link>
+    </div>
+</template>
+
+<script setup>
+import { ref, onBeforeMount } from 'vue';
+
+// 헤더 메뉴 자녀 이름 출력
+const baseMenuInfo = ref([]);
+
+onBeforeMount(() => {
+    baseMenuInfo.value = [
+        {name: "홈", path: "/child/home"}
+        ,{name: "지출", path: "/child/spend/list"}
+        ,{name: "미션", path: "/child/mission/list"}
+        ,{name: "캘린더", path: "/child/calendar"}
+    ];
+});
+
+</script>
+<style>
+
+    
+</style>

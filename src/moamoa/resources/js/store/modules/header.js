@@ -24,16 +24,20 @@ export default {
         // 헤더 자녀 이름 출력
         // ***************************
         childNameList(context) {
-            const url = '/api/parent/header';
-            axios.get(url)
-            .then(response => {
-
-                console.log(response.data.childNameList);
-                context.commit('setChildNameList', response.data.childNameList);
-            })
-            .catch(error => {
-                console.error('자녀 이름 불러오기 실패', error);
-            })
+            return new Promise((resolve, reject) => {
+                const url = '/api/parent/header';
+                axios.get(url)
+                .then(response => {
+    
+                    console.log(response.data.childNameList);
+                    context.commit('setChildNameList', response.data.childNameList);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error('자녀 이름 불러오기 실패', error);
+                    return resolve();
+                });
+            });
         }
 
 

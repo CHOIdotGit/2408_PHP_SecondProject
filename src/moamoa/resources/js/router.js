@@ -136,7 +136,7 @@ const routes = [
     },
     // 부모 달력 페이지
     {
-        path: '/parent/calendar',
+        path: '/parent/calendar/:parent_id',
         component: ParentsCalendarComponent,
     },
     // 부모 통계 페이지

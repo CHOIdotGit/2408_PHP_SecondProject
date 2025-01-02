@@ -2,11 +2,21 @@
     <div class="header">
         <div class="logo"></div>
         <div class="navi-bar">
-            <!-- 부모/자녀에 따라 홈 경로 변경 -->
-            <div class="item">
-                <router-link v-if="$store.state.auth.authFlg" to="/parent/home" class=link-deco><p class="item-btn">홈</p></router-link>
-                <router-link v-else to="/child/home" class="link-deco"><p class="item-btn" >홈</p></router-link>
-            </div>
+            <ParentHeaderComponent v-if="$store.state.auth.parentFlg" />
+            <ChildHeaderComponent v-else />
+            <!-- 부모/자녀에 따라 메뉴 경로 변경 -->
+            <!-- <div class="item" v-for="item in menu" :key="item"> -->
+            <!-- <div class="item" v-for="item in baseMenuInfo" :key="item">
+                <router-link :to="item.firstChildPath" class="link-deco"><p class="item-btn">{{ item.name }}</p></router-link>
+                <div class="child-dropdown" v-if="$store.state.auth.parentFlg" v-for="child in childNameList" :key="child">
+                    <router-link :to="item.path + '/' + child.child_id" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
+                </div>
+            </div> -->
+            <!-- 통계 메뉴(자녀일때 표시 안함) -->
+            <!-- <div class="item">
+                <router-link v-if="$store.state.auth.parentFlg" to="/parent/stats" class="link-deco"><p class="item-btn">통계</p></router-link>
+            </div> -->
+
             <!-- v-for를 이용한 지출/미션/캘린터 메뉴 -->
             <!-- 문제점: router-link 어려움 -->
             <!-- <div class="item" v-for="index in headerMenu" :key="index">
@@ -16,7 +26,7 @@
                     </div>
             </div> -->
 
-            <div class="item">
+            <!-- <div class="item">
                 <router-link v-if="$store.state.auth.parentFlg" :to="'/parent/spend/list/'+ child_id" class="link-deco"><p class="item-btn">지출</p></router-link>
                 <router-link v-else to="/child/spend/list" class="link-deco"><p class="item-btn" >지출</p></router-link>
                 
@@ -29,21 +39,21 @@
                 <router-link v-if="$store.state.auth.childFlg" to="/child/mission/list" class="link-deco"><p class="item-btn" >미션</p></router-link>
                 <router-link v-else to="/parent/mission/list" class="link-deco"><p class="item-btn" >미션</p></router-link>
                     <div class="child-dropdown" >
-                        <router-link :to="'/parent/mission/list/' + (child.child_id)" class="link-deco" v-for="child in childNameList" :key="child"><p class="child" >{{ child.name }}</p></router-link>
+                        <router-link :to="'/parent/mission/list/' + child.child_id" class="link-deco" v-for="child in childNameList" :key="child"><p class="child" >{{ child.name }}</p></router-link>
                         
                     </div>
-            </div>
+            </div> -->
 
-            <div class="item">
-                <!-- <router-link v-if="$store.state.auth.parentFlg" to="/parent/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link>
+            <!-- <div class="item">
+                <router-link v-if="$store.state.auth.parentFlg" to="/parent/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link>
                 <router-link v-else to="/child/calendar" class="link-deco"><p class="item-btn" >캘린더</p></router-link>
                     <div class="child-dropdown" v-if="$store.state.auth.parentFlg">
                         <router-link to="/parent/calendar" class="link-deco"><p class="child" v-for="child in childNameList" :key="child">{{ child.name }}</p></router-link>
-                    </div> -->
+                    </div>
             </div>
             <div class="item">
-                <p class="item-btn">통계</p>
-            </div>
+                <router-link v-if="$store.state.auth.parentFlg" to="/parent/stats"><p class="item-btn">통계</p></router-link>
+            </div> -->
 
             <!-- 햄버거/ 알람 -->
             <div class="drop-bar">
@@ -94,28 +104,60 @@
     <hr class="header-hr">
 </template>
 <script setup>
-import { computed, ref, onBeforeMount } from 'vue';
+import ParentHeaderComponent from './ParentHeaderComponent.vue';
+import ChildHeaderComponent from './ChildHeaderComponent.vue';
+import { computed, ref, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
-
-
-// *******미션 알람*******
-
-
-// 헤더 메뉴
-const headerMenu = 
-    ['지출', '미션', '캘린더'];
-
 
 // 헤더 메뉴 자녀 이름 출력
 const store = useStore();
 const childNameList = computed(() => store.state.header.childNameList);
 
-onBeforeMount(() => {
+// 부모/자녀 확인후 메뉴 경로 변경
+// const parentMenu = ref([]);
+
+// const childMenu = ref([
+//     {name: "홈", path: "/child/home"}
+//     ,{name: "지출", path: "/child/spend/list"}
+//     ,{name: "미션", path: "/child/mission/list"}
+//     ,{name: "캘린더", path: "/child/calendar"}
+// ]);
+const basePath = store.state.auth.parentFlg ? '/parent' : '/child';
+const firstChildSegmentParam = ref('');
+const baseMenuInfo = ref([
+    {name: "홈", path: basePath + "/home", segmentFlg: false, firstChildPath: ''}
+    ,{name: "지출", path: basePath + "/spend/list", segmentFlg: true, firstChildPath: ''}
+    ,{name: "미션", path: basePath + "/mission/list", segmentFlg: true, firstChildPath: ''}
+    ,{name: "캘린더", path: basePath + "/calendar", segmentFlg: true, firstChildPath: ''}
+    ,{name: "통계", path: basePath + "/stats", segmentFlg: false, firstChildPath: ''}
+]);
+
+console.log('test', typeof store.state.auth.parentFlg);
+onBeforeMount(async () => {
     // if(store.state.header.childNameList.length < 1){
-        store.dispatch('header/childNameList');
-        console.log('애들이름출력');
+    if(store.state.auth.parentFlg){
+        await store.dispatch('header/childNameList');
+        firstChildSegmentParam.value = '/' + store.state.header.childNameList[0].child_id;
+
+        baseMenuInfo.value.forEach((item) => {
+            if(item.segmentFlg) {
+                item.firstChildPath = item.path + firstChildSegmentParam.value;
+            }
+        });
+    }
+    console.log('헤더 메뉴 정보',baseMenuInfo);
+    console.log('애들이름출력');
     // }
 })
+
+
+// const menu = computed(()=> {
+//     return store.state.auth.parentFlg ? parentMenu.value : childMenu.value
+// });
+
+
+
+
 
 
 

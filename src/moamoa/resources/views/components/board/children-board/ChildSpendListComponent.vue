@@ -62,7 +62,7 @@ const getTruncatedTitle =(title) => {
 
 // onMount
 onMounted(() => {
-    store.dispatch('transaction/transactionListPagination');
+    // store.dispatch('transaction/transactionListPagination');
 });
 
 </script>
