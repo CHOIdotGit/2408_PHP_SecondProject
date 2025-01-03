@@ -4,6 +4,7 @@ import calendar from './modules/calendar';
 import auth from './modules/auth';
 import header from './modules/header';
 import transaction from './modules/transaction';
+import childMission from './modules/childMission';
 
 export default createStore({
     modules: {
@@ -12,6 +13,7 @@ export default createStore({
         calendar,
         auth,
         header,
+        childMission,
     },
 });
 
