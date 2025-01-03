@@ -31,7 +31,21 @@ class StatsController extends Controller
         //                             ->where('children.parent_id', $parent->parent_id)
         //                             ->find();
                                     
-        $childNameList = Child::select('child_id', 'name')
+        $childNameList = Child::select('child_id' , 'name')
+                            ->withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+                                $query
+                                ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                ->orderBy('amount', 'DESC'); // 가장 큰 지출
+                            }], 'amount')
+                            ->withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+                                $query
+                                ->select(DB::raw('MAX(amount) total'))
+                                ->groupBy('category')
+                                ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                ->orderBy('count', 'DESC')
+                                ->limit(1);
+                            }], 'total')
+                            // ->
                             ->where('parent_id', $parent->parent_id)
                             ->get();
         
