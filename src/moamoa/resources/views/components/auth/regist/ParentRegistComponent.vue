@@ -10,7 +10,6 @@
       <div class="profile-field">
         <p>프로필 사진</p>
 
-        
         <label for="file">
           <div class="profile-preview">
             <div v-if="preview.imgFlg" class="profile-img">
@@ -165,7 +164,7 @@ import { useStore } from 'vuex';
     // 사용자가 실행한것이 새고로침이면
     if(performance.getEntriesByType('navigation')[0].type === 'reload') {
       // 스토리지와 회원정보를 세팅
-      localStorage.setItem('registInfo', JSON.stringify(registInfo));
+      sessionStorage.setItem('registInfo', JSON.stringify(registInfo));
       store.commit('auth/setRegistInfo', registInfo);
     }else {
       // 그 이외는 리셋 실행
@@ -177,7 +176,7 @@ import { useStore } from 'vuex';
   const clearRegistInfo = () => {
     // 입력된 회원 정보 값이 있는지 체크, 있으면 리셋
     if(Object.values(registInfo).some(value => value !== '' || value !== null || value !== undefined)) {
-      localStorage.removeItem('registInfo');
+      sessionStorage.removeItem('registInfo');
       store.commit('auth/resetRegist');
     }
     
@@ -209,13 +208,13 @@ import { useStore } from 'vuex';
   });
 
   // 다음 단계로 버튼 세팅 ---------------------------------------------------------------------------------------------
-
   const nextCodePage = () => {
+    // 아이디 중복 검사를 통과하지 못했다면
     if(!store.state.auth.modalColor) {
       if(errMsg.value.account) { errMsg.value.account = null; }
       errMsg.value.account = '아이디 중복 확인을 진행해주세요.';
     }else {
-      console.log('run');
+      // 통과됬으면 레코드 생성 요청
       store.dispatch('auth/storeUser', registInfo);
     }
   };

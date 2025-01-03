@@ -28,7 +28,7 @@ class AuthRequest extends FormRequest {
     }
 
     // 회원가입 실행시 유효성 체크
-    elseif($this->routeIs('auth.store.user')) {
+    elseif($this->routeIs('auth.store.user') || $this->routeIs('auth.child.regist.matching')) {
       // 유니크 ID가 두 테이블(부모, 자녀)에 존재하는지 검사
       $rules['account'][] = new UniqueFamilyRule;
       $rules['password_chk'] = ['required', 'same:password'];
@@ -36,8 +36,12 @@ class AuthRequest extends FormRequest {
       $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
       $rules['tel'] = ['required', 'regex:/^\d{10,11}$/']; // 10 ~ 11자의 숫자
       $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/']; // 첫문자는 영문대소문자한글 그뒤는 숫자포함
-      $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'];
-      $rules['family_code'] = ['nullable', 'unique:parents,family_code', 'regex:/^[A-Z0-9]{8}$/']; // 영대문숫자 8자리
+      $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp'];
+
+    // 자녀 회원가입 매칭 실행시 유효성 체크
+      if($this->routeIs('auth.child.regist.matching')) {
+        $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'];
+      }
     }
 
     return $rules;
@@ -58,7 +62,8 @@ class AuthRequest extends FormRequest {
       ,'email.regex' => '단어 형식이 맞지 않습니다.'
       ,'tel.required' => '전화번호를 입력해주세요.'
       ,'tel.regex' => '숫자 형식이 맞지 않습니다.'
-      ,'family_code.regex' => '단어 형식이 맞지 않습니다.'
+      ,'fam_code.required' => '가족코드를 입력해주세요.'
+      ,'fam_code.regex' => '단어 형식이 맞지 않습니다.'
     ];
   }
 

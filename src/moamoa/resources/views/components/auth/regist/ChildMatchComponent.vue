@@ -15,10 +15,13 @@
     <div class="data-form position-relative">
       <div class="data-info">
         <span>
-          <div class="icon-img">
-            <!-- <img src="/img/profile-icon/icon-girl-5.png"> -->
-            <img :src="parent.profile">
-          </div><span class="color-green">{{ parent.name }}</span> 님의 <br>자녀가 맞으십니까?
+          <div class="profile-info">
+            <div class="icon-img">
+              <!-- <img src="/img/profile-icon/icon-girl-5.png"> -->
+              <img :src="parent.profile">
+            </div>
+          </div>
+          <span class="color-green">{{ parent.name }}</span> 님의 <br>자녀가 맞으십니까?
         </span>
 
         <span class="mini-text">
@@ -39,7 +42,11 @@ import { computed, defineProps } from 'vue';
 import { useStore } from 'vuex';
 
   const store = useStore();
-  const parent = computed(() => store.state.auth.parentInfo);
+  
+  // 매칭 부모 정보 --------------------------------------------------------------------------------------------
+  const parent = computed(() => store.state.auth.matchInfo);
+  
+  // 전송할 자녀 가입 정보 --------------------------------------------------------------------------------------------
   const props = defineProps({
     registInfo: Object,
   });
@@ -157,19 +164,28 @@ import { useStore } from 'vuex';
   }
 
   /* 아이콘 문단 */
-  .icon-img {
+  .profile-info {
     display: inline-block;
     background-color: #8A9FF6;
     border-radius: 50%;
-    padding: 10px;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     margin-right: 10px;
+    vertical-align: bottom;
   }
 
   /* 아이콘 크기 */
-  .icon-img img {
+  .icon-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 5px auto;
+  }
+
+  .icon-img > img {
     width: 100%;
+    height: 100%;
   }
 
   /* 풋터 텍스트 */

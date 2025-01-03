@@ -172,13 +172,13 @@ class AuthController extends Controller {
             $child = $this->authRepository->createChild($insertData);
 
             // 생성한 레코드로 로그인
-            Auth::guard('children')->login($child);
+            // Auth::guard('children')->login($child);
 
             // 리스폰스 데이터 작성
             $responseData = [
               'success' => true,
               'msg' => '자녀 회원작성 성공',
-              // 'data' => $child,
+              // 'child' => $child,
               'redirect_to' => '/regist/complete'
             ];
             return response()->json($responseData, 200);
@@ -194,13 +194,19 @@ class AuthController extends Controller {
             $parent = $this->authRepository->createParent($insertData);
 
             // 생성한 레코드로 로그인
-            Auth::guard('parents')->login($parent);
+            // Auth::guard('parents')->login($parent);
+
+            // 코드뷰 페이지에서 필요한 정보만 세팅
+            $parentInfo = [
+              'name' => $parent->name,
+              'family_code' => $parent->family_code,
+            ];
 
             // 리스폰스 데이터 작성
             $responseData = [
               'success' => true,
               'msg' => '부모 회원작성 성공',
-              'parent' => $parent,
+              'parent' => $parentInfo,
               'redirect_to' => '/regist/parent/code',
             ];
             return response()->json($responseData, 200);
@@ -227,14 +233,16 @@ class AuthController extends Controller {
    * 
    * @return JSON $responseData
    */
-  public function childRegistMatching(Request $request) {
+  public function childRegistMatching(AuthRequest $request) {
+    // 가족코드가 입력됫고 제대로 8글자가 왔다면
     if($request->fam_code && (mb_strlen($request->fam_code) === 8)) {
       $parent = $this->authRepository->findParentByFamilyCode($request->fam_code);
+
       if($parent) {
         $responseData = [ 
           'success' => true,
           'msg' => '부모 매칭 성공',
-          'parent' => $parent->toArray()
+          'parent' => $parent,
         ];
 
         return response()->json($responseData, 200);
@@ -243,22 +251,8 @@ class AuthController extends Controller {
 
     return response()->json([
       'success' => false,
-      'msg' => '해당하는 코드는 존재하지 않는 코드입니다.',
-    ], 401);
+      'error' => [ 'fam_code' => ['0' => '존재하지 않는 코드입니다.']],
+    ], 422);
   }
 
-  public function loginUser() {
-    if(Auth::guard('parents')->check()) {
-      $user = Auth::guard('parents')->user();
-    }elseif(Auth::guard('children')->check()) {
-      $user = Auth::guard('children')->user();
-    }
-
-    $responseData = [
-      'success' => true,
-      'user' => $user,
-    ];
-
-    return response()->json($responseData, 200);
-  }
 }

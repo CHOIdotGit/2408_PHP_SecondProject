@@ -24,38 +24,85 @@
     </div>
     <!-- 회원가입 입력 폼 1 -->
     <div class="data-form">
-      <label for="name">이름</label>
-      <input v-model="props.registInfo.name" type="text" name="name" id="name" autocomplete="off" required>
+      <!-- 이름 입력 영역 -->
+      <label for="name">
+        이름
+        <span v-if="errMsg.name" class="err-msg">
+          {{ errMsg.name }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.name" :class="{ 'err-border' : errMsg.name }" type="text" name="name" id="name" autocomplete="off" required>
 
-      <label for="account">아이디</label>
+      <label for="account">
+        아이디
+        <span v-if="errMsg.account" class="err-msg">
+          {{ errMsg.account }}
+        </span>
+      </label>
       <div class="account-group">
-        <input v-model="props.registInfo.account" type="text" name="account" id="account" autocomplete="off" required>
+        <input v-model="props.registInfo.account" :class="{ 'err-border' : errMsg.account }" type="text" name="account" id="account" autocomplete="off" required>
         <button @click="openModal" type="button" class="dup-btn">중복확인</button>
       </div>
       
-      <label for="password">비밀번호</label>
-      <input v-model="props.registInfo.password" type="password" name="password" id="password" autocomplete="off" required>
+      <label for="password">
+        비밀번호
+        <span v-if="errMsg.password" class="err-msg">
+          {{ errMsg.password }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
       
-      <label for="password_chk">비밀번호 확인</label>
-      <input v-model="props.registInfo.password_chk" type="password" name="password_chk" id="password_chk" autocomplete="off" required>
+      <label for="password_chk">
+        비밀번호 확인
+        <span v-if="errMsg.password_chk" class="err-msg">
+          {{ errMsg.password_chk }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.password_chk" :class="{ 'err-border' : errMsg.password_chk }" type="password" name="password_chk" id="password_chk" autocomplete="off" required>
       
-      <label for="email">이메일</label>
-      <input v-model="props.registInfo.email" @input="onlyEmail" type="email" name="email" id="email" autocomplete="off" required>
+      <label for="email">
+        이메일
+        <span v-if="errMsg.email" class="err-msg">
+          {{ errMsg.email }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.email" @input="onlyEmail" :class="{ 'err-border' : errMsg.email }" type="email" name="email" id="email" autocomplete="off" required>
     </div>
     
     <!-- 회원가입 입력 폼 2 -->
     <div class="data-form">
-      <label for="nick_name">닉네임</label>
-      <input v-model="props.registInfo.nick_name" type="text" name="nick_name" id="nick_name" autocomplete="off">
+      <label for="nick_name">
+        닉네임
+        <span v-if="errMsg.nick_name" class="err-msg">
+          {{ errMsg.nick_name }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.nick_name" :class="{ 'err-border' : errMsg.nick_name }" type="text" name="nick_name" id="nick_name" autocomplete="off">
 
-      <label for="tel">전화번호</label>
-      <input v-model="props.registInfo.tel" @input="onlyNumber" type="text" name="tel" id="tel" autocomplete="off" required>
+      <label for="tel">
+        전화번호
+        <span v-if="errMsg.tel" class="err-msg">
+          {{ errMsg.tel }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.tel" @input="onlyNumber" :class="{ 'err-border' : errMsg.tel }" type="text" name="tel" id="tel" autocomplete="off" required>
 
-      <label for="fam_code">가족코드</label>
-      <input v-model="props.registInfo.fam_code" type="text" name="fam_code" id="fam_code" autocomplete="off" required>
+      <label for="fam_code">
+        가족코드
+        <span v-if="errMsg.fam_code" class="err-msg">
+          {{ errMsg.fam_code }}
+        </span>
+      </label>
+      <input v-model="props.registInfo.fam_code" @input="limitCode" :class="{ 'err-border' : errMsg.fam_code }" type="text" name="fam_code" id="fam_code" autocomplete="off" required>
+
+      <br>
+      
+      <p v-if="errMsg.common" class="err-msg">
+        {{ errMsg.common }}
+      </p>
 
       <div class="next-btn position-relative">
-        <button @click="$store.dispatch('auth/childRegistMatching', props.registInfo)" type="button">다음 단계로 >&nbsp;</button>
+        <button @click="nextCodePage" type="button">다음 단계로 >&nbsp;</button>
       </div>
     </div>
 
@@ -66,12 +113,10 @@
   <div v-show="modalFlg" class="mini-modal-bg">
     <div class="mini-modal-box">
       <div class="mini-modal-content">
-        <p :class="$store.state.auth.modalColor">
-            {{ $store.state.auth.modalText }}
+        <p class="color-red" :class="$store.state.auth.modalColor ? 'color-green' : ''">
+          {{ $store.state.auth.modalText }}
         </p>
       </div>
-
-      <!-- <hr> -->
 
       <div class="mini-modal-btn">
         <button @click="closeModel" type="button">
@@ -83,16 +128,60 @@
 </template>
 
 <script setup>
-import { computed, defineProps, ref } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount, reactive } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { useStore } from 'vuex';
 
   const store = useStore(); 
   const props = defineProps({
     registInfo: Object,
   });
+  
+
+  // 다음 단계로 버튼 세팅 ---------------------------------------------------------------------------------------------
+  const nextCodePage = () => {
+    // 아이디 중복 검사를 통과하지 못했다면
+    if(!store.state.auth.modalColor) {
+      if(errMsg.value.account) { errMsg.value.account = null; }
+      errMsg.value.account = '아이디 중복 확인을 진행해주세요.';
+    }else {
+      // 통과됬으면 부모매칭 수행
+      store.dispatch('auth/childRegistMatching', props.registInfo);
+    }
+  };
+  
+
+  // 이동 반응 이벤트 ---------------------------------------------------------------------------------------------
+
+  // 가입 정보 리셋
+  const clearRegistInfo = () => {
+    // 예외 메세지 체크, 있으면 리셋
+    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+      store.commit('auth/resetErrMsg');
+    }
+  };
+
+  // 페이지가 로드되면 DOM에 이벤트 추가
+  onMounted(() => {
+    // 뒤로, 앞으로 버튼 이동시
+    window.addEventListener('popstate', clearRegistInfo());
+  });
+
+  // 다음 컴포넌트로 넘어갈 때 이벤트를 제거
+  onBeforeUnmount(() => {
+    window.removeEventListener('popstate', clearRegistInfo());
+  });
+
+  // 다른 페이지로 이동 시 작동함
+  onBeforeRouteLeave((to, from, next) => {
+    clearRegistInfo();
+    next();
+  });
+
+  // 에러 정보 ---------------------------------------------------------------------------------------------
+  const errMsg = computed(() => store.state.auth.errMsg);
 
   // 파일 세팅 및 프리뷰 ---------------------------------------------------------------------------------------------
-  
   const preview = computed(() => store.state.auth.preview);
   const fileSetting = (e) => {
     props.registInfo.profile = e.target.files[0];
@@ -105,6 +194,10 @@ import { useStore } from 'vuex';
   const openModal = () => {
     store.dispatch('auth/chkAccount', props.registInfo.account);
     setTimeout(() => { modalFlg.value = true; }, 500);
+
+    if(errMsg.value.account) {
+      errMsg.value.account = null;
+    }
   };
   const closeModel = () => {
     modalFlg.value = false;
@@ -135,6 +228,13 @@ import { useStore } from 'vuex';
     if((props.registInfo.email.match(/\./g) || []).length > 1) {
       props.registInfo.email = props.registInfo.email.replace('.', '');  
     };
+  };
+
+  // 가족코드는 고정 8자리 ---------------------------------------------------------------------------------------------
+  const limitCode = () => {
+    if(props.registInfo.fam_code.length > 8) {
+      props.registInfo.fam_code = props.registInfo.fam_code.slice(0, 8);
+    }
   };
 
 </script>
@@ -198,7 +298,7 @@ import { useStore } from 'vuex';
   }
 
   .mini-modal-box > .mini-modal-content {
-    padding: 20px 10px 10px 10px;
+    padding: 20px 15px 15px 10px;
     height: 150px;
     max-height: 30vh;
     display: flex;
@@ -358,7 +458,6 @@ import { useStore } from 'vuex';
     max-width: 80vw;
   }
 
-  /* 중복 확인 인풋 우측 여백 제거 */
   .account-group input {
     padding-right: 0;
   }
@@ -390,6 +489,26 @@ import { useStore } from 'vuex';
     width: 230px;
     max-width: 70vw;
     text-align: right;
+  }
+
+  /* 에러 메시지용 세팅 */
+  /* 라벨 끝쪽에 출력 배치 */
+  label { 
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* 메세지 설정 */
+  .err-msg {
+    font-size: 0.9rem;
+    padding: 10px 0;
+    color: #ff0000;
+  }
+
+  /* 빨간 테두리, 추가입력하면 사라짐 */
+  .err-border:invalid {
+    border: 2px solid rgba(255, 0, 0, 0.6);
+    box-shadow: 0 0 5px #ff0000;
   }
 
   /* 모바일 설정 : 화면 너비가 일정 크기 이하일 경우 작동함 */

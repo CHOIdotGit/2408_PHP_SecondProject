@@ -14,10 +14,10 @@
     <!-- 입력 폼 DIV -->
     <div class="data-form position-relative">
       <div class="data-info">
-        <p>{{ parentInfo.name }} 님의 가족코드</p>
+        <p>{{ $store.state.auth.parentInfo.name }} 님의 가족코드</p>
 
         <div class="fam-code">
-          <p>{{ parentInfo.familyCode }}</p>
+          <p>{{ $store.state.auth.parentInfo.family_code }}</p>
         </div>
         
         <span class="mini-text">
@@ -27,7 +27,7 @@
 
       <div class="next-btn">
         <router-link to="/regist/complete">
-          <button type="button">다음 >&nbsp;</button>
+          <button @click="nextComplete" type="button">다음 >&nbsp;</button>
         </router-link>
       </div>
     </div>
@@ -35,13 +35,58 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
+
 import { useStore } from 'vuex';
 
+  // 스토어 호출
   const store = useStore(); 
-  
-  const parentInfo = computed(() => store.state.auth.parentInfo);
+  const router = useRouter();
 
+  const nextComplete = () => {
+    clearParentInfo();
+    router.replace('/regist/complete');
+  };
+
+  // 이동 반응 이벤트 ---------------------------------------------------------------------------------------------
+
+  // 세션 정보 리셋
+  const clearParentInfo = () => {
+    sessionStorage.removeItem('parentInfo');
+  };
+
+  const preventBackNavigation = (e) => {
+    e.preventDefault(); // 뒤로 가기 방지
+    history.pushState(null, '', window.location.href); // 페이지 URL을 강제로 다시 설정
+  }
+
+  onMounted(() => {
+    // 뒤로, 앞으로 버튼 이동시
+    window.addEventListener('popstate', preventBackNavigation);
+    
+    // 히스토리 상태 변경을 강제로 만들어서 뒤로 가기를 막음
+    history.pushState(null, '', window.location.href);
+  });
+
+  // 다음 컴포넌트로 넘어갈 때 이벤트를 제거
+  onBeforeUnmount(() => {
+    window.removeEventListener('popstate', preventBackNavigation);
+  });
+
+  // 다른 페이지로 이동 시 작동함
+  onBeforeRouteLeave((to, from, next) => {
+    clearParentInfo();
+    next();
+  });
+
+  onBeforeMount(() => {
+    // 마운트 되기전에 받아온 정보가 없으면 다시 로드
+    const parentInfo = sessionStorage.getItem('parentInfo');
+    if(parentInfo) {
+      store.commit('auth/setParentInfo', JSON.parse(parentInfo));
+    }
+  });
 </script>
 
 <style scoped>
