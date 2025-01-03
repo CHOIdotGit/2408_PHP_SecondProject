@@ -74,6 +74,12 @@ Route::get('/api/child/home', [HomeController::class, 'show']);
 // 자녀 미션 리스트 페이지
 Route::get('/api/child/mission/list/{child_id}', [ChildMissionController::class, 'index']);
 
+// 자녀 미션 상세 페이지
+Route::get('/api/child/mission/detail/{id}', [ChildMissionController::class, 'show']);
+
+// 자녀 미션 작성 페이지
+Route::post('/api/child/mission/create/{child_id}', [ChildMissionController::class, 'store']);
+
 // 헤더 관련(드랍메뉴 자녀이름 출력)
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
 

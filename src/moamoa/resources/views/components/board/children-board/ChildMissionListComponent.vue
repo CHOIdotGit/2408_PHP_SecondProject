@@ -19,7 +19,7 @@
                     <div class="chk-div">
                         <input type="checkbox" id="checkbox9">
                     </div>
-                    <span class="mission-name">{{ getTruncatedTitle(item.title) }}</span>
+                    <span @click="getMissionId(item.mission_id)" class="mission-name">{{ getTruncatedTitle(item.title) }}</span>
                     <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                     <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p> 
                     <p class="charge">{{ item.amount.toLocaleString() }}원</p>
@@ -36,12 +36,19 @@
 
 <script setup>
 import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-
+// import router from '../../../../js/router';
+const route = useRoute();
 const store = useStore();
 
+// onMount
+onMounted(() => {
+    store.dispatch('childMission/setChildMissionList', route.params.child_id);
+});
+
 // 미션 리스트 가져오기
-const missionList = computed(() => store.state.mission.missionList);
+const missionList = computed(() => store.state.childMission.childMissionList);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -88,10 +95,14 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
-// onMount
-onMounted(() => {
-    store.dispatch('mission/missionList');
-});
+
+
+// 미션아이디 확인해서 상세 페이지 이동하기 위해서
+const getMissionId = (mission_id) => {
+    console.log('미션 아이디 획득', mission_id);
+    store.dispatch('childMission/showMissionDetail', mission_id);
+}
+
 </script>
 
 <style scoped>

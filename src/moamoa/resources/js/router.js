@@ -158,12 +158,12 @@ const routes = [
     },
     // 자녀 미션 작성 페이지
     {
-        path: '/child/mission/create',
+        path: '/child/mission/create/:child_id',
         component: ChildCreateComponent,
     },
     // 자녀 미션 상세 페이지
     {
-        path: '/child/mission/detail',
+        path: '/child/mission/detail/:id',
         component: ChildDetailComponent,
     },
     // 자녀 미션 수정 페이지

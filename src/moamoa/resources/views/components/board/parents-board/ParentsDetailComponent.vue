@@ -1,37 +1,41 @@
 <template>
-    <div v-if="missionDetail"  class="detail-container">
-        <div class="content" >
-            <p class="title">미션 제목</p>
-            <p class="ms-title">{{ missionDetail.title }}</p>
-            <div class="date">
-                <span class="ms-date">{{ missionDetail.start_at }}</span>
-                <span>⁓</span>
-                <span class="ms-date">{{ missionDetail.end_at }}</span>
+<div class="main-container">
+    <div class="detail-container">
+        <div class="content-list">
+            <div class="content" v-if="missionDetail">
+                <p class="title">미션 제목</p>
+                <p class="ms-title">{{ missionDetail.title }}</p>
+                <div class="date">
+                    <span class="ms-date">{{ missionDetail.start_at }}</span>
+                    <span>⁓</span>
+                    <span class="ms-date">{{ missionDetail.end_at }}</span>
+                </div>
             </div>
-        </div>
-        <div class="content">
-            <p class="title">미션 종류</p>
-            <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
-                <img class="ms-category-img" :src="item.img" >
-                <p>{{ item.name }}</p>
+            <div class="content">
+                <p class="title">미션 종류</p>
+                <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
+                    <img class="ms-category-img" :src="item.img" >
+                    <p>{{ item.name }}</p>
+                </div>
+                    <p>{{ missionDetail.category }}</p>
             </div>
-                <p>{{ missionDetail.category }}</p>
-        </div>
-        <div class="content">
-            <p class="title">미션 내용</p>
-            <div class="ms-content">{{ missionDetail.content}}</div>
-        </div>
-        <div class="content">
-            <p class="title">금액(원)</p>
-            <p class="ms-amount">{{ missionDetail.amount}}</p>
-        </div>
-        <div class="create-btn">
-            <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
-            <button @click="delOpenModal" class="ms-del">삭제</button>
-            <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
-            <button class="ms-comfirm">승인</button>
+            <div class="content">
+                <p class="title">미션 내용</p>
+                <div class="ms-content">{{ missionDetail.content}}</div>
+            </div>
+            <div class="content">
+                <p class="title">금액(원)</p>
+                <p class="ms-amount">{{ missionDetail.amount}}</p>
+            </div>
+            <div class="create-btn">
+                <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                <button @click="delOpenModal" class="ms-del">삭제</button>
+                <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
+                <button class="ms-comfirm">승인</button>
+            </div>
         </div>
     </div>
+</div>
     <!-- ************************* -->
     <!-- ********삭제 모달********* -->
     <!-- ************************* -->
@@ -39,7 +43,7 @@
         <div class="del-modal-white">
             <div class="modal-content">
                 <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
-                <p class="modal-name"></p>
+                <p class="modal-name">{{ missionDetail.name }}</p>
                 <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
                 <div class="del-guide">해당 미션이 삭제됩니다.</div>
             </div>
@@ -95,6 +99,7 @@ const delCloseModal = () => { //모달창 닫기
 // 뒤로가기
 const goBack = (child_id) => {
     store.dispatch('mission/missionList', child_id);
+    router.push('/parent/mission/list/' + child_id);
 }
 // *****미션 삭제*******
 const deleteMission = (mission_id) => {

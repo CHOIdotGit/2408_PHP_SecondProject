@@ -20,10 +20,6 @@ export default {
         
     }),
     mutations: {
-        setChildHome(state, childHome) {
-            state.childHome = childHome;
-            // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
-        },
         setChildMissionList(state, childMissionList) {
             state.childMissionList = childMissionList;
         },
@@ -32,7 +28,7 @@ export default {
         },
         // Vuex 상태 초기화 하는 함수
         resetState(state) {
-            state.missionList = null; // 미션 리스트 초기화
+            state.childMissionList = null; // 미션 리스트 초기화
             state.childId = null; // 자녀 ID 초기화
             state.controlFlg = true; // 제어 플래그 초기화
             state.parentHome = [];
@@ -48,15 +44,15 @@ export default {
         setbellContent(state, bellContent) { // 헤더 알림창
             state.bellContent = bellContent;
         },
-        setMissonListUnshift(state, missionList) { //미션 리스트 항목 추가
-            state.missionList.unshift(missionList);
+        setMissonListUnshift(state, childMissionList) { //미션 리스트 항목 추가
+            state.childMissionList.unshift(childMissionList);
         },
         setChildId(state, childId) {
             state.childId = childId;
         },
         // 삭제된 mission_id 를 제거한 missionList 받아오기
         deleteMission(state, missionId) {
-            state.missionList = state.missionList.filter(mission => mission.mission_id !== missionId ); 
+            state.childMissionList = state.childMissionList.filter(mission => mission.mission_id !== missionId ); 
         },
         setCreateMission(state, missionDetail) {
             state.missionDetail = missionDetail;
@@ -69,42 +65,22 @@ export default {
     },
     actions: {
         /**
-         * 자녀 홈 페이지
-         * 
-         * @param {*} context 
-         */
-        childHome(context) {
-            context.commit('setControlFlg', false);
-            
-            const url = '/api/child/home';
-            
-            axios.get(url)
-            .then(response => {
-                context.commit('setChildHome', response.data.childHome.missions);
-                // console.log(response.data);
-            })
-            .catch(error => {
-                console.error('자녀 미션 리스트 불러오기 오류', error);
-            });    
-        },
-
-        /**
          * 자녀 미션 리스트
          * 
          * 미션 정보 획득
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        missionList(context, child_id) {
+        setChildMissionList(context, child_id) {
             context.commit('setControlFlg', false);
             
-            const url = '/api/parent/mission/list/' + child_id;
+            const url = '/api/child/mission/list/' + child_id;
+            console.log(url);
                         
             axios.get(url)
                 .then(response => {
-                    console.log(response.data.missionList.data);
-                    context.commit('setMissionList', response.data.missionList.data);
-                    // console.log('응답 데이터 확인', response.data.missionList.data);
+                    context.commit('setChildMissionList', response.data.childMissionList.data);
+                    console.log(response.data.childMissionList.data);
                     
                     // 세션 스토리지에 자녀ID 세팅
                     sessionStorage.setItem('child_id', child_id);
@@ -117,29 +93,12 @@ export default {
                     console.error('미션 정보 불러오기 오류', error);
                 });    
         },
-        // ***************************
-        // 자녀 미션 리스트 페이지
-        // ***************************
-        childMissionList(context, child_id) {
-            context.commit('setControlFlg', false);
-            const url = '/api/child/mission/list/' + child_id;
-            console.log(url);
-            axios.get(url)
-                .then(response => {
-                    context.commit('setMissionList', response.data.missionList.data);
-                    console.log(response.data.missionList.data);
-                })
-                .catch(error => {
-                    console.error('미션 정보 불러오기 오류', error);
-                }); 
-        },
-
 
         // ***************************
         // 부모 미션 상세 페이지
         // ***************************
         showMissionDetail(context, mission_id) {
-            const url = '/api/parent/mission/detail/'+ mission_id;
+            const url = '/api/child/mission/detail/'+ mission_id;
             // console.log(url);
 
             axios.get(url, mission_id)
@@ -150,7 +109,7 @@ export default {
                     context.commit('setMissionDetail', response.data.missionDetail);
                     context.commit('setMissionId', mission_id);
 
-                    router.push('/parent/mission/detail/'+ mission_id);
+                    router.push('/child/mission/detail/'+ mission_id);
 
                     // sessionStorage.removeItem('missionDetail'); // 다른페이지로 이동시 디테일 정보 제거
                     })
@@ -160,17 +119,17 @@ export default {
                 });
         },
         // ***************************
-        // 부모 미션 작성 페이지로 이동
+        //  미션 작성 페이지로 이동
         // ***************************
         goCreateMission(context, child_id) {
-            const url = '/api/parent/mission/create/'+ child_id;
+            const url = '/api/child/mission/create/'+ child_id;
             console.log(url);
             axios.get(url)
             .then(response => {
                     context.commit('setCreateMission', response.data.missionDetail);
                     sessionStorage.setItem('child_id', child_id);
                     context.commit('setChildId', child_id);
-                    router.push('/parent/mission/create/' + child_id);
+                    router.push('/child/mission/create/' + child_id);
                 })
                 .catch(error => {
                     console.log('미션 작성 페이지로 이동 못함', error);
@@ -289,7 +248,7 @@ export default {
 
     getters: {
         getMissionTitle(state) {
-            return state.missionList;
+            return state.childMissionList;
         },
         getPendingMissions(state) { // 대기 중인 미션 가져오는 getter 추가
             return state.pendingMissions;
