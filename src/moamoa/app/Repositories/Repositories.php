@@ -34,6 +34,7 @@ class Repositories extends BaseRepository {
         ];
     }
 
+    // 부모 레코드 생성
     public function createParent($insertData) {
         DB::beginTransaction();
 
@@ -75,6 +76,7 @@ class Repositories extends BaseRepository {
         }
     }
 
+    // 자녀 레코드 생성
     public function createChild($insertData) {
         DB::beginTransaction();
         try {

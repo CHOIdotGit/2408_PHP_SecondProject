@@ -40,7 +40,7 @@ class AuthRequest extends FormRequest {
 
     // 자녀 회원가입 매칭 실행시 유효성 체크
       if($this->routeIs('auth.child.regist.matching')) {
-        $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,webp'];
+        $rules['fam_code'] = ['required', 'regex:/^[A-Z0-9]{8}$/'];
       }
     }
 

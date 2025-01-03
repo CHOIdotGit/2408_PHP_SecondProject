@@ -21,7 +21,7 @@
               <img :src="parent.profile">
             </div>
           </div>
-          <span class="color-green">{{ parent.name }}</span> 님의 <br>자녀가 맞으십니까?
+          <span class="color-green">{{ parent.name }}</span> 님의 <br>자녀 입니까? <!-- 가 맞으십니까? -->
         </span>
 
         <span class="mini-text">
