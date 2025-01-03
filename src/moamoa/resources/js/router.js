@@ -36,12 +36,13 @@ const chkAuth = (to, from, next) => {
     const childFlg = store.state.auth.childFlg;
 
     // 비인증용 경로 변수
-    const notAuthPath = (to.path === '/' || to.path === '/login' || to.path === '/regist/main' 
-        || to.path === '/regist/parent' || to.path === '/regist/child' 
-        || to.path === '/regist/parent/code' || to.path === '/regist/complete'
-    );
-    const parentPath = (to.path === '/parent/home');
-    const childPath = (to.path === '/child/home');
+    const notAuthPath = (to.path === '/' || to.path === '/login' || to.path.startsWith('/regist/'));
+
+    // 부모 URL 목록
+    const parentPath = to.path.startsWith('/parent/');
+
+    // 자녀 URL 목록
+    const childPath = to.path.startsWith('/child/');
 
     // 인증 유저가 비인증 페이지에 접근했거나 
     // 부모가 자녀페이지, 자녀가 부모페이지에 접근했는가?
@@ -113,41 +114,49 @@ const routes = [
     {
         path: '/parent/mission/list/:id',
         component: ParentsMissionListComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 미션 작성 페이지
     {
         path: '/parent/mission/create/:child_id',
         component: ParentsCreateComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 미션 수정 페이지
     {
         path: '/parent/mission/update/:mission_id',
         component: ParentsUpdateComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 미션 상세 페이지
     {
         path: '/parent/mission/detail/:id',
         component: ParentsDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 지출 리스트 페이지
     {
         path: '/parent/spend/list/:id',
         component: ParentsSpendListComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 지출 상세 페이지
     {
         path: '/parent/spend/detail/:id',
         component: ParentsSpendDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 달력 페이지
     {
         path: '/parent/calendar/:parent_id',
         component: ParentsCalendarComponent,
+        beforeEnter: chkAuth,
     },
     // 부모 통계 페이지
     {
         path: '/parent/stats',
         component: ParentsStatsComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 페이지 모음
     // 자녀 홈페이지
@@ -160,49 +169,57 @@ const routes = [
     {
         path: '/child/mission/list/:child_id',
         component: ChildMissionListComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 미션 작성 페이지
     {
         path: '/child/mission/create/:child_id',
         component: ChildCreateComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 미션 상세 페이지
     {
         path: '/child/mission/detail/:id',
         component: ChildDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 미션 수정 페이지
     {
         path: '/child/mission/update',
         component: ChildUpdateComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 지출 리스트 페이지
     {
         path: '/child/spend/list',
         component: ChildSpendListComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 지출 작성 페이지
     {
         path: '/child/spend/create',
         component: ChildSpendCreateComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 지출 상세 페이지
     {
         path: '/child/spend/detail',
         component: ChildSpendDetailComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 지출 수정 페이지
     {
         path: '/child/spend/update',
         component: ChildSpendUpdateComponent,
+        beforeEnter: chkAuth,
     },
     // 자녀 달력 페이지
     {
         path: '/child/calendar',
         component: ChildCalendarComponent,
+        beforeEnter: chkAuth,
     },
 
-    
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,

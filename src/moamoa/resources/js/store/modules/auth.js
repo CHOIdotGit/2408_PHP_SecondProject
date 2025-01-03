@@ -33,8 +33,8 @@ export default {
     modalColor: false,
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     registFlg: true, // 자녀 페이지 전환용 플래그
-    registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입폼 정보
-    parentInfo: sessionStorage.getItem('parentInfo') ? JSON.parse(sessionStorage.getItem('parentInfo')) : {}, // 부모 정보
+    registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입 폼 정보
+    parentInfo: sessionStorage.getItem('parentInfo') ? JSON.parse(sessionStorage.getItem('parentInfo')) : {}, // 가입 부모 정보
     matchInfo: {}, // 매칭 정보
     preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false,
