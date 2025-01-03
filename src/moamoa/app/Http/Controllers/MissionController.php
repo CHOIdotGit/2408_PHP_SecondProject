@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Log;
 
 class MissionController extends Controller
 {
+    // ************************************************
+    // ****************부모 미션 리스트 ****************
+    // ************************************************
     public function index($id) {
-        // 예제
+        // 로그인 유저가 부모인지 확인
         $parent = Auth::guard('parents')->user();
-       
+
         $missionList = Mission::select('missions.mission_id', 'missions.child_id', 'missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
                                     ->with('child')
                                     ->where('missions.parent_id', $parent->parent_id)
@@ -28,6 +31,8 @@ class MissionController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+
 
     // ************************************************
     // **********부모 미션 상세 페이지 불러오기**********

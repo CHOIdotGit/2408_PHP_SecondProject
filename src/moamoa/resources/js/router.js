@@ -153,7 +153,7 @@ const routes = [
     },
     // 자녀 미션 리스트 페이지
     {
-        path: '/child/mission/list',
+        path: '/child/mission/list/:child_id',
         component: ChildMissionListComponent,
     },
     // 자녀 미션 작성 페이지

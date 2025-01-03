@@ -6,7 +6,7 @@ import router from '../../router';
 export default {
     namespaced:true,
     state: ()=> ({
-        missionList: []
+        childMissionList: []
         ,parentHome: []
         ,lastPageFlg: false
         ,controlFlg: true
@@ -20,16 +20,12 @@ export default {
         
     }),
     mutations: {
-        setParentHome(state, parentHome) {
-            state.parentHome = state.parentHome.concat(parentHome);
-            // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
-        },
         setChildHome(state, childHome) {
             state.childHome = childHome;
             // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
         },
-        setMissionList(state, missionList) {
-            state.missionList = missionList;
+        setChildMissionList(state, childMissionList) {
+            state.childMissionList = childMissionList;
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
@@ -73,29 +69,6 @@ export default {
     },
     actions: {
         /**
-         * 부모 홈 페이지
-         * 
-         * 미션 리스트 획득
-         * 
-         * @param {*} context commit, state 포함되어있음
-         */
-        parentHome(context) {
-            context.commit('setControlFlg', false);
-            
-            const url = '/api/parent/home';
-            
-        
-            axios.get(url)
-            .then(response => {
-                context.commit('setParentHome', response.data.parentHome);
-                // console.log(response.data.parentHome);
-            })
-            .catch(error => {
-                console.error('부모 미션 리스트 불러오기 오류', error);
-            });    
-        },
-
-        /**
          * 자녀 홈 페이지
          * 
          * @param {*} context 
@@ -116,7 +89,7 @@ export default {
         },
 
         /**
-         * 부모 미션 리스트 페이지
+         * 자녀 미션 리스트
          * 
          * 미션 정보 획득
          * 

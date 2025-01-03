@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChildMissionController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
@@ -65,11 +66,13 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 // 부모 통계 페이지
 Route::get('/api/parent/stats', [StatsController::class, 'index']);
 
+//********************************************************************************************* */
+
 // 자녀 홈
 Route::get('/api/child/home', [HomeController::class, 'show']);
 
 // 자녀 미션 리스트 페이지
-Route::get('/api/child/mission/list', [MissionController::class, 'index']);
+Route::get('/api/child/mission/list/{child_id}', [ChildMissionController::class, 'index']);
 
 // 헤더 관련(드랍메뉴 자녀이름 출력)
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
