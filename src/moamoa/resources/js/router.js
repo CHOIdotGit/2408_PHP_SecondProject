@@ -110,6 +110,11 @@ const routes = [
         component: ParentsManagementComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          부모 미션 모음           +
+    // +==================================+
+
     // 부모 미션 리스트 페이지
     {
         path: '/parent/mission/list/:id',
@@ -134,6 +139,11 @@ const routes = [
         component: ParentsDetailComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          부모 지출 모음           +
+    // +==================================+
+
     // 부모 지출 리스트 페이지
     {
         path: '/parent/spend/list/:id',
@@ -146,6 +156,11 @@ const routes = [
         component: ParentsSpendDetailComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          부모 달력/통계           +
+    // +==================================+
+
     // 부모 달력 페이지
     {
         path: '/parent/calendar/:parent_id',
@@ -158,6 +173,7 @@ const routes = [
         component: ParentsStatsComponent,
         beforeEnter: chkAuth,
     },
+    //**************************************************** */
     // 자녀 페이지 모음
     // 자녀 홈페이지
     {
@@ -165,15 +181,19 @@ const routes = [
         component: ChildHomeComponent,
         beforeEnter: chkAuth,
     },
+    // +==================================+
+    // +          자녀 미션 모음           +
+    // +==================================+
+
     // 자녀 미션 리스트 페이지
     {
-        path: '/child/mission/list/:child_id',
+        path: '/child/mission/list',
         component: ChildMissionListComponent,
         beforeEnter: chkAuth,
     },
     // 자녀 미션 작성 페이지
     {
-        path: '/child/mission/create/:child_id',
+        path: '/child/mission/create',
         component: ChildCreateComponent,
         beforeEnter: chkAuth,
     },
@@ -185,10 +205,15 @@ const routes = [
     },
     // 자녀 미션 수정 페이지
     {
-        path: '/child/mission/update',
+        path: '/child/mission/update/:mission_id',
         component: ChildUpdateComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          자녀 지출 모음           +
+    // +==================================+
+
     // 자녀 지출 리스트 페이지
     {
         path: '/child/spend/list',
@@ -213,6 +238,11 @@ const routes = [
         component: ChildSpendUpdateComponent,
         beforeEnter: chkAuth,
     },
+    
+    // +==================================+
+    // +          자녀 지출 모음           +
+    // +==================================+
+
     // 자녀 달력 페이지
     {
         path: '/child/calendar',

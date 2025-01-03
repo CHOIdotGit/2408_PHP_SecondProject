@@ -6,6 +6,7 @@ use App\Models\Child;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ChildMissionController extends Controller
 {
@@ -56,8 +57,10 @@ class ChildMissionController extends Controller
         
         $child = Auth::guard('children')->user();
 
+        $parent = $child->parent_id;//자녀 테이블에서 부모 아이디 확인
+
         $insertMission = [
-            'parent_id' => $request->parent_id
+            'parent_id' => $parent
             ,'child_id' => $child->child_id
             ,'title' => $request->title
             ,'category' => $request->category
@@ -68,11 +71,51 @@ class ChildMissionController extends Controller
         ];
 
         $missionDetail = Mission::create($insertMission);
+                                // ->where('parent_id', $request->parent_id);
 
         $responseData = [
             'success' => true
             ,'msg' => '미션 등록 성공'
             ,'missionDetail' => $missionDetail->toArray()
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // ************************************************
+    // **************자녀 미션 삭제 페이지 **************
+    // ************************************************
+    public function destroy($mission_id) {
+
+        $deleteMission = Mission::destroy($mission_id);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '미션 삭제 성공'
+            ,'deleteMission' => $deleteMission
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    // ************************************************
+    // **************자녀 미션 수정 페이지 **************
+    // ************************************************
+    public function update(Request $request) {
+        Log::debug('update', $request->all());
+        $updateMission = Mission::find($request->mission_id);
+
+        $updateMission->title = $request->title;
+        $updateMission->category = $request->category;
+        $updateMission->content = $request->content;
+        $updateMission->amount = $request->amount;
+        $updateMission->start_at = $request->start_at;
+        $updateMission->end_at = $request->end_at;
+
+        $updateMission->save();
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '미션 수정 성공'
+            ,'updateMission' => $updateMission
         ];
         return response()->json($responseData, 200);
     }

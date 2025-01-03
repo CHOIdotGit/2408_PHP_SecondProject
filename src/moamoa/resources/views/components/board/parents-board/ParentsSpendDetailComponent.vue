@@ -53,7 +53,7 @@ const categories = reactive([
     {name: '교통비' , img:'/img/icon-bus.png', index : 0}
     ,{name: '취미' , img:'/img/icon-fastfood.png', index : 1}
     ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : 2}
-    ,{name: '기타' , img:'/img/Pngtreestationery_icon_3728043.png', index : 3}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : 3}
 ]);
 </script>
 

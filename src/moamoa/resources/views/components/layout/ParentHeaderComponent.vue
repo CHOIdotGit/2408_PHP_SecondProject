@@ -23,9 +23,9 @@ onBeforeMount(async () => {
     firstChildId.value = store.state.header.childNameList[0].child_id;
     baseMenuInfo.value = [
         {name: "홈", path: "/parent/home", segmentPath: ''}
-        ,{name: "지출", path: "/parent/spend/list", segmentPath: '/' + firstChildId.value, actionName: 'transction/transactionList'}
+        ,{name: "지출", path: "/parent/spend/list", segmentPath: '/' + firstChildId.value, actionName: 'transaction/transactionList'}
         ,{name: "미션", path: "/parent/mission/list", segmentPath: '/' + firstChildId.value, actionName: 'mission/missionList'}
-        ,{name: "캘린더", path: "/parent/calendar", segmentPath: '/' + firstChildId.value, actionName: ''}
+        ,{name: "캘린더", path: "/parent/calendar", segmentPath: '/' + firstChildId.value, actionName: 'calendar/calendarInfo'}
         ,{name: "통계", path: "/parent/stats", segmentPath: ''}
     ];
     console.log('애들이름출력');

@@ -232,6 +232,8 @@ export default {
                 console.log('새로운 미션 아이디:', newMission.mission_id)
                 // context.commit('setMissonListUnshift', response.data.missionList);
                 context.commit('setMissionDetail', newMission);
+                //미션 등록 알람
+                alert('미션이 등록되었습니다.');
                 router.replace('/parent/mission/detail/' + newMission.mission_id);
                 })
                 .catch(error => {

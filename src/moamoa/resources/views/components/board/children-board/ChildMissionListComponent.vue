@@ -28,7 +28,7 @@
             </div>
             <div class="for-buttons">
                 <button class="btn btn-bottom mission-go-back">뒤로가기</button>
-                <button class="btn btn-bottom mission-insert">+ 등록</button>
+                <button @click="getChildId" class="btn btn-bottom mission-insert">+ 등록</button>
             </div>
         </div>
     </div>
@@ -43,8 +43,12 @@ const route = useRoute();
 const store = useStore();
 
 // onMount
+// onMounted(() => {
+//     store.dispatch('childMission/setChildMissionList', route.params.child_id);
+// });
+
 onMounted(() => {
-    store.dispatch('childMission/setChildMissionList', route.params.child_id);
+    store.dispatch('childMission/setChildMissionList');
 });
 
 // 미션 리스트 가져오기
@@ -101,6 +105,11 @@ const getTruncatedTitle =(title) => {
 const getMissionId = (mission_id) => {
     console.log('미션 아이디 획득', mission_id);
     store.dispatch('childMission/showMissionDetail', mission_id);
+}
+
+// 자녀 아이디 확인해서 작성 페이지로 이동하기 위해서
+const getChildId = () => {
+    store.dispatch('childMission/goCreateMission');
 }
 
 </script>

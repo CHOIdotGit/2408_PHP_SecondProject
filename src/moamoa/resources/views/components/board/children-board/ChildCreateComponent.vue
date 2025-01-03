@@ -4,59 +4,35 @@
             <div class="content-list">
                 <div class="content">
                     <p class="title">미션 제목</p>
-                    <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
+                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
                     <div class="date">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
+                        <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
                         <span>⁓</span>
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
+                        <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
                         <!-- value="today" -->
                     </div>
                 </div>
                 <div class="content">
                     <p class="title">미션 종류</p>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="study" >
-                        
-                            <img class="ms-category" src="/img/icon-pencil.png" alt=".">
-                        </input>
-                        <!-- <label for="study">학습</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="habit" >
-                            <img class="ms-category" src="/img/icon-bicycle.png" alt=".">
-                        </input>
-                        <!-- <label for="habit">취미</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="housework" >
-                            <img class="ms-category" src="/img/icon-cleaner.png" alt=".">
-                        </input>
-                        <!-- <label for="housework">집안일</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="lifestyle" >
-                            <img class="ms-category" src="/img/icon-clock.png" alt=".">
-                        </input>
-                        <!-- <label for="lifestyle">생활습관</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt="">
-                        </input>
-                        <!-- <label for="etc">기타</label> -->
+                    <div class="category-btn" v-for="item in categories" :key="item">
+                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
+                            <img class="ms-category-img" :src="item.img" >
+                            <p class="categoryName">{{ item.name }}</p>
+                        </label>
                     </div>
                 </div>
                 <div class="content">
                     <p class="title">미션 내용</p>
-                    <textarea class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <textarea v-model="missionCreate.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <input type="number" class="ms-amount" id="ms-amount" required>
+                    <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button class="create-btn">취소</button>
-                    <button class="create-btn">등록</button>
+                    <button @click="$router.replace('/child/mission/list/${child_id}')" class="create-btn">취소</button>
+                    <button @click="$store.dispatch('childMission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
         </div>
@@ -65,7 +41,32 @@
 
 
 <script setup>
+import { reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute();
+
+const categories = reactive([
+    {name: '학습' , img:'/img/icon-pencil.png', index : "0"}
+    ,{name: '취미' , img:'/img/icon-bicycle.png', index : "1"}
+    ,{name: '집안일' , img:'/img/icon-cleaner.png', index : "2"}
+    ,{name: '생활습관' , img:'/img/icon-clock.png', index : "3"}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : "4"}
+]);
+const radioCategories = ref('');
+
+const today = ref(new Date().toISOString().slice(0, 10));
+const nextDay = ref(new Date().toISOString().slice(0, 10));
+
+const missionCreate = reactive({
+    title: '',
+    start_at: today, // 오늘 날짜
+    end_at: nextDay,
+    category: radioCategories,
+    content: '',
+    amount: '',
+    // child_id: route.params.child_id,
+});
 
 </script>
 
@@ -149,32 +150,37 @@ span {
     flex-direction: column;
     text-align: center;
     padding-right: 30px;
+    padding-bottom: 10px;
 }
 
-/* .category-btn > label {
-    color: #A4D8E1; */
-    /* border: 1px solid #A4D8E1; */
-    /* font-size: 0.9rem;
-    padding-top: 5px;
-
-} */
-
-/* .category-btn > input {
+.category-btn > input {
     display: none;
-} */
+}
 
+.ms-category-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: #c9cfca;
+    text-align: center;
+    cursor: pointer;
+}
 
-
-.ms-category {
-    width: 60px;
-    height: 60px;
-    background-size: cover;
+.ms-category-img {
+    margin-top: 13px;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
     background-repeat: no-repeat;
     border: none;
-    background-color: #5589e996;
-    cursor: pointer;
-    border-radius: 50px;
-    padding: 5px;
+}
+
+.checked-category-btn {
+    background-color: #A2CAAC;
+}
+
+.categoryName {
+    margin-top: 10px;
 }
 
 /* 미션 내용 */

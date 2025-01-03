@@ -71,7 +71,7 @@
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
     <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal.isOpen">
+    <!-- <div class="del-modal-black" v-show="delModal.isOpen">
         <div class="del-modal-white">
             <div class="modal-list-container">
                 <div class="modal-mission-title">
@@ -98,7 +98,7 @@
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 <script setup>
 
@@ -173,35 +173,35 @@ async function nextMonth() {
 }
 
 // 모달 상태 관리
-const delModal = reactive({ isOpen: false });
+// const delModal = reactive({ isOpen: false });
 
-const delOpenModal = () => {
-    delModal.isOpen = true;
-};
+// const delOpenModal = () => {
+//     delModal.isOpen = true;
+// };
 
-const delCloseModal = () => {
-    delModal.isOpen = false;
-};
+// const delCloseModal = () => {
+//     delModal.isOpen = false;
+// };
 
-// 현재 날짜를 기준으로 year와 month 계산
-// 현재 날짜와 월을 동적으로 처리
-const currentDate = new Date();
-const currentYear = currentDate.getFullYear();
-const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줘야 함
+// // 현재 날짜를 기준으로 year와 month 계산
+// // 현재 날짜와 월을 동적으로 처리
+// const currentDate = new Date();
+// const currentYear = currentDate.getFullYear();
+// const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줘야 함
 
 
-// 모달 날짜별 데이터 들고오기
-const transactions = computed(() => store.state.calendar.transactions);
+// // 모달 날짜별 데이터 들고오기
+// const transactions = computed(() => store.state.calendar.transactions);
 
-// handleDayClick 함수 정의
-const handleDayClick = (day) => {
-  // year, month는 현재 달력을 기반으로 동적으로 가져옵니다
-  const selectedDate = { year: currentYear, month: currentMonth, day };
+// // handleDayClick 함수 정의
+// const handleDayClick = (day) => {
+//   // year, month는 현재 달력을 기반으로 동적으로 가져옵니다
+//   const selectedDate = { year: currentYear, month: currentMonth, day };
 
-  // Vuex 액션 호출
-  store.dispatch('calendar/transactions', selectedDate);
-  delOpenModal(); // 모달 열기
-};
+//   // Vuex 액션 호출
+//   store.dispatch('calendar/transactions', selectedDate);
+//   delOpenModal(); // 모달 열기
+// };
 
 // -----------------------
 

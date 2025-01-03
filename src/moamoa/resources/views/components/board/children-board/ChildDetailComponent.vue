@@ -83,13 +83,20 @@ const categories = reactive([
 // 뒤로가기
 const goBack = (child_id) => {
     store.dispatch('childMission/setChildMissionList', child_id);
-    router.push('/child/mission/list/' + child_id);
+    router.push('/child/mission/list');
 
 }
 // *****미션 삭제*******
 const deleteMission = (mission_id) => {
     console.log('삭제 요청 mission_id : ', mission_id)
     store.dispatch('childMission/deleteMission', mission_id);
+}
+
+// *****미션 수정*******
+const goUpdate = (mission_id) => {
+    console.log('수정 요청 mission_id : ', mission_id);
+    store.dispatch('childMission/goUpdateMission', mission_id);
+    router.push('/child/mission/update/'+ mission_id);
 }
 
 // 삭제 모달
