@@ -169,7 +169,6 @@ export default {
 
         // 출력 메세지 변수 연결
         const errData = err.response.data.error;
-        // console.log(err.response.data.error);
 
         // 유효성 검사 실패
         if(err.response.status === 422) { 
@@ -372,8 +371,6 @@ export default {
             tel: 'setErrMsgTel',
             fam_code : 'setErrMsgFamCode',
           };
-
-          console.log(errData.fam_code[0]);
 
           // 돌려서 있는것만 데이터 담음
           Object.entries(errData).forEach(([key, val]) => {

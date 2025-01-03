@@ -40,12 +40,14 @@ const chkAuth = (to, from, next) => {
         || to.path === '/regist/parent' || to.path === '/regist/child' 
         || to.path === '/regist/parent/code' || to.path === '/regist/complete'
     );
-    const parentPath = (to.path === 'parent/home');
-    const childPath = (to.path === 'child/home');
+    const parentPath = (to.path === '/parent/home');
+    const childPath = (to.path === '/child/home');
 
     // 인증 유저가 비인증 페이지에 접근했거나 
     // 부모가 자녀페이지, 자녀가 부모페이지에 접근했는가?
-    if((authFlg && notAuthPath) || (authFlg && ((parentFlg && childPath) || (childFlg && parentPath)))) { 
+    if((authFlg && notAuthPath) 
+    || (authFlg && ((parentFlg && childPath) || (childFlg && parentPath)))
+    ) { 
         // 부모면 부모 메인, 자녀면 자녀 메인 페이지로 이동
         parentFlg ? next('/parent/home') : next('/child/home');
     }else if(!authFlg && !notAuthPath) { // 비인증 유저가 인증 페이지에 접근했는가?
