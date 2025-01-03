@@ -15,7 +15,8 @@
     <div class="data-form position-relative">
       <div class="data-info">
         <p>회원가입 성공</p>
-        <p>메인페이지에서 이동해 주세요!</p>
+        <p>메인페이지에서 로그인을 해주세요!</p>
+        <!-- <p>메인페이지로 이동해 주세요!</p> -->
       </div>
 
       <div class="next-btn">
