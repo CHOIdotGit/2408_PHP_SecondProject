@@ -20,7 +20,7 @@ export default {
     }),
     mutations: {
         setTransactionList(state, transactionList) {
-            state.transactionList = state.transactionList.concat(transactionList);
+            state.transactionList = transactionList;
             //concat 때문에 list가 초기화되지 않고 데이터가 계속 추가됨 -> 수정필요
         },
         setControlFlg(state, flg) {
