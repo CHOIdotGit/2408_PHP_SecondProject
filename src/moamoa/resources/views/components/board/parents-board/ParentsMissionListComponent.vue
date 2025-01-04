@@ -12,7 +12,6 @@
                 <span class="kids-name">자녀이름</span>
                 <span class="status">상태</span>
                 <p class="mission-type">종류</p>
-                
                 <p class="mission-name">미션이름</p>
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
@@ -22,12 +21,11 @@
                     <div class="mission-content">
                         <div class="chk-div">
                             <input v-model="checkboxItem" class="checkbox" type="checkbox" :value="item.mission_id" name="checkbox">
-                            {{item.mission_id}}
                         </div>
-                        <button @click="getMissionId(item.mission_id)"><span class="kids-name">{{ item.child.name }}</span></button>
+                        <span class="kids-name">{{ item.child.name }}</span>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
-                        <p class="mission-title">{{ item.title }}</p>
+                        <p @click="getMissionId(item.mission_id)" class="mission-title">{{ item.title }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                         
@@ -89,7 +87,6 @@ const checkAll = (e) => {
 
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
-console.log('missionList : ', store.state.mission.missionList);
 
 // 상태를 문자열로 변환하는 함수
 const getStatusText = (status) => {
@@ -179,6 +176,14 @@ const getChildId = (child_id) => {
     align-items: center;
     width: 1400px;
     text-align: center;
+}
+
+.mission-title {
+    cursor: pointer;
+}
+
+.mission-title:hover {
+    color: #A2CAAC;
 }
 
 .mission-content {

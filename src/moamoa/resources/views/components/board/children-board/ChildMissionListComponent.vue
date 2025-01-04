@@ -2,11 +2,11 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
-                <button class="btn btn-top mission-delete">삭제</button>
+                <button @click="delOpenModal" class="btn btn-top mission-delete">삭제</button>
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
-                    <input type="checkbox" id="checkbox9">
+                    <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" >
                 </div>
                 <span class="mission-name">미션이름</span>
                 <span class="status">상태</span>
@@ -17,9 +17,11 @@
             <div class="mission-inserted-list scroll">
                 <div v-for="item in missionList" :key="item" class="mission-content">
                     <div class="chk-div">
-                        <input type="checkbox" id="checkbox9">
+                        <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.mission_id" name="checkbox">
+                        <!-- <label :for="'mission-'+item.mission_id"></label> -->
+                        {{ item.mission_id }}
                     </div>
-                    <span @click="getMissionId(item.mission_id)" class="mission-name">{{ getTruncatedTitle(item.title) }}</span>
+                    <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
                     <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                     <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p> 
                     <p class="charge">{{ item.amount.toLocaleString() }}원</p>
@@ -32,10 +34,25 @@
             </div>
         </div>
     </div>
+    <!-- ************************* -->
+    <!-- ********삭제 모달********* -->
+    <!-- ************************* -->
+    <div class="del-modal-black" v-show="delModal">
+        <div class="del-modal-white">
+            <div class="modal-content">
+                <img src="/img/icon-trash.png" class="modal-img" alt=".">
+                <div class="del-guide">선택한 {{checkboxItem}} 개의 미션이 삭제됩니다.</div>
+            </div>
+            <div class="del-btn">
+                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 // import router from '../../../../js/router';
@@ -99,6 +116,26 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
+const checkboxItem = ref([]);
+console.log('체크박스 선택된 데이터 : ', checkboxItem);
+
+// const checkAll = (e) => {
+//     if(e.target.checkAll) {
+//         checkboxItem 
+//     }
+// }
+
+
+// *****삭제 모달창********** 
+const delModal = ref(false);
+
+const delOpenModal = () => { //모달창 열기
+    delModal.value = true;
+}
+
+const delCloseModal = () => { //모달창 닫기
+    delModal.value = false;
+}
 
 
 // 미션아이디 확인해서 상세 페이지 이동하기 위해서
@@ -146,6 +183,14 @@ const getChildId = () => {
     align-items: center;
     width: 1400px;
     text-align: center;
+}
+
+.mission-title {
+    cursor: pointer;
+}
+
+.mission-title:hover {
+    color: #5589e996;
 }
 
 .mission-content {
@@ -239,5 +284,87 @@ const getChildId = () => {
     height: 400px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+/* ********************* */
+/* *******삭제 모달****** */
+/* ********************* */
+
+.del-modal-black {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    /* top: 182px;
+    left: 177px; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    /* margin-top: 500px; */
+    justify-content: center;
+}
+
+.del-modal-white {
+    width: 400px;
+    height: 500px;
+    background-color: #FFFFFF;
+    border: 3px solid #5589e996;
+    /* margin: 170px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-content {
+    text-align: center;
+    margin: 60px;
+}
+
+.modal-name {
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.modal-ms-title {
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.del-guide {
+    font-size: 1.4rem;
+    padding: 15px;
+}
+
+
+.modal-img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+/* 삭제 모달 버튼 */
+.modal-cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    font-size: 1.2rem;
+    border: 1px solid #ACACAC;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.modal-del {
+    color: #FFFF;
+    background-color: #5589e996;
+    font-size: 1.2rem;
+    border: 1px solid #5589e996;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
 }
 </style>

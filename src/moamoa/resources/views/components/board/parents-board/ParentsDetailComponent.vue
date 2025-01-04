@@ -362,7 +362,7 @@ span {
 
 
 
-/* 버튼 */
+/* 삭제 모달 버튼 */
 .modal-cancel {
     color: #ACACAC;
     background-color: #FFFFFF;
