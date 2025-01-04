@@ -16,9 +16,7 @@ export default {
           },
         mission: 0,
         dailyIncomeData: [],
-        transactions: [],
-        // selectedDate: null,
-    
+        transactionsOnDay: [],
     }),
     mutations: {
         setCalendarInfo(state, data) {
@@ -40,12 +38,9 @@ export default {
         SET_DAILY_INCOME(state, data) {
             state.dailyIncomeData = data;
         },
-        setTransactions(state, transactions) {
-            state.transactions = transactions;
+        setTransactionsOnDay(state, transactions) {
+            state.transactionsOnDay = transactions;
         },
-        // setSelectedDate(state, data) {
-        //     state.selectedDate = data;
-        // },
     },
     actions: {
         // 캘린더에서 이름불러오기
@@ -111,22 +106,20 @@ export default {
         },
 
         // 일별 지출 합계
-
-
-
-        // 모달 날짜별 정보
-        transactions({ commit }, { year, month }) {
-            if (!year || !month) {
+        transactionsOnDay(context, strDate) {
+            if (!strDate) {
                 // year, month가 있는지 확인
-                console.error('Year, month 값이 필요합니다.');
-                console.log(year, month);
+                console.log('날짜 확인', strDate);
+                console.error('date 값이 필요합니다.');
                 return;
             }
-            axios
-                .get(`/api/child/calendar?year=${year}&month=${month}`)
+            
+            const url = `/api/child/calendar/modal?date=${strDate}`;
+            axios.get(url)
                 .then(response => {
                     // 서버 응답에서 미션 데이터를 Vuex 상태에 저장
-                    commit('setTransactions', response.data.transactions);
+                    context.commit('setTransactionsOnDay', response.data.transactions);
+                    console.log('transactions 확인', response.data.transactions);
                     // commit('setSelectedDate', response.data.date); 
                 })
                 .catch(error => {

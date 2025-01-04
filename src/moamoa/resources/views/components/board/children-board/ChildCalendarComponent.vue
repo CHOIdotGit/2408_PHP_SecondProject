@@ -2,7 +2,7 @@
     <div class="cal-container" v-if="calendarData">
         <div class="nav-section">
             <div class="select-kids">
-                <img class=selected-kid src="/img/icon-boy-1.png" alt="" width="120px" height="120px">
+                <img class=selected-kid :src="calendarData.profile" alt="" width="120px" height="120px">
                 <div class="name-plate">
                     <p class="name-plate-name"> {{ calendarData.name }}</p>
                     <p class="name-plate-nickname">{{ calendarData.nick_name}}</p>
@@ -31,6 +31,7 @@
                     </ul>
                 </div>
             </div>
+            
         </div>
         <div class="cal-sec-container">
             <div class="sec-container">
@@ -58,7 +59,7 @@
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day" >
-                            <p @click="handleDayClick(day)" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
+                            <p @click="openModal(day)" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
                             <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
                             <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
                             <!-- '2024-12-' + String(i).padStart(2,'0')); -->
@@ -68,6 +69,10 @@
             </div>
         </div>
     </div>
+    <div v-else>
+        <p>Loading...</p>
+    </div>
+
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
     <!-- ************************* -->
@@ -82,10 +87,7 @@
                     <p class="due-date">작성일자</p>
                 </div>
                 <div class="mission-inserted-list">
-                    <div v-if="transactions.length === 0" class="modal-mission-content">
-                        <p>작성된 내용이 없습니다.</p>
-                    </div>
-                    <div v-else v-for="item in transactions" :key="item" class="modal-mission-content">
+                    <div v-for="item in transactionsOnDay" :key="item" class="modal-mission-content">
                         <p class="mission-name">{{ item.title }}</p>
                         <p class="expense-type">{{ item.category }}</p>
                         <p class="inout-come income">{{ item.transaction_code }}</p>
@@ -95,7 +97,7 @@
                 </div>
             </div>
             <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="closeModalTransactionOnDay" class="modal-cancel">닫기</button>
             </div>
         </div>
     </div> -->
@@ -103,7 +105,6 @@
 <script setup>
 
 import { ref, computed, reactive, onBeforeMount } from "vue";
-import axios from "axios";
 import { useStore } from "vuex";
 
 const store = useStore();
@@ -171,49 +172,38 @@ async function nextMonth() {
     await store.dispatch("calendar/calendarInfo", dateToday.value);
     dateToday.value = currentDate;
 }
-
+// 모달 관련 --------------------------------------------------------------------
 // 모달 상태 관리
 // const delModal = reactive({ isOpen: false });
 
-// const delOpenModal = () => {
-//     delModal.isOpen = true;
-// };
+const openModalTransactionOnDay = () => {
+    delModal.isOpen = true;
+};
 
-// const delCloseModal = () => {
-//     delModal.isOpen = false;
-// };
+const closeModalTransactionOnDay = () => {
+    delModal.isOpen = false;
+};
 
-// // 현재 날짜를 기준으로 year와 month 계산
-// // 현재 날짜와 월을 동적으로 처리
-// const currentDate = new Date();
-// const currentYear = currentDate.getFullYear();
-// const currentMonth = currentDate.getMonth() + 1; // 월은 0부터 시작하므로 1을 더해줘야 함
+// 날짜 클릭 시 모달 열기 및 데이터 필터링
+function openModal(day) {
+    store.dispatch('calendar/transactionsOnDay', getYearMonth(day));
+    openModalTransactionOnDay();
+}
 
-
-// // 모달 날짜별 데이터 들고오기
-// const transactions = computed(() => store.state.calendar.transactions);
-
-// // handleDayClick 함수 정의
-// const handleDayClick = (day) => {
-//   // year, month는 현재 달력을 기반으로 동적으로 가져옵니다
-//   const selectedDate = { year: currentYear, month: currentMonth, day };
-
-//   // Vuex 액션 호출
-//   store.dispatch('calendar/transactions', selectedDate);
-//   delOpenModal(); // 모달 열기
-// };
+// transactions 데이터 가져오기
+const transactionsOnDay = computed(() => store.state.calendar.transactionsOnDay);
 
 // -----------------------
 
 onBeforeMount(() => {
     store.dispatch("calendar/calendarInfo", dateToday.value);
-    // store.dispatch("calendar/transactions", { year, month });
 });
 
 
 // 각 날짜에 맞는 값입력
+
 function getYearMonth(day) {
-  return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
 function getDailyIncomeExpense(day, data, incomFlg) {
