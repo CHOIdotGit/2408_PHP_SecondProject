@@ -21,7 +21,7 @@ export default {
     }),
     mutations: {
         setParentHome(state, parentHome) {
-            state.parentHome = state.parentHome.concat(parentHome);
+            state.parentHome = parentHome;
             // 홈 페이지가 아닌 미션 리스트 페이지에서 concat을 사용해야 할 것 같음
         },
         setChildHome(state, childHome) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Child;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,11 +31,11 @@ class TransactionController extends Controller
         //                         ->latest()
         //                         ->paginate(15);
 
+
         $responseData = [
             'success' => true
             ,'msg' => '미션정보 획득 성공' 
             ,'transactionList' => $transactionList->toArray()
-            // ,'transactionInfo' => $transactionInfo
         ];
         return response()->json($responseData, 200);
     }

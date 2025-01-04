@@ -20,6 +20,9 @@ export default {
         
     }),
     mutations: {
+        setChildHome(state, childHome) {
+            state.childHome = childHome;
+        },
         setChildMissionList(state, childMissionList) {
             state.childMissionList = childMissionList;
         },

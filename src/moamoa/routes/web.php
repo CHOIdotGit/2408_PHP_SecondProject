@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ModalController;
 use App\Http\Controllers\StatsController;
+use App\Http\Controllers\TransactionChildrenController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 
@@ -82,6 +83,9 @@ Route::delete('/api/child/mission/delete/{id}', [ChildMissionController::class, 
 
 // 자녀 미션 수정 페이지
 Route::patch('/api/child/mission/update/{mission_id}', [MissionController::class, 'update']);
+
+// 자녀 지출 리스트 페이지
+Route::patch('/api/child/spend/list', [TransactionChildrenController::class, 'index']);
 
 //********************************************************************************************* */
 
