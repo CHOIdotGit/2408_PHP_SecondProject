@@ -14,10 +14,10 @@
                 <div v-for="item in transactionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
                         <div class="chk-div">
-                            <input type="checkbox" id="checkbox9">
+                            <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.transaction_id" name="checkbox">
                         </div>
                         <p class="category">{{ getCategoryText(item.category) }}</p>
-                        <p class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p @click="goSpendDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
                         <p class="transaction-date">{{ item.transaction_date }}</p>
                     </div>
@@ -25,7 +25,7 @@
             </div>
             <div class="for-buttons">
                 <button class="btn-bottom mission-go-back">삭제</button>
-                <button class="btn-bottom mission-insert">작성</button>
+                <button @click="goSpendCreate" class="btn-bottom mission-insert">작성</button>
             </div>
         </div>
     </div>
@@ -33,13 +33,18 @@
 
 <script setup>
 
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
+// 마운트트
+onMounted(() => {
+    store.dispatch('childTransaction/transactionList');
+});
+
 // 거래 리스트 가져오기
-const transactionList = computed(() => store.state.transaction.transactionList);
+const transactionList = computed(() => store.state.childTransaction.childTransactionList);
 
 const getCategoryText = (category) => {
     const categoryMapping = {
@@ -60,10 +65,19 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
-// onMount
-onMounted(() => {
-    // store.dispatch('transaction/transactionListPagination');
-});
+// 거래 아이디 확인 후 상세 페이지 이동
+const goSpendDetail = (transaction_id) => {
+    console.log('거래 아이디 확인', transaction_id);
+    store.dispatch('childTransaction/showTransactionDetail', transaction_id);
+}
+
+// 자녀 아이디 확인 후 작성 페이지로 이동
+const goSpendCreate = () => {
+    store.dispatch('childTransaction/goSpendCreate');
+}
+
+const checkboxItem = ref([]);
+console.log('체크박스 선택된 데이터 : ', checkboxItem);
 
 </script>
 

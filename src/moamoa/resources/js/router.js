@@ -228,7 +228,7 @@ const routes = [
     },
     // 자녀 지출 상세 페이지
     {
-        path: '/child/spend/detail',
+        path: '/child/spend/detail/:id',
         component: ChildSpendDetailComponent,
         beforeEnter: chkAuth,
     },

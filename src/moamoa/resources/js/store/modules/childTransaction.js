@@ -6,33 +6,21 @@ import router from '../../router';
 export default {
     namespaced:true,
     state: ()=> ({
-        transactionList: []
+        childTransactionList: []
         ,transactions: []
         ,lastPageFlg: false
         ,controlFlg: true
-        // 미션 관련 -------------------------------------------------------------
+        // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
-        ,transactionDetail: []
-        ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
-        ,mostSpendAmount: 0
-        ,mostUsedCategory: ''
-        ,totalAmount: 0
-        ,totalExpenses: 0
+        ,transactionDetail: {}
     }),
     mutations: {
-        setTransactionList(state, transactionList) {
-            state.transactionList = transactionList;
-        },
-        setTransactions() {
-            state.transactions = transactions;
+        setChildTransactionList(state, childTransactionList) {
+            state.childTransactionList = childTransactionList;
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
-        },
-        resetState(state) {
-            state.transactionList = []; // 미션 리스트 초기화
-            state.childId = null; // 자녀 ID 초기화
         },
         setChildId(state, childId) {
             state.childId = childId;
@@ -43,17 +31,14 @@ export default {
         setTransactionDetail(state, transactionDetail) {
             state.transactionDetail = transactionDetail;
         },
-        setMostSpendAmount(state, mostSpendAmount) {
-            state.mostSpendAmount = mostSpendAmount;
+        deleteTransaction(state, transactionId) {
+            state.childTransactionList = state.childTransactionList.filter(transaction => transaction.transaction_id !== transactionId ); 
         },
-        setMostUsedCategory(state, mostUsedCategory) {
-            state.mostUsedCategory = mostUsedCategory;
+        setCreateTransaction(state, transactionDetail) {
+            state.transactionDetail = transactionDetail;
         },
-        setTotalAmount(state, totalAmount) {
-            state.totalAmount = totalAmount;
-        },
-        setTotalExpenses(state, totalExpenses) {
-            state.totalExpenses = totalExpenses;
+        setUpdateTransaction(state, transactionDetail) {
+            state.transactionDetail = transactionDetail;
         },
     },
     actions: {
@@ -62,22 +47,18 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        transactionList(context, child_id) {
-            // context.commit('setControlFlg', false);
-            
-            const url = '/api/child/spend/list/' + child_id;
+        transactionList(context, child_id) {            
+            const url = '/api/child/spend/list';
             
             axios.get(url)
             .then(response => {
-                context.commit('setTransactionList', response.data.transactionList.data);
+                context.commit('setChildTransactionList', response.data.childTransactionList.data);
                 // 세션 스토리지에 자녀ID 세팅
                 sessionStorage.setItem('child_id', child_id);
                 context.commit('setChildId', child_id);
-                router.push('/child/spend/list/' + child_id);
-                // console.log(response.data.transactionList.data);
             })
             .catch(error => {
-                console.error('미션 리스트 불러오기 오류', error);
+                console.error('지출 리스트 불러오기 오류', error);
             });    
         },
 
@@ -86,6 +67,7 @@ export default {
             const url = '/api/child/spend/detail/' + transaction_id;
             axios.get(url, transaction_id)
             .then(response => {
+                console.log(response.data.transactionDetail);
                 sessionStorage.setItem('transactionId', transaction_id);
                 context.commit('setTransactionDetail', response.data.transactionDetail);
                 context.commit('setTransactionId', transaction_id);
@@ -112,6 +94,97 @@ export default {
             .catch(error => {
                 console.error('지출 금액 불러오기 실패', error);
             })
+        },
+
+        // ***************************
+        //  자녀 지출 작성 페이지로 이동
+        // ***************************
+        goSpendCreate(context, child_id) {
+            const url = '/api/child/spend/create';
+            axios.get(url)
+            .then(response => {
+                    context.commit('setCreateTransaction', response.data.transactionDetail);
+                    sessionStorage.setItem('child_id', child_id);
+                    context.commit('setChildId', child_id);
+                    router.push('/child/spend/create');
+                })
+                .catch(error => {
+                    console.log('지출 작성 페이지로 이동 못함', error);
+                })
+        },
+
+        // ***************************
+        // 자녀 지출 작성 페이지
+        // ***************************
+        createTransaction(context, data) {
+            console.log(data);
+            const url  = '/api/child/spend/create';
+            
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('transaction_date', data.transaction_date);
+            formData.append('category', data.category);
+            formData.append('memo', data.memo);
+            formData.append('amount', data.amount);
+            formData.append('parent_id', data.parent_id);
+            formData.append('child_id', data.child_id);
+            
+            axios.post(url, formData)
+            .then(response => {
+
+                const newTransaction = response.data.transactionDetail;
+                console.log('새로운 지출 생성', newTransaction);
+
+                context.commit('setTransactionId', newTransaction.transaction_id)
+                console.log('새로운 지출 아이디:', newTransaction.transaction_id)
+                context.commit('setTransactionDetail', newTransaction);
+                //지출 작성 알람
+                alert('지출 작성되었습니다.');
+
+                router.replace('/child/spend/detail/' + newTransaction.transaction_id);
+                })
+                .catch(error => {
+                    console.log('지출 등록 실패', error);
+                })
+                .finally(() => {
+                    context.commit('setControlFlg', true);
+                })
+        },
+
+        // ***************************
+        // 자녀 지출 삭제 페이지
+        // ***************************
+        deleteTransaction(context, transaction_id) { //2개만
+            const url = '/api/child/spend/delete/' + transaction_id; 
+
+            axios.delete(url)
+                .then(response => {
+                    context.commit('deleteTransaction', response.data.deleteTransaction);
+                    
+                    alert('지출 삭제되었습니다.'); //지출 삭제 알람
+
+                    router.replace('/child/spend/list');
+                    console.log('자녀아이디 확인', '/child/spend/list' );
+                })
+                .catch(error => {
+                    console.log('지출 삭제 안 됨', error);
+                })
+                },
+
+        // ***************************
+        // 자녀 지출 수정 페이지로 이동
+        // ***************************    
+        goUpdateTransaction(context, transaction_id) {
+            const url = '/api/child/spend/detail/'+ transaction_id;
+
+            axios.get(url)
+                .then(response => {
+                    context.commit('setTransactionDetail', response.data.transactionDetail);
+                    context.commit('setTransactionId', transaction_id);
+                })
+                .catch(error => {
+                    console.log('지출 수정 페이지로 이동 못함', error);
+                })
         },
     },
     getters: {

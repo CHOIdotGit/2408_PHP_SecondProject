@@ -17,10 +17,9 @@ class ChildMissionController extends Controller
         // 로그인 유저가 자녀인지 확인
         $child = Auth::guard('children')->user();
 
-        $childMissionList = Mission::select('missions.mission_id', 'missions.child_id', 'missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')
-                                    // ->with('child')
-                                    // ->where('missions.parent_id', $parent->parent_id)
+        $childMissionList = Mission::select('missions.mission_id', 'missions.child_id', 'missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')                            
                                     ->where('missions.child_id', $child->child_id)
+                                    ->whereNull('missions.deleted_at')
                                     ->latest()
                                     ->paginate(15);
                 

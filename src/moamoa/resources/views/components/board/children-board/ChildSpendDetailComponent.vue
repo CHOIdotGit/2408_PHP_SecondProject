@@ -2,50 +2,27 @@
     <div class="main-container">
         <div class="detail-container">
             <div class="content-list">
-                <div class="content">
-                    <p class="title">미션 제목</p>
-                    <span class="ms-title"> 올리브영 </span>
+                <div class="content" v-if="transactionDetail">
+                    <p class="title">지출 제목</p>
+                    <span class="ms-title">{{ transactionDetail.title }}</span>
                     <div class="date">
-                        <span class="ms-date">2024-12-11</span>
-                        <span>⁓</span>
-                        <span class="ms-date">2024-12-11</span>
+                        <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="meals" checked>
-                            <img class="ms-category" src="img/icon-fastfood.png" alt=".">
-                        </input>
-                        <label for="study">식비</label>
+                    <p class="title">지출 종류</p>
+                    <div class="category-btn" v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
+                        <img class="ms-category" :src=item.img>
+                        <p>{{ item.name }}</p>
                     </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="habit" >
-                            <img class="ms-category" src="/img/icon-bus.png" alt=".">
-                        </input>
-                        <label for="habit">교통비</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="housework" >
-                            <img class="ms-category" src="/img/icon-shoppingbag.png" alt=".">
-                        </input>
-                        <label for="housework">쇼핑</label>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt=".">
-                        </input>
-                        <label for="lifestyle">기타</label>
-                    </div>
-                    aa
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
-                    <div class="ms-content">올리브영 갔다가 주연언니랑 쇼핑함</div>
+                    <p class="title">지출 내용</p>
+                    <div class="ms-content">{{ transactionDetail.memo }}</div>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <p class="ms-amount">32,000</p>
+                    <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}</p>
                 </div>
                 <div class="bottom-btn">
                     <button class="ms-cancel">취소</button>
@@ -64,8 +41,8 @@
             <div class="modal-content">
                 <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
                 <p class="modal-name">최상민</p>
-                <p class="modal-ms-title">미션 : 설거지 하기</p>
-                <div class="del-guide">해당 미션이 삭제됩니다.</div>
+                <p class="modal-ms-title">지출 : 설거지 하기</p>
+                <div class="del-guide">해당 지출 삭제됩니다.</div>
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
@@ -77,8 +54,52 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const router = useRouter();
+
+// 지출 상세 정보 불러오기기
+const transactionDetail = computed(() => store.state.childTransaction.transactionDetail);
+
+// 마운트트
+onMounted(() => {
+    store.dispatch('childTransaction/showTransactionDetail', store.state.childTransaction.transactionId);
+});
+
+//****지출 카테고리 정보 출력****
+const category = computed(() => store.state.childTransaction.transactionDetail.category);
+
+// 카테고리 변환환
+const categories = reactive([
+    {name: '교통비' , img:'/img/icon-bus.png', index : 0}
+    ,{name: '취미' , img:'/img/icon-fastfood.png', index : 1}
+    ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : 2}
+    ,{name: '기타' , img:'/img/Pngtreestationery_icon_3728043.png', index : 3}
+]);
+
+// 뒤로가기
+const goBack = (child_id) => {
+    store.dispatch('childTransaction/setChildTransactionList', child_id);
+    router.push('/child/spend/list');
+
+}
+// *****지출 삭제*******
+const deleteTransaction = (transaction_id) => {
+    console.log('삭제 요청 transaction_id : ', transaction_id)
+    store.dispatch('childTransaction/deleteTransaction', transaction_id);
+}
+
+// *****미션 수정*******
+const goUpdate = (transaction_id) => {
+    console.log('수정 요청 transaction_id : ', transaction_id);
+    store.dispatch('childTransaction/goUpdateTransaction', transaction_id);
+    router.push('/child/spend/update/'+ transaction_id);
+}
+
+// 모달
 const delModal = ref(false);
 
 const delOpenModal = () => {
@@ -195,6 +216,11 @@ span {
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
+}
+
+/* db에 저장된 카테고리 표시 */
+.categorybtn-green {
+    background-color: #A2CAAC;
 }
 
 /* 미션 내용 */

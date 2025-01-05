@@ -5,6 +5,7 @@ import auth from './modules/auth';
 import header from './modules/header';
 import transaction from './modules/transaction';
 import childMission from './modules/childMission';
+import childTransaction from './modules/childTransaction';
 
 export default createStore({
     modules: {
@@ -14,6 +15,7 @@ export default createStore({
         auth,
         header,
         childMission,
+        childTransaction,
     },
 });
 

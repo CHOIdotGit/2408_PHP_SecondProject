@@ -85,8 +85,19 @@ Route::delete('/api/child/mission/delete/{id}', [ChildMissionController::class, 
 Route::patch('/api/child/mission/update/{mission_id}', [MissionController::class, 'update']);
 
 // 자녀 지출 리스트 페이지
-Route::patch('/api/child/spend/list', [TransactionChildrenController::class, 'index']);
+Route::get('/api/child/spend/list', [TransactionChildrenController::class, 'index']);
 
+// 자녀 지출 상세 페이지
+Route::get('/api/child/spend/detail/{id}', [TransactionChildrenController::class, 'show']);
+
+// 자녀 지출 작성 페이지
+Route::post('/api/child/spend/create', [TransactionChildrenController::class, 'store']);
+
+// 자녀 지출 삭제 페이지
+Route::delete('/api/child/spend/delete/{id}', [TransactionChildrenController::class, 'destroy']);
+
+// 자녀 지출 수정 페이지
+Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
 //********************************************************************************************* */
 
 // 헤더 관련(드랍메뉴 자녀이름 출력)
