@@ -110,8 +110,13 @@ Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenContro
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
 //********************************************************************************************* */
 
+
 // 헤더 관련(드랍메뉴 자녀이름 출력)
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
+
+// 헤더 관련(미션/지출 등록/승인 알람)
+Route::get('/api/parent/header/bell', [HeaderController::class, 'index']);
+
 
 // 자녀 달력
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);

@@ -1,60 +1,55 @@
 <template>
-  <div class="stat-container"> 
-      <div class="graph-btn">
-          <button @click="test='bar'; renderChart();"> 막대 </button>
-          <button @click="test='doughnut'; renderChart();">도넛</button>
+<div class="stat-container"> 
+    <div class="stat-section">
+      <div class="each-part">
+        <!-- 그래프 섹션 -->
+        <div class="graph-section">
+          <!-- 막대 그래프 -->
+          <div class="graph">
+            <canvas ref="graphCanvas"></canvas>
+          </div>
+          <!-- 도넛 그래프 -->
+          <div class="doughnut">
+            <canvas ref="doughnutCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- 통계 정보 섹션 -->
+        <div>
+          <div class="notice-section">
+                <p>
+                  {{ statis[0]?.name }}: 
+                  {{ statis[0]?.value && statis[0]?.value !== 0 
+                      ? Number(statis[0]?.value).toLocaleString() + '원' 
+                      : '최근 소비한 내역이 없습니다.' }}
+                </p>
+
+                <p>
+                  가장 많이 쓴 카테고리: 
+                  {{ statis[1]?.mostUsedCategory 
+                      ? getCategoryText(statis[1]?.mostUsedCategory) 
+                      : '최근 사용한 카테고리가 없습니다.' }}
+                </p>
+
+                <p>
+                  지출 총합: 
+                  {{ statis[2]?.totalAmount 
+                      ? Number(statis[2]?.totalAmount).toLocaleString() + '원' 
+                      : '최근 지출 내역이 없습니다.' }}
+                </p>
+
+                <p>
+                  용돈 총합: 
+                  {{ statis[3]?.totalExpenses 
+                      ? Number(statis[3]?.totalExpenses).toLocaleString() + '원' 
+                      : '최근 받은 용돈이 없습니다.' }}
+                </p>
+              </div>
+            </div>
+
+        </div>
       </div>
-      <!-- <div class="graph-btn">
-        <button @click="setChartType('bar')">막대</button>
-        <button @click="setChartType('doughnut')">도넛</button>
-      </div> -->
-      
-      <div class="stat-section">  
-          <div class="each-part">
-              <div class="graph-section" >
-                  <!-- 그래프를 표시할 canvas 요소 -->
-                  <canvas ref="chartCanvas"></canvas>
-              </div>
-              <div class="notice-section" v-if="childNameList.length > 0" v-for="item in statis" :key="item">
-                {{ item.mostSpendAmount }}
-                  <p>{{item.name}} {{ item.mostSpendAmount && item.mostSpendAmount !== 0 
-                          ? Number(item.mostSpendAmount).toLocaleString() + '원' 
-                          : '최근 소비한 내역이 없습니다.' }}   </p>
-                          
-                  <p>가장 많이 쓴 카테고리 : {{ item.mostUsedCategory 
-                          ? getCategoryText(item.mostUsedCategory) 
-                          : '최근 사용한 카테고리가 없습니다.' }} </p>
-                  <p>지출 총합 : {{ item.totalAmount ? Number(item.totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
-                  <p>용돈 총합 : {{ item.totalExpenses ? Number(item.totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
-              </div>
-          </div>
-          <div class="each-part">
-              <div class="graph-section">
-                  그래프들어갈자리
-              </div>
-              <div class="notice-section">
-                  <p>가장 큰 지출 : {{  }}</p>
-                  <p>가장 많이 쓴 카테고리 : 쇼핑</p>
-                  <p>지출 총합 : {{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }} </p>
-                  <p>용돈 총합 : {{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }} </p>
-                  
-              </div>
-          </div>
-          <div class="each-part">
-              <div class="graph-section">
-                  그래프들어갈자리
-              </div>
-              <div class="notice-section">
-                  <p>가장 큰 지출 : 54,000   </p>
-                  <p>가장 많이 쓴 카테고리 : 쇼핑</p>
-                  <p>지출 총합 : 270,000</p>
-                  <p>용돈 총합 : 300,00</p>
-              </div>
-          </div>
-          
-      </div>
-  </div>
-          
+    </div>
 </template>
 
 <script setup>
@@ -62,104 +57,122 @@ import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import Chart from 'chart.js/auto';
 
-
 const store = useStore();
 
-// 자녀 수 확인
-const childNameList = computed(() => store.state.header.childNameList);
-console.log('자녀 수 확인', childNameList.name);
-
-
-// 가장 큰 지출과 가장 많이 사용한 카테고리
-const mostSpendAmount = computed(() => store.state.transaction.mostSpendAmount.child.child_id);
-const mostUsedCategory = computed(() => store.state.transaction.mostUsedCategory);
-const totalAmount = computed(() => store.state.transaction.totalAmount);
-const totalExpenses = computed(() => store.state.transaction.totalExpenses);
+// ✅ **데이터 설정**
+// const childNameList = computed(() => store.state.header.childNameList);
 
 const statis = computed(() => [
-{ name: "가장 큰 지출 :", value: mostSpendAmount.transactions_max_amount},
-{ name: "가장 많이 쓴 카데고리 :", value: mostUsedCategory.category},
-{ name: "지출 총합 :", value: totalAmount},
-{ name: "용돈 총합 :", value: totalExpenses},
-])
+  { name: "가장 큰 지출", value: store.state.transaction?.mostSpendAmount?.transactions_max_amount || 0 },
+  { name: "가장 많이 쓴 카테고리", value: store.state.transaction?.mostUsedCategory?.category || '' },
+  { name: "지출 총합", value: store.state.transaction?.totalAmount || 0 },
+  { name: "용돈 총합", value: store.state.transaction?.totalExpenses || 0 }
+]);
 
 const getCategoryText = (category) => {
   const categoryMapping = {
-      "0": '교통비',
-      "1": '취미',
-      "2": '쇼핑',
-      "3": '기타',
+    "0": '교통비',
+    "1": '취미',
+    "2": '쇼핑',
+    "3": '기타',
   };
-  return categoryMapping[category]; // 기본값 없이 반환
+  return categoryMapping[category] || '알 수 없음';
 };
 
-// ✅ **Chart.js 관련 설정**
-const chartCanvas = ref(null);
-let chartInstance = null;
+// ✅ **막대 그래프 설정**
+const graphCanvas = ref(null);
+let graphChartInstance = null;
 
-const chartData = ref({
-labels: ['1주', '2주', '3주', '4주'],
-datasets: [
-  {
-    label: '주차별 소비 합계',
-    data: [15000, 30000, 45000, 60000], // 예시 데이터
-    backgroundColor: 'white',
-    borderColor: '#a2caac',
-    borderWidth: 1,
-  },
-],
-});
-
-const test = ref ("bar");
-const renderChart = () => {
-if (chartInstance) {
-  chartInstance.destroy(); // 기존 차트 제거
-}
-
-chartInstance = new Chart
-
-
-(chartCanvas.value.getContext('2d'), {
-  type: test.value,
-  data: chartData.value,
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
+const graphChartData = {
+  labels: ['1주', '2주', '3주', '4주'],
+  datasets: [
+    {
+      label: '주차별 소비 합계',
+      data: [15000, 30000, 45000, 60000],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      borderWidth: 1,
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        title: {
-          display: true,
-          text: '지출 금액 (원)',
-        },
-      },
-      x: {
-        title: {
-          display: true,
-          text: '주차',
-        },
-      },
-    },
-  },
-});
+  ],
 };
 
-// 마운트
+const renderGraphChart = () => {
+  if (graphChartInstance) graphChartInstance.destroy();
+
+  if (graphCanvas.value) {
+    graphChartInstance = new Chart(graphCanvas.value, {
+      type: 'bar',
+      data: graphChartData,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: '주차별 소비 합계',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+  }
+};
+
+// ✅ **도넛 그래프 설정**
+const doughnutCanvas = ref(null);
+let doughnutChartInstance = null;
+
+const doughnutChartData = {
+  labels: ['교통비', '취미', '쇼핑', '기타'],
+  datasets: [
+    {
+      label: '지출 비율',
+      data: [40, 25, 10, 25],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      hoverOffset: 4,
+    },
+  ],
+};
+
+const renderDoughnutChart = () => {
+  if (doughnutChartInstance) doughnutChartInstance.destroy();
+
+  if (doughnutCanvas.value) {
+    doughnutChartInstance = new Chart(doughnutCanvas.value, {
+      type: 'doughnut',
+      data: doughnutChartData,
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: '지출 비율 도넛 그래프',
+          },
+        },
+      },
+    });
+  }
+};
+
+// ✅ **마운트 시 그래프 렌더링**
 onBeforeMount(() => {
-  // store.commit('mission/resetState');
-  // store.dispatch('mission/childHome');
   store.dispatch('transaction/childHomeTransaction');
-})
-onMounted(() => {
-  renderChart();
-})
+});
 
+onMounted(() => {
+  renderGraphChart();
+  renderDoughnutChart();
+});
 </script>
+
 
 <style scoped>
 .stat-container {
@@ -173,7 +186,7 @@ onMounted(() => {
 
 .stat-section {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  /* grid-template-columns: 1fr 1fr; */
   gap: 30px;
   margin-right: 20px;
   margin-bottom: 20px;
@@ -188,6 +201,9 @@ onMounted(() => {
 .graph-section {
   height: 450px;
   background-color: #a2caac;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 20px;
   /* margin-top: 40px; */
 }
 
@@ -216,11 +232,12 @@ onMounted(() => {
   }
 }
 
-canvas{
-/* background-color: white;
-padding-top: 30px; */
-padding: auto;
-font-size: 1.2rem;
+
+.graph, .doughnut {
+  width: 100%;
+  height: 90%;
+  /* margin: auto; */
 }
+
 
 </style>

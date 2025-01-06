@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\Mission;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -170,6 +171,20 @@ class MissionController extends Controller
                 ->where('status', 1)
                 ->update(['status' => 2]);
 
+            $missions = Mission::whereIn('mission_id', $request->mission_ids)->get();
+            foreach($missions as $mission) {
+                $transactionData = new Transaction();
+                $transactionData->parent_id = $mission->parent_id;
+                $transactionData->child_id = $mission->child_id;
+                $transactionData->category = '3';
+                $transactionData->transaction_code = '0';
+                $transactionData->title = '미션완료: '.$mission->title;
+                $transactionData->amount = $mission->amount;
+                $transactionData->transaction_date = now()->format('Y-m-d');
+
+                $transactionData->save();
+            }
+
             DB::commit();
 
             return response()->json([
@@ -178,7 +193,7 @@ class MissionController extends Controller
             ], 200);
         }catch(Throwable $th) {
             DB::rollBack();
-            
+
             return response()->json([
                 'success' => false
                 ,'error' => '미션 승인 업데이트 실패'
