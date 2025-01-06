@@ -11,7 +11,8 @@ class ModalController extends Controller
 {
     public function show(Request $request) {
         // 자녀 달력 모달 설정
-        // 쿼리 파라미터로 year, month 를 받기
+
+        // 날짜 설정
         $date = $request->input('date');
         
         // 유효성 검사
@@ -26,17 +27,23 @@ class ModalController extends Controller
                         ->first();
 
         $transactions = $childInfo->transactions()
-                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
-                                // ->whereNull('transactions.deleted_at')
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.created_at')
+                                // ->whereNull('transactions.deleted_at') // eloquent모델 사용 시 자동으로 deleted_at이 null인 데이터를 가져옴
                                 // ->whereYear('transactions.transaction_date', $year)
                                 // ->whereMonth('transactions.transaction_date', $month)
-                                ->where('transactions.transaction_date', $date) // 날짜 조건 적용
+                                ->whereDate('transactions.created_at', $date) // 날짜 조건 적용
                                 ->get();
+
+        $missions = $childInfo->missions()
+                            ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.created_at')
+                            ->whereDate('missions.created_at', $date)
+                            ->get();
 
         return response()->json([
             'success' => true,
             'msg' => '모달 정보 획득 성공',
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'missions' => $missions,
         ], 200);
     }
 }

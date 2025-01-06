@@ -87,11 +87,11 @@
                     <p class="due-date">작성일자</p>
                 </div>
                 <div class="mission-inserted-list">
-                    <div v-for="item in transactionsOnDay" :key="item" class="modal-mission-content">
+                    <div v-for="item in transactionsAndMissions" :key="item" class="modal-mission-content">
                         <p class="mission-name">{{ item.title }}</p>
-                        <p class="expense-type">{{ item.category }}</p>
-                        <p class="inout-come income">{{ item.transaction_code }}</p>
-                        <p class="charge">{{ item.amount }}</p>
+                        <p class="expense-type">{{ getCategoryText(item.category) }}</p>
+                        <p class="inout-come income">{{ getCodeText(item.transaction_code) }}</p>
+                        <p class="charge">{{ Number(item.amount).toLocaleString() }}</p>
                         <p class="due-date">{{ item.transaction_date }}</p>
                     </div>
                 </div>
@@ -190,9 +190,39 @@ function openModal(day) {
     openModalTransactionOnDay();
 }
 
-// transactions 데이터 가져오기
-const transactionsOnDay = computed(() => store.state.calendar.transactionsOnDay);
+// // transactions 데이터 가져오기
+// const transactionsOnDay = computed(() => store.state.calendar.transactionsOnDay);
 
+// // missions 데이터 가져오기
+// const missionList = computed(() => store.state.calendar.missionList);
+
+// transactionsOnDay와 missionList 병합
+const transactionsAndMissions = computed(() => {
+  const transactionsOnDay = store.state.calendar.transactionsOnDay;
+  const missionList = store.state.calendar.missionList;
+  
+  return [...transactionsOnDay, ...missionList];
+});
+
+// 카테고리 변환
+const getCategoryText = (category) => {
+    const categoryMapping = {
+        0: '교통비',
+        1: '취미',
+        2: '쇼핑',
+        3: '기타',
+    };
+    return categoryMapping[category]; // 기본값 없이 반환
+};
+
+// 코드 변환
+const getCodeText = (code) => {
+    const codeMapping = {
+        0: '용돈',
+        1: '지출',
+    };
+    return codeMapping[code] || '용돈'; // 기본값 - 용돈
+};
 // -----------------------
 
 onBeforeMount(() => {

@@ -17,6 +17,7 @@ export default {
         mission: 0,
         dailyIncomeData: [],
         transactionsOnDay: [],
+        missionList: [],
     }),
     mutations: {
         setCalendarInfo(state, data) {
@@ -41,6 +42,9 @@ export default {
         setTransactionsOnDay(state, transactions) {
             state.transactionsOnDay = transactions;
         },
+        setMissionList(state, missionList) {
+            state.missionList = missionList;
+        }
     },
     actions: {
         // 캘린더에서 이름불러오기
@@ -119,7 +123,9 @@ export default {
                 .then(response => {
                     // 서버 응답에서 미션 데이터를 Vuex 상태에 저장
                     context.commit('setTransactionsOnDay', response.data.transactions);
+                    // context.commit('setMissionList', response.data.missionList);
                     console.log('transactions 확인', response.data.transactions);
+                    // console.log('missionList 확인', response.data.missions);
                     // commit('setSelectedDate', response.data.date); 
                 })
                 .catch(error => {
