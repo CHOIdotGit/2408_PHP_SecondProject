@@ -186,6 +186,25 @@ export default {
                     console.log('지출 수정 페이지로 이동 못함', error);
                 })
         },
+
+        // 자녀 지출 수정 페이지
+        UpdateTransaction(context, updateInfo) {
+
+            const data = JSON.stringify(updateInfo);
+            const url = '/api/child/spend/update/' + updateInfo.transaction_id;
+
+            axios.patch(url, data)
+            .then(response => {
+                console.log('지출 수정 성공 :', response.data);
+                context.commit('setTransactionDetail', response.data.updateTransaction);
+                
+                router.push('/child/spend/detail/' + data.transaction_id);
+
+            })
+            .catch(error => {
+                console.log('지출 수정 에러', error);
+            })
+        },
     },
     getters: {
 

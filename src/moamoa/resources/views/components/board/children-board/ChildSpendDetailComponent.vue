@@ -25,10 +25,10 @@
                     <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}</p>
                 </div>
                 <div class="bottom-btn">
-                    <button class="ms-cancel">취소</button>
+                    <button @click="goBack" class="ms-cancel">취소</button>
                     <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
                     <button class="create-btn ms-up">완료</button>
-                    <button class="create-btn ms-comfirm">수정</button>
+                    <button @click="goUpdate" class="create-btn ms-comfirm">수정</button>
                 </div>
             </div>
         </div>
@@ -46,7 +46,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="" class="modal-del">삭제</button>
+                <button @click="deleteTransaction" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -72,7 +72,7 @@ onMounted(() => {
 //****지출 카테고리 정보 출력****
 const category = computed(() => store.state.childTransaction.transactionDetail.category);
 
-// 카테고리 변환환
+// 카테고리 변환
 const categories = reactive([
     {name: '교통비' , img:'/img/icon-bus.png', index : 0}
     ,{name: '취미' , img:'/img/icon-fastfood.png', index : 1}
@@ -92,7 +92,7 @@ const deleteTransaction = (transaction_id) => {
     store.dispatch('childTransaction/deleteTransaction', transaction_id);
 }
 
-// *****미션 수정*******
+// *****지출 수정*******
 const goUpdate = (transaction_id) => {
     console.log('수정 요청 transaction_id : ', transaction_id);
     store.dispatch('childTransaction/goUpdateTransaction', transaction_id);

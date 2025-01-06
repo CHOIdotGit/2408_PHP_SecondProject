@@ -14,25 +14,13 @@
                 </div>
                 <div class="content">
                     <p class="title">미션 종류</p>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="meals" >
-                            <img class="ms-category" src="/img/icon-fastfood.png" alt=".">
-                        </input>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="traffic" >
-                            <img class="ms-category" src="/img/icon-bus.png" alt=".">
-                        </input>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="shopping" >
-                            <img class="ms-category" src="/img/icon-shoppingbag.png" alt=".">
-                        </input>
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt="">
-                        </input>
+                    <div class="category-btn" v-for="item in categories" :key="item">
+                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category">
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
+                            <img class="ms-category-img" :src="item.img" >
+                            <p>{{ item.name }}</p>
+                            <p>{{ item.index }}</p>
+                        </label>
                     </div>
                 </div>
                 <div class="content">
@@ -53,6 +41,33 @@
 </template>
 
 <script setup>
+import { reactive } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+
+const route = useRoute();
+const store = useStore();
+
+onBeforeMount(() => {
+    const transaction_id = route.params.transaction_id;
+    console.log('수정할 transaction id 획득 : ', transaction_id);
+    store.dispatch('childTransaction/goUpdateTransaction', transaction_id); //mission_id 불러오기
+});
+
+// *****미션 상세 정보******
+const transactionDetail = store.state.childTransaction.transactionDetail;
+
+// 카테고리 변환
+const categories = reactive([
+    {name: '교통비' , img:'/img/icon-bus.png', index : 0}
+    ,{name: '취미' , img:'/img/icon-fastfood.png', index : 1}
+    ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : 2}
+    ,{name: '기타' , img:'/img/Pngtreestationery_icon_3728043.png', index : 3}
+]);
+
+const getUpdateMission = () => {
+    store.dispatch('childTransaction/UpdateTransaction', transactionDetail);
+};
 
 </script>
 

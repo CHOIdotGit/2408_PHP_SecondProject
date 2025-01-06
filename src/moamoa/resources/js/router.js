@@ -234,7 +234,7 @@ const routes = [
     },
     // 자녀 지출 수정 페이지
     {
-        path: '/child/spend/update',
+        path: '/child/spend/update/:transaction_id',
         component: ChildSpendUpdateComponent,
         beforeEnter: chkAuth,
     },
