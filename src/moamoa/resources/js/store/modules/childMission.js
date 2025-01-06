@@ -2,6 +2,8 @@
 import { set } from 'lodash';
 import axios from '../../axios';
 import router from '../../router';
+import { Store } from 'vuex';
+
 
 export default {
     namespaced:true,
@@ -202,12 +204,20 @@ export default {
         // 선택된 자녀 미션 삭제
         // ***************************
         deletcheckedMission(context, missionIds) {
-            const url = '/api/child/mission/list/checked/delete'
+            const url = '/api/child/mission/list/checked/delete';
+            
             axios.delete(url, {
                 data: { missionIds } // 선택된 미션 ID 배열 전달
             })
             .then(response => {
-                context.commit('deleteMission', response.data.deleteCheckedMission);
+                // let missionIds = [response.data.checkedMissionId];
+                // console.log(missionIds);
+                // for(let id = 0; id <= [missionIds]; id++) {
+                //    
+                // }
+
+                // console.log(response.data.checkedMissionId);
+                context.commit('deleteMission', response.data.checkedMissionId);
                 //**context.commit**은 Mutation을 호출하여 Vuex 상태를 변경할 때 사용됩니다.
                 //context.commit('mutationName', 전달할 데이터(payload));
                 
@@ -215,7 +225,7 @@ export default {
 
                 // context.commit('setChildMissionList', response.data.childMissionList.data)
                 // router.replace('/child/mission/list');
-                Store.dispatch('childMission/setChildMissionList')
+                // Store.dispatch('childMission/setChildMissionList')
             })
             .catch(error => {
                 console.log('미션 삭제 안됨', error);

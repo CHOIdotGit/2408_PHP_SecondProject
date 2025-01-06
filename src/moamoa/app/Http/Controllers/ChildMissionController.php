@@ -99,8 +99,11 @@ class ChildMissionController extends Controller
     // ************자녀 선택된 미션만 삭제 **************
     // ************************************************
     public function checkedDestroy(Request $request) {
-
-        $checkedMissionId = $request -> get('missionIds');
+        // exit;
+        $checkedMissionId = $request->missionIds;
+        // return response()->json(['checkedMissionId' => $checkedMissionId], 200);
+        // return $checkedMissionId;
+        // exit;
         $deleteCheckedMission = Mission::destroy($checkedMissionId);
 
         //배열로 받아오는지 아닌지 확인
@@ -114,7 +117,8 @@ class ChildMissionController extends Controller
         $responseData = [
             'success' => true
             ,'msg' => '선택된 미션 삭제 성공'
-            ,'deleteMission' => $deleteCheckedMission
+            ,'checkedMissionId' => $checkedMissionId
+            ,'삭제된 미션 갯수' => $deleteCheckedMission
         ];
         return response()->json($responseData, 200);
     }

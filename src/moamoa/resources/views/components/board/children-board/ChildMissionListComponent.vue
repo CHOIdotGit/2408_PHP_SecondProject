@@ -136,6 +136,8 @@ const deleteCheckedMission = () => {
     store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
     delModal.value = false;
     
+    store.dispatch('childMission/setChildMissionList'); //삭제후 미션 리스트 새로 불러오기
+    checkboxItem.value = [];
 
 }
 
@@ -228,11 +230,6 @@ const getChildId = () => {
     /* border-bottom: 2px solid black; */
 }
 
-/* 스크롤바 커스텀 */
-.scroll::-webkit-scrollbar-thumb {
-    background: #5589e996; /* 스크롤바 막대 색상 */
-    border-radius: 12px 12px 12px 12px;
-}
 
 .btn {
     cursor: pointer;
@@ -302,6 +299,7 @@ const getChildId = () => {
 .mission-inserted-list {
     height: 800px;
     display: grid;
+    width: 1400px;
 }
 
 .scroll {
@@ -311,6 +309,16 @@ const getChildId = () => {
     height: 400px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+/* 스크롤바 커스텀 */
+.scroll::-webkit-scrollbar-thumb {
+    background: #1d54bb96; /* 스크롤바 막대 색상 */
+    border-radius: 12px 12px 12px 12px;
+}
+
+.scroll::-webkit-scrollbar-button {
+    display: none;
 }
 
 /* ********************* */
