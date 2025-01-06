@@ -3,37 +3,34 @@
         <div class="create-container">
             <div class="content-list">
                 <div class="content">
-                    <p class="title">미션 제목</p>
-                    <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
+                    <p class="title">제목</p>
+                    <input type="text" class="ms-title" id="ms-title" maxlength="10" v-model="transactionDetail.title" autofocus>
                     <div class="date">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
-                        <span>⁓</span>
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
-                        <!-- value="today" -->
+                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" v-model="transactionDetail.transaction_date">
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">지출 종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
-                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category">
-                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
-                            <img class="ms-category-img" :src="item.img" >
+                        <input type="radio" class="input" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category">
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionDetail.category}, 'ms-category-btn']">
+                            <img class="ms-category" :src="item.img" >
                             <p>{{ item.name }}</p>
-                            <p>{{ item.index }}</p>
+                            <!-- <p>{{ item.index }}</p> -->
                         </label>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
-                    <textarea class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <p class="title">지출 내용</p>
+                    <textarea v-model="transactionDetail.memo" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <input type="number" class="ms-amount" id="ms-amount" required>
+                    <input v-model="transactionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
-                    <button class="create-btn">취소</button>
-                    <button class="create-btn">수정</button>
+                    <button @click="$router.push('/child/spend/detail/${transaction_id}')" class="create-btn">취소</button>
+                    <button @click="updateTransaction" class="create-btn">수정</button>
                 </div>
             </div>
         </div>
@@ -41,13 +38,17 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { onBeforeMount, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 const route = useRoute();
 const store = useStore();
 
+// 해당 날짜 가져오기
+const today = new Date().toISOString().split('T')[0];
+
+// 마운트
 onBeforeMount(() => {
     const transaction_id = route.params.transaction_id;
     console.log('수정할 transaction id 획득 : ', transaction_id);
@@ -65,7 +66,7 @@ const categories = reactive([
     ,{name: '기타' , img:'/img/Pngtreestationery_icon_3728043.png', index : 3}
 ]);
 
-const getUpdateMission = () => {
+const updateTransaction = () => {
     store.dispatch('childTransaction/UpdateTransaction', transactionDetail);
 };
 
@@ -83,7 +84,7 @@ const getUpdateMission = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 
 .content-list {
@@ -110,12 +111,11 @@ const getUpdateMission = () => {
     padding: 10px;
     width: 150px;
     text-align: center;
-
 }
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 600px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
@@ -210,7 +210,7 @@ span {
     justify-content: right;
     gap: 30px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 15px;
 }
 
 
@@ -222,5 +222,6 @@ span {
     border: none;
     background-color: #5589e996 ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 </style>

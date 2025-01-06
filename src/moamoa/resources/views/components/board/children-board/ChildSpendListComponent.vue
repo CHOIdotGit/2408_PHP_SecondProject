@@ -195,6 +195,14 @@ const delCloseModal = () => { //모달창 닫기
     text-align: center;
 }
 
+.title {
+    cursor: pointer;
+}
+
+.title:hover {
+    color: #5589e996;
+}
+
 .for-buttons{
     display: flex;
     justify-content: right;

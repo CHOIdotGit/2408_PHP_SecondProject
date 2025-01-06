@@ -3,17 +3,14 @@
         <div class="create-container">
             <div class="content-list">
                 <div class="content">
-                    <p class="title">미션 제목</p>
+                    <p class="title">제목</p>
                     <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
                     <div class="date">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
-                        <span>⁓</span>
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" value="2024-12-10" required>
-                        <!-- value="today" -->
+                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" :value="today" required>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">지출 종류</p>
                     <div class="category-btn">
                         <input type="radio" name="category" id="meals" >
                             <img class="ms-category" src="/img/icon-fastfood.png" alt=".">
@@ -40,7 +37,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">지출 내용</p>
                     <textarea class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
@@ -60,6 +57,9 @@
 <script setup>
 
 
+// 오늘 날짜 가져오기
+const today = new Date().toISOString().split('T')[0];
+
 </script>
 
 
@@ -76,7 +76,7 @@
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 
 .content-list {
@@ -108,7 +108,7 @@
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 600px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;

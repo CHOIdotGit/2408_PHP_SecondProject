@@ -3,7 +3,7 @@
         <div class="detail-container">
             <div class="content-list">
                 <div class="content" v-if="transactionDetail">
-                    <p class="title">지출 제목</p>
+                    <p class="title">제목</p>
                     <span class="ms-title">{{ transactionDetail.title }}</span>
                     <div class="date">
                         <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
@@ -11,8 +11,8 @@
                 </div>
                 <div class="content">
                     <p class="title">지출 종류</p>
-                    <div class="category-btn" v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
-                        <img class="ms-category" :src=item.img>
+                    <div class="category-btn" v-for="item in categories" :key="item">
+                        <img class="ms-category" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
                         <p>{{ item.name }}</p>
                     </div>
                 </div>
@@ -28,7 +28,7 @@
                     <button @click="goBack" class="ms-cancel">취소</button>
                     <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
                     <button class="create-btn ms-up">완료</button>
-                    <button @click="goUpdate" class="create-btn ms-comfirm">수정</button>
+                    <button @click="goUpdate(transactionDetail.transaction_id)" class="create-btn ms-comfirm">수정</button>
                 </div>
             </div>
         </div>
@@ -39,14 +39,13 @@
     <div class="del-modal-black" v-show="delModal">
         <div class="del-modal-white">
             <div class="modal-content">
-                <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
-                <p class="modal-name">최상민</p>
-                <p class="modal-ms-title">지출 : 설거지 하기</p>
-                <div class="del-guide">해당 지출 삭제됩니다.</div>
+                <img src="/img/icon-boy-2.png" class="modal-img">
+                <p class="modal-ms-title">지출 : {{ transactionDetail.title }}</p>
+                <div class="del-guide">해당 지출이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteTransaction" class="modal-del">삭제</button>
+                <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -126,7 +125,7 @@ const delCloseModal = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 .content-list {
     display: grid;
@@ -156,13 +155,11 @@ const delCloseModal = () => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 600px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
-    /* height: rem; */
-    /* margin-top: 5px; */
     padding-left: 5px;
 }
 
@@ -196,10 +193,8 @@ span {
 
 .category-btn > label {
     color: #5589e996;
-    /* border: 1px solid #5589e996; */
     font-size: 0.9rem;
     padding-top: 5px;
-
 }
 
 .category-btn > input {

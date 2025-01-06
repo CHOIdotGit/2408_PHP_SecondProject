@@ -33,7 +33,7 @@
                     <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/parent/mission/detail/${mission_id}')" class="create-btn">취소</button>
+                    <button @click="$router.push('/child/mission/detail/${mission_id}')" class="create-btn">취소</button>
                     <button @click="getUpdateMission" class="create-btn">수정</button>
                 </div>
             </div>

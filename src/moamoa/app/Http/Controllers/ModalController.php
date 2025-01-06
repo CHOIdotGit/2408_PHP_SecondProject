@@ -27,16 +27,16 @@ class ModalController extends Controller
                         ->first();
 
         $transactions = $childInfo->transactions()
-                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.created_at')
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.updated_at')
                                 // ->whereNull('transactions.deleted_at') // eloquent모델 사용 시 자동으로 deleted_at이 null인 데이터를 가져옴
                                 // ->whereYear('transactions.transaction_date', $year)
                                 // ->whereMonth('transactions.transaction_date', $month)
-                                ->whereDate('transactions.created_at', $date) // 날짜 조건 적용
+                                ->whereDate('transactions.updated_at', $date) // 날짜 조건 적용
                                 ->get();
 
         $missions = $childInfo->missions()
-                            ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.created_at')
-                            ->whereDate('missions.created_at', $date)
+                            ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.updated_at')
+                            ->whereDate('missions.updated_at', $date)
                             ->get();
 
         return response()->json([

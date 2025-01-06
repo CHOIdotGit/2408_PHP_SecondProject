@@ -92,7 +92,7 @@
                         <p class="expense-type">{{ getCategoryText(item.category) }}</p>
                         <p class="inout-come income">{{ getCodeText(item.transaction_code) }}</p>
                         <p class="charge">{{ Number(item.amount).toLocaleString() }}</p>
-                        <p class="due-date">{{ item.transaction_date }}</p>
+                        <p class="due-date">{{ new Date(item.updated_at).toISOString().split('T')[0] }}</p>
                     </div>
                 </div>
             </div>
