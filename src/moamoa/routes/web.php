@@ -115,7 +115,7 @@ Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenCon
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
 
 // 헤더 관련(미션/지출 등록/승인 알람)
-Route::get('/api/parent/header/bell', [HeaderController::class, 'index']);
+Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 
 
 // 자녀 달력
