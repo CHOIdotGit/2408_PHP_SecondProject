@@ -167,11 +167,7 @@ class MissionController extends Controller
         try {
             DB::beginTransaction();
 
-            Mission::whereIn('mission_id', $request->mission_ids)
-                ->where('status', 1)
-                ->update(['status' => 2]);
-
-            $missions = Mission::whereIn('mission_id', $request->mission_ids)->get();
+            $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 1)->get();
             foreach($missions as $mission) {
                 $transactionData = new Transaction();
                 $transactionData->parent_id = $mission->parent_id;
@@ -184,6 +180,10 @@ class MissionController extends Controller
 
                 $transactionData->save();
             }
+
+            Mission::whereIn('mission_id', $request->mission_ids)
+                ->where('status', 1)
+                ->update(['status' => 2]);
 
             DB::commit();
 
