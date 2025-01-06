@@ -29,9 +29,11 @@
             </div>
             <div class="create-btn">
                 <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                <!-- <div class="btn-flex"> -->
                 <button @click="delOpenModal" class="ms-del">삭제</button>
                 <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
                 <button class="ms-comfirm">승인</button>
+                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -129,7 +131,7 @@ const goUpdate = (mission_id) => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 .content-list {
     display: grid;
@@ -159,7 +161,7 @@ const goUpdate = (mission_id) => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 450px;
     border: 3px solid #A2CAAC;
     outline: none;
     border-radius: 10px;
@@ -297,6 +299,16 @@ span {
 .btn-right {
     display: flex;
 }
+
+.create-btn {
+    display: flex;
+    gap: 100px;
+    margin-top: 10px;
+}
+
+/* .btn-flex {
+    display: flex;
+} */
 
 /* ********************* */
 /* *******삭제 모달****** */

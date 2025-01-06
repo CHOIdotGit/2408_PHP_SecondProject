@@ -39,7 +39,7 @@
     <div class="del-modal-black" v-show="delModal">
         <div class="del-modal-white">
             <div class="modal-content">
-                <img src="/img/icon-boy-2.png" class="modal-img">
+                <img src="/img/icon-trash.png" class="modal-img">
                 <p class="modal-ms-title">지출 : {{ transactionDetail.title }}</p>
                 <div class="del-guide">해당 지출이 삭제됩니다.</div>
             </div>
