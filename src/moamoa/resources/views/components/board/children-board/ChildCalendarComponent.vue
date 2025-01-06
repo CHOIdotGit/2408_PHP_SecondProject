@@ -76,7 +76,7 @@
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
     <!-- ************************* -->
-    <!-- <div class="del-modal-black" v-show="delModal.isOpen">
+    <div class="del-modal-black" v-show="delModal.isOpen">
         <div class="del-modal-white">
             <div class="modal-list-container">
                 <div class="modal-mission-title">
@@ -100,7 +100,7 @@
                 <button @click="closeModalTransactionOnDay" class="modal-cancel">닫기</button>
             </div>
         </div>
-    </div> -->
+    </div>
 </template>
 <script setup>
 
@@ -174,7 +174,7 @@ async function nextMonth() {
 }
 // 모달 관련 --------------------------------------------------------------------
 // 모달 상태 관리
-// const delModal = reactive({ isOpen: false });
+const delModal = reactive({ isOpen: false });
 
 const openModalTransactionOnDay = () => {
     delModal.isOpen = true;

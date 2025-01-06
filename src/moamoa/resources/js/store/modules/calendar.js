@@ -105,7 +105,7 @@ export default {
                 });
         },
 
-        // 일별 지출 합계
+        // 일별 지출 합계 - 모달
         transactionsOnDay(context, strDate) {
             if (!strDate) {
                 // year, month가 있는지 확인
