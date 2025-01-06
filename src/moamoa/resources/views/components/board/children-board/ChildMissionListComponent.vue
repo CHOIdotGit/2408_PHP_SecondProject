@@ -45,7 +45,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
+                <button @click="deleteCheckedMission()" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -116,8 +116,9 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
+// ************** 체크 박스 ******************
 const checkboxItem = ref([]);
-console.log('체크박스 선택된 데이터 : ', checkboxItem);
+console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 
 // const checkAll = (e) => {
 //     if(e.target.checkAll) {
@@ -125,12 +126,32 @@ console.log('체크박스 선택된 데이터 : ', checkboxItem);
 //     }
 // }
 
+// 체크된 미션만 삭제 처리 하기
+const deleteCheckedMission = () => {
+    if(checkboxItem.value.length === 0) {
+        alert("삭제할 미션을 선택하세요");
+        console.log("삭제할 미션 ",checkboxItem.value);
+        return;
+    }
+    store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
+    delModal.value = false;
+    
+
+}
+
 
 // *****삭제 모달창********** 
 const delModal = ref(false);
 
 const delOpenModal = () => { //모달창 열기
-    delModal.value = true;
+    if(checkboxItem.value.length === 0) {
+        alert("선택하신 미션이 없습니다.");
+        return;
+    }
+    else {
+        delModal.value = true;
+
+    }
 }
 
 const delCloseModal = () => { //모달창 닫기
@@ -205,6 +226,12 @@ const getChildId = () => {
     width: 1400px;
     text-align: center;
     /* border-bottom: 2px solid black; */
+}
+
+/* 스크롤바 커스텀 */
+.scroll::-webkit-scrollbar-thumb {
+    background: #5589e996; /* 스크롤바 막대 색상 */
+    border-radius: 12px 12px 12px 12px;
 }
 
 .btn {

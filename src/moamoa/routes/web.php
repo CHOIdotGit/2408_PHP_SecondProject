@@ -81,6 +81,9 @@ Route::post('/api/child/mission/create', [ChildMissionController::class, 'store'
 // 자녀 미션 삭제 페이지
 Route::delete('/api/child/mission/delete/{id}', [ChildMissionController::class, 'destroy']);
 
+// 자녀 선택된 미션 삭제
+Route::delete('/api/child/mission/list/checked/delete', [childMissionController::class, 'checkedDestroy']);
+
 // 자녀 미션 수정 페이지
 Route::patch('/api/child/mission/update/{mission_id}', [MissionController::class, 'update']);
 

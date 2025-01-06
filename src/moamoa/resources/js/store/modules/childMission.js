@@ -81,7 +81,7 @@ export default {
             axios.get(url)
                 .then(response => {
                     context.commit('setChildMissionList', response.data.childMissionList.data);
-                    console.log(response.data.childMissionList.data);
+                    console.log("자녀 미션 리스트 받아오기 : ", response.data.childMissionList.data);
                     
                     // 세션 스토리지에 자녀ID 세팅
                     sessionStorage.setItem('child_id', child_id);
@@ -196,7 +196,33 @@ export default {
                 .catch(error => {
                     console.log('미션 삭제 안됨', error);
                 })
-                },
+        },
+
+        // ***************************
+        // 선택된 자녀 미션 삭제
+        // ***************************
+        deletcheckedMission(context, missionIds) {
+            const url = '/api/child/mission/list/checked/delete'
+            axios.delete(url, {
+                data: { missionIds } // 선택된 미션 ID 배열 전달
+            })
+            .then(response => {
+                context.commit('deleteMission', response.data.deleteCheckedMission);
+                //**context.commit**은 Mutation을 호출하여 Vuex 상태를 변경할 때 사용됩니다.
+                //context.commit('mutationName', 전달할 데이터(payload));
+                
+                alert('미션이 삭제되었습니다.'); //미션 삭제 알람
+
+                // context.commit('setChildMissionList', response.data.childMissionList.data)
+                // router.replace('/child/mission/list');
+                Store.dispatch('childMission/setChildMissionList')
+            })
+            .catch(error => {
+                console.log('미션 삭제 안됨', error);
+            })
+        },
+        
+
 
         // ***************************
         // 자녀 미션 수정 페이지로 이동
@@ -216,7 +242,7 @@ export default {
         },
 
         // ***************************
-        // 부모 미션 수정 페이지
+        // 자녀 미션 수정 페이지
         // ***************************
         UpdateMission(context, updateInfo) {
             const data = JSON.stringify(updateInfo);
