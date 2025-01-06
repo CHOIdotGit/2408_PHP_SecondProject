@@ -1,7 +1,7 @@
 <template>
     <div class="item" v-for="item in baseMenuInfo" :key="item">
         <router-link :to="item.path + item.segmentPath" @click="$store.dispatch(item.actionName, firstChildId)" class="link-deco"><p class="item-btn">{{ item.name }}</p></router-link>
-        <div class="child-dropdown" v-if="$store.state.auth.parentFlg" v-for="child in childNameList" :key="child">
+        <div class="child-dropdown" v-if="$store.state.auth.parentFlg && item.name !== '홈' && item.name !=='통계' " v-for="child in childNameList" :key="child">
             <router-link :to="item.path + '/' + child.child_id" @click="$store.dispatch(item.actionName, child.child_id)" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
         </div>
     </div>
