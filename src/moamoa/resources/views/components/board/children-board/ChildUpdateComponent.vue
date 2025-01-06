@@ -86,12 +86,12 @@ const getUpdateMission = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -118,7 +118,7 @@ const getUpdateMission = () => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 450px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;

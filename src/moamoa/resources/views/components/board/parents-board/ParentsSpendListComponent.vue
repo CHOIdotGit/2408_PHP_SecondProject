@@ -4,16 +4,16 @@
             <div class="mission-title-bar">
                 <span class="mission-name">자녀이름</span>
                 <span class="category">종류</span>
-                <p class="title">제목</p>
+                <p class="top-title">제목</p>
                 <p class="charge">금액</p>
                 <p class="due-date">소비일자</p>
             </div>
             <div class="scroll">
                 <div v-if="transactionList && transactionList.length" v-for="item in transactionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
-                        <span @click="goTransactionDetail(item.transaction_id)" class="name">{{ item.child.name }}</span>
+                        <span class="name">{{ item.child.name }}</span>
                         <p class="category">{{ getCategoryText(item.category) }}</p>
-                        <p class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p @click="goTransactionDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
                         <p class="due-date">{{ item.transaction_date }}</p>
                     </div>
@@ -158,7 +158,11 @@ onMounted(() => {
     height: 420px;
 }
 
-.name {
+.title {
     cursor: pointer;
+}
+
+.title:hover {
+    color: #5589e996;
 }
 </style>

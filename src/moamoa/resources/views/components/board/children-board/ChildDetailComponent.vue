@@ -43,7 +43,6 @@
         <div class="del-modal-white">
             <div class="modal-content">
                 <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
-                <p class="modal-name"></p>
                 <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
                 <div class="del-guide">해당 미션이 삭제됩니다.</div>
             </div>
@@ -126,11 +125,11 @@ const delCloseModal = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 740px;
 }
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -156,7 +155,7 @@ const delCloseModal = () => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 300px;
+    width: 450px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
