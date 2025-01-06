@@ -22,7 +22,7 @@ class TransactionChildrenController extends Controller
     
         $responseData = [
             'success' => true
-            ,'msg' => '미션정보 획득 성공'
+            ,'msg' => '지출 정보 획득 성공'
             ,'childTransactionList' => $childTransactionList
         ];
         return response()->json($responseData, 200);
@@ -34,7 +34,7 @@ class TransactionChildrenController extends Controller
     
         $responseData = [
             'success' => true
-            ,'msg' => '미션정보 상세 불러오기 성공'
+            ,'msg' => '지출 정보 상세 불러오기 성공'
             ,'transactionDetail' => $transactionDetail->toArray()
         ];
         return response()->json($responseData, 200);
@@ -61,7 +61,7 @@ class TransactionChildrenController extends Controller
 
         $responseData = [
             'success' => true
-            ,'msg' => '미션 등록 성공'
+            ,'msg' => '지출 등록 성공'
             ,'transactionDetail' => $transactionDetail->toArray()
         ];
         return response()->json($responseData, 200);
@@ -74,7 +74,7 @@ class TransactionChildrenController extends Controller
 
         $responseData = [
             'success' => true
-            ,'msg' => '미션 삭제 성공'
+            ,'msg' => '지출 삭제 성공'
             ,'deleteTransaction' => $deleteTransaction
         ];
         return response()->json($responseData, 200);
@@ -123,7 +123,7 @@ class TransactionChildrenController extends Controller
 
         $responseData = [
             'success' => true
-            ,'msg' => '미션 수정 성공'
+            ,'msg' => '지출 수정 성공'
             ,'updateTransaction' => $updateTransaction
         ];
         return response()->json($responseData, 200);
