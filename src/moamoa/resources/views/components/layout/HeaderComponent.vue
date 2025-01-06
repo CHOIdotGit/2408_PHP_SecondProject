@@ -78,22 +78,8 @@
                         <a href="#" class="alram" v-for="item in bellContent" :key="item">
                             <img class="alram-pro" :src="item.img" width="50px" height="50px">
                             <div  class="bell-content">
-                                <p>[미션](이)의 미션이 등록되었어요!</p>
-                                <p></p>
-                            </div>
-                        </a>
-                        <a href="#" class="alram">
-                            <img  class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
-                            <div class="bell-content">
-                                <p>[미션]배현진(이)의 미션이 승인을 기다리고 있어요.</p>
-                                <p>2024. 12. 04</p>
-                            </div>
-                        </a>
-                        <a href="#" class="alram">
-                            <img  class="alram-pro" src="/img/profile-icon/icon-girl-1.png" width="50px" height="50px" >
-                            <div class="bell-content">
-                                <p>[미션]배현진(이)의 지출이 등록되었어요!</p>
-                                <p>2024. 12. 03</p>
+                                <p>{{ item.name }}(이)의 미션이 등록되었어요!</p>
+                                <p>{{ item.created_at }}</p>
                             </div>
                         </a>
                     </div>
@@ -150,18 +136,6 @@ onBeforeMount(async () => {
     // }
 })
 
-
-// const menu = computed(()=> {
-//     return store.state.auth.parentFlg ? parentMenu.value : childMenu.value
-// });
-
-
-
-
-
-
-
-
 // *******햄버거 드랍 메뉴 *******
 const dropDownMenu = ref(false);
 // if(bellListDropMenu.value === true) {
@@ -191,6 +165,8 @@ const bellDropDown = () => {
     // dropDownMenu.value = false;
     console.log('이거 닫겼나?');
 }
+
+const bellContent = computed(() => store.state.header.bellContent);
 
 </script>
 <style>

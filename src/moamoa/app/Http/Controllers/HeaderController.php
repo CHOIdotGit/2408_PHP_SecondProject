@@ -10,22 +10,26 @@ use Illuminate\Support\Facades\Auth;
 class HeaderController extends Controller
 {
 public function index() {
-    // 헤더 메뉴에 알림 드랍 메뉴 데이터
-    // $bellContent = Child::select('children.child_id','children.name')
-    //                 ->where('children.parent_id', $parent->parent_id)
-    //                 ->with(['missions', 'transactions'])
-    //                 // ->orderBy('missions.created_at', 'DESC')
-    //                 ->limit(3)
-    //                 ->get();
+    // ************************************************
+    // *********헤더 미션/지출 알람 목록 출력************
+    // ************************************************ 
+    $parent = Auth::guard('parents')->user();
+    $bellContent = Child::select('children.child_id', 'children.name', 'children.profile')
+                        ->where('children.parent_id', $parent->parent_id)
+                        ->with([
+                            'missions' => function ($query) {
+                                $query->where('alarm', 0) // 미션 알람이 0인 조건
+                                        ->orderBy('created_at', 'DESC');
+                            }
+                        ])
+                        ->get();
 
-    // $responseData = [
-    //     'success' => true
-    //     ,'msg' => '미션리스트 획득 성공'
-    //     ,'bellContent' => $bellContent
-    //     // ,'pendingMissions' => $pendingMissions   
-    //     // ,'pendingMessage' => $pendingMessage   
-    // ];
-    // return response()->json($responseData, 200);
+    $responseData = [
+        'success' => true
+        ,'등록한 미션 알람' => $bellContent
+    ];
+    return response()->json($responseData, 200);
+
 
     // ************************************************
     // ************헤더 자녀 이름 목록 출력**************
