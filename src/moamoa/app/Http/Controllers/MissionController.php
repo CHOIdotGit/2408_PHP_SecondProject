@@ -6,7 +6,9 @@ use App\Models\Child;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class MissionController extends Controller
 {
@@ -21,6 +23,7 @@ class MissionController extends Controller
                                     ->with('child')
                                     ->where('missions.parent_id', $parent->parent_id)
                                     ->where('missions.child_id', $id)
+                                    ->orderBy('missions.status')
                                     ->latest()
                                     ->paginate(15);
                 
@@ -132,5 +135,36 @@ class MissionController extends Controller
             ,'updateMission' => $updateMission
         ];
         return response()->json($responseData, 200);
+    }
+
+    /**
+     * 미션 승인
+     * 
+     * @param Request $request
+     * @return JSON $responseData
+     */
+    public function approvalMission(Request $request) {
+        try {
+            DB::beginTransaction();
+
+            Mission::whereIn('mission_id', $request->mission_ids)
+                ->where('status', 1)
+                ->update(['status' => 2]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true
+                ,'msg' => '미션 승인 업데이트 성공'
+            ], 200);
+        }catch(Throwable $th) {
+            DB::rollBack();
+            
+            return response()->json([
+                'success' => false
+                ,'error' => '미션 승인 업데이트 실패'
+            ], 401);
+        }
+
     }
 }

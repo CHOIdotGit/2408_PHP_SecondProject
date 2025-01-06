@@ -4,7 +4,9 @@
     <div class="data-form">
         <!-- 로고 조절용 DIV -->
       <div class="logo-img">
+        <router-link to="/">
           <img src="/user-img/logo.png">
+        </router-link>
       </div>
 
       <div class="profile-field">

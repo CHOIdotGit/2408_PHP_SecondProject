@@ -44,6 +44,7 @@ Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index'])
 
 // 부모 미션 상세 페이지
 Route::get('/api/parent/mission/detail/{id}', [MissionController::class, 'show']);
+Route::post('/api/parent/mission/approval', [MissionController::class, 'approvalMission']);
 
 // 부모 미션 작성 페이지
 Route::post('/api/parent/mission/create/{child_id}', [MissionController::class, 'store']);

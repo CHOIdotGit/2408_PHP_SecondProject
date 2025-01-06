@@ -3,7 +3,7 @@
         <div class="list-container">
             <div class="for-buttons">
                 <button class="btn-top mission-delete">삭제</button>
-                <button class="btn-top mission-confirm">승인</button>
+                <button @click="approvalMission" class="btn-top mission-confirm">승인</button>
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
@@ -44,12 +44,9 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-// import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 const route = useRoute();
 const store = useStore();
-// const router = useRouter();
-// const router = useRouter();
 
 // 라우터에서 쿼리 파라미터 받기
 // const childId = router.query.child_id;
@@ -141,6 +138,15 @@ const getChildId = (child_id) => {
     console.log('자녀 아이디 확인', child_id)
     store.dispatch('mission/goCreateMission', child_id);
 }
+
+// 미션 승인
+const approvalMission = () => {
+    if(checkboxItem.value.length > 0) {
+        store.dispatch('mission/approvalMission', checkboxItem.value);
+        store.dispatch('mission/missionList', route.params.id);
+        checkboxItem.value = [];
+    }
+};
 
 </script>
 

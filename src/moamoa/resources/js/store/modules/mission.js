@@ -312,6 +312,22 @@ export default {
             })
         },
 
+        /**
+         * 미션 승인
+         * 
+         * @param {*} context 
+         * @param {*} ids 
+         */
+        approvalMission(context, ids) {
+            const url = '/api/parent/mission/approval';
+            const data = JSON.stringify({ mission_ids: ids });
+
+            axios.post(url, data)
+            .then(res => {
+                // console.log(res.data.data);
+            });
+        },
+
     },
 
     getters: {
