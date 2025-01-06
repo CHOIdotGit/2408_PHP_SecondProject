@@ -31,6 +31,17 @@
 </template>
 
 <script setup>
+import { onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
+
+  // 혹시모르니 초기화해둠
+  onBeforeMount(() => {
+    const store = useStore();
+    if(store.state.auth.registInfo || store.state.auth.errMsg) {
+      store.commit('auth/resetRegist');
+      store.commit('auth/resetErrMsg');
+    }
+  });
 </script>
 
 <style scoped>

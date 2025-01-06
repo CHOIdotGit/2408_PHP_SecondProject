@@ -1,4 +1,5 @@
 import axios from "axios";
+import store from "./store/store";
 
 const axiosInstance = axios.create({
     // 기본 URL 설정 방법
@@ -39,6 +40,11 @@ axiosInstance.interceptors.request.use(
         return config;
     },
     (err) => {
+        // 401 에러가 오면 세션 만료로 간주하고 로그아웃 처리
+        if(err.response && err.response.status === 401) {
+            store.dispatch('auth/logout');
+        }
+
         return Promise.reject(err);
     }
 );
