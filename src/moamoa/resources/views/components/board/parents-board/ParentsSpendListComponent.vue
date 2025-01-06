@@ -83,7 +83,7 @@ onMounted(() => {
 .list-container {
     margin-top: 20px;
     width: 1500px;
-    height: 740px;
+    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;

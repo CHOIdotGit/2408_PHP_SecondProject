@@ -270,7 +270,7 @@ span {
     /* width: 60px; */
     gap: 30px;
     display: flex;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 /* 수정버튼 */

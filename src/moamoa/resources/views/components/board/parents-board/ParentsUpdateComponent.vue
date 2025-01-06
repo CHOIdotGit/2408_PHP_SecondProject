@@ -20,10 +20,8 @@
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
-                            <p>{{ item.index }}</p>
                         </label>
                     </div>
-                    <p>{{ missionDetail.category }}</p>
 
                 </div>
                 <div class="content">
@@ -37,7 +35,7 @@
                     <!-- {{ missionDetail.amount}} -->
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/parent/mission/detail/${mission_id}')" class="create-btn">취소</button>
+                    <button @click="$router.push(`/parent/mission/detail/${mission_id}`)" class="create-btn">취소</button>
                     <button @click="getUpdateMission" class="create-btn">수정</button>
                 </div>
             </div>
@@ -104,7 +102,7 @@ const getUpdateMission = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 720px;
 }
 
 .content-list {
@@ -140,7 +138,7 @@ const getUpdateMission = () => {
     border: 3px solid #A2CAAC;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -222,7 +220,7 @@ span {
     border: 3px solid #A2CAAC;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -238,6 +236,8 @@ span {
     gap: 30px;
     margin: auto;
     margin-top: 50px;
+    cursor: pointer;
+    margin-right: 200px;
 }
 
 
@@ -249,5 +249,6 @@ span {
     border: none;
     background-color: #A2CAAC ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 </style>

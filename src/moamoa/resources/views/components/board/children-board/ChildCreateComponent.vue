@@ -31,7 +31,7 @@
                     <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.replace('/child/mission/list/${child_id}')" class="create-btn">취소</button>
+                    <button @click="$router.replace('/child/mission/list')" class="create-btn">취소</button>
                     <button @click="$store.dispatch('childMission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
@@ -84,7 +84,7 @@ const missionCreate = reactive({
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 720px;
 }
 
 .content-list {
@@ -120,7 +120,7 @@ const missionCreate = reactive({
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -201,7 +201,7 @@ span {
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -216,7 +216,8 @@ span {
     justify-content: right;
     gap: 30px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-right: 200px;
 }
 
 
@@ -228,6 +229,7 @@ span {
     border: none;
     background-color: #5589e996 ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
 </style>

@@ -76,7 +76,7 @@ const today = new Date().toISOString().split('T')[0];
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 740px;
+    height: 720px;
 }
 
 .content-list {
@@ -112,7 +112,7 @@ const today = new Date().toISOString().split('T')[0];
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -203,7 +203,9 @@ span {
     justify-content: right;
     gap: 30px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-right: 200px;
+
 }
 
 
@@ -215,6 +217,7 @@ span {
     border: none;
     background-color: #5589e996 ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
 </style>

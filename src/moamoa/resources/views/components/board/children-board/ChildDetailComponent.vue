@@ -42,7 +42,8 @@
     <div class="del-modal-black" v-show="delModal">
         <div class="del-modal-white">
             <div class="modal-content">
-                <img src="/img/icon-boy-2.png" class="modal-img" alt=".">
+                <img src="/img/icon-trash.png" class="modal-img" alt=".">
+                <p class="modal-name"></p>
                 <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
                 <div class="del-guide">해당 미션이 삭제됩니다.</div>
             </div>
@@ -125,7 +126,7 @@ const delCloseModal = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 740px;
+    height: 720px;
 }
 .content-list {
     display: grid;
@@ -262,7 +263,7 @@ span {
     /* width: 60px; */
     gap: 30px;
     display: flex;
-    margin-top: 50px;
+    margin-top: 10px;
 }
 
 /* 수정버튼 */

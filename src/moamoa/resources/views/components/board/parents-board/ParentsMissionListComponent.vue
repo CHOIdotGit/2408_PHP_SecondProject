@@ -214,7 +214,7 @@ const approvalMission = () => {
 .list-container {
     margin-top: 20px;
     width: 1500px;
-    height: 740px;
+    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -225,9 +225,9 @@ const approvalMission = () => {
 
 .mission-title-bar {
     display: grid;
-    grid-template-columns: 40px 190px 90px 90px 320px 90px 300px;
+    grid-template-columns: 40px 150px 100px 100px 300px 90px 350px;
     height: 60px;
-    gap: 50px;
+    gap: 40px;
     background-color: #F5F5F5;
     font-size: 2rem;
     margin: 10px;
@@ -246,12 +246,12 @@ const approvalMission = () => {
 
 .mission-content {
     display: grid;
-    grid-template-columns: 40px 190px 90px 90px 320px 90px 300px;
+    grid-template-columns: 40px 150px 90px 120px 300px 90px 320px;
     height: 40px;
-    gap: 50px;
+    gap: 40px;
     /* background-color: #F5F5F5; */
     font-size: 1.3rem;
-    margin: 10px;
+    /* margin: 10px; */
     align-items: center;
     width: 1400px;
     text-align: center;

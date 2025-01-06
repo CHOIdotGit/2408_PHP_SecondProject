@@ -19,10 +19,9 @@
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
-                            <p>{{ item.index }}</p>
                         </label>
                     </div>
-                    <p>{{ missionDetail.category }}</p>
+
                 </div>
                 <div class="content">
                     <p class="title">미션 내용</p>
@@ -33,7 +32,7 @@
                     <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/child/mission/detail/${mission_id}')" class="create-btn">취소</button>
+                    <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">취소</button>
                     <button @click="getUpdateMission" class="create-btn">수정</button>
                 </div>
             </div>
@@ -86,7 +85,7 @@ const getUpdateMission = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 740px;
+    height: 720px;
 }
 
 .content-list {
@@ -122,7 +121,7 @@ const getUpdateMission = () => {
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -204,7 +203,7 @@ span {
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -219,7 +218,8 @@ span {
     justify-content: right;
     gap: 30px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-right: 200px;
 }
 
 

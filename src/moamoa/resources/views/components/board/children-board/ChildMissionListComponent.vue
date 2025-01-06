@@ -18,8 +18,7 @@
                 <div v-for="item in missionList" :key="item" class="mission-content">
                     <div class="chk-div">
                         <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.mission_id" name="checkbox">
-                        <!-- <label :for="'mission-'+item.mission_id"></label> -->
-                        {{ item.mission_id }}
+
                     </div>
                     <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
                     <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
@@ -203,7 +202,7 @@ const getChildId = () => {
 .list-container {
     margin-top: 20px;
     width: 1500px;
-    height: 740px;
+    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;

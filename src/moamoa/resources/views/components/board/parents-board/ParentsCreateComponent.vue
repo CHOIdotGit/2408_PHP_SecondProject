@@ -19,7 +19,7 @@
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p>{{ item.name }}</p>
+                            <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                     <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.replace('/parent/mission/list/${child_id}')" class="create-btn">취소</button>
+                    <button @click="$router.replace(`/parent/mission/list/${child_id}`)" class="create-btn">취소</button>
                     <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
@@ -109,13 +109,13 @@ const missionCreate = reactive({
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 765px;
+    height: 720px;
 }
 
 .content-list {
     /* display: grid; */
     margin-top: 100px;
-    margin-left: 20px;
+    /* margin-left: 20px; */
     justify-content: center;
 }
 
@@ -145,7 +145,7 @@ const missionCreate = reactive({
     border: 3px solid #A2CAAC;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -211,7 +211,9 @@ span {
     background-color: #A2CAAC;
 }
 
-
+.category-name {
+    margin-top: 10px;
+}
 
 
 /* 미션 내용 */
@@ -232,7 +234,7 @@ span {
     border: 3px solid #A2CAAC;
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
 }
 
@@ -247,7 +249,8 @@ span {
     justify-content: right;
     gap: 30px;
     margin: auto;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-right: 200px;
 
 }
 
