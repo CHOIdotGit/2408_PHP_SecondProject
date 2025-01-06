@@ -53,6 +53,9 @@ Route::post('/api/parent/mission/create/{child_id}', [MissionController::class, 
 // 부모 미션 삭제 페이지
 Route::delete('/api/parent/mission/delete/{id}', [MissionController::class, 'destroy']);
 
+// 부모 선택된 미션 삭제
+Route::delete('/api/parent/mission/list/checked/delete', [MissionController::class, 'checkedDestroy']);
+
 // 부모 미션 수정 페이지
 Route::patch('/api/parent/mission/update/{mission_id}', [MissionController::class, 'update']);
 
@@ -99,6 +102,9 @@ Route::post('/api/child/spend/create', [TransactionChildrenController::class, 's
 
 // 자녀 지출 삭제 페이지
 Route::delete('/api/child/spend/delete/{id}', [TransactionChildrenController::class, 'destroy']);
+
+// 자녀 선택된 지출 삭제
+Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenController::class, 'checkedDestroy']);
 
 // 자녀 지출 수정 페이지
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);

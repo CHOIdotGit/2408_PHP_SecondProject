@@ -2,8 +2,10 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
-                <button class="btn-top mission-delete">삭제</button>
+                
                 <button @click="approvalMission" class="btn-top mission-confirm">승인</button>
+                <button @click="delOpenModal" class="btn-top mission-delete">삭제</button>
+                
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
@@ -39,6 +41,22 @@
             </div>
         </div>
     </div>
+
+    <!-- ************************* -->
+    <!-- ********삭제 모달********* -->
+    <!-- ************************* -->
+    <div class="del-modal-black" v-show="delModal">
+        <div class="del-modal-white">
+            <div class="modal-content">
+                <img src="/img/icon-trash.png" class="modal-img" alt=".">
+                <div class="del-guide">선택한 {{(checkboxItem).length}} 개의 미션이 삭제됩니다.</div>
+            </div>
+            <div class="del-btn">
+                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="deleteCheckedMission()" class="modal-del">삭제</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -54,14 +72,47 @@ const store = useStore();
 // 자녀 id 파라미터 세팅
 const childId = computed(() => store.state.mission.childId);
 
-// ***체크박스 선택하기***
+// *******체크박스 선택하기**********
 // 선택된 체크박스 데이터
 const checkboxItem = ref([]); // 모두 선택되면 전체 체크박스에도 선택 표시하기 위해서
+console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 
 // 모든 체크박스가 선택되었는지 확인 (computed : 반응형 데이터로 다루기 위해)
 const isAllChecked = computed(() => {
     return checkboxItem.value.length > 0 && missionList.value.every((item) => checkboxItem.value.includes(item.mission_id));
 });
+
+// 체크된 미션만 삭제 처리 하기
+const deleteCheckedMission = () => {
+    if(checkboxItem.value.length === 0) {
+        alert("삭제할 미션을 선택하세요");
+        console.log("삭제할 미션 ",checkboxItem.value);
+        return;
+    }
+    store.dispatch('mission/deletcheckedMission', checkboxItem.value);
+    delModal.value = false;
+    
+    store.dispatch('mission/missionList', route.params.id); //삭제후 미션 리스트 새로 불러오기
+    checkboxItem.value = [];
+}
+
+// *****삭제 모달창********** 
+const delModal = ref(false);
+
+const delOpenModal = () => { //모달창 열기
+    if(checkboxItem.value.length === 0) {
+        alert("선택하신 미션이 없습니다.");
+        return;
+    }
+    else {
+        delModal.value = true;
+
+    }
+}
+
+const delCloseModal = () => { //모달창 닫기
+    delModal.value = false;
+}
 
 
 const checkAll = (e) => {
@@ -220,6 +271,7 @@ const approvalMission = () => {
     border: none;
     background-color:#A2CAAC ;
     margin-top: 30px;
+    cursor: pointer;
 }
 
 .btn-bottom {
@@ -229,6 +281,7 @@ const approvalMission = () => {
     border: none;
     background-color:#A2CAAC ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 
 .checkbox {
@@ -281,5 +334,88 @@ const approvalMission = () => {
     height: 400px;
     overflow-y: scroll;
     overflow-x: hidden;
+    width: 1400px;
+}
+
+/* ********************* */
+/* *******삭제 모달****** */
+/* ********************* */
+
+.del-modal-black {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    /* top: 182px;
+    left: 177px; */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    /* margin-top: 500px; */
+    justify-content: center;
+}
+
+.del-modal-white {
+    width: 400px;
+    height: 500px;
+    background-color: #FFFFFF;
+    border: 3px solid #A2CAAC;
+    /* margin: 170px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.modal-content {
+    text-align: center;
+    margin: 60px;
+}
+
+.modal-name {
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.modal-ms-title {
+    font-size: 1.3rem;
+    padding: 10px;
+}
+
+.del-guide {
+    font-size: 1.4rem;
+    padding: 15px;
+}
+
+
+.modal-img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+}
+
+/* 삭제 모달 버튼 */
+.modal-cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    font-size: 1.2rem;
+    border: 1px solid #ACACAC;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.modal-del {
+    color: #FFFF;
+    background-color: #A2CAAC;
+    font-size: 1.2rem;
+    border: 1px solid #A2CAAC;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
 }
 </style>

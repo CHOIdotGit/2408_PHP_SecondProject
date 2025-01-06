@@ -111,6 +111,25 @@ class MissionController extends Controller
     }
 
     // ************************************************
+    // ************부모 선택된 미션만 삭제 **************
+    // ************************************************
+    public function checkedDestroy(Request $request) {
+
+        $checkedMissionId = $request->missionIds;
+        $deleteCheckedMission = Mission::destroy($checkedMissionId);
+
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '선택된 미션 삭제 성공'
+            ,'checkedMissionId' => $checkedMissionId
+            ,'삭제된 미션 갯수' => $deleteCheckedMission
+        ];
+        return response()->json($responseData, 200);
+    }
+
+
+    // ************************************************
     // **************부모 미션 수정 페이지 **************
     // ************************************************
     public function update(Request $request) {

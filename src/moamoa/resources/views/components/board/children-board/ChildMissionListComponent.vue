@@ -6,7 +6,7 @@
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
-                    <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" >
+                    <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
                 <span class="mission-name">미션이름</span>
                 <span class="status">상태</span>
@@ -41,7 +41,7 @@
         <div class="del-modal-white">
             <div class="modal-content">
                 <img src="/img/icon-trash.png" class="modal-img" alt=".">
-                <div class="del-guide">선택한 {{checkboxItem}} 개의 미션이 삭제됩니다.</div>
+                <div class="del-guide">선택한 {{ (checkboxItem).length }} 개의 미션이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
@@ -117,6 +117,23 @@ const getTruncatedTitle =(title) => {
 };
 
 // ************** 체크 박스 ******************
+// 모든 체크박스가 선택되었는지 확인 (computed : 반응형 데이터로 다루기 위해)
+const isAllChecked = computed(() => {
+    return checkboxItem.value.length > 0 && missionList.value.every((item) => checkboxItem.value.includes(item.mission_id));
+});
+
+// 체크박스 전체선택/ 전체해제
+const checkAll = (e) => {
+    if(e.target.checked) {
+        checkboxItem.value = missionList.value.map(item => item.mission_id);
+        console.log('체크박스 모두 선택');
+        console.log('체크박스 선택된 데이터 : ', missionList.value.length);
+    } else {
+        checkboxItem.value = []; //전체 해제
+        console.log('체크박스 모두 해제');
+    }
+}
+
 const checkboxItem = ref([]);
 console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 

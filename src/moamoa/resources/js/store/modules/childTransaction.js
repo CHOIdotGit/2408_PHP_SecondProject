@@ -172,6 +172,29 @@ export default {
                 },
 
         // ***************************
+        // 선택된 자녀 미션 삭제
+        // ***************************
+        deletcheckedTransaction(context, spendIds) {
+            const url = '/api/child/spend/list/checked/delete';
+            
+            axios.delete(url, {
+                data: { spendIds } // 선택된 지출 ID 배열 전달
+            })
+            .then(response => {
+                // console.log(response.data.checkedMissionId);
+                context.commit('deleteTransaction', response.data.checkedMissionId);
+                //**context.commit**은 Mutation을 호출하여 Vuex 상태를 변경할 때 사용됩니다.
+                //context.commit('mutationName', 전달할 데이터(payload));
+                
+                alert('지출이 삭제되었습니다.'); //지출 삭제 알람
+
+            })
+            .catch(error => {
+                console.log('지출 삭제 안됨', error);
+            })
+        },
+
+        // ***************************
         // 자녀 지출 수정 페이지로 이동
         // ***************************    
         goUpdateTransaction(context, transaction_id) {

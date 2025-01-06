@@ -2,8 +2,11 @@
 
 namespace App\Console;
 
+use App\Models\Mission;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,9 +16,16 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
+    
+    // 미션 지정 기간이 지나면 자동으로 상태를 취소로 바꾸는 처리 
+     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            $status = Mission::where('end_at', '<', date('Y-m-d'))
+                    ->where('status', 0)
+                    ->update(['status' => 3]);
+        Log::debug('testest');
+        })->dailyAt('17:00'); //매일 17시에 실행
     }
 
     /**

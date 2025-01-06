@@ -262,6 +262,29 @@ export default {
                 },
 
         // ***************************
+        // 선택된 부모 미션 삭제
+        // ***************************
+        deletcheckedMission(context, missionIds) {
+            const url = '/api/parent/mission/list/checked/delete';
+            
+            axios.delete(url, {
+                data: { missionIds } // 선택된 미션 ID 배열 전달
+            })
+            .then(response => {
+                // console.log(response.data.checkedMissionId);
+                context.commit('deleteMission', response.data.checkedMissionId);
+
+                
+                alert('미션이 삭제되었습니다.'); //미션 삭제 알람
+
+
+            })
+            .catch(error => {
+                console.log('미션 삭제 안됨', error);
+            })
+        },
+
+        // ***************************
         // 부모 미션 수정 페이지로 이동
         // ***************************    
         goUpdateMission(context, mission_id) {
@@ -279,6 +302,8 @@ export default {
                     console.log('미션 수정 페이지로 이동 못함', error);
                 })
         },
+
+
 
         // ***************************
         // 부모 미션 수정 페이지
@@ -304,6 +329,7 @@ export default {
                 console.log('미션 수정 성공 :', response.data);
                 context.commit('setMissionDetail', response.data.updateMission);
                 
+                alert("미션이 수정되었습니다.");
                 router.push('/parent/mission/detail/' + data.mission_id);
 
             })

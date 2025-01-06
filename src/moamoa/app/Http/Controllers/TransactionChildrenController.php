@@ -80,6 +80,34 @@ class TransactionChildrenController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // ************************************************
+    // ************자녀 선택된 미션만 삭제 **************
+    // ************************************************
+    public function checkedDestroy(Request $request) {
+        // exit;
+        $checkedSpendId = $request->spendIds;
+        // return response()->json(['checkedMissionId' => $checkedMissionId], 200);
+        // return $checkedMissionId;
+        // exit;
+        $deleteCheckedSpend = Transaction::destroy($checkedSpendId);
+
+        //배열로 받아오는지 아닌지 확인
+        // if (!$checkedMissionId || !is_array($checkedMissionId)) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'msg' => '유효하지 않은 요청입니다.'
+        //     ], 400); // HTTP 400 에러 반환
+        // }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '선택된 미션 삭제 성공'
+            ,'checkedMissionId' => $checkedSpendId
+            ,'삭제된 미션 갯수' => $deleteCheckedSpend
+        ];
+        return response()->json($responseData, 200);
+    }
+
     // 자녀 지출 수정 페이지 
     public function update(Request $request) {
         Log::debug('update', $request->all());
