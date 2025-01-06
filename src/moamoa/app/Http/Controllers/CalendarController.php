@@ -21,9 +21,11 @@ class CalendarController extends Controller
         $startDate = $targetDate->startOfMonth()->format('Y-m-d');
         $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
 
+        // 자녀 정보 가져오기
+        $child = Auth::guard('children')->user();
 
-        $calendarData = Child::select('children.name', 'children.nick_name', 'children.profile')
-                            ->where('children.parent_id', 1)
+        $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+                            ->where('children.child_id', $child->child_id)
                             ->first();
                             
         $categories = [0 => 'traffic', 1 => 'meal', 2 => 'shopping', 3 => 'etc'];
@@ -31,30 +33,30 @@ class CalendarController extends Controller
 
         // 카테고리 별 합산
         foreach($categories as $category => $key){
-            $sidebarData[$key] = Transaction::where('parent_id', 1)
+            $sidebarData[$key] = Transaction::where('transactions.parent_id', $child->child_id)
             ->where('category', $category)
             ->whereBetween('transaction_date', [$startDate, $endDate])
             ->sum('amount');
         }
 
         // 일별 전체 지출 합산
-        $dailyIncomeData = Mission::selectRaw('start_at as target_at, SUM(amount) as income')
-                                ->whereBetween('start_at', [$startDate, $endDate])
-                                ->groupBy('start_at')
-                                ->orderBy('start_at')
+        $dailyIncomeData = Mission::selectRaw('missions.start_at as target_at, SUM(amount) as income')
+                                ->whereBetween('missions.start_at', [$startDate, $endDate])
+                                ->groupBy('missions.start_at')
+                                ->orderBy('missions.start_at')
                                 ->get();
 
         // 일별 전체 지출 합산
-        $dailyOutgoData = Transaction::selectRaw('transaction_date as target_at, SUM(amount) as income')
-                                ->whereBetween('transaction_date', [$startDate, $endDate])
-                                ->groupBy('transaction_date')
-                                ->orderBy('transaction_date')
+        $dailyOutgoData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as income')
+                                ->whereBetween('transactions.transaction_date', [$startDate, $endDate])
+                                ->groupBy('transactions.transaction_date')
+                                ->orderBy('transactions.transaction_date')
                                 ->get();
 
         // 미션 합계
-        $sidebarMission = Mission::where('parent_id',1)
-                    ->whereBetween('start_at',[$startDate, $endDate])
-                    ->sum('amount');
+        $sidebarMission = Mission::where('missions.child_id', $child->child_id)
+                    ->whereBetween('missions.start_at',[$startDate, $endDate])
+                    ->sum('missions.amount');
 
         // // 모달 지출 내역
         // $usageModal = Transaction::select()
