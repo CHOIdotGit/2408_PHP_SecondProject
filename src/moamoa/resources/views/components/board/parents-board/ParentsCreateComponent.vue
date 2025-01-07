@@ -35,7 +35,7 @@
                     <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.replace(`/parent/mission/list/${child_id}`)" class="create-btn">취소</button>
+                    <button @click="getChildId(childId)" class="create-btn">취소</button>
                     <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">등록</button>
                 </div>
             </div>
@@ -45,11 +45,12 @@
 
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 const route = useRoute();
-
+const store = useStore();
 
 const categories = reactive([
     {name: '학습' , img:'/img/icon-pencil.png', index : "0"}
@@ -91,7 +92,12 @@ const missionCreate = reactive({
     amount: '',
     child_id: route.params.child_id,
 });
-
+// 자녀 id 파라미터 세팅
+const childId = computed(() => store.state.mission.childId);
+const getChildId = (child_id) => {
+    console.log('자녀 아이디 확인', child_id)
+    store.dispatch('mission/missionList', child_id);
+}
 
 </script>
 
