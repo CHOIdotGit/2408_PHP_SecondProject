@@ -34,7 +34,7 @@
                 <div class="bottom-btn right">
                     <button @click="delOpenModal" class="ms-del">미션 삭제</button>
                     <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">미션 수정</button>
-                    <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-comfirm">승인</button>
+                    <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-comfirm">미션 승인</button>
                 </div>
                 <!-- </div> -->
             </div>
