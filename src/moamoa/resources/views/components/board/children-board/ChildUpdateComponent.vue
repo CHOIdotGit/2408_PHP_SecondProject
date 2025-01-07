@@ -3,7 +3,7 @@
         <div class="create-container">
             <div class="content-list">
                 <div class="content">
-                    <p class="title">미션 제목</p>
+                    <p class="title">제목</p>
                     <input v-model="missionDetail.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus>
                     <div class="date">
                         <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01" >
@@ -13,12 +13,12 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p>{{ item.name }}</p>
+                            <p class="m-top">{{ item.name }}</p>
                         </label>
                     </div>
 
@@ -28,12 +28,12 @@
                     <textarea v-model="missionDetail.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">수정 취소</button>
-                    <button @click="getUpdateMission" class="create-btn">미션 수정</button>
+                    <button @click="getUpdateMission" class="create-btn">수정하기</button>
                 </div>
             </div>
         </div>
@@ -111,8 +111,9 @@ const getUpdateMission = () => {
     border-right: 2px solid #dfdfdf;
     padding: 10px;
     width: 150px;
-    text-align: center;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 미션 제목 */
@@ -123,6 +124,8 @@ const getUpdateMission = () => {
     border-radius: 10px;
     font-size: 1.8rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 날짜 */
@@ -131,6 +134,7 @@ const getUpdateMission = () => {
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
+    width: 300px;
 }
 
 span {
@@ -150,7 +154,17 @@ span {
     display: flex;
     flex-direction: column;
     text-align: center;
+    width: 80px;
+    height: 80px;
     padding-right: 30px;
+    border-radius: 50px;
+    align-items: center;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.m-top {
+    margin-top: 10px;
 }
 
 .category-btn > input {
@@ -165,11 +179,6 @@ span {
     text-align: center;
     cursor: pointer;
 }
-
-/* db에 저장된 카테고리 표시 */
-/* .categorybtn-green {
-    background-color: #A2CAAC;
-} */
 
 .checked-category-btn {
     background-color: #5589e996;
@@ -195,6 +204,8 @@ span {
     border-radius: 10px;
     border: 3px solid #5589e996;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 금액 */
@@ -205,6 +216,8 @@ span {
     border-radius: 10px;
     font-size: 1.8rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 .ms-amount::-webkit-outer-spin-button,

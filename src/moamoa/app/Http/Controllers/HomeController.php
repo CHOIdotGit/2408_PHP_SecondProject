@@ -19,7 +19,7 @@ class HomeController extends Controller
     
     
         foreach($parentHome as $child) {
-            $child->setRelation('missions', $child->missions()->latest()->where('missions.status', 1)->limit(3)->get());
+            $child->setRelation('missions', $child->missions()->latest()->where('missions.status', 0)->limit(3)->get());
             $child->setRelation('transactions', $child->transactions()->latest()->limit(3)->get());
         }
 

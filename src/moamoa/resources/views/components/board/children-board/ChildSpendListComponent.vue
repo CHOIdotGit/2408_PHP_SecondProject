@@ -1,12 +1,15 @@
 <template>
     <div class="container">
         <div class="list-container">
+            <div class="who-div">
+                <p class="who">{{ childName }}님의 지출 리스트</p>
+            </div>
             <div class="mission-title">
                 <div class="chk-div">
                     <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
-                <span class="status">종류</span>
                 <p class="mission-type">제목</p>
+                <span class="status">종류</span>
                 <p class="charge">금액</p>
                 <p class="due-date">소비일자</p>
             </div>
@@ -15,10 +18,9 @@
                     <div class="mission-content">
                         <div class="chk-div">
                             <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.transaction_id" name="checkbox">
-
-                            </div>
-                        <p class="category">{{ getCategoryText(item.category) }}</p>
+                        </div>
                         <p @click="goSpendDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p class="category">{{ getCategoryText(item.category) }}</p>
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
                         <p class="transaction-date">{{ item.transaction_date }}</p>
                     </div>
@@ -62,6 +64,12 @@ onMounted(() => {
 
 // 거래 리스트 가져오기
 const transactionList = computed(() => store.state.childTransaction.childTransactionList);
+
+// 첫 번째 자녀의 name을 가져오는 computed
+const childName = computed(() => {
+    const child = transactionList.value?.[0]?.child;
+    return child ? child.name : '이름 없음';
+});
 
 const getCategoryText = (category) => {
     const categoryMapping = {
@@ -235,6 +243,13 @@ const delCloseModal = () => { //모달창 닫기
     margin: 15px;
 }
 
+.who-div {
+    margin-right: 1150px;
+}
+
+.who {
+    font-size: 1.5rem;
+}
 
 .mission-inserted-list {
     height: 60px;

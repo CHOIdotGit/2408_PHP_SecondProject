@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex">
         <div class="container">
-            <div class="child-list-triangle">◀</div>   
+            <!-- <div class="child-list-triangle">◀</div>    -->
             <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
             <div v-for="item in parentHome" :key="item" class="child-box"> 
                 <div class="blank">-</div>
@@ -25,27 +25,28 @@
                     </div>
                     <div class="child-mission">
                         <!-- <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p> -->
-                        <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                        <p class="mission" @click="goMissionList(item.child_id)">진행중인 미션 ></p>
                         <div class="chk-div">
                             <div v-if="item.missions.length === 0" class="margin-top">
-                                <p class="no-mission">대기중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
+                                <p class="no-mission">진행중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
                             </div>
                             <div v-else>
                                 <div class="chk-div-box" v-for="mission in item.missions" :key="mission">
-                                    <input type="checkbox" class="checkbox" :id="'checkbox-' + mission.mission_id">
+                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
+                                    <!-- <input type="checkbox" class="checkbox" :id="'checkbox-' + mission.mission_id">
                                     <label :for="'checkbox-' + mission.mission_id">
                                         <div class="mission-title">{{ getTruncatedTitle(mission.title) }}</div>
-                                    </label>
+                                    </label> -->
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="btn-div" :class="{ 'btn-disable': item.missions.length === 0 }">
+                    <!-- <div class="btn-div" :class="{ 'btn-disable': item.missions.length === 0 }">
                         <button class="btn approve">미션 승인</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
-            <div class="child-list-triangle">▶</div>
+            <!-- <div class="child-list-triangle">▶</div> -->
         </div>
     </div>
 </template>
@@ -147,9 +148,6 @@ onMounted(() => {
 }
 
 .mission-title{
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
     height: 40px;
 }
 
@@ -270,12 +268,14 @@ onMounted(() => {
     flex-direction: column;
     /* justify-content: center; */
     /* align-items: center; */
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 1.5rem;
 }
 
 .chk-div-box {
-    margin-left: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 기본 체크박스 숨기기 */

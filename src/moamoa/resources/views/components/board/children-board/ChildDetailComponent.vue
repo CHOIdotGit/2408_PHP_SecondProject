@@ -3,7 +3,7 @@
         <div class="detail-container">
             <div class="content-list">
                 <div class="content" v-if="missionDetail">
-                    <p class="title">미션 제목</p>
+                    <p class="title">제목</p>
                     <p class="ms-title">{{ missionDetail.title }}</p>
                     <div class="date">
                         <span class="ms-date">{{ missionDetail.start_at }}</span>
@@ -12,7 +12,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">종류</p>
                     <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                         <img class="ms-category-img" :src="item.img" >
                         <p class="category-name">{{ item.name }}</p>
@@ -23,7 +23,7 @@
                     <div class="ms-content">{{ missionDetail.content}}</div>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}</p>
                 </div>
                 <div class="bottom-btn">
@@ -32,7 +32,7 @@
                     </div>
                     <div class="bottom-btn right">
                         <button @click="delOpenModal" class="create-btn ms-del">미션 삭제</button>
-                        <button class="create-btn ms-up">미션 완료</button>
+                        <!-- <button class="create-btn ms-up">미션 완료</button> -->
                         <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">미션 수정</button>
                     </div>
                 </div>
@@ -154,7 +154,9 @@ const delCloseModal = () => {
     border-right: 2px solid #dfdfdf;
     padding: 10px;
     width: 150px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 미션 제목 */
@@ -175,6 +177,7 @@ const delCloseModal = () => {
     border-radius: 10px;
     padding: 10px;
     /* margin-left: 30px; */
+    width: 300px;
 }
 
 span {
@@ -227,7 +230,9 @@ span {
     padding: 10px;
     border-radius: 10px;
     /* border: 3px solid #5589e996; */
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 금액 */
@@ -238,6 +243,8 @@ span {
     font-size: 1.8rem;
     padding-left: 5px;
     line-height: 45px;
+    display: flex;
+    align-items: center;
 }
 
 .bottom-btn{
@@ -260,7 +267,7 @@ span {
 .create-btn {
     color: #FFFF;
     background-color: #5589e996;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border: 1px solid #5589e996;
     padding: 5px;
     width: 120px;
@@ -277,7 +284,7 @@ span {
 .ms-cancel {
     color: #ACACAC;
     background-color: #FFFFFF;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border: 1px solid #ACACAC;
     padding: 5px;
     width: 120px;

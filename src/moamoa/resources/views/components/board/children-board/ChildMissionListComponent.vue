@@ -8,7 +8,7 @@
                 <div class="chk-div">
                     <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
-                <span class="mission-name">미션이름</span>
+                <span class="mission-name">제목</span>
                 <span class="status">상태</span>
                 <p class="mission-type">종류</p>
                 <p class="charge">금액</p>
@@ -18,7 +18,6 @@
                 <div v-for="item in missionList" :key="item" class="mission-content">
                     <div class="chk-div">
                         <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.mission_id" name="checkbox">
-
                     </div>
                     <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
                     <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
@@ -254,15 +253,15 @@ const getChildId = () => {
     font-size: 1.5rem;
     border: none;
     color: #FFFFFF;
-    background-color:#5589e996 ;
-    margin-top: 30px;
+    background-color:#5589e996;
+    margin-top: 15px;
 }
 
 .for-buttons{
     display: flex;
     justify-content: right;
-    gap: 30px;
-    margin-left: 1170px;
+    /* gap: 30px; */
+    margin-left: 1250px;
 }
 
 #checkbox9 {

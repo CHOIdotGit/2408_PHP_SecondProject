@@ -15,12 +15,13 @@ class TransactionChildrenController extends Controller
 
         $childTransactionList = Transaction::select('transactions.transaction_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date')
                                         ->where('transactions.child_id', $child->child_id)
+                                        ->with('child')
                                         ->whereNull('transactions.deleted_at')
                                         ->orderBy('transactions.transaction_date', 'DESC')
                                         // ->latest()
-                                        ->paginate(30);
-    
-    
+                                        ->paginate(255);
+
+
         $responseData = [
             'success' => true
             ,'msg' => '지출 정보 획득 성공'

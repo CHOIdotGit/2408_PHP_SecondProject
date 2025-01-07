@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionDetail.category}, 'ms-category-btn']">
@@ -28,8 +28,8 @@
                     <input v-model="transactionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push('/child/spend/detail/${transaction_id}')" class="create-btn">취소</button>
-                    <button @click="updateTransaction" class="create-btn">지출 수정</button>
+                    <button @click="$router.push('/child/spend/detail/${transaction_id}')" class="create-btn">수정 취소</button>
+                    <button @click="updateTransaction" class="create-btn">수정하기</button>
                 </div>
             </div>
         </div>
@@ -88,7 +88,7 @@ const updateTransaction = () => {
 
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -109,17 +109,21 @@ const updateTransaction = () => {
     border-right: 2px solid #dfdfdf;
     padding: 10px;
     width: 150px;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 미션 제목 */
 .ms-title {
-    width: 600px;
+    width: 450px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 날짜 */
@@ -140,6 +144,8 @@ span {
     /* width: 200px; */
     font-size: 1.5rem;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 .category-btn > input {
@@ -223,6 +229,8 @@ span {
     border-radius: 10px;
     font-size: 2rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 .ms-amount::-webkit-outer-spin-button,
@@ -235,8 +243,8 @@ span {
     display: flex;
     justify-content: right;
     gap: 30px;
-    margin: auto;
-    margin-top: 10px;
+    margin-right: 300px;
+    margin-top: 30px;
 }
 
 

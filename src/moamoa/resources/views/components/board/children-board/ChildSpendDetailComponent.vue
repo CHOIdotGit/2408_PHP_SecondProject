@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <img class="ms-category" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
                         <p>{{ item.name }}</p>
@@ -21,13 +21,13 @@
                     <div class="ms-content">{{ transactionDetail.memo }}</div>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
-                    <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}</p>
+                    <p class="title">금액</p>
+                    <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="goBack" class="ms-cancel bottom-btn left">뒤로가기</button>
-                    <button @click="delOpenModal" class="btn bottom-btn right">지출 삭제</button>
-                    <button @click="goUpdate(transactionDetail.transaction_id)" class="btn bottom-btn right">지출 수정</button>
+                    <button @click="goBack" class="ms-cancel left">뒤로가기</button>
+                    <button @click="delOpenModal" class="btn">지출 삭제</button>
+                    <button @click="goUpdate(transactionDetail.transaction_id)" class="btn">지출 수정</button>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@ const delCloseModal = () => {
 }
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -150,16 +150,21 @@ const delCloseModal = () => {
     padding: 10px;
     width: 150px;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 미션 제목 */
 .ms-title {
-    width: 600px;
+    width: 450px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 날짜 */
@@ -225,6 +230,8 @@ span {
     border-radius: 10px;
     border: 3px solid #5589e996;
     font-size: 1.3rem;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 금액 */
@@ -235,27 +242,29 @@ span {
     font-size: 1.3rem;
     padding-left: 5px;
     line-height: 45px;
+    display: flex;
+    align-items: center;
 }
 
 /* 취소버튼 */
 .ms-cancel {
     color: #ACACAC;
     background-color: #FFFFFF;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     border: 1px solid #ACACAC;
     padding: 5px;
     width: 120px;
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    /* margin-left: 130px; */
-    margin-right: 640px;
+    margin-left: 300px;
+    /* margin-right: 640px; */
 }
 
 .btn {
-    color: #5589e996;
-    background-color: #FFFFFF;
-    font-size: 1.2rem;
+    color: #FFFFFF;
+    background-color: #5589e996;
+    font-size: 1.5rem;
     border: 1px solid #5589e996;
     padding: 5px;
     width: 120px;
@@ -289,20 +298,18 @@ span {
 }
 
 .bottom-btn{
-    /* width: 1400px; */
     gap: 30px;
+    margin-top: 30px;
     display: flex;
-    margin-top: 10px;
-    justify-content: space-between;
 }
 
 
 .right {
-    margin-right: 350px;
+
 }
 
 .left {
-    margin-left: 200px;
+    margin-right: 580px;
 }
 
 /* 수정버튼 */
