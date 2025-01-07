@@ -74,11 +74,12 @@
                         <img class="bell-icon" src="/img/icon-bell.png" width="40px" height="40px">
                     </button>
                     <!-- 벨 드롭 메뉴 -->
-                    <div class="dropdown-bell" v-show="bellListDropMenu" v-if="bellContent.length > 0">
+                    <div class="dropdown-bell" v-show="bellListDropMenu" >
                         <a href="#" class="alram" v-for="item in bellContent" :key="item">
-                            <img class="alram-pro" :src="item.img" width="50px" height="50px">
+                            <!-- 이미지는 3차로 -->
+                            <!-- <img class="alram-pro" :src="item.img" width="50px" height="50px"> -->
                             <div  class="bell-content">
-                                <p>{{ item.name }}(이)의 미션이 등록되었어요!</p>
+                                <p>{{ item.name }}(이)의 미션 등록되었어요!</p>
                                 <p>{{ item.created_at }}</p>
                             </div>
                         </a>
@@ -157,16 +158,21 @@ const hamDropDown = () => {
 
 // *******벨 드랍 메뉴 *******
 const bellListDropMenu = ref(false);
-
+const bellContent = computed(() => store.state.header.bellContent);
 const bellDropDown = () => {
     console.log('열라라 참께');
     bellListDropMenu.value = !bellListDropMenu.value;
+    store.dispatch('header/bellContent');
     // bellListDropMenu.value = true;
     // dropDownMenu.value = false;
     console.log('이거 닫겼나?');
 }
 
-const bellContent = computed(() => store.state.header.bellContent);
+
+
+
+
+
 console.log(store.state.header.bellContent);
 
 </script>

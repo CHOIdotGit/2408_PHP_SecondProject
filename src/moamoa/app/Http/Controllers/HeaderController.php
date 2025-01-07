@@ -48,7 +48,7 @@ public function bellList() {
 
     $responseData = [
         'success' => true
-        ,'등록한 미션 알람' => $bellContent
+        ,'bellContent' => $bellContent
     ];
     return response()->json($responseData, 200);
 }

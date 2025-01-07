@@ -27,11 +27,15 @@
                 <p class="ms-amount">{{ missionDetail.amount}}</p>
             </div>
             <div class="create-btn">
-                <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
-                <!-- <div class="btn-flex"> -->
-                <button @click="delOpenModal" class="ms-del">삭제</button>
-                <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
-                <button class="ms-comfirm">승인</button>
+                <div class="bottom-btn left">
+                    <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                    <!-- <div class="btn-flex"> -->
+                </div>
+                <div class="bottom-btn right">
+                    <button @click="delOpenModal" class="ms-del">삭제</button>
+                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
+                    <button class="ms-comfirm">승인</button>
+                </div>
                 <!-- </div> -->
             </div>
         </div>
@@ -134,9 +138,10 @@ const goUpdate = (mission_id) => {
 }
 .content-list {
     display: grid;
-    margin-top: 100px;
-    margin-left: 20px;
-    justify-content: center;
+    margin-top: 50px;
+    /* margin-left: 20px; */
+    /* justify-content: center; */
+    justify-items: center;
 }
 
 
@@ -175,7 +180,7 @@ const goUpdate = (mission_id) => {
     /* border: 3px solid #A2CAAC; */
     border-radius: 10px;
     padding: 10px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
     background-color: #A2CAAC;
     border-radius: 10px;
 }
@@ -255,8 +260,8 @@ span {
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    margin-left: 130px;
-    margin-right: 350px;
+    /* margin-left: 130px;
+    margin-right: 350px; */
 }
 
 /* 삭제버튼 */
@@ -275,9 +280,18 @@ span {
 .bottom-btn{
     /* width: 60px; */
     gap: 30px;
+    margin-top: 10px;
     display: flex;
-    margin-top: 50px;
+
 }
+
+/* .right {
+    margin-right: 350px;
+}
+
+.left {
+    margin-left: 200px;
+} */
 
 /* 수정버튼 */
 .ms-up {
@@ -309,9 +323,12 @@ span {
 
 .create-btn {
     display: flex;
-    gap: 100px;
     margin-top: 10px;
+    justify-content: space-between;
+    width: 1300px;
 }
+
+
 
 /* .btn-flex {
     display: flex;

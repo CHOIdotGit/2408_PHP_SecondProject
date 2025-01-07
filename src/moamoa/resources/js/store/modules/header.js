@@ -22,6 +22,7 @@ export default {
         // ***************************
         bellContent(context) {
             const url = '/api/parent/header/bell';
+            console.log(url);
 
             axios.get(url)
             .then(response => {
