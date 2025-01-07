@@ -124,7 +124,7 @@ const delCloseModal = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 740px;
+    height: 720px;
 }
 .content-list {
     display: grid;

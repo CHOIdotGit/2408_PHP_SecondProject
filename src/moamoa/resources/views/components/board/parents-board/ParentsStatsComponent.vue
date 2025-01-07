@@ -177,7 +177,7 @@ onMounted(() => {
 <style scoped>
 .stat-container {
   width: 1500px;
-  height: 765px;
+  height: 720px;
   margin-top: 20px;
   background-color: white;
   margin-left: 240px;
