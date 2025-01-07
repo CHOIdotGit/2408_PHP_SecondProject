@@ -31,7 +31,7 @@
                 <!-- <div class="btn-flex"> -->
                 <button @click="delOpenModal" class="ms-del">삭제</button>
                 <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
-                <button class="ms-comfirm">승인</button>
+                <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-comfirm">승인</button>
                 <!-- </div> -->
             </div>
         </div>
@@ -113,6 +113,14 @@ const goUpdate = (mission_id) => {
     console.log('수정 요청 mission_id : ', mission_id);
     store.dispatch('mission/goUpdateMission', mission_id);
     router.push('/parent/mission/update/'+ mission_id);
+}
+
+// 승인
+const approvalMission = () => {
+    const missionItem = ref([missionDetail.value.mission_id]);
+    store.dispatch('mission/approvalMission', missionItem.value);
+    alert('해당 미션의 승인이 완료되었습니다.');
+    goBack(missionDetail.value.child_id);
 }
 
 </script>
