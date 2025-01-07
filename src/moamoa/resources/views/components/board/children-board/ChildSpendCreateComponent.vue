@@ -4,49 +4,32 @@
             <div class="content-list">
                 <div class="content">
                     <p class="title">제목</p>
-                    <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus>
+                    <input type="text" class="ms-title" id="ms-title" maxlength="10" required autofocus v-model="transactionCreate.title">
                     <div class="date">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" :value="today" required>
+                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" required v-model="transactionCreate.transaction_date">
                     </div>
                 </div>
                 <div class="content">
                     <p class="title">지출 종류</p>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="meals" >
-                            <img class="ms-category" src="/img/icon-fastfood.png" alt=".">
-                        </input>
-                        <!-- <label for="study">학습</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="traffic" >
-                            <img class="ms-category" src="/img/icon-bus.png" alt=".">
-                        </input>
-                        <!-- <label for="habit">취미</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="shopping" >
-                            <img class="ms-category" src="/img/icon-shoppingbag.png" alt=".">
-                        </input>
-                        <!-- <label for="housework">집안일</label> -->
-                    </div>
-                    <div class="category-btn">
-                        <input type="radio" name="category" id="etc" >
-                            <img class="ms-category" src="/img/icon-checklist7.png" alt=".">
-                        </input>
-                        <!-- <label for="lifestyle">생활습관</label> -->
+                    <div class="category-btn" v-for="item in categories" :key="item">
+                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionCreate.category"></input>
+                        <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionCreate.category}, 'ms-category-btn']">
+                            <img class="ms-category" :src="item.img" >
+                            <p class="categoryName">{{ item.name }}</p>
+                        </label>
                     </div>
                 </div>
                 <div class="content">
                     <p class="title">지출 내용</p>
-                    <textarea class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <textarea class="ms-content" id="ms-content" placeholder="지출 내용을 입력하세요" v-model="transactionCreate.memo"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <input type="number" class="ms-amount" id="ms-amount" required>
+                    <input type="number" class="ms-amount" id="ms-amount" required v-model="transactionCreate.amount">
                 </div>
                 <div class="bottom-btn">
-                    <button class="create-btn">취소</button>
-                    <button class="create-btn">작성</button>
+                    <button @click="$router.replace('/child/spend/list')" class="create-btn">취소</button>
+                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="create-btn">작성</button>
                 </div>
             </div>
         </div>
@@ -55,11 +38,32 @@
 
 
 <script setup>
+import { reactive, ref } from 'vue';
+
 
 
 // 오늘 날짜 가져오기
 const today = new Date().toISOString().split('T')[0];
 
+// const onDay = ref(new Date().toISOString().slice(0, 10));
+
+const categories = reactive([
+    {name: '교통비비' , img:'/img/icon-bus.png', index : "0"}
+    ,{name: '취미' , img:'/img/icon-fastfood.png', index : "1"}
+    ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : "2"}
+    ,{name: '기타' , img:'/img/icon-checklist7.png', index : "3"}
+]);
+
+const radioCategories = ref('');
+
+const transactionCreate = reactive({
+    title: '',
+    transaction_date: today, 
+    category: radioCategories,
+    memo: '',
+    amount: '',
+    transaction_code: '1',
+});
 </script>
 
 

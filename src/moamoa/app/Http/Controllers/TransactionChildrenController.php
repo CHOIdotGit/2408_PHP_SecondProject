@@ -16,7 +16,8 @@ class TransactionChildrenController extends Controller
         $childTransactionList = Transaction::select('transactions.transaction_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date')
                                         ->where('transactions.child_id', $child->child_id)
                                         ->whereNull('transactions.deleted_at')
-                                        ->latest()
+                                        ->orderBy('transactions.transaction_date', 'DESC')
+                                        // ->latest()
                                         ->paginate(30);
     
     
@@ -55,6 +56,7 @@ class TransactionChildrenController extends Controller
             ,'memo' => $request->memo
             ,'amount' => $request->amount
             ,'transaction_date' => $request->transaction_date
+            ,'transaction_code' => $request->transaction_code
         ];
 
         $transactionDetail = Transaction::create($insertTransaction);

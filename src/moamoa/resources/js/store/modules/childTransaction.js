@@ -126,6 +126,7 @@ export default {
             formData.append('category', data.category);
             formData.append('memo', data.memo);
             formData.append('amount', data.amount);
+            formData.append('transaction_code', data.transaction_code);
             formData.append('parent_id', data.parent_id);
             formData.append('child_id', data.child_id);
             
