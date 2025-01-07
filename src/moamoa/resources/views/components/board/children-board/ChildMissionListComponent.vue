@@ -2,7 +2,7 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
-                <button @click="delOpenModal" class="btn btn-top mission-delete">삭제</button>
+                <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
@@ -29,7 +29,7 @@
             </div>
             <div class="for-buttons">
                 <!-- <button class="btn btn-bottom mission-go-back">뒤로가기</button> -->
-                <button @click="getChildId" class="btn btn-bottom mission-insert">+ 등록</button>
+                <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
             </div>
         </div>
     </div>
@@ -249,6 +249,13 @@ const getChildId = () => {
 
 .btn {
     cursor: pointer;
+    width: 100px;
+    height: 50px;
+    font-size: 1.5rem;
+    border: none;
+    color: #FFFFFF;
+    background-color:#5589e996 ;
+    margin-top: 30px;
 }
 
 .for-buttons{
@@ -256,24 +263,6 @@ const getChildId = () => {
     justify-content: right;
     gap: 30px;
     margin-left: 1170px;
-}
-
-.btn-top {
-    width: 100px;
-    height: 50px;
-    font-size: 1.5rem;
-    border: none;
-    background-color:#5589e996 ;
-    margin-top: 30px;
-}
-
-.btn-bottom {
-    width: 100px;
-    height: 50px;
-    font-size: 1.5rem;
-    border: none;
-    background-color:#5589e996 ;
-    margin-bottom: 30px;
 }
 
 #checkbox9 {

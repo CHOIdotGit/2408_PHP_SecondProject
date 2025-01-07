@@ -24,7 +24,7 @@
             </div>
             <div class="content">
                 <p class="title">금액(원)</p>
-                <p class="ms-amount">{{ missionDetail.amount}}</p>
+                <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
             </div>
             <div class="create-btn">
                 <div class="bottom-btn left">
@@ -142,7 +142,7 @@ const approvalMission = () => {
     background-color: #FFFFFF;
     width: 1500px;
     margin-top: 20px;
-    height: 720px;
+    height: 740px;
 }
 .content-list {
     display: grid;
@@ -167,7 +167,7 @@ const approvalMission = () => {
     font-size: 2rem;
     border-right: 2px solid #dfdfdf;
     padding: 10px;
-    width: 150px;
+    width: 160px;
     text-align: center;
 }
 
@@ -191,7 +191,10 @@ const approvalMission = () => {
     /* margin-left: 30px; */
     background-color: #A2CAAC;
     border-radius: 10px;
-    /* color: #FFFFFF; */
+    width: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 span {

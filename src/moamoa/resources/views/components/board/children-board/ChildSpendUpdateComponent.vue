@@ -12,11 +12,10 @@
                 <div class="content">
                     <p class="title">지출 종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
-                        <input type="radio" class="input" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category">
+                        <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionDetail.category}, 'ms-category-btn']">
-                            <img class="ms-category" :src="item.img" >
+                            <img class="ms-category-img" :src="item.img" >
                             <p>{{ item.name }}</p>
-                            <!-- <p>{{ item.index }}</p> -->
                         </label>
                     </div>
                 </div>
@@ -30,7 +29,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push('/child/spend/detail/${transaction_id}')" class="create-btn">취소</button>
-                    <button @click="updateTransaction" class="create-btn">수정</button>
+                    <button @click="updateTransaction" class="create-btn">지출 수정</button>
                 </div>
             </div>
         </div>
@@ -143,6 +142,33 @@ span {
     text-align: center;
 }
 
+.category-btn > input {
+    display: none;
+}
+
+.ms-category-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: #c9cfca;
+    text-align: center;
+    cursor: pointer;
+}
+
+.checked-category-btn {
+    background-color: #A2CAAC;
+}
+
+.ms-category-img {
+    margin-top: 13px;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+
+}
+
 /* 미션 종류 카테고리 이미지 */
 .category-btn {
     display: flex;
@@ -171,7 +197,7 @@ span {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    background-color: #5589e996;
+    background-color: #c9cfca;
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
@@ -220,6 +246,7 @@ span {
     height: 50px;
     font-size: 1.5rem;
     border: none;
+    color: #FFFFFF;
     background-color: #5589e996 ;
     margin-bottom: 30px;
     cursor: pointer;

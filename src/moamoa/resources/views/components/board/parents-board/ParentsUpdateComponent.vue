@@ -183,11 +183,6 @@ span {
     cursor: pointer;
 }
 
-/* db에 저장된 카테고리 표시 */
-/* .categorybtn-green {
-    background-color: #A2CAAC;
-} */
-
 .checked-category-btn {
     background-color: #A2CAAC;
 }

@@ -32,8 +32,8 @@
                     <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">취소</button>
-                    <button @click="getUpdateMission" class="create-btn">수정</button>
+                    <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">수정 취소</button>
+                    <button @click="getUpdateMission" class="create-btn">미션 수정</button>
                 </div>
             </div>
         </div>
@@ -219,17 +219,19 @@ span {
     gap: 30px;
     margin: auto;
     margin-top: 10px;
-    margin-right: 200px;
+    margin-right: 300px;
 }
 
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
+    color: white;
     background-color: #5589e996 ;
     margin-bottom: 30px;
+    cursor: pointer;
 }
 </style>

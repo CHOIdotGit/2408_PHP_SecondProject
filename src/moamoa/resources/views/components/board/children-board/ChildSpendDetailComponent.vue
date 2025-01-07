@@ -25,10 +25,9 @@
                     <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}</p>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="goBack" class="ms-cancel">취소</button>
-                    <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                    <button class="create-btn ms-up">완료</button>
-                    <button @click="goUpdate(transactionDetail.transaction_id)" class="create-btn ms-comfirm">수정</button>
+                    <button @click="goBack" class="ms-cancel bottom-btn left">뒤로가기</button>
+                    <button @click="delOpenModal" class="btn bottom-btn right">지출 삭제</button>
+                    <button @click="goUpdate(transactionDetail.transaction_id)" class="btn bottom-btn right">지출 수정</button>
                 </div>
             </div>
         </div>
@@ -45,7 +44,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제</button>
+                <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제하기</button>
             </div>
         </div>
     </div>
@@ -81,7 +80,7 @@ const categories = reactive([
 
 // 뒤로가기
 const goBack = (child_id) => {
-    store.dispatch('childTransaction/setChildTransactionList', child_id);
+    store.dispatch('childTransaction/transactionList', child_id);
     router.push('/child/spend/list');
 
 }
@@ -192,7 +191,7 @@ span {
 }
 
 .category-btn > label {
-    color: #5589e996;
+    color: #c9cfca;
     font-size: 0.9rem;
     padding-top: 5px;
 }
@@ -207,7 +206,7 @@ span {
     background-size: cover;
     background-repeat: no-repeat;
     border: none;
-    background-color: #5589e996;
+    background-color: #c9cfca;
     cursor: pointer;
     border-radius: 50px;
     padding: 5px;
@@ -245,38 +244,30 @@ span {
     font-size: 1.2rem;
     border: 1px solid #ACACAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    margin-left: 130px;
-    margin-right: 350px;
+    /* margin-left: 130px; */
+    margin-right: 640px;
+}
+
+.btn {
+    color: #5589e996;
+    background-color: #FFFFFF;
+    font-size: 1.2rem;
+    border: 1px solid #5589e996;
+    padding: 5px;
+    width: 120px;
+    border-radius: 0px;
+    cursor: pointer;
 }
 
 /* 삭제버튼 */
 .ms-del {
     /* margin-left: 250px; */
     color: #5589e996;
-    background-color: #FFFF;
-    font-size: 1.2rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 100px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
-.bottom-btn{
-    /* width: 60px; */
-    gap: 30px;
-    display: flex;
-    margin-top: 10px;
-}
-
-/* 수정버튼 */
-.ms-up {
-    color: #FFFF;
-    background-color: #5589e996;
+    background-color: #FFFFFF;
     font-size: 1.2rem;
     border: 1px solid #5589e996;
     padding: 5px;
@@ -287,6 +278,35 @@ span {
 
 /* 승인버튼 */
 .ms-comfirm {
+    color: #FFFF;
+    background-color: #5589e996;
+    font-size: 1.2rem;
+    border: 1px solid #5589e996;
+    padding: 5px;
+    width: 120px;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.bottom-btn{
+    /* width: 1400px; */
+    gap: 30px;
+    display: flex;
+    margin-top: 10px;
+    justify-content: space-between;
+}
+
+
+.right {
+    margin-right: 350px;
+}
+
+.left {
+    margin-left: 200px;
+}
+
+/* 수정버튼 */
+.ms-up {
     color: #FFFF;
     background-color: #5589e996;
     font-size: 1.2rem;

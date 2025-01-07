@@ -24,16 +24,16 @@
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>
-                    <p class="ms-amount">{{ missionDetail.amount}}</p>
+                    <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}</p>
                 </div>
                 <div class="bottom-btn">
                     <div class="bottom-btn left">
-                        <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                        <button @click="goBack(missionDetail.child_id)" class="create-btn ms-cancel">뒤로가기</button>
                     </div>
                     <div class="bottom-btn right">
-                        <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                        <button class="create-btn ms-up">완료</button>
-                        <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">수정</button>
+                        <button @click="delOpenModal" class="create-btn ms-del">미션 삭제</button>
+                        <button class="create-btn ms-up">미션 완료</button>
+                        <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">미션 수정</button>
                     </div>
                 </div>
             </div>
@@ -240,34 +240,6 @@ span {
     line-height: 45px;
 }
 
-/* 취소버튼 */
-.ms-cancel {
-    color: #ACACAC;
-    background-color: #FFFFFF;
-    font-size: 1.2rem;
-    border: 1px solid #ACACAC;
-    padding: 5px;
-    width: 100px;
-    height: 50px;
-    border-radius: 0px;
-    cursor: pointer;
-    margin-left: 130px;
-    margin-right: 350px;
-}
-
-/* 삭제버튼 */
-.ms-del {
-    /* margin-left: 250px; */
-    color: #5589e996;
-    background-color: #FFFF;
-    font-size: 1.2rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 100px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
 .bottom-btn{
     /* width: 1400px; */
     gap: 30px;
@@ -275,7 +247,6 @@ span {
     margin-top: 10px;
     justify-content: space-between;
 }
-
 
 .right {
     margin-right: 350px;
@@ -285,29 +256,46 @@ span {
     margin-left: 200px;
 }
 
-
-/* 수정버튼 */
-.ms-up {
+/* 버튼 종합 */
+.create-btn {
     color: #FFFF;
     background-color: #5589e996;
     font-size: 1.2rem;
     border: 1px solid #5589e996;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     border-radius: 0px;
     cursor: pointer;
 }
 
-/* 승인버튼 */
-.ms-comfirm {
-    color: #FFFF;
-    background-color: #5589e996;
+/* 삭제버튼 */
+.ms-del {
+    
+}
+
+/* 취소버튼 */
+.ms-cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
     font-size: 1.2rem;
-    border: 1px solid #5589e996;
+    border: 1px solid #ACACAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
+    height: 50px;
     border-radius: 0px;
     cursor: pointer;
+    margin-left: 130px;
+    margin-right: 350px;
+}
+
+/* 수정버튼 */
+.ms-up {
+    
+}
+
+/* 승인버튼 */
+.ms-comfirm {
+    
 }
 
 .btn-right {

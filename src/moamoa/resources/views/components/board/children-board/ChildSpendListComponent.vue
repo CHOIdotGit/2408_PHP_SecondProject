@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="for-buttons">
-                <button @click="delOpenModal" class="btn-bottom mission-go-back">삭제</button>
-                <button @click="goSpendCreate" class="btn-bottom mission-insert">작성</button>
+                <button @click="delOpenModal" class="btn-bottom mission-go-back">지출 삭제</button>
+                <button @click="goSpendCreate" class="btn-bottom mission-insert">지출 작성</button>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteCheckedSpend()" class="modal-del">삭제</button>
+                <button @click="deleteCheckedSpend()" class="modal-del">지출 삭제</button>
             </div>
         </div>
     </div>
@@ -212,20 +212,21 @@ const delCloseModal = () => { //모달창 닫기
 }
 
 .btn-top {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
-    background-color:#5589e996 ;
+    background-color:#5589e996;
     margin-top: 30px;
 }
 
 .btn-bottom {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
-    background-color:#5589e996 ;
+    color: white;
+    background-color:#5589e996;
     margin: 30px 0;
     cursor: pointer;
 }
