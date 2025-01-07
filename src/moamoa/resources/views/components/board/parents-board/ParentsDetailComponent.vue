@@ -23,7 +23,7 @@
                 <div class="ms-content">{{ missionDetail.content}}</div>
             </div>
             <div class="content">
-                <p class="title">금액(원)</p>
+                <p class="title">미션 금액</p>
                 <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
             </div>
             <div class="create-btn">
@@ -169,6 +169,8 @@ const approvalMission = () => {
     padding: 10px;
     width: 160px;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 제목 */
@@ -259,6 +261,8 @@ span {
     font-size: 1.8rem;
     padding-left: 5px;
     line-height: 45px;
+    display: flex;
+    align-items: center;
 }
 
 /* 취소버튼 */
@@ -324,7 +328,7 @@ span {
     font-size: 1.2rem;
     border: 1px solid #A2CAAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     border-radius: 0px;
     cursor: pointer;
 }
@@ -402,8 +406,8 @@ span {
 .modal-img{
     width: 100px;
     height: 100px;
-    background-color: #FFFFFF;
-    border: 3px solid #5589e996;
+    /* background-color: #FFFFFF; */
+    /* border: 3px solid #5589e996; */
     border-radius: 50px;
     padding: 3px;
 }

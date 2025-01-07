@@ -14,8 +14,8 @@
                 <span class="kids-name">자녀이름</span>
                 <span class="status">상태</span>
                 <p class="mission-type">종류</p>
-                <p class="mission-name">미션이름</p>
-                <p class="charge">금액</p>
+                <p class="mission-name">미션 제목</p>
+                <p class="charge">미션 금액</p>
                 <p class="due-date">기한</p>
             </div>
             <div class="scroll">
@@ -227,12 +227,12 @@ const approvalMission = () => {
 
 .mission-title-bar {
     display: grid;
-    grid-template-columns: 40px 150px 100px 100px 300px 90px 350px;
+    grid-template-columns: 40px 150px 100px 100px 300px 150px 340px;
     height: 60px;
-    gap: 40px;
+    gap: 30px;
     background-color: #F5F5F5;
     font-size: 2rem;
-    margin: 10px;
+    /* margin: 10px; */
     align-items: center;
     width: 1400px;
     text-align: center;
@@ -248,7 +248,7 @@ const approvalMission = () => {
 
 .mission-content {
     display: grid;
-    grid-template-columns: 40px 150px 90px 120px 300px 90px 320px;
+    grid-template-columns: 40px 130px 90px 100px 300px 90px 380px;
     height: 40px;
     gap: 40px;
     /* background-color: #F5F5F5; */
@@ -341,7 +341,7 @@ const approvalMission = () => {
 .scroll {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 40px;
     height: 400px;
     overflow-y: scroll;
     overflow-x: hidden;

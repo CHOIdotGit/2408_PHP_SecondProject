@@ -1,32 +1,34 @@
 <template>
     <div class="main-container">
         <div v-if="transactionDetail"  class="detail-container">
-            <div class="content" >
-                <p class="title h-60">제목</p>
-                <p class="ms-title h-60">{{ transactionDetail.title }}</p>
-                <div class="date">
-                    <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>
+            <div class="content-list">
+                <div class="content" >
+                    <p class="title h-60">지출 제목</p>
+                    <p class="ms-title h-60">{{ transactionDetail.title }}</p>
+                    <div class="date">
+                        <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>
+                    </div>
+                </div>
+                <div class="content">
+                    <p class="title">지출 종류</p>
+                    <div class="category-btn" v-for="item in categories" :key="item" :class="{'category-btn-green' : item.index === Number(category) }">
+                        <img class="ms-category-img" :src="item.img">
+                        <p class="category-name">{{ item.name }}</p>
+                    </div>
+                </div>
+                <div class="content">
+                    <p class="title">사용 내역</p>
+                    <div class="ms-content">{{ transactionDetail.memo}}</div>
+                </div>
+                <div class="content">
+                    <p class="title">지출 금액</p>
+                    <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
+                </div>
+                <div class="create-btn">
+                    <button @click="goBack(transactionDetail.child_id)" class="ms-cancel">뒤로가기</button>
                 </div>
             </div>
-            <div class="content">
-                <p class="title">지출 종류</p>
-                <div class="category-btn" v-for="item in categories" :key="item" :class="{'category-btn-green' : item.index === Number(category) }">
-                    <img class="ms-category-img" :src="item.img">
-                    <p>{{ item.name }}</p>
-                </div>
-            </div>
-            <div class="content">
-                <p class="title">사용 내역</p>
-                <div class="ms-content">{{ transactionDetail.memo}}</div>
-            </div>
-            <div class="content">
-                <p class="title">금액(원)</p>
-                <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
-            </div>
-            <div class="create-btn">
-                <button @click="goBack(transactionDetail.child_id)" class="ms-cancel">뒤로가기</button>
-            </div>
-        </div>    
+        </div>
     </div>
 </template>
 
@@ -74,7 +76,7 @@ const categories = reactive([
 }
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -94,17 +96,19 @@ const categories = reactive([
     font-size: 2rem;
     border-right: 2px solid #dfdfdf;
     padding: 10px;
-    width: 150px;
+    width: 160px;
     text-align: center;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 제목 */
 .ms-title {
-    width: 500px;
-    border: 3px solid #A2CAAC;
+    width: 450px;
+    /* border: 3px solid #A2CAAC; */
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
     display: flex;
     align-items: center;
@@ -112,10 +116,11 @@ const categories = reactive([
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
+    background-color: #A2CAAC;
 }
 
 span {
@@ -162,26 +167,30 @@ span {
 
 }
 
+.category-name {
+    margin-top: 15px;
+}
+
 /* 미션 내용 */
 .ms-content {
     width: 500px;
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     font-size: 1.3rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;
     line-height: 45px;
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
 }
 
