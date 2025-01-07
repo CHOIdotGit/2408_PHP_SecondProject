@@ -24,12 +24,12 @@
           <span class="color-green">{{ parent.name }}</span> 님의 <br>자녀 입니까? <!-- 가 맞으십니까? -->
         </span>
 
-        <span class="mini-text">
+        <!-- <span class="mini-text">
           아니라면 뒤로 돌아가 가족코드를 확인해주세요
-        </span>
+        </span> -->
 
         <div class="btn-group">
-          <button @click="$store.commit('auth/setRegistFlg', true);" type="button">뒤로가기</button>
+          <button @click="$store.commit('auth/setRegistFlg', true);" type="button">아닙니다</button>
           <button @click="nextComplete" type="button">맞습니다</button>
         </div>
       </div>

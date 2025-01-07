@@ -167,7 +167,7 @@ class MissionController extends Controller
         try {
             DB::beginTransaction();
 
-            $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 1)->get();
+            $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 0)->get();
             if(count($missions) > 0) {
                 foreach($missions as $mission) {
                     $transactionData = new Transaction();
@@ -183,7 +183,7 @@ class MissionController extends Controller
                 }
     
                 Mission::whereIn('mission_id', $request->mission_ids)
-                    ->where('status', 1)
+                    ->where('status', 0)
                     ->update(['status' => 2]);
             }
 

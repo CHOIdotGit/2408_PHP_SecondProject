@@ -196,7 +196,7 @@ const approvalMission = () => {
         store.dispatch('mission/approvalMission', checkboxItem.value);
         store.dispatch('mission/missionList', route.params.id);
         checkboxItem.value = [];
-        alert('대기중인 미션의 승인이 완료되었습니다.');
+        alert('진행중인 미션의 승인이 완료되었습니다.');
     }else {
         alert('선택되어있는 미션이 없습니다.');
     }

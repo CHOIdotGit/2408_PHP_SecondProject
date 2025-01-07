@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, onBeforeUnmount, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
   // 혹시모르니 초기화해둠
@@ -40,6 +40,25 @@ import { useStore } from 'vuex';
       store.commit('auth/resetErrMsg');
     }
   });
+
+  const preventBackNavigation = (e) => {
+    e.preventDefault(); // 뒤로 가기 방지
+    history.pushState(null, '', window.location.href); // 페이지 URL을 강제로 다시 설정
+  }
+
+  onMounted(() => {
+    // 뒤로, 앞으로 버튼 이동시
+    window.addEventListener('popstate', preventBackNavigation);
+    
+    // 히스토리 상태 변경을 강제로 만들어서 뒤로 가기를 막음
+    history.pushState(null, '', window.location.href);
+  });
+
+  // 다음 컴포넌트로 넘어갈 때 이벤트를 제거
+  onBeforeUnmount(() => {
+    window.removeEventListener('popstate', preventBackNavigation);
+  });
+
 
 </script>
 
