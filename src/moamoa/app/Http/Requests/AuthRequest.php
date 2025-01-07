@@ -36,10 +36,13 @@ class AuthRequest extends FormRequest {
       $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
       $rules['tel'] = ['required', 'regex:/^\d{10,11}$/']; // 10 ~ 11자의 숫자
       $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/']; // 첫문자는 영문대소문자한글 그뒤는 숫자포함
-      $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp'];
-
-    // 자녀 회원가입 매칭 실행시 유효성 체크
-      if($this->routeIs('auth.child.regist.matching')) {
+      
+      // 회원가입 시 이미지 출력
+      if($this->routeIs('auth.store.user')) {
+        $rules['profile'] = ['nullable', 'image', 'mimes:jpg,jpeg,png,gif,webp'];
+      }
+      // 자녀 회원가입 매칭 실행시 유효성 체크
+      elseif($this->routeIs('auth.child.regist.matching')) {
         $rules['fam_code'] = ['required', 'regex:/^[A-Z0-9]{8}$/'];
       }
     }

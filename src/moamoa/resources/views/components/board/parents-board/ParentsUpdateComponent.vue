@@ -35,8 +35,8 @@
                     <!-- {{ missionDetail.amount}} -->
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.push(`/parent/mission/detail/${mission_id}`)" class="create-btn">취소</button>
-                    <button @click="getUpdateMission" class="create-btn">수정</button>
+                    <button @click="$router.push(`/parent/mission/detail/${mission_id}`)" class="create-btn cancel">수정 취소</button>
+                    <button @click="getUpdateMission" class="create-btn">수정 완료</button>
                 </div>
             </div>
         </div>
@@ -237,17 +237,25 @@ span {
     margin-top: 50px;
     cursor: pointer;
     margin-right: 200px;
+    color: #FFFFFF;
 }
 
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
     background-color: #A2CAAC ;
     margin-bottom: 30px;
     cursor: pointer;
+}
+/* 취소버튼 */
+.cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    border: 1px solid #ACACAC;
+
 }
 </style>

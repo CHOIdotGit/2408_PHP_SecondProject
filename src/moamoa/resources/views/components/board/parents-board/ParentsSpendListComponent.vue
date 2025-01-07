@@ -4,9 +4,9 @@
             <div class="mission-title-bar">
                 <span class="mission-name">자녀이름</span>
                 <span class="category">종류</span>
-                <p class="top-title">제목</p>
-                <p class="charge">금액</p>
-                <p class="due-date">소비일자</p>
+                <p class="top-title">지출 제목</p>
+                <p class="charge">지출 금액</p>
+                <p class="due-date">지출 일자</p>
             </div>
             <div class="scroll">
                 <div v-if="transactionList && transactionList.length" v-for="item in transactionList" :key="item" class="mission-inserted-list">
@@ -94,26 +94,28 @@ onMounted(() => {
 
 .mission-title-bar {
     display: grid;
-    grid-template-columns:200px 90px 300px 90px 300px;
+    grid-template-columns:200px 90px 300px 150px 280px;
     height: 60px;
-    gap: 100px;
+    gap: 80px;
     background-color: #F5F5F5;
     font-size: 2rem;
     align-items: center;
     width: 1400px;
     margin-top: 70px;
     text-align: center;
+    padding-left: 50px;
 }
 
 .mission-content {
     display: grid;
-    grid-template-columns: 200px 90px 300px 90px 300px;
+    grid-template-columns: 200px 90px 300px 150px 280px;
     min-height: 60px;
-    gap: 100px;
+    gap: 80px;
     font-size: 1.3rem;
     align-items: center;
     width: 1400px;
     text-align: center;
+    padding-left: 50px;
 }
 
 .for-buttons{
@@ -165,6 +167,6 @@ onMounted(() => {
 }
 
 .title:hover {
-    color: #5589e996;
+    color: #A2CAAC;
 }
 </style>
