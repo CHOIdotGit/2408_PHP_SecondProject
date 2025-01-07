@@ -168,22 +168,24 @@ class MissionController extends Controller
             DB::beginTransaction();
 
             $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 1)->get();
-            foreach($missions as $mission) {
-                $transactionData = new Transaction();
-                $transactionData->parent_id = $mission->parent_id;
-                $transactionData->child_id = $mission->child_id;
-                $transactionData->category = '3';
-                $transactionData->transaction_code = '0';
-                $transactionData->title = '미션완료: '.$mission->title;
-                $transactionData->amount = $mission->amount;
-                $transactionData->transaction_date = now()->format('Y-m-d');
-
-                $transactionData->save();
+            if(count($missions) > 0) {
+                foreach($missions as $mission) {
+                    $transactionData = new Transaction();
+                    $transactionData->parent_id = $mission->parent_id;
+                    $transactionData->child_id = $mission->child_id;
+                    $transactionData->category = '3';
+                    $transactionData->transaction_code = '0';
+                    $transactionData->title = '미션완료: '.$mission->title;
+                    $transactionData->amount = $mission->amount;
+                    $transactionData->transaction_date = now()->format('Y-m-d');
+    
+                    $transactionData->save();
+                }
+    
+                Mission::whereIn('mission_id', $request->mission_ids)
+                    ->where('status', 1)
+                    ->update(['status' => 2]);
             }
-
-            Mission::whereIn('mission_id', $request->mission_ids)
-                ->where('status', 1)
-                ->update(['status' => 2]);
 
             DB::commit();
 
