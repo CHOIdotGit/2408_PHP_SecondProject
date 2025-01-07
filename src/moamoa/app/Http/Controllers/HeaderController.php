@@ -32,25 +32,25 @@ public function index() {
 }
 
 public function bellList() {
-        // ************************************************
+    // ************************************************
     // *********헤더 미션/지출 알람 목록 출력************
     // ************************************************ 
-    // $parent = Auth::guard('parents')->user();
-    // $bellContent = Child::select('children.child_id', 'children.name', 'children.profile')
-    //                     ->where('children.parent_id', $parent->parent_id)
-    //                     ->with([
-    //                         'missions' => function ($query) {
-    //                             $query->where('alarm', 0) // 미션 알람이 0인 조건
-    //                                     ->orderBy('created_at', 'DESC');
-    //                         }
-    //                     ])
-    //                     ->get();
+    $parent = Auth::guard('parents')->user();
+    $bellContent = Child::select('children.child_id', 'children.name', 'children.profile')
+                        ->where('children.parent_id', $parent->parent_id)
+                        ->with([
+                            'missions' => function ($query) {
+                                $query->where('alarm', 0) // 미션 알람이 0인 조건
+                                        ->orderBy('created_at', 'DESC');
+                            }
+                        ])
+                        ->get();
 
-    // $responseData = [
-    //     'success' => true
-    //     ,'등록한 미션 알람' => $bellContent
-    // ];
-    // return response()->json($responseData, 200);
+    $responseData = [
+        'success' => true
+        ,'등록한 미션 알람' => $bellContent
+    ];
+    return response()->json($responseData, 200);
 }
 
 }

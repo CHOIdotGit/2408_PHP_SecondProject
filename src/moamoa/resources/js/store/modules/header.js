@@ -6,18 +6,32 @@ export default {
 
     state: () => ({
         childNameList: [], // 자녀 이름 목록
-        
+        bellContent: [],
     }),
     mutations: {
         setChildNameList(state, childNameList) {
             state.childNameList = childNameList;
-        }
+        },
+        setBellContent(state, bellContent) {
+            state.bellContent = bellContent
+        },
     },
     actions: {
         // ***************************
         // 부모 미션 등록 알람
         // ***************************
-        //->(다음에)
+        bellContent(context) {
+            const url = '/api/parent/header/bell';
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setBellContent', response.data.bellContent);
+                console.log('a미션 데이터:', response.data.bellContent );
+            })
+            .catch(error => {
+                console.log('알람 불러오기 실패', error);
+            })
+        },
 
 
         // ***************************

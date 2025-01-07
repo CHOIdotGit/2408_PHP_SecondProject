@@ -15,9 +15,8 @@
                     <p class="title">미션 종류</p>
                     <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                         <img class="ms-category-img" :src="item.img" >
-                        <p>{{ item.name }}</p>
+                        <p class="category-name">{{ item.name }}</p>
                     </div>
-                    <p>{{ missionDetail.category }}</p>
                 </div>
                 <div class="content">
                     <p class="title">미션 내용</p>
@@ -28,10 +27,14 @@
                     <p class="ms-amount">{{ missionDetail.amount}}</p>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
-                    <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
-                    <button class="create-btn ms-up">완료</button>
-                    <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">수정</button>
+                    <div class="bottom-btn right">
+                        <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                    </div>
+                    <div class="bottom-btn right">
+                        <button @click="delOpenModal" class="create-btn ms-del">삭제</button>
+                        <button class="create-btn ms-up">완료</button>
+                        <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">수정</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -157,19 +160,21 @@ const delCloseModal = () => {
 /* 미션 제목 */
 .ms-title {
     width: 450px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     outline: none;
     border-radius: 10px;
-    font-size: 2rem;
+    font-size: 1.8rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 10px;
     padding: 10px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
 }
 
 span {
@@ -199,7 +204,7 @@ span {
 
 /* db에 저장된 카테고리 표시 */
 .categorybtn-green {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 .ms-category-img {
@@ -211,22 +216,26 @@ span {
     border: none;
 
 }
+.category-name {
+    margin-top: 15px;
+}
+
 /* 미션 내용 */
 .ms-content {
     width: 500px;
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     font-size: 1.3rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 10px;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     padding-left: 5px;
     line-height: 45px;
 }
@@ -260,11 +269,21 @@ span {
 }
 
 .bottom-btn{
-    /* width: 60px; */
+    /* width: 1400px; */
     gap: 30px;
     display: flex;
     margin-top: 10px;
+    justify-content: space-between;
 }
+
+.left {
+    margin-left: 450px;
+}
+
+.right {
+    margin-right: 350px;
+}
+
 
 /* 수정버튼 */
 .ms-up {

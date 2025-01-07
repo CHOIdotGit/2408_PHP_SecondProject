@@ -15,7 +15,7 @@
                 <p class="title">미션 종류</p>
                 <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                     <img class="ms-category-img" :src="item.img" >
-                    <p>{{ item.name }}</p>
+                    <p class="category-name">{{ item.name }}</p>
                 </div>
             </div>
             <div class="content">
@@ -161,19 +161,23 @@ const goUpdate = (mission_id) => {
 /* 미션 제목 */
 .ms-title {
     width: 450px;
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     outline: none;
     border-radius: 10px;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     padding-left: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
+    background-color: #A2CAAC;
+    border-radius: 10px;
 }
 
 span {
@@ -216,22 +220,26 @@ span {
 
 }
 
+.category-name {
+    margin-top: 15px;
+}
+
 /* 미션 내용 */
 .ms-content {
     width: 500px;
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     font-size: 1.3rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #A2CAAC;
+    /* border: 3px solid #A2CAAC; */
     border-radius: 10px;
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     padding-left: 5px;
     line-height: 45px;
 }

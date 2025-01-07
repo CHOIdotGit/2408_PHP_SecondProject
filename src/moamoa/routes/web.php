@@ -35,9 +35,12 @@ Route::prefix('/api/auth')->group(function () {
 });
 // 
 
-
+// ******************************
+// *         부모 관련           *
+// ******************************
 // 부모 홈
 Route::get('/api/parent/home', [HomeController::class, 'index']);
+
 
 // 부모 미션 리스트
 Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index']);
@@ -68,8 +71,10 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 // 부모 통계 페이지
 Route::get('/api/parent/stats', [StatsController::class, 'index']);
 
-//********************************************************************************************* */
 
+// ******************************
+// *         자녀 관련           *
+// ******************************
 // 자녀 홈
 Route::get('/api/child/home', [HomeController::class, 'show']);
 
@@ -108,9 +113,11 @@ Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenContro
 
 // 자녀 지출 수정 페이지
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
-//********************************************************************************************* */
 
 
+// ******************************
+// *         헤더 관련           *
+// ******************************
 // 헤더 관련(드랍메뉴 자녀이름 출력)
 Route::get('/api/parent/header', [HeaderController::class, 'index']);
 
@@ -118,6 +125,9 @@ Route::get('/api/parent/header', [HeaderController::class, 'index']);
 Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 
 
+// ******************************
+// *         달력 관련           *
+// ******************************
 // 자녀 달력
 Route::get('/api/child/calendar', [CalendarController::class, 'index']);
 

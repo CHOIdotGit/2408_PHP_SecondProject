@@ -74,7 +74,7 @@
                         <img class="bell-icon" src="/img/icon-bell.png" width="40px" height="40px">
                     </button>
                     <!-- 벨 드롭 메뉴 -->
-                    <!-- <div class="dropdown-bell" v-show="bellListDropMenu">
+                    <div class="dropdown-bell" v-show="bellListDropMenu" v-if="bellContent.length > 0">
                         <a href="#" class="alram" v-for="item in bellContent" :key="item">
                             <img class="alram-pro" :src="item.img" width="50px" height="50px">
                             <div  class="bell-content">
@@ -82,7 +82,7 @@
                                 <p>{{ item.created_at }}</p>
                             </div>
                         </a>
-                    </div> -->
+                    </div>
                 </div>
             </div> 
         </div>
@@ -167,6 +167,7 @@ const bellDropDown = () => {
 }
 
 const bellContent = computed(() => store.state.header.bellContent);
+console.log(store.state.header.bellContent);
 
 </script>
 <style>
