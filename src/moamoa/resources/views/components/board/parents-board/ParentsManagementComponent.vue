@@ -116,7 +116,7 @@ onMounted(() => {
 .container {
     margin-top: 20px;
     width: 1500px;
-    height: 740px;
+    height: 720px;
     background-color: white;
     display: flex;
     gap: 40px;
@@ -170,7 +170,7 @@ onMounted(() => {
 }
 
 .child-box {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 .nickname {
     font-size: 1.5rem;
@@ -325,7 +325,7 @@ onMounted(() => {
 
 .blank {
     color: transparent;
-    height: 30px;
+    height: 5px;
 }
 
 .child-list-triangle {
