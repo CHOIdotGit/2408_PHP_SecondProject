@@ -32,8 +32,8 @@
                     <!-- <div class="btn-flex"> -->
                 </div>
                 <div class="bottom-btn right">
-                    <button @click="delOpenModal" class="ms-del">삭제</button>
-                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">수정</button>
+                    <button @click="delOpenModal" class="ms-del">미션 삭제</button>
+                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">미션 수정</button>
                     <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-comfirm">승인</button>
                 </div>
                 <!-- </div> -->
@@ -191,6 +191,7 @@ const approvalMission = () => {
     /* margin-left: 30px; */
     background-color: #A2CAAC;
     border-radius: 10px;
+    /* color: #FFFFFF; */
 }
 
 span {
@@ -261,10 +262,10 @@ span {
 .ms-cancel {
     color: #ACACAC;
     background-color: #FFFFFF;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     border: 1px solid #ACACAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
@@ -277,10 +278,10 @@ span {
     /* margin-left: 250px; */
     color: #A2CAAC;
     background-color: #FFFF;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     border-radius: 0px;
     cursor: pointer;
 }
@@ -305,10 +306,10 @@ span {
 .ms-up {
     color: #FFFF;
     background-color: #A2CAAC;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     border-radius: 0px;
     cursor: pointer;
 }
@@ -333,7 +334,7 @@ span {
     display: flex;
     margin-top: 10px;
     justify-content: space-between;
-    width: 1300px;
+    width: 1200px;
 }
 
 

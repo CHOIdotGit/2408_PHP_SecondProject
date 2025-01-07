@@ -119,7 +119,7 @@ onMounted(() => {
 .for-buttons{
     display: flex;
     justify-content: right;
-    gap: 30px;
+    /* gap: 30px; */
     margin-left: 1170px;
     height: 50px;
 }
@@ -134,11 +134,13 @@ onMounted(() => {
 }
 
 .btn-bottom {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
-    background-color:#5589e996 ;
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    border: 1px solid #ACACAC;
     cursor: pointer;
 }
 

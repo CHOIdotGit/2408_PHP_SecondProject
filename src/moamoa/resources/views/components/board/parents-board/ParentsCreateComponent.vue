@@ -35,8 +35,8 @@
                     <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="getChildId(childId)" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">등록</button>
+                    <button @click="getChildId(childId)" class="create-btn cancel">등록 취소</button>
+                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">미션 등록</button>
                 </div>
             </div>
         </div>
@@ -256,20 +256,27 @@ span {
     gap: 30px;
     margin: auto;
     margin-top: 10px;
-    margin-right: 200px;
+    margin-right: 150px;
 
 }
 
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
     background-color: #A2CAAC ;
     margin-bottom: 30px;
     cursor: pointer;
+    color: #FFFFFF;
+}
+
+.cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    border: 1px solid #ACACAC;
 }
 
 </style>

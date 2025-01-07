@@ -3,8 +3,8 @@
         <div class="list-container">
             <div class="for-buttons">
                 
-                <button @click="approvalMission" class="btn-top mission-confirm">승인</button>
-                <button @click="delOpenModal" class="btn-top mission-delete">삭제</button>
+                <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
+                <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
                 
             </div>
             <div class="mission-title-bar">
@@ -37,7 +37,7 @@
             <div class="for-buttons margin-top">
                 <router-link to="/parent/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
                 <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
-                <button @click="getChildId(childId)" class="btn-bottom mission-insert">+ 등록</button>
+                <button @click="getChildId(childId)" class="btn-bottom mission-insert">+ 미션 등록</button>
             </div>
         </div>
     </div>
@@ -264,27 +264,35 @@ const approvalMission = () => {
     display: flex;
     justify-content: right;
     gap: 30px;
-    margin-left: 1170px;
+    margin-left: 1100px;
 }
 
 .btn-top {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
     background-color:#A2CAAC ;
     margin-top: 30px;
     cursor: pointer;
+    color: #FFFFFF;
 }
 
 .btn-bottom {
-    width: 100px;
+    width: 120px;
     height: 50px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border: none;
     background-color:#A2CAAC ;
     margin-bottom: 30px;
     cursor: pointer;
+    color: #FFFFFF;
+}
+
+.mission-goback {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    border: 1px solid #ACACAC;
 }
 
 .checkbox {
