@@ -19,7 +19,7 @@
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p>{{ item.name }}</p>
+                            <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
 
@@ -107,7 +107,7 @@ const getUpdateMission = () => {
 
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }
@@ -200,6 +200,10 @@ span {
     background-repeat: no-repeat;
     border: none;
 
+}
+
+.category-name {
+    margin-top: 10px;
 }
 
 /* 미션 내용 */

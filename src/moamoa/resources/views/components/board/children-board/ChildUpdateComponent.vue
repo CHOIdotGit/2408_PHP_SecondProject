@@ -172,7 +172,7 @@ span {
 } */
 
 .checked-category-btn {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 .ms-category-img {

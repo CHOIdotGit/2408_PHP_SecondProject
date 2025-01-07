@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="for-buttons">
-                <button class="btn btn-bottom mission-go-back">뒤로가기</button>
+                <!-- <button class="btn btn-bottom mission-go-back">뒤로가기</button> -->
                 <button @click="getChildId" class="btn btn-bottom mission-insert">+ 등록</button>
             </div>
         </div>

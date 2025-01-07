@@ -175,7 +175,7 @@ class MissionController extends Controller
                     $transactionData->child_id = $mission->child_id;
                     $transactionData->category = '3';
                     $transactionData->transaction_code = '0';
-                    $transactionData->title = '미션완료: '.$mission->title;
+                    $transactionData->title = $mission->title;
                     $transactionData->amount = $mission->amount;
                     $transactionData->transaction_date = now()->format('Y-m-d');
     

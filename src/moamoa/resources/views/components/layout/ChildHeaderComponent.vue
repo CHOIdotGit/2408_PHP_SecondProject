@@ -16,6 +16,8 @@ onBeforeMount(() => {
         ,{name: "지출", path: "/child/spend/list"}
         ,{name: "미션", path: "/child/mission/list"}
         ,{name: "캘린더", path: "/child/calendar"}
+        ,{name: "", path: ""}
+
     ];
 });
 

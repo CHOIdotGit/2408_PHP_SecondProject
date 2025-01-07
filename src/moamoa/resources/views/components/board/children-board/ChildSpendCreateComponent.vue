@@ -85,7 +85,7 @@ const transactionCreate = reactive({
 
 .content-list {
     display: grid;
-    margin-top: 100px;
+    margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
 }

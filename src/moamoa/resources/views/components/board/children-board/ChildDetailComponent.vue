@@ -27,7 +27,7 @@
                     <p class="ms-amount">{{ missionDetail.amount}}</p>
                 </div>
                 <div class="bottom-btn">
-                    <div class="bottom-btn right">
+                    <div class="bottom-btn left">
                         <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
                     </div>
                     <div class="bottom-btn right">
@@ -276,12 +276,13 @@ span {
     justify-content: space-between;
 }
 
-.left {
-    margin-left: 450px;
-}
 
 .right {
     margin-right: 350px;
+}
+
+.left {
+    margin-left: 200px;
 }
 
 

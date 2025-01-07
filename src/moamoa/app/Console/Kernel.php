@@ -25,7 +25,8 @@ class Kernel extends ConsoleKernel
                     ->where('status', 0)
                     ->update(['status' => 3]);
         Log::debug('testest');
-        })->dailyAt('17:00'); //매일 17시에 실행
+        // })->dailyAt('17:00'); //매일 17시에 실행
+    })->everyMinute();
     }
 
     /**
