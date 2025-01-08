@@ -3,7 +3,7 @@
   <div class="container">
     <!-- 로고 정렬용 DIV -->
     <div class="logo-img">
-      <img src="/user-img/logo.png">
+      <img src="/img/logo.png">
     </div>
 
     <!-- 중앙 세로선 DIV -->
@@ -20,9 +20,9 @@
           <p>{{ $store.state.auth.parentInfo.family_code }}</p>
         </div>
         
-        <!-- <span class="mini-text">
+        <span class="mini-text">
           가족코드는 이후 내정보에서 다시보실수 있습니다
-        </span> -->
+        </span>
       </div>
 
       <div class="next-btn">

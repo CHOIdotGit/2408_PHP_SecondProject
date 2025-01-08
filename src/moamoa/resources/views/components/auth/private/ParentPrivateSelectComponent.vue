@@ -4,7 +4,7 @@
 
       <!-- 로고 정렬용 DIV -->
       <div class="logo-img">
-          <img src="/user-img/logo.png">
+          <img src="/img/logo.png">
       </div>
 
       <!-- 중앙 세로선 DIV -->

@@ -3,7 +3,7 @@
   <div class="container">
     <!-- 로고 정렬용 DIV -->
     <div class="logo-img">
-      <img src="/user-img/logo.png">
+      <img src="/img/logo.png">
     </div>
 
     <!-- 중앙 세로선 DIV -->
@@ -24,9 +24,9 @@
           <span class="color-green">{{ parent.name }}</span> 님의 <br>자녀 입니까? <!-- 가 맞으십니까? -->
         </span>
 
-        <!-- <span class="mini-text">
-          아니라면 뒤로 돌아가 가족코드를 확인해주세요
-        </span> -->
+        <span class="mini-text">
+          <!-- 아니라면 뒤로 돌아가 가족코드를 확인해주세요 -->
+        </span>
 
         <div class="btn-group">
           <button @click="$store.commit('auth/setRegistFlg', true);" type="button">아닙니다</button>

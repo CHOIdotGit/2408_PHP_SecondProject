@@ -5,7 +5,7 @@
       <div class="data-form">
           <!-- 로고 조절용 DIV -->
           <div class="logo-img">
-              <img src="/user-img/logo.png">
+              <img src="/img/logo.png">
           </div>
 
           <div class="profile-field">

@@ -5,7 +5,7 @@
       <!-- 로고 정렬용 DIV -->
       <div class="logo-img">
         <router-link to="/">
-          <img src="/user-img/logo.png">
+          <img src="/img/logo.png">
         </router-link>
       </div>
 
