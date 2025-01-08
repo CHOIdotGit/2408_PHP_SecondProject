@@ -16,6 +16,7 @@ export default {
           },
         mission: 0,
         dailyIncomeData: [],
+        dailyOutgoData: [],
         transactionsOnDay: [],
         missionList: [],
     }),
@@ -106,6 +107,19 @@ export default {
                 })
                 .catch((error) => {
                     console.error("일별 수입 데이터를 불러오지 못했습니다:", error);
+                });
+        },
+        fetchDailyOutgo({ commit }, { year, month }) {
+            axios
+                .get("/api/child/calendar", {
+                    params: { year, month },
+                })
+                .then((response) => {
+                    // 서버에서 받은 dailyIncomeData를 Mutation에 전달
+                    commit("SET_DAILY_OUTGO", response.data.dailyOutgoData);
+                })
+                .catch((error) => {
+                    console.error("일별 지출 데이터를 불러오지 못했습니다:", error);
                 });
         },
 

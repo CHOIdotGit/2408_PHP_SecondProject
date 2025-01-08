@@ -176,7 +176,7 @@ const routes = [
     },
     // 부모 통계 페이지
     {
-        path: '/parent/stats',
+        path: '/parent/stats/:child_id',
         component: ParentsStatsComponent,
         beforeEnter: chkAuth,
     },

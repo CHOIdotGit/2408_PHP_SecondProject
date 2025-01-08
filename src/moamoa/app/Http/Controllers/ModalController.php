@@ -26,24 +26,25 @@ class ModalController extends Controller
                         ->where('children.child_id', $child->child_id)
                         ->first();
 
+        // 수입
         $transactions = $childInfo->transactions()
-                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.updated_at')
-                                // ->whereNull('transactions.deleted_at') // eloquent모델 사용 시 자동으로 deleted_at이 null인 데이터를 가져옴
-                                // ->whereYear('transactions.transaction_date', $year)
-                                // ->whereMonth('transactions.transaction_date', $month)
-                                ->whereDate('transactions.updated_at', $date) // 날짜 조건 적용
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
+                                ->where('transactions.transaction_code', 0)
+                                ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
                                 ->get();
 
-        $missions = $childInfo->missions()
-                            ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.updated_at')
-                            ->whereDate('missions.updated_at', $date)
-                            ->get();
+
+        // 지출
+        $transactions = $childInfo->transactions()
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
+                                ->where('transactions.transaction_code', 1)
+                                ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
+                                ->get();
 
         return response()->json([
             'success' => true,
             'msg' => '모달 정보 획득 성공',
             'transactions' => $transactions,
-            'missions' => $missions,
         ], 200);
     }
 }

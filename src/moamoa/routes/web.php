@@ -70,7 +70,7 @@ Route::get('/api/parent/spend/list/{id}', [TransactionController::class, 'index'
 Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show']);
 
 // 부모 통계 페이지
-Route::get('/api/parent/stats', [StatsController::class, 'index']);
+Route::get('/api/parent/stats/{child_id}', [StatsController::class, 'index']);
 
 
 // ******************************

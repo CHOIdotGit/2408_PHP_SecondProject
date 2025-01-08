@@ -146,14 +146,6 @@ onMounted(() => {
     font-size: 1.3rem;
 }
 
-.Recently-registered-mission {
-
-}
-
-.Recently-completed-mission {
-
-}
-
 .missions {
     width: 300px;
     height: 415px;

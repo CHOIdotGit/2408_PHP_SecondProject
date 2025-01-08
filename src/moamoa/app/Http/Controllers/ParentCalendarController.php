@@ -78,11 +78,11 @@ class CalendarController extends Controller
         $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
 
         // 자녀 정보 가져오기
+        
         $child = Auth::guard('children')->user();
 
         $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
-                            ->where('children.child_id', $child->child_id)
-                            ->first();
+                                ->find($child->child_id);
                                 
         $categories = [0 => 'traffic', 1 => 'meal', 2 => 'shopping', 3 => 'etc'];
         $sidebarData = [];
@@ -96,25 +96,25 @@ class CalendarController extends Controller
         }
 
         // 일별 전체 수입 합산 (updated_at 기준)
-        $dailyIncomeData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as income') // start_at -> updated_at
-                                ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // updated_at 사용
-                                ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
-                                ->where('transactions.transaction_code', 0)//
-                                ->orderBy('transactions.transaction_date') // updated_at 기준으로 정렬
-                                ->get();
-
-        // 일별 전체 지출 합산 (updated_at 기준)
-        $dailyOutgoData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as outgo') // transaction_date -> updated_at
-                                    ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) 
-                                    ->where('transactions.transaction_code', 1)// updated_at 사용
-                                    ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
-                                    ->orderBy('transactions.transaction_date') // updated_at 기준으로 정렬
+        $dailyIncomeData = Transaction::selectRaw('DATE(transactions.transaction_date) as target_at, SUM(amount) as total_income')
+                                    ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // 날짜 범위
+                                    ->where('transactions.transaction_code', 0)
+                                    ->groupBy('target_at') // 날짜만 그룹화
+                                    ->orderBy('target_at') // 날짜 순 정렬
                                     ->get();
 
+        // 일별 전체 지출 합산 (updated_at 기준)    
+        $dailyOutgoData = Transaction::selectRaw('DATE(transactions.transaction_date) as target_at, SUM(amount) as total_outgo')
+                                ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // 날짜 범위
+                                ->where('transactions.transaction_code', 1)
+                                ->groupBy('target_at') // 날짜만 그룹화
+                                ->orderBy('target_at') // 날짜 순 정렬
+                                ->get();
+
         // 미션 합계 (updated_at 기준)
-        $sidebarMission = Transaction::where('transactions.child_id', $child->child_id)
-                    ->whereBetween('transactions.transaction_date',[$startDate, $endDate]) // updated_at 사용
-                    ->sum('transactions.amount');
+        $sidebarMission = Mission::where('missions.child_id', $child->child_id)
+                    ->whereBetween('missions.updated_at',[$startDate, $endDate]) // updated_at 사용
+                    ->sum('missions.amount');
 
         // // 모달 지출 내역
         // $usageModal = Transaction::select()

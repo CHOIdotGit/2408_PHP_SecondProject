@@ -1,5 +1,8 @@
 <template>
 <div class="stat-container"> 
+    <div class="name-plate">
+      <!-- <p> {{ child.name }} </p> -->
+    </div>
     <div class="stat-section">
       <div class="each-part">
         <!-- 그래프 섹션 -->
@@ -17,33 +20,24 @@
         <!-- 통계 정보 섹션 -->
         <div>
           <div class="notice-section">
+            <p>
+              가장 큰 지출 : {{ transactionAmount }}원
+              </p>
+
                 <p>
-                  {{ statis[0]?.name }}: 
-                  {{ statis[0]?.value && statis[0]?.value !== 0 
-                      ? Number(statis[0]?.value).toLocaleString() + '원' 
-                      : '최근 소비한 내역이 없습니다.' }}
+                  가장 자주 쓴 카테고리 : 
+                  {{ mostUsedCategory.transactions_max_category }}
                 </p>
 
                 <p>
-                  가장 많이 쓴 카테고리: 
-                  {{ statis[1]?.mostUsedCategory 
-                      ? getCategoryText(statis[1]?.mostUsedCategory) 
-                      : '최근 사용한 카테고리가 없습니다.' }}
+                  지출 총합 :
                 </p>
 
                 <p>
-                  지출 총합: 
-                  {{ statis[2]?.totalAmount 
-                      ? Number(statis[2]?.totalAmount).toLocaleString() + '원' 
-                      : '최근 지출 내역이 없습니다.' }}
+                  용돈 총합 :
                 </p>
 
-                <p>
-                  용돈 총합: 
-                  {{ statis[3]?.totalExpenses 
-                      ? Number(statis[3]?.totalExpenses).toLocaleString() + '원' 
-                      : '최근 받은 용돈이 없습니다.' }}
-                </p>
+  
               </div>
             </div>
 
@@ -62,12 +56,12 @@ const store = useStore();
 // ✅ **데이터 설정**
 // const childNameList = computed(() => store.state.header.childNameList);
 
-const statis = computed(() => [
-  { name: "가장 큰 지출", value: store.state.transaction?.mostSpendAmount?.transactions_max_amount || 0 },
-  { name: "가장 많이 쓴 카테고리", value: store.state.transaction?.mostUsedCategory?.category || '' },
-  { name: "지출 총합", value: store.state.transaction?.totalAmount || 0 },
-  { name: "용돈 총합", value: store.state.transaction?.totalExpenses || 0 }
-]);
+const childHome = ref([]);
+const transactionAmount = ref(0);
+const mostUsedCategory = ref('');
+const totalAmount = ref(0);
+const totalExpenses = ref(0);
+const categoryPercentage = ref([]);
 
 const getCategoryText = (category) => {
   const categoryMapping = {
@@ -164,7 +158,7 @@ const renderDoughnutChart = () => {
 
 // ✅ **마운트 시 그래프 렌더링**
 onBeforeMount(() => {
-  store.dispatch('transaction/childHomeTransaction');
+  store.dispatch('transaction/parentStats');
 });
 
 onMounted(() => {
@@ -180,8 +174,13 @@ onMounted(() => {
   height: 720px;
   margin-top: 20px;
   background-color: white;
-  margin-left: 240px;
-  
+  margin-left: 240px; 
+}
+
+.name-plate {
+  margin-left: 20px;
+  margin-top: 50px;
+  font-size: 1.5rem;
 }
 
 .stat-section {
@@ -191,18 +190,16 @@ onMounted(() => {
   margin-right: 20px;
   margin-bottom: 20px;
   margin-left: 20px;
-  /* width: 90%; */
+  /* width: 90%;
   height: 88%;
-  overflow: auto;
+  overflow: auto; */
 }
-.each-part {
-  height: 620px;
-}
+
 .graph-section {
   height: 450px;
   background-color: #a2caac;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 800px 600px;
   margin-top: 20px;
   /* margin-top: 40px; */
 }
@@ -214,7 +211,8 @@ onMounted(() => {
   height: 150px;
   margin-top: 25px;
   p {
-      font-size: 1.2rem;
+      margin-top: 15px;
+      font-size: 1.4rem;
       /* text-indent: 30px; */
       line-height: 30px;
   }

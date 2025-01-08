@@ -84,7 +84,7 @@
                     <p class="expense-type">종류</p>
                     <p class="inout-come">분류</p>
                     <p class="charge">금액</p>
-                    <p class="due-date">작성일자</p>
+                    <p class="due-date">완료일자</p>
                 </div>
                 <div class="mission-inserted-list">
                     <div v-for="item in transactionsAndMissions" :key="item" class="modal-mission-content">
@@ -232,15 +232,31 @@ onBeforeMount(() => {
 
 // 각 날짜에 맞는 값입력
 
+// function getYearMonth(day) {
+//     return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+// }
+
+// function getDailyIncomeExpense(day, data, incomFlg) {
+//     const item = data.find(item => item.target_at === getYearMonth(day));
+//     const symbol =incomFlg ? '+' : '-';
+//     return item ? symbol + Number(item.income).toLocaleString() : '';
+// }
+
+// YYYY-MM-DD 형식의 날짜 반환
 function getYearMonth(day) {
     return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
+// 일별 수입/지출 반환
 function getDailyIncomeExpense(day, data, incomFlg) {
     const item = data.find(item => item.target_at === getYearMonth(day));
-    const symbol =incomFlg ? '+' : '-';
-    return item ? symbol + Number(item.income).toLocaleString() : '';
+    const key = incomFlg ? 'total_income' : 'total_outgo';
+    const symbol = incomFlg ? '+' : '-';
+    return item && item[key] !== undefined 
+        ? `${symbol}${Number(item[key]).toLocaleString()}` 
+        : '';
 }
+
 
 </script>
 
@@ -456,12 +472,14 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 
 .del-modal-white {
     width: 800px;
-    height: 500px;
+    height: 600px;
     background-color: #FFFFFF;
     border: 3px solid #5589e996;
     /* margin: 170px; */
     position: relative;
     flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
     align-items: center;
     justify-content: center;
 
@@ -512,10 +530,8 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     width: 100px;
     height: 50px;
     cursor: pointer;
-    margin: 10px;
-    position: absolute;
-    top: 400px;
-    right: 350px;
+    margin-left: 360px;
+    margin-bottom: 20px;
 }
 
 .modal-mission-content{
