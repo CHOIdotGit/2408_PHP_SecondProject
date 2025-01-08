@@ -10,7 +10,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionCreate.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionCreate.category}, 'ms-category-btn']">
@@ -20,8 +20,8 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 내용</p>
-                    <textarea class="ms-content" id="ms-content" placeholder="지출 내용을 입력하세요" v-model="transactionCreate.memo"></textarea>
+                    <p class="title">사용 내역</p>
+                    <textarea class="ms-content" id="ms-content" placeholder="사용 내역을 입력하세요" v-model="transactionCreate.memo"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>

@@ -3,7 +3,7 @@
         <div class="create-container">
             <div class="content-list">
                 <div class="content">
-                    <p class="title">미션 제목</p>
+                    <p class="title">제목</p>
                     <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
                     <div class="date">
                         <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  >
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="content" >
-                    <p class="title">미션 종류</p>
+                    <p class="title">종류</p>
                     <!-- 카테로리 v-for -->
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
@@ -27,11 +27,11 @@
 
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">내용</p>
                     <textarea v-model="missionCreate.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">

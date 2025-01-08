@@ -20,8 +20,8 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 내용</p>
-                    <textarea v-model="transactionDetail.memo" class="ms-content" id="ms-content" placeholder="지출 내용을 입력하세요"></textarea>
+                    <p class="title">사용 내역</p>
+                    <textarea v-model="transactionDetail.memo" class="ms-content" id="ms-content" placeholder="사용 내역을 입력하세요"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액(원)</p>

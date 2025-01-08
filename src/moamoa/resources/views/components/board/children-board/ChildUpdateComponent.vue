@@ -24,7 +24,7 @@
 
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">내용</p>
                     <textarea v-model="missionDetail.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">

@@ -3,14 +3,14 @@
         <div v-if="transactionDetail"  class="detail-container">
             <div class="content-list">
                 <div class="content" >
-                    <p class="title h-60">지출 제목</p>
+                    <p class="title h-60">제목</p>
                     <p class="ms-title h-60">{{ transactionDetail.title }}</p>
                     <div class="date">
                         <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item" :class="{'category-btn-green' : item.index === Number(category) }">
                         <img class="ms-category-img" :src="item.img">
                         <p class="category-name">{{ item.name }}</p>
@@ -21,7 +21,7 @@
                     <div class="ms-content">{{ transactionDetail.memo}}</div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 금액</p>
+                    <p class="title">금액</p>
                     <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
                 </div>
                 <div class="create-btn">

@@ -2,6 +2,7 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
+                <p class="who">{{ childName }}의 미션 리스트</p>
                 <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
             </div>
             <div class="mission-title-bar">
@@ -68,6 +69,12 @@ onMounted(() => {
 
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.childMission.childMissionList);
+
+// 첫 번째 자녀의 name을 가져오는 computed
+const childName = computed(() => {
+    const child = missionList.value?.[0]?.child;
+    return child ? child.name : 'Loading...';
+});
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -210,6 +217,12 @@ const getChildId = () => {
     align-items: center;   
 }
 
+.who {
+    font-size: 1.5rem;
+    margin-top: 15px;
+    width: 240px;
+}
+
 .mission-title-bar {
     display: grid;
     grid-template-columns: 70px 220px 90px 90px 90px 300px;
@@ -257,11 +270,17 @@ const getChildId = () => {
     margin-top: 15px;
 }
 
+.btn-top {
+    margin-left: 1000px;
+}
+
+.btn-bottom {
+    margin-left: 1250px;
+}
+
 .for-buttons{
     display: flex;
-    justify-content: right;
-    /* gap: 30px; */
-    margin-left: 1250px;
+    align-items: center;
 }
 
 #checkbox9 {

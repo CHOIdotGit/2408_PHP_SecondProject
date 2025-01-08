@@ -3,7 +3,7 @@
         <div class="create-container">
             <div class="content-list">
                 <div class="content" >
-                    <p class="title">미션 제목</p>
+                    <p class="title">제목</p>
                     <input type="text" v-model="missionDetail.title" value="" class="ms-title" id="ms-title" maxlength="10" autofocus>
                     
                     <div class="date">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
@@ -30,7 +30,7 @@
                     <!-- {{ missionDetail.content}} -->
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
                     <!-- {{ missionDetail.amount}} -->
                 </div>

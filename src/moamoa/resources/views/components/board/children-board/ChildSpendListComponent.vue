@@ -68,7 +68,7 @@ const transactionList = computed(() => store.state.childTransaction.childTransac
 // 첫 번째 자녀의 name을 가져오는 computed
 const childName = computed(() => {
     const child = transactionList.value?.[0]?.child;
-    return child ? child.name : '이름 없음';
+    return child ? child.name : 'Loading...';
 });
 
 const getCategoryText = (category) => {
@@ -180,9 +180,9 @@ const delCloseModal = () => { //모달창 닫기
 
 .mission-title {
     display: grid;
-    grid-template-columns: 70px 150px 400px 150px 300px;  
+    grid-template-columns: 70px 210px 400px 150px 300px;  
     height: 60px;
-    gap: 100px;
+    gap: 75px;
     background-color: #F5F5F5;
     font-size: 2rem;
     margin: 10px;
@@ -193,9 +193,9 @@ const delCloseModal = () => { //모달창 닫기
 
 .mission-content {
     display: grid;
-    grid-template-columns: 70px 150px 400px 150px 300px;  
+    grid-template-columns: 70px 210px 400px 150px 300px;  
     min-height: 60px;
-    gap: 100px;
+    gap: 75px;
     font-size: 1.3rem;
     margin: 10px;
     align-items: center;

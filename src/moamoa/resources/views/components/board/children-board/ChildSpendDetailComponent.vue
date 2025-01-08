@@ -17,7 +17,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">지출 내용</p>
+                    <p class="title">사용 내역</p>
                     <div class="ms-content">{{ transactionDetail.memo }}</div>
                 </div>
                 <div class="content">
@@ -301,11 +301,6 @@ span {
     gap: 30px;
     margin-top: 30px;
     display: flex;
-}
-
-
-.right {
-
 }
 
 .left {

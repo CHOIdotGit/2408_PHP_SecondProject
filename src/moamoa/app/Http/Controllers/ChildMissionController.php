@@ -19,10 +19,11 @@ class ChildMissionController extends Controller
 
         $childMissionList = Mission::select('missions.mission_id', 'missions.child_id', 'missions.status', 'missions.category', 'missions.title', 'missions.amount', 'missions.start_at', 'missions.end_at')                            
                                     ->where('missions.child_id', $child->child_id)
+                                    ->with('child')
                                     // ->whereNull('missions.deleted_at')
                                     ->orderBy('missions.status')
                                     ->latest()
-                                    ->paginate(15);
+                                    ->paginate(255);
                 
         $responseData = [
             'success' => true

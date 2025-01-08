@@ -2,20 +2,18 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
-                
+                <p class="who">{{ childName }}의 미션 리스트</p>
                 <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
                 <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
-                
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
                     <input type="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
                 </div>
-                <span class="kids-name">자녀이름</span>
+                <p class="mission-name">제목</p>
                 <span class="status">상태</span>
                 <p class="mission-type">종류</p>
-                <p class="mission-name">미션 제목</p>
-                <p class="charge">미션 금액</p>
+                <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
             <div class="scroll">
@@ -24,10 +22,9 @@
                         <div class="chk-div">
                             <input v-model="checkboxItem" class="checkbox" type="checkbox" :value="item.mission_id" name="checkbox">
                         </div>
-                        <span class="kids-name">{{ item.child.name }}</span>
+                        <p @click="getMissionId(item.mission_id)" class="mission-title">{{ item.title }}</p>
                         <p :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
-                        <p @click="getMissionId(item.mission_id)" class="mission-title">{{ item.title }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                         
@@ -35,7 +32,7 @@
                 </div>
             </div>
             <div class="for-buttons margin-top">
-                <router-link to="/parent/home"><button class="btn-bottom mission-goback">뒤로가기</button></router-link>
+                <button @click="$router.push('/parent/home')" class="btn-bottom mission-goback">뒤로가기</button>
                 <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
                 <button @click="getChildId(childId)" class="btn-bottom mission-insert">+ 미션 등록</button>
             </div>
@@ -136,6 +133,12 @@ const checkAll = (e) => {
 // 미션 리스트 가져오기
 const missionList = computed(() => store.state.mission.missionList);
 
+// 첫 번째 자녀의 name을 가져오는 computed
+const childName = computed(() => {
+    const child = missionList.value?.[0]?.child;
+    return child ? child.name : 'Loading...';
+});
+
 // 상태를 문자열로 변환하는 함수
 const getStatusText = (status) => {
     const statusMapping = {
@@ -225,11 +228,22 @@ const approvalMission = () => {
     align-items: center;
 }
 
+.who {
+    font-size: 1.5rem;
+    margin-top: 30px;
+    width: 210px;
+    /* margin-right: 1150px; */
+}
+
+.mission-confirm {
+    margin-left: 850px;
+}
+
 .mission-title-bar {
     display: grid;
-    grid-template-columns: 40px 150px 100px 100px 300px 150px 340px;
+    grid-template-columns: 40px 210px 100px 100px 150px 340px;
     height: 60px;
-    gap: 30px;
+    gap: 75px;
     background-color: #F5F5F5;
     font-size: 2rem;
     /* margin: 10px; */
@@ -248,9 +262,9 @@ const approvalMission = () => {
 
 .mission-content {
     display: grid;
-    grid-template-columns: 40px 130px 90px 100px 300px 90px 380px;
+    grid-template-columns: 40px 210px 100px 100px 150px 340px;
     height: 40px;
-    gap: 40px;
+    gap: 75px;
     /* background-color: #F5F5F5; */
     font-size: 1.3rem;
     /* margin: 10px; */
@@ -262,9 +276,8 @@ const approvalMission = () => {
 
 .for-buttons{
     display: flex;
-    justify-content: right;
+    align-items: center;
     gap: 30px;
-    margin-left: 1100px;
 }
 
 .btn-top {
@@ -293,6 +306,7 @@ const approvalMission = () => {
     color: #ACACAC;
     background-color: #FFFFFF;
     border: 1px solid #ACACAC;
+    margin-left: 1100px;
 }
 
 .checkbox {

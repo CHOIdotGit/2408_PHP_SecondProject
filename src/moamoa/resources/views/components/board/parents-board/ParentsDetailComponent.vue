@@ -3,7 +3,7 @@
     <div class="detail-container">
         <div class="content-list">
             <div class="content" v-if="missionDetail">
-                <p class="title">미션 제목</p>
+                <p class="title">제목</p>
                 <p class="ms-title">{{ missionDetail.title }}</p>
                 <div class="date">
                     <span class="ms-date">{{ missionDetail.start_at }}</span>
@@ -12,18 +12,18 @@
                 </div>
             </div>
             <div class="content">
-                <p class="title">미션 종류</p>
+                <p class="title">종류</p>
                 <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                     <img class="ms-category-img" :src="item.img" >
                     <p class="category-name">{{ item.name }}</p>
                 </div>
             </div>
             <div class="content">
-                <p class="title">미션 내용</p>
+                <p class="title">내용</p>
                 <div class="ms-content">{{ missionDetail.content}}</div>
             </div>
             <div class="content">
-                <p class="title">미션 금액</p>
+                <p class="title">금액</p>
                 <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
             </div>
             <div class="create-btn">
