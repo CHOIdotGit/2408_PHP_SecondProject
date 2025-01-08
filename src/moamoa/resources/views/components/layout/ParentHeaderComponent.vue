@@ -2,7 +2,8 @@
     <div class="item" v-for="item in baseMenuInfo" :key="item">
         <router-link :to="item.path + item.segmentPath" @click="$store.dispatch(item.actionName, firstChildId)" class="link-deco"><p class="item-btn">{{ item.name }}</p></router-link>
         <div class="child-dropdown" v-if="$store.state.auth.parentFlg && item.name !== '홈' " v-for="child in childNameList" :key="child">
-            <router-link :to="item.path + '/' + child.child_id" @click="$store.dispatch(item.actionName, {date:new Date(), child_id:child.child_id})" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
+            <router-link v-if="item.name === '캘린더'" :to="item.path + '/' + child.child_id" @click="$store.dispatch(item.actionName, {date:new Date(), child_id:child.child_id})" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
+            <router-link v-else :to="item.path + '/' + child.child_id" @click="$store.dispatch(item.actionName, child.child_id)" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
         </div>
         <!-- <div class="child-dropdown" v-if="$store.state.auth.parentFlg" v-for="child in childNameList" :key="child">
             <router-link :to="item.path + '/' + child.child_id" @click="$store.dispatch(item.actionName, child.child_id)" class="link-deco"><p class="child" >{{ child.name }}</p></router-link>
@@ -23,7 +24,7 @@ const firstChildId = ref(0);
 
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');
-    firstChildId.value = store.state.header.childNameList[0];
+    firstChildId.value = store.state.header.childNameList[0].child_id;
     baseMenuInfo.value = [
         {name: "홈", path: "/parent/home", segmentPath: ''}
         ,{name: "지출", path: "/parent/spend/list", segmentPath: '/' + firstChildId.value, actionName: 'transaction/transactionList'}

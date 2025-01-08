@@ -270,7 +270,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 }
 .nav-section {
     background-color: white;
-    height: 720px;
+    height: 765px;
 }
 .selected-kid {
     margin-left: 30px;
