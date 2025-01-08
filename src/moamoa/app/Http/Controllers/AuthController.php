@@ -156,7 +156,7 @@ class AuthController extends Controller {
         // 해당 파일을 만들어서 경로를 넣고
           ? '/'.$request->file('profile')->store('profile') 
         // 없으면 랜덤한 디폴트 이미지 경로를 넣음 
-          : '/profile/default'.rand(0,9).'.webp'
+          : '/user-img/default'.rand(0,9).'.webp'
         ;
 
         // 사용자가 추가로 닉네임을 입력했다면 데이터 세팅
