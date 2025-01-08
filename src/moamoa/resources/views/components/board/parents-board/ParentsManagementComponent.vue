@@ -5,7 +5,7 @@
             <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
             <div v-if="parentHome.length > 0" v-for="item in parentHome" :key="item" class="child-box"> 
                 <div class="blank">-</div>
-                <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
+                <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
                 <div class="blank">-</div>
                 <div class="child">
                     <h3 class="name">{{ item.name }}</h3>
