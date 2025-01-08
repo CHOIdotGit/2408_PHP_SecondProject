@@ -32,6 +32,7 @@ Route::prefix('/api/auth')->group(function () {
     Route::get('/chkAccount/{account}', [AuthController::class, 'chkAccount'])->name('auth.chk.account');
     Route::post('/childRegistMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.regist.matching');
     Route::post('/storeUser', [AuthController::class, 'storeUser'])->name('auth.store.user');
+    Route::post('/parentInfo', [AuthController::class, 'parentInfo'])->name('auth.parent.info');
 });
 // 
 

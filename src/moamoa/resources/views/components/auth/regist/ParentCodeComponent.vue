@@ -20,9 +20,9 @@
           <p>{{ $store.state.auth.parentInfo.family_code }}</p>
         </div>
         
-        <span class="mini-text">
+        <!-- <span class="mini-text">
           가족코드는 이후 내정보에서 다시보실수 있습니다
-        </span>
+        </span> -->
       </div>
 
       <div class="next-btn">

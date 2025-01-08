@@ -255,4 +255,29 @@ class AuthController extends Controller {
     ], 422);
   }
 
+  /**
+   * 부모 정보 조회
+   * 
+   * @return JSON $responseData
+   */
+  public function parentInfo() {
+    $parent = Auth::guard('parents')->user();
+
+    if(!$parent) {
+      return response()->json([
+        'success' => false,
+        'error' => '부모 정보를 찾을 수 없습니다.'
+      ], 401);
+    }
+
+    // 부모 정보 조회 + 자녀 레코드
+    $parentInfo = $this->authRepository->parentInfoWithChildren($parent->parent_id);
+
+    return response()->json([
+      'success' => true,
+      'mag' => '부모 정보 조회 성공',
+      'parent' => $parentInfo,
+    ]);
+  }
+
 }

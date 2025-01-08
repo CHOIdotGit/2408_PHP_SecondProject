@@ -26,6 +26,7 @@ import ChildHomeComponent from '../views/components/board/children-board/ChildHo
 import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
 import ParentCodeComponent from '../views/components/auth/regist/ParentCodeComponent.vue';
+import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -108,6 +109,12 @@ const routes = [
     {
         path: '/parent/home',
         component: ParentsManagementComponent,
+        beforeEnter: chkAuth,
+    },
+    // 부모 가족 정보 페이지
+    {
+        path: '/parent/family/info',
+        component: ParentPrivateFamCodeComponent,
         beforeEnter: chkAuth,
     },
 

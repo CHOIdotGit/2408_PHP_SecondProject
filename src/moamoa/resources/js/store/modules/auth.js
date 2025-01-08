@@ -390,6 +390,23 @@ export default {
       });
     },
 
+    /**
+     * 부모 정보 호출
+     * 
+     * @param {*} context
+     */
+    parentInfo(context) {
+      const url = '/api/auth/parentInfo';
+      axios.post(url)
+      .then(res => {
+        // console.log(res.data.parent);
+        context.commit('setParentInfo', res.data.parent);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    },
+
   },
   getters: {
 

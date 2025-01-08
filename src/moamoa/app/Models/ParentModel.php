@@ -37,6 +37,10 @@ class ParentModel extends Authenticatable {
     public function transactions() {
         return $this->hasMany(Transaction::class, 'parent_id');
     }
+
+    public function children() {
+        return $this->hasMany(Child::class, 'parent_id');
+    }
     
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');

@@ -4,7 +4,7 @@
 
     <!-- 로고 정렬용 DIV -->
     <div class="logo-img">
-      <img src="/user-img/logo.png">
+      <img src="/img/logo.png">
     </div>
 
     <!-- 중앙 세로선 DIV -->
@@ -15,59 +15,93 @@
     <!-- 입력 폼 DIV -->
     <div class="data-form position-relative">
       <div class="data-info">
-        <p>OOO 님의 가족코드</p>
+        <p>{{ parentInfo.name }} 님의 가족코드</p>
 
         <div class="fam-code">
-          <p>49AC7D3L</p>
+          <p>{{ parentInfo.family_code }}</p>
         </div>
         
         <p class="middle-text">
-          OOO 님의 자녀
+          {{ parentInfo.name }} 님의 자녀
         </p>
 
-        <div class="profile-field">
-          <div class="profile-info">
+        <div class="profile-field" :class="{'overflow-auto' : parentInfo.children.length > 4}">
+          <div v-if="parentInfo.children.length === 0">
+            <p>등록된 자녀의 정보가 없습니다.</p>
+          </div>
+          <div v-else v-for="item in parentInfo.children" :key="item" class="profile-info">
             <div class="icon-img">
-              <img src="/img/profile-icon/icon-girl-5.png">
+              <div class="icon-img-size">
+                <img :src="item.profile">
+              </div>
+            </div>
+            <p>{{ item.name }}</p>
+          </div>
+
+          <!-- <div class="profile-info">
+            <div class="icon-img">
+              <div class="icon-img-size">
+                <img src="/img/profile-icon/icon-girl-5.png">
+              </div>
             </div>
             <p>OOO</p>
           </div>
           
           <div class="profile-info">
             <div class="icon-img">
-              <img src="/img/profile-icon/icon-girl-5.png">
+              <div class="icon-img-size">
+                <img src="/img/profile-icon/icon-girl-5.png">
+              </div>
             </div>
             <p>OOO</p>
           </div>
           
           <div class="profile-info">
             <div class="icon-img">
-              <img src="/img/profile-icon/icon-girl-5.png">
+              <div class="icon-img-size">
+                <img src="/img/profile-icon/icon-girl-5.png">
+              </div>
             </div>
             <p>OOO</p>
           </div>
           
           <div class="profile-info">
             <div class="icon-img">
-              <img src="/img/profile-icon/icon-girl-5.png">
+              <div class="icon-img-size">
+                <img src="/img/profile-icon/icon-girl-5.png">
+              </div>
             </div>
             <p>OOO</p>
-          </div>
+          </div> -->
+
         </div>
       </div>
         
       <div class="next-btn">
-        <button type="button">확인 >&nbsp;</button>
+        <router-link to="/parent/home">
+          <button type="button">확인 >&nbsp;</button>
+        </router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { computed, onBeforeMount } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const parentInfo = computed(() => store.state.auth.parentInfo);
+
+onBeforeMount(() => {
+  store.dispatch('auth/parentInfo');
+});
 
 </script>
 
 <style scoped>
+
   /* 폼 기본 설정 */
   input, button {
     outline: none; /* 아웃라인 제거 */
@@ -88,6 +122,7 @@
     max-width: 90vw;
     height: 700px;
     max-height: 100vh;
+    margin: 0 auto;
   }
 
   /* 앱솔르트 이동을 위해 포지션 설정 */
@@ -214,19 +249,29 @@
 
   /* 아이콘 문단 */
   .icon-img {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #fff;
     border: 3px solid #A4D8E1;
+    padding: 2px;
     border-radius: 50%;
-    padding: 10px;
     width: 100px;
     height: 100px;
     margin-right: 10px;
   }
 
+  .icon-img-size {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
   /* 아이콘 크기 */
-  .icon-img img {
+  .icon-img-size > img {
     width: 100%;
+    height: 100%;
 
   }/* 다음 버튼 끝쪽으로 배치 */
   .next-btn {
@@ -252,6 +297,10 @@
   .next-btn button:hover {
     background-color: initial;
     color: initial;
+  }
+
+  .overflow-auto {
+    overflow: auto;
   }
 
   @media(max-width: 1660px) {
