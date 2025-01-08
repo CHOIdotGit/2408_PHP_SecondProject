@@ -124,7 +124,7 @@ onBeforeMount(async () => {
     // if(store.state.header.childNameList.length < 1){
     if(store.state.auth.parentFlg){
         await store.dispatch('header/childNameList');
-        firstChildSegmentParam.value = '/' + store.state.header.childNameList[0].child_id;
+        firstChildSegmentParam.value = '/' + store.state.header.childNameList[0];
 
         baseMenuInfo.value.forEach((item) => {
             if(item.segmentFlg) {

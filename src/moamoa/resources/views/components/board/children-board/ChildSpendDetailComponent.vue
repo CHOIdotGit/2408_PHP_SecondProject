@@ -158,7 +158,7 @@ const delCloseModal = () => {
 /* 미션 제목 */
 .ms-title {
     width: 450px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -169,7 +169,7 @@ const delCloseModal = () => {
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
@@ -228,7 +228,7 @@ span {
     height: 150px;
     padding: 10px;
     border-radius: 10px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     font-size: 1.3rem;
     display: flex;
     align-items: center;
@@ -237,7 +237,7 @@ span {
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 10px;
     font-size: 1.3rem;
     padding-left: 5px;

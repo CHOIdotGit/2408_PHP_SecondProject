@@ -15,11 +15,11 @@
                         <div>
                             <p class="info-title">가장 큰 지출</p>
                             <!-- <p class="info-content">최근 소비한 내역이 없습니다.</p> -->
-                            <p class="info-content">{{ mostSpendAmount?.amount && mostSpendAmount.amount !== 0 ? mostSpendAmount.amount + '원' : '최근 소비한 내역이 없습니다.' }}</p>
+                            <p class="info-content">{{ mostSpendAmount && mostSpendAmount !== 0 ? mostSpendAmount + '원' : '최근 소비한 내역이 없습니다.' }}</p>
                         </div>
                         <div>
                             <p class="info-title">가장 많이 사용한 카테고리</p>
-                            <p class="info-content">{{ mostUsedCategory.category ? getCategoryText(mostUsedCategory.category) : '최근 사용한 카테고리가 없습니다.' }}</p>
+                            <p class="info-content">{{ mostUsedCategory ? getCategoryText(mostUsedCategory) : '최근 사용한 카테고리가 없습니다.' }}</p>
                         </div>
                         <div>
                             <p class="info-title">지출 총 합</p>
@@ -34,13 +34,13 @@
                 <div class="mission-box">
                     <div class="Recently-registered-mission missions">
                         <p class="mission-title">최근 등록된 미션</p>
-                        <p v-if="!(homeMission.status === '0')" class="mission-content">최근 등록된 미션이 없습니다</p>
-                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p>
+                        <!-- <p v-if="homeMission.status === []" class="mission-content">최근 등록된 미션이 없습니다</p>
+                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p> -->
                     </div>
                     <div class="Recently-completed-mission missions">
                         <p class="mission-title">최근 완료한 미션</p>
-                        <p v-if="!(homeMission.status === '2')" class="mission-content">최근 완료한 미션이 없습니다</p>
-                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p>
+                        <!-- <p v-if="!(homeMission.status === '2')" class="mission-content">최근 완료한 미션이 없습니다</p>
+                        <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p> -->
                     </div>
                 </div>
             </div>
@@ -56,8 +56,7 @@ import { useStore } from 'vuex';
 const store = useStore();
 
 // 미션 들고오기
-const homeMission = computed(() => store.state.mission.childHome)
-// console.log('자녀 홈 미션', homeMission.value);
+const homeMission = computed(() => store.state.mission.childHome);
 
 // 가장 큰 지출과 가장 많이 사용한 카테고리
 const mostSpendAmount = computed(() => store.state.transaction.childHomeTransaction);

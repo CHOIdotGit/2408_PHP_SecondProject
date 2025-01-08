@@ -108,7 +108,7 @@ const updateTransaction = () => {
     font-size: 2rem;
     border-right: 2px solid #dfdfdf;
     padding: 10px;
-    width: 150px;
+    width: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,7 +117,7 @@ const updateTransaction = () => {
 /* 미션 제목 */
 .ms-title {
     width: 450px;
-    border: 3px solid #5589e996;
+    border: none;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -128,7 +128,7 @@ const updateTransaction = () => {
 
 /* 미션 날짜 */
 .date {
-    border: 3px solid #5589e996;
+    border: none;
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
@@ -217,14 +217,14 @@ span {
     padding: 10px;
     outline: none;
     border-radius: 10px;
-    border: 3px solid #5589e996;
+    border: none;
     font-size: 1.5rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: 3px solid #5589e996;
+    border: none;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;

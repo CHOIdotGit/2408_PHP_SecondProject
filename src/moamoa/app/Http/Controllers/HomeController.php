@@ -12,11 +12,17 @@ class HomeController extends Controller
 {
     public function index() {
         $parent = Auth::guard('parents')->user();
-        $child = Auth::guard('children')->user();
         $parentHome = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
                                     ->where('children.parent_id', $parent->parent_id)
                                     ->get();
-    
+
+        // 자녀가 없을 경우 처리
+        if ($parentHome->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'msg' => '등록된 자녀가 없습니다.'
+            ], 200); // 자녀가 없을 경우 200 상태 코드
+        }
     
         foreach($parentHome as $child) {
             $child->setRelation('missions', $child->missions()->latest()->where('missions.status', 0)->limit(3)->get());
@@ -71,6 +77,7 @@ class HomeController extends Controller
                     ->latest()
                     ->limit(6)
                     ->get();
+
 
         /** transactions 관계에 조건 추가 **/ 
         // $transactions = $childHome->transactions()

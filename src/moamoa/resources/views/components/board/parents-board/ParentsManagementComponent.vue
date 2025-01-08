@@ -3,7 +3,7 @@
         <div class="container">
             <!-- <div class="child-list-triangle">◀</div>    -->
             <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
-            <div v-for="item in parentHome" :key="item" class="child-box"> 
+            <div v-if="parentHome.length > 0" v-for="item in parentHome" :key="item" class="child-box"> 
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'contain' }">
                 <div class="blank">-</div>
@@ -13,7 +13,7 @@
                     <div class="expense-box">
                         <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
                         <div>
-                            <div v-if="item.transactions.length === 0">
+                            <div v-if="item.transactions && item.transactions.length === 0">
                                 <p class="no-amount">최근 지출한 금액이 없습니다.</p>
                             </div>
                             <div v-else>
@@ -27,7 +27,7 @@
                         <!-- <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p> -->
                         <p class="mission" @click="goMissionList(item.child_id)">진행중인 미션 ></p>
                         <div class="chk-div">
-                            <div v-if="item.missions.length === 0" class="margin-top">
+                            <div v-if="item.missions && item.missions.length === 0" class="margin-top">
                                 <p class="no-mission">진행중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
                             </div>
                             <div v-else>
@@ -46,24 +46,28 @@
                     </div> -->
                 </div>
             </div>
+            <div v-else>
+                <p class="no-child">등록된 자녀가 없습니다.</p>
+            </div>
             <!-- <div class="child-list-triangle">▶</div> -->
         </div>
     </div>
 </template>
 <script setup>
 
-import { computed, onMounted, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onMounted } from 'vue';
+// import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 
 const store = useStore();
-const router = useRouter();
-const route = useRoute();
+// const router = useRouter();
+// const route = useRoute();
 // const child_id = route.query.child_id;
 
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
+console.log('parentHome 확인', parentHome);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -79,26 +83,6 @@ const goMissionList = (child_id) => {
     store.dispatch('mission/missionList', child_id);
 };
 
-// const goMissionList = (id) => {
-//     router.push(`/parent/mission/list/${id}`)
-//     .then(response => {
-//         console.log('전체 응답:', response);  // 응답 구조를 확인
-//         console.log('Mission List:', response.data.missionList);
-//         context.commit('setMissionList', response.data.missionList);
-//     })
-//     .catch(error => {
-//         console.error('Error fetching mission list:', error);
-//         if (error.response) {
-//             console.log('응답 오류:', error.response);  // 응답 오류의 상세 정보
-//         } else if (error.request) {
-//             console.log('요청 오류:', error.request);  // 요청이 보내졌지만 응답이 없을 때
-//         } else {
-//             console.log('네트워크 또는 설정 오류:', error.message);  // 다른 오류 메시지
-//         }
-    
-//     });
-// };
-
 // 지출 리스트로 이동
 const goSpendList = (child_id) => {
     // 거래 정보를 가져오는 액션 호출
@@ -107,9 +91,7 @@ const goSpendList = (child_id) => {
 
 // onMount
 onMounted(() => {
-    store.commit('mission/resetState'); // 상태 초기화
     store.dispatch('mission/parentHome');
-    // console.log(item.value.missions);
 });
 </script>
 <style scoped>
@@ -134,6 +116,9 @@ onMounted(() => {
     /* padding-bottom: 40px; */
 }
 
+.no-child {
+    font-size: 5rem;
+}
 
 .profile-img {
     display: flex;

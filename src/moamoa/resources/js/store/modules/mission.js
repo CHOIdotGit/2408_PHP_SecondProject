@@ -85,9 +85,14 @@ export default {
         
             axios.get(url)
             .then(response => {
-                context.commit('setParentHome', response.data.parentHome);
-                // console.log(response.data.parentHome);
-            })
+                const data = response.data.parentHome;
+            if (!data || data.length === 0) {
+                console.log('등록된 자녀가 없습니다.');
+                context.commit('setParentHome', []); // 빈 배열 설정
+                return;
+            }
+            context.commit('setParentHome', data);
+        })
             .catch(error => {
                 console.error('부모 미션 리스트 불러오기 오류', error);
             });    
