@@ -29,7 +29,7 @@ onBeforeMount(async () => {
         ,{name: "지출", path: "/parent/spend/list", segmentPath: '/' + firstChildId.value, actionName: 'transaction/transactionList'}
         ,{name: "미션", path: "/parent/mission/list", segmentPath: '/' + firstChildId.value, actionName: 'mission/missionList'}
         ,{name: "캘린더", path: "/parent/calendar", segmentPath: '/' + firstChildId.value, actionName: 'calendar/calendarInfo'}
-        ,{name: "통계", path: "/parent/stats", segmentPath: '/' + firstChildId.value, actionName: 'transaction/childHomeTransaction'}
+        ,{name: "통계", path: "/parent/stats", segmentPath: '/' + firstChildId.value, actionName: 'transaction/parentStats'}
     ];
     console.log('애들이름출력');
 })
