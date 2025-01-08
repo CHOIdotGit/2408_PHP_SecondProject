@@ -24,7 +24,7 @@
                     <textarea class="ms-content" id="ms-content" placeholder="사용 내역을 입력하세요" v-model="transactionCreate.memo"></textarea>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <input type="number" class="ms-amount" id="ms-amount" required v-model="transactionCreate.amount">
                 </div>
                 <div class="bottom-btn">
@@ -48,7 +48,7 @@ const today = new Date().toISOString().split('T')[0];
 // const onDay = ref(new Date().toISOString().slice(0, 10));
 
 const categories = reactive([
-    {name: '교통비비' , img:'/img/icon-bus.png', index : "0"}
+    {name: '교통비' , img:'/img/icon-bus.png', index : "0"}
     ,{name: '취미' , img:'/img/icon-fastfood.png', index : "1"}
     ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : "2"}
     ,{name: '기타' , img:'/img/icon-checklist7.png', index : "3"}
@@ -105,9 +105,10 @@ const transactionCreate = reactive({
     font-size: 2rem;
     border-right: 2px solid #dfdfdf;
     padding: 10px;
-    width: 150px;
-    text-align: center;
-
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 미션 제목 */
@@ -142,36 +143,45 @@ span {
 
 /* 미션 종류 카테고리 이미지 */
 .category-btn {
+    width: 80px;
+    height: 80px;
     display: flex;
     flex-direction: column;
     text-align: center;
-    padding-right: 30px;
+    margin-right: 25px;
+}
+
+.category-btn > input {
+    display: none;
+}
+
+.ms-category-btn {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+    background-color: #c9cfca;
+    text-align: center;
+    cursor: pointer;
 }
 
 /* .category-btn > label {
-    color: #A4D8E1; */
-    /* border: 1px solid #A4D8E1; */
-    /* font-size: 0.9rem;
+    color: #A4D8E1;
+    border: 1px solid #A4D8E1;
+    font-size: 0.9rem;
     padding-top: 5px;
-
 } */
 
-/* .category-btn > input {
-    display: none;
-} */
-
-
+.checked-category-btn {
+    background-color: #A2CAAC;
+}
 
 .ms-category {
-    width: 60px;
-    height: 60px;
-    background-size: cover;
+    margin-top: 13px;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
     background-repeat: no-repeat;
     border: none;
-    background-color: #5589e996;
-    cursor: pointer;
-    border-radius: 50px;
-    padding: 5px;
 }
 
 /* 미션 내용 */
@@ -219,6 +229,7 @@ span {
     height: 50px;
     font-size: 1.5rem;
     border: none;
+    color: #FFFFFF;
     background-color: #5589e996 ;
     margin-bottom: 30px;
     cursor: pointer;

@@ -1,9 +1,6 @@
 <template>
     <div class="container">
         <div class="list-container">
-            <div class="who-div">
-                <p class="who">{{ childName }}님의 지출 리스트</p>
-            </div>
             <div class="mission-title">
                 <div class="chk-div">
                     <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
@@ -64,12 +61,6 @@ onMounted(() => {
 
 // 거래 리스트 가져오기
 const transactionList = computed(() => store.state.childTransaction.childTransactionList);
-
-// 첫 번째 자녀의 name을 가져오는 computed
-const childName = computed(() => {
-    const child = transactionList.value?.[0]?.child;
-    return child ? child.name : 'Loading...';
-});
 
 const getCategoryText = (category) => {
     const categoryMapping = {

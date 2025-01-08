@@ -231,7 +231,6 @@ const approvalMission = () => {
 .who {
     font-size: 1.5rem;
     margin-top: 30px;
-    width: 210px;
     /* margin-right: 1150px; */
 }
 

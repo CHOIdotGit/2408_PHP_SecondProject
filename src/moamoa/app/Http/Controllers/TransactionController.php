@@ -16,8 +16,7 @@ class TransactionController extends Controller
                                 ->with('child')
                                 ->where([
                                     ['transactions.parent_id', $parent->parent_id]
-                                    , ['transactions.transaction_code', '1']
-                                    , ['transactions.child_id', $id]
+                                    ,['transactions.child_id', $id]
                                 ])
                                 ->orderBy('transactions.transaction_date' ,'DESC')
                                 ->paginate(255);
