@@ -91,7 +91,8 @@ export default {
             })
             .then((response) => {
 
-                commit("setSidebarData",  JSON.stringify(response.data.sidebarData));
+                // commit("setSidebarData",  JSON.stringify(response.data.sidebarData));
+                commit("setSidebarData",  response.data.sidebarData);
             })
             .catch((error) => {
                 console.error("데이터 못불러옴:", error);

@@ -62,6 +62,7 @@
                             <p @click="openModal(day)" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
                             <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
                             <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
+                            
                             <!-- '2024-12-' + String(i).padStart(2,'0')); -->
                         </div>
                     </div>
@@ -162,14 +163,14 @@ function isToday(day) {
 // 이전 월로 이동
 async function prevMonth() {
     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-    await store.dispatch("calendar/calendarInfo", dateToday.value);
+    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
     dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
 async function nextMonth() {
     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-    await store.dispatch("calendar/calendarInfo", dateToday.value);
+    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
     dateToday.value = currentDate;
 }
 // 모달 관련 --------------------------------------------------------------------
@@ -250,11 +251,13 @@ function getYearMonth(day) {
 // 일별 수입/지출 반환
 function getDailyIncomeExpense(day, data, incomFlg) {
     const item = data.find(item => item.target_at === getYearMonth(day));
-    const key = incomFlg ? 'total_income' : 'total_outgo';
+    console.log('item', item);
     const symbol = incomFlg ? '+' : '-';
-    return item && item[key] !== undefined 
-        ? `${symbol}${Number(item[key]).toLocaleString()}` 
-        : '';
+    if(item) {
+        const money = incomFlg ? item.income : item.outgo;
+        return item ? symbol + Number(money).toLocaleString() : '';
+    }
+    // return item ? symbol + Number(item.income).toLocaleString() : '';
 }
 
 

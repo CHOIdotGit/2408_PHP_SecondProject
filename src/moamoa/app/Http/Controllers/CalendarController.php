@@ -32,22 +32,25 @@ class CalendarController extends Controller
 
         // 카테고리 별 합산 (updated_at 기준)
         foreach($categories as $key => $category){
-            $sidebarData[$category] = Transaction::where('transactions.parent_id', $child->child_id)
+            $sidebarData[$category] = Transaction::where('transactions.child_id', $child->child_id)
                 ->where('category', $key)
-                ->whereBetween('transactions.updated_at', [$startDate, $endDate]) // updated_at 사용
+                ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // updated_at 사용
                 ->sum('amount');
         }
 
         // 일별 전체 수입 합산 (updated_at 기준)
         $dailyIncomeData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as income') // start_at -> updated_at
+                                ->where('child_id', $child->child_id)
                                 ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // updated_at 사용
                                 ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
                                 ->where('transactions.transaction_code', 0)//
+                                ->whereNull('transactions.deleted_at')
                                 ->orderBy('transactions.transaction_date') // updated_at 기준으로 정렬
                                 ->get();
 
         // 일별 전체 지출 합산 (updated_at 기준)
         $dailyOutgoData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as outgo') // transaction_date -> updated_at
+                                    ->where('child_id', $child->child_id)
                                     ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) 
                                     ->where('transactions.transaction_code', 1)// updated_at 사용
                                     ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
@@ -56,7 +59,9 @@ class CalendarController extends Controller
 
         // 미션 합계 (updated_at 기준)
         $sidebarMission = Transaction::where('transactions.child_id', $child->child_id)
-                    ->whereBetween('transactions.transaction_date',[$startDate, $endDate]) // updated_at 사용
+                    ->whereBetween('transactions.transaction_date',[$startDate, $endDate])
+                    ->whereNull('transactions.deleted_at')
+                    ->where('transactions.transaction_code', 0)//
                     ->sum('transactions.amount');
 
         // // 모달 지출 내역
