@@ -170,7 +170,7 @@ const routes = [
 
     // 부모 달력 페이지
     {
-        path: '/parent/calendar/:parent_id',
+        path: '/parent/calendar/:child_id',
         component: ParentsCalendarComponent,
         beforeEnter: chkAuth,
     },

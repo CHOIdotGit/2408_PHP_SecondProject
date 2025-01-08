@@ -1,5 +1,8 @@
+
+import { resolve } from 'chart.js/helpers';
 import axios from '../../axios';
 import router from '../../router';
+import { reject } from 'lodash';
 
 export default {
     namespaced:true,
@@ -17,6 +20,9 @@ export default {
         ,totalAmount: 0
         ,totalExpenses: 0
         ,categoryData: []
+        ,parentStats:[]
+        ,doughnutData: [0]
+
     }),
     mutations: {
         setTransactionList(state, transactionList) {
@@ -52,6 +58,12 @@ export default {
         },
         setCategoryData(state, data) {
             state.categoryData = data;
+        },
+        setParentStats(state, data) {
+            state.parentStats = data;
+        },
+        setDoughnutData(state, data) {
+            state.doughnutData = data;
         },
     },
     actions: {
@@ -115,36 +127,33 @@ export default {
 
         // 부모 통계 불러오기
         parentStats(context, child_id) {
-            const url = '/api/parent/stats' + child_id ;
-            console.log(url);
-            axios
-                .get(url)
-                .then((response) => {
-                    // console.log(response.data);
-                    context.commit('setChildId',child_id);
-                    context.commit('setMostSpendAmount', response.data.transactionAmount);
-                    // console.log('가장 많이 사용한 카테고리 확인', response.data.transactionAmount.);
-                    context.commit('setMostUsedCategory', response.data.mostUsedCategory);
-                    // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-                    context.commit('setTotalAmount', response.data.totalAmount);
-                    context.commit('setTotalExpenses', response.data.totalExpenses);
-                    // console.log('API 응답 데이터 확인:', response.data);
+            return new Promise((resolve, reject) => {
+                const url = '/api/parent/stats/' + child_id ;
+                axios
+                    .get(url)
+                    .then((response) => {
+                        context.commit('setChildId', child_id);
+                        // context.commit('setMostSpendAmount', response.data.transactionAmount);
+                        // console.log('지출 총합', response.data.transactionAmount)
+                        // context.commit('setMostUsedCategory', response.data.transactions_max_category);
+                        // // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
+                        // context.commit('setTotalAmount', response.data.totalAmount);
+                        // context.commit('setTotalExpenses', response.data.totalExpenses);
+                        context.commit('setParentStats', response.data.data);
+                        
+                        // console.log('그래프데이터', categoryPercentage)
+                        const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount);
+                        context.commit('setDoughnutData', eachCategoryTransaction);
+                        console.log(eachCategoryTransaction);
+                        return resolve();
+                    })
+                    .catch((error) => {
+                        console.error('부모 통계 데이터 불러오기 실패:', error.response?.data?.message || error.message);
+                        return reject();
+                    });
 
-                })
-                .catch((error) => {
-                    console.error('부모 통계 데이터 불러오기 실패:', error.response?.data?.message || error.message);
-                });
+            });
         },
-
-        async fetchCategoryData({ commit }) {
-            try {
-            const response = await axios.get('/api/child/home');
-            commit('setCategoryData', response.data.categoryPercentage);
-            } catch (error) {
-            console.error('카테고리 데이터를 불러오는 중 오류 발생:', error.message);
-            }
-        },
-
     },
 
     getters: {

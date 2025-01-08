@@ -87,7 +87,9 @@
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import axios from "axios";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
+const route = useRoute();
 const store = useStore();
 const dailyIncomeData = computed(() => store.state.calendar.calendarInfo.dailyIncomeData);
 const dailyOutgoData = computed(()=> store.state.calendar.calendarInfo.dailyOutgoData);
@@ -130,14 +132,14 @@ function isToday(day) {
 // 이전 월로 이동
 async function prevMonth() {
   const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-  await store.dispatch("calendar/calendarInfo", dateToday.value);
+  await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
   dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
 async function nextMonth() {
   const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-  await store.dispatch("calendar/calendarInfo", dateToday.value);
+  await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
   dateToday.value = currentDate;
 }
 
@@ -157,7 +159,7 @@ const delCloseModal = () => {
 
 
 onBeforeMount(() => {
-    store.dispatch("calendar/calendarInfo", dateToday.value);
+    store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
   });
 
 
@@ -168,8 +170,13 @@ function getYearMonth(day) {
 
 function getDailyIncomeExpense(day, data, incomFlg) {
     const item = data.find(item => item.target_at === getYearMonth(day));
-    const symbol =incomFlg ? '+' : '-';
-    return item ? symbol + Number(item.income).toLocaleString() : '';
+    console.log('item', item);
+    const symbol = incomFlg ? '+' : '-';
+    if(item) {
+        const money = incomFlg ? item.income : item.outgo;
+        return item ? symbol + Number(money).toLocaleString() : '';
+    }
+    // return item ? symbol + Number(item.income).toLocaleString() : '';
 }
 
 </script>
@@ -322,10 +329,6 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 
 }
 
-.modal-content {
-    /* text-align: center;
-    margin: 60px; */
-}
 
 .modal-name {
     font-size: 1.3rem;

@@ -1,8 +1,5 @@
 <template>
 <div class="stat-container"> 
-    <div class="name-plate">
-      <!-- <p> {{ child.name }} </p> -->
-    </div>
     <div class="stat-section">
       <div class="each-part">
         <!-- 그래프 섹션 -->
@@ -19,25 +16,25 @@
 
         <!-- 통계 정보 섹션 -->
         <div>
-          <div class="notice-section">
+          <div class="notice-section" v-if="parentStatis">
+            <!-- {{ statis.value.mostSpendAmount }} -->
             <p>
-              가장 큰 지출 : {{ transactionAmount }}원
+              가장 큰 지출 :
+                    {{ parentStatis.transactions_max_amount }}
               </p>
 
                 <p>
                   가장 자주 쓴 카테고리 : 
-                  {{ mostUsedCategory.transactions_max_category }}
+                  {{ parentStatis.transactions_max_category }}
                 </p>
 
                 <p>
-                  지출 총합 :
+                  지출 총합 : {{ parentStatis.totalExpenses }}
                 </p>
 
                 <p>
-                  용돈 총합 :
+                  용돈 총합 : {{ parentStatis.missions_sum_amount }}
                 </p>
-
-  
               </div>
             </div>
 
@@ -47,21 +44,28 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import Chart from 'chart.js/auto';
+import { useRoute } from 'vue-router';
 
 const store = useStore();
+const route = useRoute();
 
+const categoryPercentage = computed(()=> store.state.transaction.fetchCategoryData);
+// console.log(categoryPercentage);
 // ✅ **데이터 설정**
 // const childNameList = computed(() => store.state.header.childNameList);
 
-const childHome = ref([]);
-const transactionAmount = ref(0);
-const mostUsedCategory = ref('');
-const totalAmount = ref(0);
-const totalExpenses = ref(0);
-const categoryPercentage = ref([]);
+// const statis = computed(() => [
+//   { name: "가장 큰 지출", value: store.state.transaction.mostSpendAmount || 0 },
+//   { name: "가장 자주 쓴 카테고리", value: store.state.transaction.parentStats || '' },
+//   { name: "지출 총합", value: store.state.transaction?.totalAmount || 0 },
+//   { name: "용돈 총합", value: store.state.transaction.totalExpenses || 0 }
+// ]);
+
+const parentStatis = computed(() => store.state.transaction.parentStats);
+// const doughnutGraph = computed(() => store.state.transacion);
 
 const getCategoryText = (category) => {
   const categoryMapping = {
@@ -120,13 +124,15 @@ const renderGraphChart = () => {
 // ✅ **도넛 그래프 설정**
 const doughnutCanvas = ref(null);
 let doughnutChartInstance = null;
+const doughnutData = computed(() => store.state.transaction.doughnutData);
+
 
 const doughnutChartData = {
   labels: ['교통비', '취미', '쇼핑', '기타'],
   datasets: [
     {
       label: '지출 비율',
-      data: [40, 25, 10, 25],
+      data: doughnutData.value,
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
       hoverOffset: 4,
     },
@@ -158,13 +164,23 @@ const renderDoughnutChart = () => {
 
 // ✅ **마운트 시 그래프 렌더링**
 onBeforeMount(() => {
-  store.dispatch('transaction/parentStats');
 });
 
-onMounted(() => {
+onMounted(async () => {
+  await store.dispatch('transaction/parentStats', route.params.child_id);
+  doughnutChartData.datasets[0].data = doughnutData.value;
   renderGraphChart();
   renderDoughnutChart();
 });
+
+watch(
+  () => doughnutData.value
+  , newQuestion => {
+    console.log('watch', doughnutData.value);
+    doughnutChartData.datasets[0].data = doughnutData.value;
+    renderDoughnutChart();
+  }
+);
 </script>
 
 
@@ -174,13 +190,8 @@ onMounted(() => {
   height: 720px;
   margin-top: 20px;
   background-color: white;
-  margin-left: 240px; 
-}
-
-.name-plate {
-  margin-left: 20px;
-  margin-top: 50px;
-  font-size: 1.5rem;
+  margin-left: 240px;
+  
 }
 
 .stat-section {
@@ -196,7 +207,7 @@ onMounted(() => {
 }
 
 .graph-section {
-  height: 450px;
+  height: 500px;
   background-color: #a2caac;
   display: grid;
   grid-template-columns: 800px 600px;
@@ -208,7 +219,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr ;
-  height: 150px;
+  height: 200px;
   margin-top: 25px;
   p {
       margin-top: 15px;

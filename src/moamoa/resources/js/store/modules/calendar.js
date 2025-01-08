@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { set } from 'lodash';
+
 
 export default {
     namespaced: true,
@@ -49,12 +49,27 @@ export default {
     },
     actions: {
         // 캘린더에서 이름불러오기
-        calendarInfo(context, objDate) {
-            
-
+        childCalendarInfo(context, objDate) {
             return new Promise((resolve, reject) => {
                 const url = '/api/child/calendar?year=' + objDate.getFullYear() + '&month=' + (objDate.getMonth() + 1);
-                // console.log(url)
+                console.log('childCalendarInfo',url)
+                axios.get(url)
+                .then(response => {
+                    console.log(response.data);
+                    context.commit('setCalendarInfo', response.data);
+                    resolve();
+                })
+                .catch(error => {
+                    console.log(' 달력 이름X', error);
+                    reject();
+                });
+            });
+        },
+        
+        parentCalendarInfo(context, objDate) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/parent/calendar/' + objDate.child_id + '?year=' + objDate.date.getFullYear() + '&month=' + (objDate.date.getMonth() + 1);
+                console.log('parentCalendarInfo', url)
                 axios.get(url)
                 .then(response => {
                     console.log(response.data);

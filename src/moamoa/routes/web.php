@@ -130,7 +130,11 @@ Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 // *         달력 관련           *
 // ******************************
 // 자녀 달력
-Route::get('/api/child/calendar', [CalendarController::class, 'index']);
+Route::get('/api/child/calendar', [CalendarController::class, 'childIndex']);
+
+
+// 부모 달력
+Route::get('/api/parent/calendar/{id}', [CalendarController::class, 'parentIndex']);
 
 // 자녀 달력 모달
 Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);

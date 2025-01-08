@@ -226,7 +226,7 @@ const getCodeText = (code) => {
 // -----------------------
 
 onBeforeMount(() => {
-    store.dispatch("calendar/calendarInfo", dateToday.value);
+    store.dispatch("calendar/childCalendarInfo", dateToday.value);
 });
 
 

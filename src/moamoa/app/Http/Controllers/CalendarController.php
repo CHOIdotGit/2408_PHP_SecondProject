@@ -12,65 +12,8 @@ use Illuminate\Support\Facades\Log;
 
 class CalendarController extends Controller
 {
-    public function index(Request $request)
+    public function childIndex(Request $request)
     {
-        // Log::debug($request->all());
-        // $targetDate = Carbon::createFromDate($request->year, $request->month, 1);
-
-        // $startDate = $targetDate->startOfMonth()->format('Y-m-d');
-        // $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
-
-        // // 자녀 정보 가져오기
-        // $child = Auth::guard('children')->user();
-
-        // $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
-        //                     ->where('children.child_id', $child->child_id)
-        //                     ->first();
-                            
-        // $categories = [0 => 'traffic', 1 => 'meal', 2 => 'shopping', 3 => 'etc'];
-        // $sidebarData = [];
-
-        // // 카테고리 별 합산
-        // foreach($categories as $key => $category){
-        //     $sidebarData[$key] = Transaction::where('transactions.parent_id', $child->child_id)
-        //     ->where('category', $category)
-        //     ->whereBetween('transaction_date', [$startDate, $endDate])
-        //     ->sum('amount');
-        // }
-
-        // // 일별 전체 지출 합산
-        // $dailyIncomeData = Mission::selectRaw('missions.start_at as target_at, SUM(amount) as income')
-        //                         ->whereBetween('missions.start_at', [$startDate, $endDate])
-        //                         ->groupBy('missions.start_at')
-        //                         ->orderBy('missions.start_at')
-        //                         ->get();
-
-        // // 일별 전체 지출 합산
-        // $dailyOutgoData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as income')
-        //                         ->whereBetween('transactions.transaction_date', [$startDate, $endDate])
-        //                         ->groupBy('transactions.transaction_date')
-        //                         ->orderBy('transactions.transaction_date')
-        //                         ->get();
-
-        // // 미션 합계
-        // $sidebarMission = Mission::where('missions.child_id', $child->child_id)
-        //             ->whereBetween('missions.start_at',[$startDate, $endDate])
-        //             ->sum('missions.amount');
-
-        // // // 모달 지출 내역
-        // // $usageModal = Transaction::select()
-
-        // return response()->json([
-        //     'success' => true,
-        //     'msg' => '캘린더 성공',
-        //     'calendarData' => $calendarData,
-        //     'sidebarData' => $sidebarData,
-        //     'sidebarMission' => $sidebarMission,
-        //     'dailyIncomeData' => $dailyIncomeData,
-        //     'dailyOutgoData' => $dailyOutgoData,
-            
-        // ], 200);
-
         Log::debug($request->all());
         $targetDate = Carbon::createFromDate($request->year, $request->month, 1);
 
@@ -125,6 +68,49 @@ class CalendarController extends Controller
             'calendarData' => $calendarData,
             'sidebarData' => $sidebarData,
             'sidebarMission' => $sidebarMission,
+            'dailyIncomeData' => $dailyIncomeData,
+            'dailyOutgoData' => $dailyOutgoData,
+            
+        ], 200);
+    }
+    
+    public function parentIndex(Request $request, $id)
+    {
+        Log::debug($request->all());
+        $targetDate = Carbon::createFromDate($request->year, $request->month, 1);
+
+        $startDate = $targetDate->startOfMonth()->format('Y-m-d');
+        $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
+
+        $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+                            ->where('children.child_id', $id)
+                            ->first();
+
+        // 일별 전체 수입 합산 (updated_at 기준)
+        $dailyIncomeData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as income') // start_at -> updated_at
+                                ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // updated_at 사용
+                                ->where('transactions.transaction_code', 0)//
+                                ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
+                                ->orderBy('transactions.transaction_date')
+                                ->where('transactions.child_id', $id) // updated_at 기준으로 정렬
+                                ->get();
+
+        // 일별 전체 지출 합산 (updated_at 기준)
+        $dailyOutgoData = Transaction::selectRaw('transactions.transaction_date as target_at, SUM(amount) as outgo') // transaction_date -> updated_at
+                                    ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) 
+                                    ->where('transactions.transaction_code', 1)// updated_at 사용
+                                    ->groupBy('transactions.transaction_date') // updated_at 기준으로 그룹화
+                                    ->orderBy('transactions.transaction_date')
+                                    ->where('transactions.child_id', $id) // updated_at 기준으로 정렬
+                                    ->get();
+
+        // // 모달 지출 내역
+        // $usageModal = Transaction::select()
+
+        return response()->json([
+            'success' => true,
+            'msg' => '부모캘린더 성공',
+            'calendarData' => $calendarData,
             'dailyIncomeData' => $dailyIncomeData,
             'dailyOutgoData' => $dailyOutgoData,
             

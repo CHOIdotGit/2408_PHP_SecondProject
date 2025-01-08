@@ -12,10 +12,9 @@ use Illuminate\Support\Facades\Log;
 
 class StatsController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $child_id)
     
     {
-        
         $parent = Auth::guard('parents')->user();
         // $child = Auth::guard('children')->user();
 
@@ -28,9 +27,9 @@ class StatsController extends Controller
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
 
-        $childHome = Child::select('children.child_id', 'children.name')
-                                    ->where('children.parent_id', $parent->parent_id)
-                                    ->get();
+        // $childHome = Child::select('children.child_id', 'children.name')
+        //                             ->where('children.parent_id', $parent->parent_id)
+        //                             ->find();
                                     
         // $childNameList = Child::select('child_id' , 'name')
         //                     ->withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
@@ -55,12 +54,12 @@ class StatsController extends Controller
         //+=========================================+
         $transactionAmount = Child::withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
                                         $query
-                                        ->whereBetween('transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
                                         ->orderBy('amount', 'DESC'); // 가장 큰 지출
                                     }], 'amount')
                                     ->where('parent_id', $parent->parent_id)
-                                    ->where('child_id', $childHome->child_id)
-                                    ->get();
+                                    ->where('child_id', $child_id)
+                                    ->first();
 
         // 자녀 홈, 가장 큰 지출(상민씨 요거 어떻게 수정됐는지 한번 공부해봐요~)
         // $transactionAmount = $childHome->transactions()
@@ -79,8 +78,8 @@ class StatsController extends Controller
                                         ->orderBy('count', 'DESC');
                                         }], 'category')
                                         ->where('parent_id', $parent->parent_id)
-                                        ->where('child_id', $childHome->child_id)
-                                        ->get();
+                                        ->where('child_id', $child_id)
+                                        ->first();
         // // 자녀 홈, 가장 많이 사용한 카테고리
         // $mostUsedCategory = $childHome->transactions()
         //                         ->select('transactions.category', DB::raw('COUNT(*) as count')) // 카테고리와 해당 카테고리 개수를 가져옴
@@ -93,13 +92,13 @@ class StatsController extends Controller
         //+=========================================+
         //+     자녀, 한달 지출 총합(최종 수정)       +
         //+=========================================+
-        $totalAmount = Child::withSum(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+        $totalAmountChild = Child::withSum(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
                                         $query
                                         ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
                                         }], 'amount')
                                         ->where('parent_id', $parent->parent_id)
-                                        ->where('child_id', $childHome->child_id)
-                                        ->get();
+                                        ->where('child_id', $child_id)
+                                        ->first();
 
         // // // 해당 월(예시, 12월 한 달)의 지출 총 합
         // $totalAmount = $childHome->transactions()
@@ -115,49 +114,73 @@ class StatsController extends Controller
                                 ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
                                 }], 'amount')
                                 ->where('parent_id', $parent->parent_id)
-                                ->where('child_id', $childHome->child_id)
-                                ->get();
+                                ->where('child_id', $child_id)
+                                ->first();
+
 
         // // // 해당 월(예시, 12월 한 달)의 용돈 총 합
         // $totalExpenses = $childHome->missions()
         //                         ->whereNull('missions.deleted_at')
         //                         ->whereBetween('missions.created_at', [$startOfMonth, $endOfMonth])
         //                         ->sum('missions.amount');
-        
+
         // 총지출
         $totalAmount = Transaction::where('parent_id', $parent->parent_id)
         ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
         ->sum('amount');
+
         
+
+
+
          // ✅ **2. 카테고리별 지출 및 비율 구하기**
-        $categoryPercentage = Transaction::select(
+        $eachCategoryTransaction = Transaction::select(
             'category',
             DB::raw('SUM(amount) as total_amount'),
-            DB::raw('ROUND(SUM(amount) / ' . ($totalAmount ?: 1) . ' * 100, 2) as percentage')
+            // DB::raw('ROUND(SUM(amount) / ' . ($totalAmount ?: 1) . ' * 100, 2) as percentage')
         )
         ->where('parent_id', $parent->parent_id)
-        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
+        ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
+        ->where('child_id', $child_id)
+        // ->where('transaction_code', 1)
         ->groupBy('category')
-        ->orderBy('total_amount', 'DESC')
+        ->orderBy('category')
         ->get();
-        
+
+
+
+
+        // 통계 
+        $data = [
+            'transactions_max_amount' => $transactionAmount->transactions_max_amount,
+            'transactions_max_category' => $mostUsedCategory->transactions_max_category,
+            'missions_sum_amount' => $totalExpenses->missions_sum_amount,
+            'totalExpenses' => $totalAmountChild->transactions_sum_amount
+        ];
+
         $responseData = [
             'success' => true
             ,'msg' => '자녀 홈페이지 로드 성공'
-            // ,'childNameList' => $childNameListm
-            ,'childHome' => $childHome
-            ,'transactionAmount' => $transactionAmount
-            ,'mostUsedCategory' => $mostUsedCategory
-            ,'totalAmount' => $totalAmount
-            ,'totalExpenses' => $totalExpenses
-            ,'categoryPercentage' => $categoryPercentage
-            
+            ,'data' => $data
+            ,'eachCategoryTransaction' => $eachCategoryTransaction
+
         ];
+        
         return response()->json($responseData, 200);
+        
+        // $responseData = [
+        //     'success' => true
+        //     ,'msg' => '자녀 홈페이지 로드 성공'
+        //     // ,'childNameList' => $childNameList
+        //     // ,'transactionAmount' => $transactionAmount
+        //     // ,'mostUsedCategory' => $mostUsedCategory
+        //     // ,'totalAmount' => $totalAmount
+        //     // ,'totalExpenses' => $totalExpenses
+        //     ,'categoryPercentage' => $categoryPercentage
+            
+        // ];
+        // return response()->json($responseData, 200);
 
     
-    }
-    public function nameList() {
-
     }
 }
