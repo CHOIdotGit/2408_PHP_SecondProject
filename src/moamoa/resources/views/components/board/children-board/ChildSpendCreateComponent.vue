@@ -218,7 +218,7 @@ span {
     gap: 30px;
     margin: auto;
     margin-top: 10px;
-    margin-right: 200px;
+    margin-right: 300px;
 
 }
 

@@ -148,7 +148,7 @@ const delCloseModal = () => {
     font-size: 2rem;
     border-right: 2px solid #dfdfdf;
     padding: 10px;
-    width: 150px;
+    width: 160px;
     text-align: center;
     display: flex;
     align-items: center;
