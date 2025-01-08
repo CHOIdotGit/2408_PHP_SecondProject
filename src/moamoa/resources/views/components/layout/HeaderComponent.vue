@@ -63,18 +63,18 @@
                     </button>
                     <!-- 햄버거 드롭 메뉴 -->
                     <div class="dropdown" v-show="dropDownMenu">
-                        <router-link to="" class="link-deco"><p class="info-page">개인정보 수정</p></router-link>
+                        <!-- <router-link to="" class="link-deco"><p class="info-page">개인정보 수정</p></router-link> -->
                         <router-link to="" class="link-deco"><p class="info-page">가족정보</p></router-link>
                         <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
                     </div>
                 </div> 
                 
-                <div class="item">
+                <div class="item" v-if="$store.state.auth.parentFlg">
                     <button @click="bellDropDown" class="bell-btn">
                         <img class="bell-icon" src="/img/icon-bell.png" width="40px" height="40px">
                     </button>
                     <!-- 벨 드롭 메뉴 -->
-                    <div class="dropdown-bell" v-show="bellListDropMenu" >
+                    <div class="dropdown-bell" v-show="bellListDropMenu" v-if="$store.state.auth.parentFlg">
                         <a href="#" class="alram" v-for="item in bellContent" :key="item">
                             <!-- 이미지는 3차로 -->
                             <!-- <img class="alram-pro" :src="item.img" width="50px" height="50px"> -->
