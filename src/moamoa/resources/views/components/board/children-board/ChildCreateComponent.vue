@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 종류</p>
+                    <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
@@ -23,16 +23,16 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">내용</p>
                     <textarea v-model="missionCreate.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
-                    <p class="title">금액(원)</p>
+                    <p class="title">금액</p>
                     <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
-                    <button @click="$router.replace('/child/mission/list')" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('childMission/createMission', missionCreate)" class="create-btn">등록</button>
+                    <button @click="$router.replace('/child/mission/list')" class="create-btn">등록 취소</button>
+                    <button @click="$store.dispatch('childMission/createMission', missionCreate)" class="create-btn">미션 등록</button>
                 </div>
             </div>
         </div>
@@ -223,13 +223,14 @@ span {
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
     background-color: #5589e996 ;
     margin-bottom: 30px;
     cursor: pointer;
+    color: #FFFFFF;
 }
 
 </style>

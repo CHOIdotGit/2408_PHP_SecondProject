@@ -114,7 +114,7 @@ const transactionCreate = reactive({
 /* 미션 제목 */
 .ms-title {
     width: 600px;
-    border: none;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 1.8rem;
@@ -172,7 +172,7 @@ span {
 } */
 
 .checked-category-btn {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 .ms-category {
@@ -192,14 +192,14 @@ span {
     padding: 10px;
     outline: none;
     border-radius: 10px;
-    border: none;
+    border: 3px solid #5589e996;
     font-size: 1.5rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: none;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
@@ -225,7 +225,7 @@ span {
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;

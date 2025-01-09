@@ -185,6 +185,9 @@ span {
     /* width: 200px; */
     font-size: 1.5rem;
     text-align: center;
+    background-color: #5589e996;
+    border-radius: 10px;
+    padding: 10px;
 }
 
 /* 미션 종류 카테고리 이미지 */
@@ -219,7 +222,7 @@ span {
 
 /* db에 저장된 카테고리 표시 */
 .categorybtn-green {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 /* 미션 내용 */
@@ -231,7 +234,7 @@ span {
     /* border: 3px solid #5589e996; */
     font-size: 1.3rem;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 /* 미션 금액 */
@@ -380,7 +383,7 @@ span {
     width: 100px;
     height: 100px;
     background-color: #FFFFFF;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 50px;
     padding: 3px;
 }

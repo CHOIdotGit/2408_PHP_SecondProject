@@ -33,7 +33,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">수정 취소</button>
-                    <button @click="getUpdateMission" class="create-btn">수정하기</button>
+                    <button @click="getUpdateMission" class="create-btn">수정 완료</button>
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@ const getUpdateMission = () => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 450px;
+    width: 300px;
     border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
@@ -134,7 +134,7 @@ const getUpdateMission = () => {
     border-radius: 10px;
     padding: 10px;
     margin-left: 30px;
-    width: 300px;
+    /* width: 300px; */
 }
 
 span {

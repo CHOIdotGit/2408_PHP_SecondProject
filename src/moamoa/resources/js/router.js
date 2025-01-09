@@ -185,7 +185,7 @@ const routes = [
     // 자녀 홈페이지
     {
         path: '/child/home',
-        component: ChildHomeComponent,
+        component: ChildCalendarComponent,
         beforeEnter: chkAuth,
     },
     // +==================================+
