@@ -20,20 +20,20 @@
             <!-- {{ statis.value.mostSpendAmount }} -->
             <p>
               가장 큰 지출 :
-                    {{ parentStatis.transactions_max_amount }}
+                    {{ parentStatis.transactions_max_amount }}원
               </p>
 
                 <p>
                   가장 자주 쓴 카테고리 : 
-                  {{ parentStatis.transactions_max_category }}
+                  {{ getCategoryText(parentStatis.transactions_max_category) }}
                 </p>
 
                 <p>
-                  지출 총합 : {{ parentStatis.totalExpenses }}
+                  지출 총합 : {{ parentStatis.totalExpenses }}원
                 </p>
 
                 <p>
-                  용돈 총합 : {{ parentStatis.missions_sum_amount }}
+                  용돈 총합 : {{ parentStatis.missions_sum_amount }}원
                 </p>
               </div>
             </div>
@@ -69,10 +69,10 @@ const parentStatis = computed(() => store.state.transaction.parentStats);
 
 const getCategoryText = (category) => {
   const categoryMapping = {
-    "0": '교통비',
-    "1": '취미',
-    "2": '쇼핑',
-    "3": '기타',
+    0: '교통비',
+    1: '취미',
+    2: '쇼핑',
+    3: '기타',
   };
   return categoryMapping[category] || '알 수 없음';
 };
