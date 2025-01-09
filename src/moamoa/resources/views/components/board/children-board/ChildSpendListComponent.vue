@@ -14,7 +14,7 @@
                 <div v-for="item in transactionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
                         <div class="chk-div">
-                            <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.transaction_id" name="checkbox">
+                            <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.transaction_id" name="checkbox">
                         </div>
                         <p @click="goSpendDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="category">{{ getCategoryText(item.category) }}</p>
@@ -182,9 +182,15 @@ const delCloseModal = () => { //모달창 닫기
     text-align: center;
 }
 
+.checkbox {
+    margin: 15px;
+    width: 16px;
+    height: 16px;
+}
+
 .mission-content {
     display: grid;
-    grid-template-columns: 70px 210px 400px 150px 300px;  
+    grid-template-columns: 48px 225px 400px 150px 300px;
     min-height: 60px;
     gap: 75px;
     font-size: 1.3rem;

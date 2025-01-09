@@ -17,7 +17,7 @@
             <div class="mission-inserted-list scroll">
                 <div v-for="item in missionList" :key="item" class="mission-content">
                     <div class="chk-div">
-                        <input v-model="checkboxItem" type="checkbox" id="checkbox" :value="item.mission_id" name="checkbox">
+                        <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.mission_id" name="checkbox">
                     </div>
                     <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
                     <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
@@ -217,9 +217,9 @@ const getChildId = () => {
 
 .mission-title-bar {
     display: grid;
-    grid-template-columns: 70px 220px 90px 90px 90px 300px;
+    grid-template-columns: 70px 220px 90px 120px 90px 300px;
     height: 60px;
-    gap: 100px;
+    gap: 90px;
     background-color: #F5F5F5;
     font-size: 2rem;
     margin: 10px;
@@ -232,13 +232,19 @@ const getChildId = () => {
     cursor: pointer;
 }
 
+.checkbox {
+    margin: 15px;
+    width: 16px;
+    height: 16px;
+}
+
 .mission-title:hover {
     color: #5589e996;
 }
 
 .mission-content {
     display: grid;
-    grid-template-columns: 70px 220px 90px 90px 90px 300px;  
+    grid-template-columns: 50px 220px 90px 90px 90px 300px;  
     height: 40px;
     gap: 100px;
     /* background-color: #F5F5F5; */
@@ -253,7 +259,7 @@ const getChildId = () => {
 
 .btn {
     cursor: pointer;
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;

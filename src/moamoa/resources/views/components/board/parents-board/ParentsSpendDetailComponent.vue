@@ -99,6 +99,7 @@ const categories = reactive([
     width: 160px;
     text-align: center;
     display: flex;
+    justify-content: center;
     align-items: center;
 }
 
@@ -207,7 +208,7 @@ span {
     font-size: 1.2rem;
     border: 1px solid #ACACAC;
     padding: 5px;
-    width: 100px;
+    width: 120px;
     height: 50px;
     border-radius: 0px;
     cursor: pointer;

@@ -172,7 +172,7 @@ span {
 } */
 
 .checked-category-btn {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 .ms-category {
@@ -225,7 +225,7 @@ span {
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;

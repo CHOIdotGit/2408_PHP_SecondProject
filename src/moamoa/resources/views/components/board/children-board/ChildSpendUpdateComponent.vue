@@ -15,7 +15,7 @@
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p>{{ item.name }}</p>
+                            <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push('/child/spend/detail/${transaction_id}')" class="create-btn">수정 취소</button>
-                    <button @click="updateTransaction" class="create-btn">수정하기</button>
+                    <button @click="updateTransaction" class="create-btn">수정 완료</button>
                 </div>
             </div>
         </div>
@@ -103,6 +103,9 @@ const updateTransaction = () => {
     width: 1000px;
 }
 
+/* .category-name {
+    margin-top: 15px;
+} */
 
 .title {
     font-size: 2rem;
@@ -153,25 +156,28 @@ span {
 }
 
 .ms-category-btn {
-    width: 80px;
+    /* width: 80px;
     height: 80px;
     border-radius: 50px;
     background-color: #c9cfca;
     text-align: center;
-    cursor: pointer;
+    cursor: pointer; */
 }
 
 .checked-category-btn {
-    background-color: #A2CAAC;
+    background-color: #5589e996;
 }
 
 .ms-category-img {
-    margin-top: 13px;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
+    width: 60px;
+    height: 60px;
+    background-size: cover;
     background-repeat: no-repeat;
     border: none;
+    background-color: #c9cfca;
+    cursor: pointer;
+    border-radius: 50px;
+    padding: 5px;
 
 }
 
@@ -250,7 +256,7 @@ span {
 
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 100px;
+    width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;

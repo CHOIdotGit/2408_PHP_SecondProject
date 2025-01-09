@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">내용</p>
                     <div class="ms-content">{{ missionDetail.content}}</div>
                 </div>
                 <div class="content">
@@ -161,7 +161,7 @@ const delCloseModal = () => {
 
 /* 미션 제목 */
 .ms-title {
-    width: 450px;
+    width: 400px;
     /* border: 3px solid #5589e996; */
     outline: none;
     border-radius: 10px;
@@ -174,10 +174,14 @@ const delCloseModal = () => {
 /* 미션 날짜 */
 .date {
     /* border: 3px solid #5589e996; */
+    /* border-radius: 10px; */
+    /* padding: 10px; */
+    /* margin-left: 30px; */
+    /* width: 300px; */
     border-radius: 10px;
     padding: 10px;
-    /* margin-left: 30px; */
-    width: 300px;
+    margin-left: 30px;
+    background-color: #5589e996;
 }
 
 span {
@@ -232,7 +236,7 @@ span {
     /* border: 3px solid #5589e996; */
     font-size: 1.5rem;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 
 /* 미션 금액 */
@@ -366,7 +370,7 @@ span {
     width: 100px;
     height: 100px;
     background-color: #FFFFFF;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 50px;
     padding: 3px;
 }

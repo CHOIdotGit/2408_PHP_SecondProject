@@ -34,7 +34,7 @@
             <div class="for-buttons margin-top">
                 <button @click="$router.push('/parent/home')" class="btn-bottom mission-goback">뒤로가기</button>
                 <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
-                <button @click="getChildId(childId)" class="btn-bottom mission-insert">+ 미션 등록</button>
+                <button @click="getChildId(childId)" class="btn-bottom mission-insert">미션 등록</button>
             </div>
         </div>
     </div>

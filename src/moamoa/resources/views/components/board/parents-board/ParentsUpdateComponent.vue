@@ -25,7 +25,7 @@
 
                 </div>
                 <div class="content">
-                    <p class="title">미션 내용</p>
+                    <p class="title">내용</p>
                     <textarea v-model="missionDetail.content" class="ms-content" id="ms-content"></textarea>
                     <!-- {{ missionDetail.content}} -->
                 </div>
@@ -128,8 +128,9 @@ const getUpdateMission = () => {
     border-right: 2px solid #dfdfdf;
     padding: 10px;
     width: 150px;
-    text-align: center;
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 미션 제목 */
@@ -250,6 +251,7 @@ span {
     background-color: #A2CAAC ;
     margin-bottom: 30px;
     cursor: pointer;
+    color: #FFFFFF;
 }
 /* 취소버튼 */
 .cancel {
