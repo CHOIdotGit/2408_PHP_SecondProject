@@ -114,7 +114,7 @@ const transactionCreate = reactive({
 /* 미션 제목 */
 .ms-title {
     width: 600px;
-    border: none;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 1.8rem;
@@ -192,14 +192,14 @@ span {
     padding: 10px;
     outline: none;
     border-radius: 10px;
-    border: none;
+    border: 3px solid #5589e996;
     font-size: 1.5rem;
 }
 
 /* 미션 금액 */
 .ms-amount {
     width: 300px;
-    border: none;
+    border: 3px solid #5589e996;
     outline: none;
     border-radius: 10px;
     font-size: 2rem;
