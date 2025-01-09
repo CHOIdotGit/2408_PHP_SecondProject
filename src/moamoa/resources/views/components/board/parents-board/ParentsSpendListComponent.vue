@@ -48,7 +48,7 @@ const childId = computed(() => store.state.transaction.childId);
 const getCategoryText = (category) => {
     const categoryMapping = {
         0: '교통비',
-        1: '취미',
+        1: '식비',
         2: '쇼핑',
         3: '기타',
     };

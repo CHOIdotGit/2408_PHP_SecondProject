@@ -49,7 +49,7 @@ const today = new Date().toISOString().split('T')[0];
 
 const categories = reactive([
     {name: '교통비' , img:'/img/icon-bus.png', index : "0"}
-    ,{name: '취미' , img:'/img/icon-fastfood.png', index : "1"}
+    ,{name: '식비' , img:'/img/icon-fastfood.png', index : "1"}
     ,{name: '쇼핑' , img:'/img/icon-shoppingbag.png', index : "2"}
     ,{name: '기타' , img:'/img/icon-checklist7.png', index : "3"}
 ]);

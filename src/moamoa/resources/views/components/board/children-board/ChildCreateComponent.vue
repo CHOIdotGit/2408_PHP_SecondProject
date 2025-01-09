@@ -48,7 +48,7 @@ const route = useRoute();
 
 const categories = reactive([
     {name: '학습' , img:'/img/icon-pencil.png', index : "0"}
-    ,{name: '취미' , img:'/img/icon-bicycle.png', index : "1"}
+    ,{name: '식비' , img:'/img/icon-bicycle.png', index : "1"}
     ,{name: '집안일' , img:'/img/icon-cleaner.png', index : "2"}
     ,{name: '생활습관' , img:'/img/icon-clock.png', index : "3"}
     ,{name: '기타' , img:'/img/icon-checklist7.png', index : "4"}
