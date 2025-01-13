@@ -17,7 +17,8 @@ return new class extends Migration {
       $table->bigInteger('amount');
       $table->char('status', 1)->nullable()->default('0')->comment('0: 진행중, 1: 대기중, 2: 완료, 3: 취소');
       $table->date('start_at');
-      $table->date('end_at')->nullable()->default(DB::raw('DATE_ADD(missions.start_at)'))->comment('지정을 따로 하지 않을 경우 일간 미션으로 취급');
+      // $table->date('end_at')->nullable()->default(DB::raw('DATE_ADD(missions.start_at)'))->comment('지정을 따로 하지 않을 경우 일간 미션으로 취급');
+      $table->date('end_at')->nullable()->comment('지정을 따로 하지 않을 경우 일간 미션으로 취급');
       $table->char('alarm', 1)->nullable()->default('0')->comment('0: 읽지않음, 1: 읽음');
       $table->timestamps();
       $table->softDeletes();

@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ParentSeeder::class
-            ,ChildrenSeeder::class
+            // ,ChildrenSeeder::class
         ]);
-        Transaction::factory(50)->create();
-        Mission::factory(50)->create();
+        // Transaction::factory(50)->create();
+        // Mission::factory(50)->create();
     }
 }

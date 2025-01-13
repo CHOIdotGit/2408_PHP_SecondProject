@@ -1,9 +1,12 @@
 <template>
     <div class="d-flex">
         <div class="container">
-            <!-- <div class="child-list-triangle">◀</div>    -->
-            <!-- TODO: 페이지네이션 또는 스와이프 적용 해야함 -->
-            <div v-if="parentHome.length > 0" v-for="item in parentHome" :key="item" class="child-box"> 
+            <!-- 왼쪽 내비게이션 버튼 -->
+            <div class="child-list-triangle"  @click="goToPrev">◀</div>
+            <!-- Swiper 적용 부분 -->
+            <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :loop="true" ref="swiper" :navigation="true" class="swiper">
+            <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
+                <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="child-box">
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
                 <div class="blank">-</div>
@@ -11,63 +14,58 @@
                     <h3 class="name">{{ item.name }}</h3>
                     <p class="nickname">{{ item.nick_name }}</p>
                     <div class="expense-box">
-                        <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
-                        <div>
-                            <div v-if="item.transactions && item.transactions.length === 0">
-                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
-                            </div>
-                            <div v-else>
-                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
-                                    {{ transaction.amount.toLocaleString() }}원
-                                </div>
-                            </div>
+                    <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
+                    <div>
+                        <div v-if="item.transactions && item.transactions.length === 0">
+                        <p class="no-amount">최근 지출한 금액이 없습니다.</p>
                         </div>
+                        <div v-else>
+                        <div class="amount" v-for="transaction in item.transactions" :key="transaction">
+                            {{ transaction.amount.toLocaleString() }}원
+                        </div>
+                        </div>
+                    </div>
                     </div>
                     <div class="child-mission">
-                        <!-- <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p> -->
-                        <p class="mission" @click="goMissionList(item.child_id)">진행중인 미션 ></p>
-                        <div class="chk-div">
-                            <div v-if="item.missions && item.missions.length === 0" class="margin-top">
-                                <p class="no-mission">진행중인 미션이 없습니다.</p> <!-- 대기 중인 미션이 없을 때 출력 -->
-                            </div>
-                            <div v-else>
-                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission">
-                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
-                                    <!-- <input type="checkbox" class="checkbox" :id="'checkbox-' + mission.mission_id">
-                                    <label :for="'checkbox-' + mission.mission_id">
-                                        <div class="mission-title">{{ getTruncatedTitle(mission.title) }}</div>
-                                    </label> -->
-                                </div>
-                            </div>
+                    <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                    <div class="chk-div">
+                        <div v-if="item.missions && item.missions.length === 0" class="margin-top">
+                        <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
+                        </div>
+                        <div v-else>
+                        <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
+                            <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
+                        </div>
                         </div>
                     </div>
-                    <!-- <div class="btn-div" :class="{ 'btn-disable': item.missions.length === 0 }">
-                        <button class="btn approve">미션 승인</button>
-                    </div> -->
+                    </div>
                 </div>
-            </div>
+                </SwiperSlide>
+            </Swiper>
+            
             <div v-else>
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
-            <!-- <div class="child-list-triangle">▶</div> -->
+            <!-- 오른쪽 내비게이션 버튼 -->
+            <div class="child-list-triangle" @click="goToNext">▶</div>
         </div>
     </div>
 </template>
 <script setup>
 
-import { computed, onMounted } from 'vue';
+import { computed, ref, onMounted } from 'vue';
+import { Swiper, SwiperSlide } from 'swiper/vue';
+import 'swiper/css';
 // import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-
 const store = useStore();
-// const router = useRouter();
-// const route = useRoute();
+// const router = useRouter();, ref
+// c, refonst route = useRoute();
 // const child_id = route.query.child_id;
 
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
-console.log('parentHome 확인', parentHome);
 
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
@@ -92,9 +90,33 @@ const goSpendList = (child_id) => {
 // onMount
 onMounted(() => {
     store.dispatch('mission/parentHome');
+    if (swiper.value) {
+        swiper.value.swiper.update();  // swiper 인스턴스 초기화 또는 업데이트
+    }
 });
+
+// Swiper 제어
+const swiper = ref(null);  // Swiper 인스턴스를 참조하기 위해 ref 사용
+
+// 이전 슬라이드로 이동
+const goToPrev = () => {
+    if (swiper.value && swiper.value.swiper) {
+        swiper.value.swiper.slidePrev();  // swiper 인스턴스의 slidePrev() 메서드 호출
+    }
+};
+
+// 다음 슬라이드로 이동
+const goToNext = () => {
+    if (swiper.value && swiper.value.swiper) {
+        swiper.value.swiper.slideNext();  // swiper 인스턴스의 slideNext() 메서드 호출
+    }
+};
 </script>
 <style scoped>
+.swiper {
+    margin-right: 25px;
+}
+
 /* 메인 화면 */
 .container {
     margin-top: 20px;

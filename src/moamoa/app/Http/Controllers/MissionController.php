@@ -26,7 +26,7 @@ class MissionController extends Controller
                                     ->where('missions.child_id', $id)
                                     ->orderBy('missions.status')
                                     ->latest()
-                                    ->paginate(255);
+                                    ->paginate(15);
                 
         $responseData = [
             'success' => true
