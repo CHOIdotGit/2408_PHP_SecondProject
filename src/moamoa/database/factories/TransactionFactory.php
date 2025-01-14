@@ -17,14 +17,14 @@ class TransactionFactory extends Factory
     public function definition()
     {
         return [
-            'parent_id' => 1,
-            'child_id' => rand(1,3),
-            'category' => rand(0,3),
-            'transaction_code' => rand(0,1),
-            'title' => $this->faker->text(50),
-            'amount' => round(rand(100,50000) / 100) * 100,
+            'parent_id' => rand(1, 1000),
+            'child_id' => rand(1, 2500),
+            'category' => rand(0, 3),
+            'transaction_code' => '1',
+            'title' => $this->faker->realText(10),
+            'amount' => round(rand(100, 50000) / 100) * 100,
             'transaction_date' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
-            'memo' => null,
+            'memo' => $this->faker->realText(50),
         ];
     }
 }

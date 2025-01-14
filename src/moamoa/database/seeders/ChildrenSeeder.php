@@ -6,7 +6,6 @@ use App\Models\Child;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ChildrenSeeder extends Seeder
@@ -26,33 +25,21 @@ class ChildrenSeeder extends Seeder
         // foreach($data as $item) {
         //     Child::create($item);
         // }
-        $faker = Faker::create();
-        $data = [];
+        $faker = Faker::create('ko_KR');
 
-        for ($i = 0; $i < 20000; $i++) {
-            $data[] = [
-                'parent_id' => rand(70, 8069),
-                'account' => $faker->unique()->regexify('[A-Za-z0-9]{1,20}'),
+        for ($i = 0; $i < 2500; $i++) {
+            $data = [
+                'parent_id' => rand(1, 1000),
+                'account' => $faker->unique(true)->regexify('[a-z0-9]{6,20}'),
                 'password' => Hash::make('qwer1234'),
-                'name' => $faker->lexify(str_repeat('?', 20)), // 최대 20글자
-                'nick_name' => $faker->optional()->lexify(str_repeat('?', 20)), // 최대 20글자, null 허용
-                'email' => $faker->unique()->safeEmail(), // 최대 100글자
-                // 'tel' => $faker->numerify(str_repeat('#', 11)), // 숫자만, 최대 30글자 이하
+                'name' => mb_substr($faker->name, 0, rand(2, 3)), // 최대 20글자
+                'nick_name' => mb_substr($faker->optional()->realText(10, 1), 0, rand(2, 5)), 
+                'email' => $faker->unique(true)->safeEmail(), // 최대 100글자
                 'tel' => '010' . $faker->numerify('########'), // 010으로 시작하고 나머지는 랜덤 숫자
                 'profile' => $faker->optional()->imageUrl(100, 100, 'people') ?: '/user-img/default.webp',
-                'family_code' => $faker->unique()->regexify('[A-Za-z0-9]{8}') // 8자리 숫자와 영문 조합
             ];
-
-            // 1000건씩 데이터 삽입
-            if (!($i % 1000) && $i) {
-                DB::table('parents')->insert($data);
-                $data = []; // 배열 초기화
-            }
-        }
-
-        // 남은 데이터 삽입
-        if (!empty($data)) {
-            DB::table('parents')->insert($data);
+            
+            Child::create($data);
         }
     }
 }

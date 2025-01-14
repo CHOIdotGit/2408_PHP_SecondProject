@@ -16,15 +16,18 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
+        $this->faker = \Faker\Factory::create('ko_KR');
+
         return [
-            'parent_id' => 1,
-            'child_id' => rand(1,3),
-            'category' => rand(0,4),
-            'title' => $this->faker->text(50),
-            'content' => $this->faker->text(255),
+            'parent_id' => rand(1, 1000),
+            'child_id' => rand(1, 2500),
+            'category' => rand(0, 4),
+            'title' => $this->faker->realText(10),
+            'content' => $this->faker->realText(50),
             'amount' => round(rand(100,50000) / 100) * 100,
-            'status' => rand(0,3),
+            'status' => rand(0, 3),
             'start_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
+            'end_at' => $this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d'),
         ];
     }
 }

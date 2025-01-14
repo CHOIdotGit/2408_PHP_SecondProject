@@ -45,7 +45,7 @@ class ParentSeeder extends Seeder
                 // 'name' => $faker->name('[가-힣]{2,3}'),
                 'name' => mb_substr($faker->name, 0, rand(2, 3)),
                 // 'nick_name' => $faker->optional()->regexify('[가-힣]{2,5}'),
-                'nick_name' => mb_substr($faker->optional()->name, 0, rand(2, 5)),
+                'nick_name' => mb_substr($faker->optional()->realText(10, 1), 0, rand(2, 5)),
                 'email' => $faker->unique(true)->safeEmail(),
                 'tel' => '010' . $faker->numerify('########'),
                 'profile' => $faker->optional()->randomElement(['/user-img/default.webp']),
