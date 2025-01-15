@@ -20,7 +20,7 @@
     height: 100vh;
 }
 
-.bg-parents {
+/* .bg-parents {
     background-image: url('/img/bck.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -36,4 +36,4 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
+} */

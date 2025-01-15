@@ -16,7 +16,7 @@ public function index() {
     //Auth 가 로그인한 유저의 정보를 담고 있고, guard가 어떤 테이블인지(children, parents )
     $parent = Auth::guard('parents')->user();
     // $parentId = ParentModel::where('parent_id', $parent->parent_id)->first();
-    $childNameList = Child::select('name', 'created_at', 'child_id')
+    $childNameList = Child::select('name', 'nick_name', 'profile','created_at', 'child_id')
                             ->where('parent_id', $parent->parent_id)
                             // ->groupBy('parent_id')
                             ->orderBy('created_at')

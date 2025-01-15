@@ -120,8 +120,7 @@ const goToNext = () => {
 /* 메인 화면 */
 .container {
     margin-top: 20px;
-    width: 1500px;
-    height: 720px;
+    width: 100vw;
     background-color: white;
     display: flex;
     gap: 40px;
@@ -131,7 +130,7 @@ const goToNext = () => {
 
 /* 플랙스 적용 */
 .d-flex {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
