@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\PasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class AuthController extends Controller {
@@ -154,7 +155,7 @@ class AuthController extends Controller {
         // 사용자가 추가로 프로필 사진을 올렸다면
         $insertData['profile'] = $request->profile 
         // 해당 파일을 만들어서 경로를 넣고
-          ? '/'.$request->file('profile')->store('profile') 
+          ? '/'.$request->file('profile')->store('user-img') 
         // 없으면 랜덤한 디폴트 이미지 경로를 넣음 
           : '/user-img/default'.rand(0,9).'.webp'
         ;
@@ -263,21 +264,155 @@ class AuthController extends Controller {
   public function parentInfo() {
     $parent = Auth::guard('parents')->user();
 
-    if(!$parent) {
-      return response()->json([
-        'success' => false,
-        'error' => '부모 정보를 찾을 수 없습니다.'
-      ], 401);
-    }
-
-    // 부모 정보 조회 + 자녀 레코드
+    // 부모 정보 조회 + 자녀들 레코드
     $parentInfo = $this->authRepository->parentInfoWithChildren($parent->parent_id);
 
     return response()->json([
       'success' => true,
-      'mag' => '부모 정보 조회 성공',
       'parent' => $parentInfo,
     ]);
+  }
+
+  /**
+   * 자녀 정보 조회
+   * 
+   * @return JSON $responseData
+   */
+  public function childInfo() {
+    $child = Auth::guard('children')->user();
+
+    // 자녀 정보 조회 + 부모 레코드
+    $childInfo = $this->authRepository->childInfoWithParent($child->child_id);
+
+    return response()->json([
+      'success' => true,
+      'child' => $childInfo,
+    ]);
+  }
+
+  /**
+   * 회원 정보 수정
+   * 
+   * @param AuthRequest $request
+   * 
+   * @return JSON $responseData
+   */
+  public function modifyUser(AuthRequest $request) {
+    if(empty($request->all()) || // 요청값이 아무것도 없거나
+      $request->missing(['password', 'password_chk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+    ) { 
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      try{
+        // 로그인한 유저 정보를 세팅
+        if(Auth::guard('parents')->check()) {
+          $user = Auth::guard('parents')->user();
+          $colName = 'parent_id';
+        }else {
+          $user = Auth::guard('children')->user();
+          $colName = 'child_id';
+        }
+  
+        // 업데이트 데이터 초기화
+        $updateData = [];
+  
+        // 루프를 돌려 값이 바뀐것만 세팅
+        foreach(['name', 'email', 'tel'] as $field) {
+          if($request->$field !== $user->$field) {
+            $updateData[$field] = $request->$field;
+          }
+        }
+  
+        // 닉네임이 들어왔고 들어온 닉네임이 기존에 있는 닉네임과 같지 않다면 세팅
+        if($request->nick_name && $request->nick_name !== $user->nick_name) {
+          $updateData['nick_name'] = $request->nick_name;
+        }
+        
+        // 이미지가 새로 들어왔다면
+        if($request->profile) {
+          // 이미지가 디폴트 이미지가 아닌 경우에만 삭제
+          if(!str_contains($user->profile, 'default')) {
+            Storage::delete(ltrim($user->profile, '/')); // 앞의 '/' 제거하고 삭제
+          }
+  
+          // 이미지를 새로 업로드
+          $updateData['profile'] = '/'.$request->file('profile')->store('user-img');
+        }
+  
+        // 변경된 값이 하나라도 존재 한다면 업데이트 실행
+        // 없다면 그냥 넘어감
+        if(!empty($updateData)) {
+          $userInfo = [
+            'column_name' => $colName,
+            'column_id' => $user->$colName
+          ];
+
+          $this->authRepository->updateUser($userInfo, $updateData);
+        }
+
+        return response()->json([
+          'success' => true,
+          'msg' => '회원 정보 수정 성공',
+        ], 200);
+
+      }catch(Throwable $th) {
+        return response()->json([
+          'success' => false,
+          'error' => '회원 정보 수정 실패: ' . $th->getMessage(),
+        ], 500);
+      }
+    }
+  }
+  
+  /**
+   * 회원 탈퇴 처리
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function removeUser(PasswordRequest $request) {
+    if(empty($request->all()) || $request->missing(['password'])) { 
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      try {
+        // 로그인한 유저 정보를 세팅
+        if(Auth::guard('parents')->check()) {
+          $user = Auth::guard('parents')->user();
+          $colName = 'parent_id';
+        }else {
+          $user = Auth::guard('children')->user();
+          $colName = 'child_id';
+        }
+        
+        $userInfo = [
+          'column_name' => $colName,
+          'column_id' => $user->$colName
+        ];
+
+        // 회원 탈퇴 실행
+        $this->authRepository->removeUser($userInfo);
+
+        $responseData = [
+          'success' => true,
+          'msg' => '회원 탈퇴 성공'
+        ];
+
+        return response()->json($responseData, 200);
+
+      }catch(Throwable $th) {
+        return response()->json([
+          'success' => false,
+          'error' => '회원 탈퇴 실패: ' . $th->getMessage(),
+        ], 500);
+      }
+    }
   }
 
 }

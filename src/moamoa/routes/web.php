@@ -33,6 +33,9 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/childRegistMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.regist.matching');
     Route::post('/storeUser', [AuthController::class, 'storeUser'])->name('auth.store.user');
     Route::post('/parentInfo', [AuthController::class, 'parentInfo'])->name('auth.parent.info');
+    Route::post('/childInfo', [AuthController::class, 'childInfo'])->name('auth.child.info');
+    Route::post('/modifyUser', [AuthController::class, 'modifyUser'])->name('auth.modify.user');
+    Route::post('/removeUser', [AuthController::class, 'removeUser'])->name('auth.remove.user');
 });
 // 
 
