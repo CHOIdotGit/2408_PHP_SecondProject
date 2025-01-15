@@ -16,8 +16,6 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
-        $this->faker = \Faker\Factory::create('ko_KR');
-
         return [
             'parent_id' => rand(1, 1000),
             'child_id' => rand(1, 2500),

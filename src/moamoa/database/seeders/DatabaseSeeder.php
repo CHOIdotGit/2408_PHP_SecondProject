@@ -21,15 +21,15 @@ class DatabaseSeeder extends Seeder
         //     ParentSeeder::class
         //     ,ChildrenSeeder::class
         // ]);
+        // Mission::factory(1000)->create();
         // Transaction::factory(300000)->create();
-        // Mission::factory(300000)->create();
 
-        for ($i = 0; $i < 30; $i++) { // 10,000개씩 30번 반복
-            Transaction::factory(10000)->create();
+        for ($i = 0; $i < 300; $i++) { // 1000개씩 300번 반복
+            Transaction::factory(1000)->create();
         }
 
-        for ($i = 0; $i < 30; $i++) { // 10,000개씩 30번 반복
-            Mission::factory(10000)->create();
+        for ($i = 0; $i < 300; $i++) { // 1000개씩 300번 반복
+            Mission::factory(1000)->create();
         }
     }
 }

@@ -2,11 +2,12 @@
     <div class="d-flex">
         <div class="container">
             <!-- 왼쪽 내비게이션 버튼 -->
-            <div class="child-list-triangle"  @click="goToPrev">◀</div>
-            <!-- Swiper 적용 부분 -->
-            <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :loop="true" ref="swiper" :navigation="true" class="swiper">
+            <!-- <div class="child-list-triangle" v-if="parentHome.length > 1" @click="goToPrev">◀</div> -->
+            <!-- Swiper 적용 부분 :spaceBetween="100" :slidesPerView="3" :loop="true"  -->
+            <Swiper v-if="parentHome.length > 0" :slidesPerView="parentHome.length < 3 ? parentHome.length : 3" :loop="parentHome.length > 1"  :pagination="{ clickable: true }" ref="swiper"
+                :navigation="true" style="">
             <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
-                <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="child-box">
+                <SwiperSlide v-for="item in parentHome" :key="item.child_id" style="width: 95%; margin-left: 12%;">
                 <div class="blank">-</div>
                 <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
                 <div class="blank">-</div>
@@ -47,18 +48,29 @@
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
             <!-- 오른쪽 내비게이션 버튼 -->
-            <div class="child-list-triangle" @click="goToNext">▶</div>
+            <!-- <div class="child-list-triangle"  @click="goToNext">▶</div> -->
         </div>
     </div>
 </template>
 <script setup>
 
-import { computed, ref, onMounted } from 'vue';
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import 'swiper/css';
+import { computed, ref, onMounted, watch } from 'vue';
 // import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
+// 스와이퍼
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+// Swiper 스타일 임포트
+import 'swiper/css';
+
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+// 스와이퍼 인스턴스
+const swiper = ref(null);
+
+// ------------------------------------------------------
 const store = useStore();
 // const router = useRouter();, ref
 // c, refonst route = useRoute();
@@ -95,32 +107,22 @@ onMounted(() => {
     }
 });
 
-// Swiper 제어
-const swiper = ref(null);  // Swiper 인스턴스를 참조하기 위해 ref 사용
-
-// 이전 슬라이드로 이동
-const goToPrev = () => {
-    if (swiper.value && swiper.value.swiper) {
-        swiper.value.swiper.slidePrev();  // swiper 인스턴스의 slidePrev() 메서드 호출
+watch(
+    () => parentHome.length,
+    () => {
+    if (swiper.value) {
+        swiper.value.swiper.update();  // 슬라이드 변경 시 업데이트
     }
-};
+}
+);
 
-// 다음 슬라이드로 이동
-const goToNext = () => {
-    if (swiper.value && swiper.value.swiper) {
-        swiper.value.swiper.slideNext();  // swiper 인스턴스의 slideNext() 메서드 호출
-    }
-};
 </script>
 <style scoped>
-.swiper {
-    margin-right: 25px;
-}
 
 /* 메인 화면 */
 .container {
     margin-top: 20px;
-    width: 100vw;
+    width: 100%;
     background-color: white;
     display: flex;
     gap: 40px;
@@ -135,6 +137,14 @@ const goToNext = () => {
     justify-content: center;
     align-items: center;
     /* padding-bottom: 40px; */
+}
+
+.swiper-button-prev::after, .swiper-button-next::after {
+    color: #a2caac;
+}
+
+.swiper-div {
+    gap: 200px;
 }
 
 .no-child {
@@ -173,9 +183,6 @@ const goToNext = () => {
     color: #000000;
 }
 
-.child-box {
-    margin-bottom: 20px;
-}
 .nickname {
     font-size: 1.5rem;
     margin-top: 5px;
