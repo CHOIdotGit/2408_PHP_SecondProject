@@ -18,6 +18,7 @@
             <span v-else>클릭하여 <br>사진 선택</span>
           </div>
         </label>
+
         <input @change="fileSetting" type="file" name="file" id="file" accept="image/*">
       </div>
     </div>
@@ -250,7 +251,7 @@ import { useStore } from 'vuex';
   const onlyEmail = () => {
     registInfo.email = registInfo.email
       .replace(/@+/g, '@')   // `@`가 두 번 이상 입력되면 하나로 변경
-      .replace(/\.+/g, '.') // `.`이 두 번 이상 입력되면 하나로 변경
+      .replace(/\.+/g, '.'); // `.`이 두 번 이상 입력되면 하나로 변경
 
     // 영문 숫자 이외에는 입력되면 안됨
     registInfo.email = registInfo.email.replace(/[^a-zA-Z0-9@.]/g, '');

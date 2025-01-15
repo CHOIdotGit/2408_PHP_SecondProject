@@ -273,7 +273,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 }
 .nav-section {
     background-color: white;
-    height: 750px;
+    height: 720px;
 }
 .selected-kid {
     margin-left: 30px;
@@ -290,7 +290,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 
 .money-history {
     width: 400px;
-    height: 500px;
+    height: 480px;
     margin-left: 20px;
     margin-right: 20px;
     margin-top: 20px;
@@ -328,7 +328,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 }
 .cal-sec-container {
     width: 1290px;
-    height: 750px;
+    height: 720px;
     background-color: white;
     padding: 0 1em;
 }

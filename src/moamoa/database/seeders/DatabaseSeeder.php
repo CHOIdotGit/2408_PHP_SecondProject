@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Child;
 use App\Models\Mission;
 use App\Models\Transaction;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,11 +17,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            ParentSeeder::class
-            ,ChildrenSeeder::class
-        ]);
-        Transaction::factory(50)->create();
-        Mission::factory(50)->create();
+        // $this->call([
+        //     ParentSeeder::class
+        //     ,ChildrenSeeder::class
+        // ]);
+        // Transaction::factory(300000)->create();
+        // Mission::factory(300000)->create();
+
+        for ($i = 0; $i < 30; $i++) { // 10,000개씩 30번 반복
+            Transaction::factory(10000)->create();
+        }
+
+        for ($i = 0; $i < 30; $i++) { // 10,000개씩 30번 반복
+            Mission::factory(10000)->create();
+        }
     }
 }

@@ -35,6 +35,7 @@ export default {
     registFlg: true, // 자녀 페이지 전환용 플래그
     registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입 폼 정보
     parentInfo: sessionStorage.getItem('parentInfo') ? JSON.parse(sessionStorage.getItem('parentInfo')) : {}, // 가입 부모 정보
+    childInfo: {},
     matchInfo: {}, // 매칭 정보
     preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false,
@@ -107,6 +108,10 @@ export default {
     setErrMsgFamCode(state, errMsg) {
       state.errMsg.fam_code = errMsg;
     },
+    setChildInfo(state, childInfo) {
+      state.childInfo = childInfo;
+    },
+    
     // 초기화 관련 ------------------------------------------------------------------------------------------
 
     // 가입정보 초기화
@@ -399,11 +404,121 @@ export default {
       const url = '/api/auth/parentInfo';
       axios.post(url)
       .then(res => {
-        // console.log(res.data.parent);
         context.commit('setParentInfo', res.data.parent);
-      })
-      .catch(err => {
-        console.error(err);
+      });
+    },
+
+    /**
+     * 자녀 정보 호출
+     * 
+     * @param {*} context
+     */
+    childInfo(context) {
+      const url = '/api/auth/childInfo';
+      axios.post(url)
+      .then(res => {
+        context.commit('setChildInfo', res.data.child);
+      });
+    },
+
+    /**
+     * 회원정보 수정
+     */
+    modifyUser(context, editInfo) {
+      const url = '/api/auth/modifyUser';
+      const config = {
+        headers: {
+          // 파일 생성을 할수도 있기에 멀티파트폼 데이터 세팅
+          'Content-Type': 'multipart/form-data',
+        }
+      };
+
+      // 전송용 폼데이터 생성
+      const data = new FormData();
+
+      // 각 데이터에 값을 넣음
+      Object.entries(editInfo).forEach(([key, val]) => {
+        if(val) {
+          data.append(key, val);
+        }
+      });
+
+      axios.post(url, data, config)
+      .then(res => {
+        alert('회원 정보의 수정이 완료되었습니다.');
+
+        router.replace('/');
+      }).catch(err => {
+        // 다시 시도할 경우를 대비해 메세지 초기화
+        context.commit('resetErrMsg');
+
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          // 에러 정보값 세팅
+          const errInfo = {
+            // account: 'setErrMsgAccount',
+            password: 'setErrMsgPassword',
+            password_chk: 'setErrMsgPasswordChk',
+            name: 'setErrMsgName',
+            email: 'setErrMsgEmail',
+            nick_name: 'setErrMsgNickName',
+            tel: 'setErrMsgTel',
+            fam_code : 'setErrMsgFamCode',
+          };
+
+          // 돌려서 있는것만 데이터 담음
+          Object.entries(errData).forEach(([key, val]) => {
+            if(val[0] && errInfo[key]) {
+              context.commit(errInfo[key], val[0]);
+            }
+          });
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+
+    },
+
+    /**
+     * 회원 탈퇴
+     * 
+     * @param {*} context 
+     * @param {*} removeInfo 
+     */
+    removeUser(context, removeInfo) {
+      const url = '/api/auth/removeUser';
+      const data = { password: removeInfo };
+
+      axios.post(url, data)
+      .then(res => {
+        // console.log(res.data);
+        alert('회원 탈퇴 신청이 완료되었습니다. 로그인 페이지로 이동합니다.');
+        context.dispatch('logout'); // 로그아웃 실행
+      }).catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+
+        // 유효성 검사 실패
+        if(err.response.status === 422 && errData.password[0]) { 
+          context.commit('setErrMsgPassword', errData.password[0]);
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
       });
     },
 

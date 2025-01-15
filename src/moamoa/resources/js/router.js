@@ -27,6 +27,9 @@ import CompleteRegistComponent from '../views/components/auth/regist/CompleteReg
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
 import ParentCodeComponent from '../views/components/auth/regist/ParentCodeComponent.vue';
 import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
+import FamilyPrivateEditComponent from '../views/components/auth/private/FamilyPrivateEditComponent.vue';
+import ParentPrivateWithdrawalComponent from '../views/components/auth/private/ParentPrivateWithdrawalComponent.vue';
+import ChildPrivateWithdrawalComponent from '../views/components/auth/private/ChildPrivateWithdrawalComponent.vue';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -117,6 +120,18 @@ const routes = [
         component: ParentPrivateFamCodeComponent,
         beforeEnter: chkAuth,
     },
+    // 부모 회원 정보 수정 페이지
+    {
+        path: '/parent/private/edit',
+        component: FamilyPrivateEditComponent,
+        beforeEnter: chkAuth,
+    },
+    // 부모 회원 탈퇴 페이지
+    {
+        path: '/parent/private/withdrawal',
+        component: ParentPrivateWithdrawalComponent,
+        beforeEnter: chkAuth,
+    },
 
     // +==================================+
     // +          부모 미션 모음           +
@@ -186,6 +201,18 @@ const routes = [
     {
         path: '/child/home',
         component: ChildCalendarComponent,
+        beforeEnter: chkAuth,
+    },
+    // 자녀 회원 수정 페이지
+    {
+        path: '/child/private/edit',
+        component: FamilyPrivateEditComponent,
+        beforeEnter: chkAuth,
+    },
+    // 자녀 회원 탈퇴 페이지
+    {
+        path: '/child/private/withdrawal',
+        component: ChildPrivateWithdrawalComponent,
         beforeEnter: chkAuth,
     },
     // +==================================+

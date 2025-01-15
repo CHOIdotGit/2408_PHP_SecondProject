@@ -25,8 +25,8 @@
           {{ parentInfo.name }} 님의 자녀
         </p>
 
-        <div class="profile-field" :class="{'overflow-auto' : parentInfo.children.length > 4}">
-          <div v-if="parentInfo.children.length === 0">
+        <div class="profile-field" :class="{'overflow-auto' : parentInfo?.children?.length > 4}">
+          <div v-if="parentInfo?.children?.length === 0">
             <p>등록된 자녀의 정보가 없습니다.</p>
           </div>
           <div v-else v-for="item in parentInfo.children" :key="item" class="profile-info">
@@ -177,10 +177,6 @@ onBeforeMount(() => {
     flex-direction: column; /* 세로 정렬 */
     padding: 10px;
     margin: 0 auto;
-  }
-
-  /* 암색 배경 */
-  .data-form {
     background-color: #E8E8E8;
     width: 710px;
     max-width: 38vw;

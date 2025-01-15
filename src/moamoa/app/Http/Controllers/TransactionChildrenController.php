@@ -13,13 +13,14 @@ class TransactionChildrenController extends Controller
     public function index() {
         $child = Auth::guard('children')->user();
 
-        $childTransactionList = Transaction::select('transactions.transaction_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date')
+        $childTransactionList = Transaction::select('transactions.transaction_id', 'transactions.child_id', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.transaction_date', 'transactions.transaction_code')
                                         ->where('transactions.child_id', $child->child_id)
+                                        ->where('transactions.transaction_code', '1')
                                         ->with('child')
                                         ->whereNull('transactions.deleted_at')
                                         ->orderBy('transactions.transaction_date', 'DESC')
                                         // ->latest()
-                                        ->paginate(255);
+                                        ->paginate(15);
 
 
         $responseData = [
