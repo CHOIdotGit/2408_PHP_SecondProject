@@ -52,18 +52,6 @@ import { useRoute } from 'vue-router';
 const store = useStore();
 const route = useRoute();
 
-const categoryPercentage = computed(()=> store.state.transaction.fetchCategoryData);
-// console.log(categoryPercentage);
-// ✅ **데이터 설정**
-// const childNameList = computed(() => store.state.header.childNameList);
-
-// const statis = computed(() => [
-//   { name: "가장 큰 지출", value: store.state.transaction.mostSpendAmount || 0 },
-//   { name: "가장 자주 쓴 카테고리", value: store.state.transaction.parentStats || '' },
-//   { name: "지출 총합", value: store.state.transaction?.totalAmount || 0 },
-//   { name: "용돈 총합", value: store.state.transaction.totalExpenses || 0 }
-// ]);
-
 const parentStatis = computed(() => store.state.transaction.parentStats);
 // const doughnutGraph = computed(() => store.state.transacion);
 
@@ -88,7 +76,7 @@ const graphChartData = {
       label: '주차별 소비 합계',
       data: [15000, 30000, 45000, 60000],
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-      borderWidth: 1,
+      borderWidth: 0.8,
     },
   ],
 };
@@ -176,7 +164,6 @@ onMounted(async () => {
 watch(
   () => doughnutData.value
   , newQuestion => {
-    console.log('watch', doughnutData.value);
     doughnutChartData.datasets[0].data = doughnutData.value;
     renderDoughnutChart();
   }

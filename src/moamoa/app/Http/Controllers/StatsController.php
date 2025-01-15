@@ -133,11 +133,10 @@ class StatsController extends Controller
 
 
 
-         // ✅ **2. 카테고리별 지출 및 비율 구하기**
+         //  카테고리별 지출 및 비율 구하기**
         $eachCategoryTransaction = Transaction::select(
             'category',
-            DB::raw('SUM(amount) as total_amount'),
-            // DB::raw('ROUND(SUM(amount) / ' . ($totalAmount ?: 1) . ' * 100, 2) as percentage')
+            DB::raw('SUM(amount) as total_amount')
         )
         ->where('parent_id', $parent->parent_id)
         ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
@@ -147,6 +146,16 @@ class StatsController extends Controller
         ->orderBy('category')
         ->get();
 
+        // 주간별 지출
+        $weeklyOutgoData = Transaction::selectRaw(
+            "DATE_FORMAT(transaction_date, 'w%U') as weeks, SUM(amount) as total"
+        )
+        ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])    
+        ->where('child_id', $child_id)
+        ->where('parent_id', $parent->parent_id)
+        ->groupBy('weeks')
+        ->orderBy('weeks')
+        ->get();
 
 
 
@@ -163,24 +172,12 @@ class StatsController extends Controller
             ,'msg' => '자녀 홈페이지 로드 성공'
             ,'data' => $data
             ,'eachCategoryTransaction' => $eachCategoryTransaction
+            ,'weeklyOutgoData' => $weeklyOutgoData
+            ,
 
         ];
         
         return response()->json($responseData, 200);
-        
-        // $responseData = [
-        //     'success' => true
-        //     ,'msg' => '자녀 홈페이지 로드 성공'
-        //     // ,'childNameList' => $childNameList
-        //     // ,'transactionAmount' => $transactionAmount
-        //     // ,'mostUsedCategory' => $mostUsedCategory
-        //     // ,'totalAmount' => $totalAmount
-        //     // ,'totalExpenses' => $totalExpenses
-        //     ,'categoryPercentage' => $categoryPercentage
-            
-        // ];
-        // return response()->json($responseData, 200);
-
     
     }
 }

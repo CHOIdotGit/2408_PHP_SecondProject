@@ -366,6 +366,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     justify-content: space-between;
     align-items: center;
     div{
+        
         height: 55px;
         font-size: 2rem;
         text-align: center;

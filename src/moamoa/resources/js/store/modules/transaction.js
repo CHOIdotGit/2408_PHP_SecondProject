@@ -65,6 +65,9 @@ export default {
         setDoughnutData(state, data) {
             state.doughnutData = data;
         },
+        setWeeklyOutgoData(state, data) {
+            state.weeklyOutgoData = data;
+        },
     },
     actions: {
         /**
@@ -113,7 +116,6 @@ export default {
             .then(response => {
                 context.commit('setMostSpendAmount', response.data.transactionAmount);
                 context.commit('setMostUsedCategory', response.data.mostUsedCategory);
-                console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
                 context.commit('setTotalAmount', response.data.totalAmount);
                 context.commit('setTotalExpenses', response.data.totalExpenses);
                 
@@ -133,18 +135,10 @@ export default {
                     .get(url)
                     .then((response) => {
                         context.commit('setChildId', child_id);
-                        // context.commit('setMostSpendAmount', response.data.transactionAmount);
-                        // console.log('지출 총합', response.data.transactionAmount)
-                        // context.commit('setMostUsedCategory', response.data.transactions_max_category);
-                        // // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-                        // context.commit('setTotalAmount', response.data.totalAmount);
-                        // context.commit('setTotalExpenses', response.data.totalExpenses);
                         context.commit('setParentStats', response.data.data);
-                        
-                        // console.log('그래프데이터', categoryPercentage)
                         const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount);
+                        context.commit('setWeeklyOutgoData', response.data.data);
                         context.commit('setDoughnutData', eachCategoryTransaction);
-                        console.log(eachCategoryTransaction);
                         return resolve();
                     })
                     .catch((error) => {
@@ -157,9 +151,6 @@ export default {
     },
 
     getters: {
-        // getMostSpendAmount: (state) => state.mostSpendAmount,
-        // getMostUsedCategory: (state) => state.mostUsedCategory,
-        // getTotalAmount: (state) => state.totalAmount,
-        // getTotalExpenses: (state) => state.totalExpenses,
+        
     },
 }
