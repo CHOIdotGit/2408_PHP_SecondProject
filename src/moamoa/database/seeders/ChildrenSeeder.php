@@ -36,7 +36,7 @@ class ChildrenSeeder extends Seeder
                 'nick_name' => mb_substr($faker->optional()->realText(10, 1), 0, rand(2, 5)), 
                 'email' => $faker->unique(true)->safeEmail(), // 최대 100글자
                 'tel' => '010' . $faker->numerify('########'), // 010으로 시작하고 나머지는 랜덤 숫자
-                'profile' => $faker->optional()->imageUrl(100, 100, 'people') ?: '/user-img/default.webp',
+                'profile' => '/user-img/default.webp',
             ];
             
             Child::create($data);

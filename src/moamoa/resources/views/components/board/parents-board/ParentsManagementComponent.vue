@@ -3,45 +3,48 @@
         <div class="container">
             <!-- 왼쪽 내비게이션 버튼 -->
             <!-- <div class="child-list-triangle" v-if="parentHome.length > 1" @click="goToPrev">◀</div> -->
-            <!-- Swiper 적용 부분 :spaceBetween="100" :slidesPerView="3" :loop="true"  -->
-            <Swiper v-if="parentHome.length > 0" :slidesPerView="parentHome.length < 3 ? parentHome.length : 3" :loop="parentHome.length > 1"  :pagination="{ clickable: true }" ref="swiper"
-                :navigation="true" style="">
+            <!-- Swiper 적용 부분 :spaceBetween="100" :loop="true"   -->
+            <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :slidesPerGroup="1" :loop="true" ref="swiper" :navigation="{ clickable: true }" :spaceBetween="10">
             <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
-                <SwiperSlide v-for="item in parentHome" :key="item.child_id" style="width: 95%; margin-left: 12%;">
-                <div class="blank">-</div>
-                <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
-                <div class="blank">-</div>
-                <div class="child">
-                    <h3 class="name">{{ item.name }}</h3>
-                    <p class="nickname">{{ item.nick_name }}</p>
-                    <div class="expense-box">
-                    <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
-                    <div>
-                        <div v-if="item.transactions && item.transactions.length === 0">
-                        <p class="no-amount">최근 지출한 금액이 없습니다.</p>
-                        </div>
-                        <div v-else>
-                        <div class="amount" v-for="transaction in item.transactions" :key="transaction">
-                            {{ transaction.amount.toLocaleString() }}원
-                        </div>
+                <div class="div-swiper">
+                    <SwiperSlide v-for="item in parentHome" :key="item.child_id">
+                    <div class="v-loop">
+                        <div class="blank">-</div>
+                        <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
+                        <div class="blank">-</div>
+                        <div class="child">
+                            <h3 class="name">{{ item.name }}</h3>
+                            <!-- <p class="nickname">{{ item.nick_name }}</p> -->
+                            <div class="expense-box">
+                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
+                            <div>
+                                <div v-if="item.transactions && item.transactions.length === 0">
+                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
+                                </div>
+                                <div v-else>
+                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
+                                    {{ transaction.amount.toLocaleString() }}원
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="child-mission">
+                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                            <div class="chk-div">
+                                <div v-if="item.missions && item.missions.length === 0" class="margin-top">
+                                <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
+                                </div>
+                                <div v-else>
+                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
+                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </div>
                     </div>
-                    </div>
-                    <div class="child-mission">
-                    <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
-                    <div class="chk-div">
-                        <div v-if="item.missions && item.missions.length === 0" class="margin-top">
-                        <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
-                        </div>
-                        <div v-else>
-                        <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
-                            <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
-                        </div>
-                        </div>
-                    </div>
-                    </div>
+                    </SwiperSlide>
                 </div>
-                </SwiperSlide>
             </Swiper>
             
             <div v-else>
@@ -54,7 +57,7 @@
 </template>
 <script setup>
 
-import { computed, ref, onMounted, watch } from 'vue';
+import { computed, ref, onMounted, watch, nextTick } from 'vue';
 // import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -63,7 +66,6 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 
 // Swiper 스타일 임포트
 import 'swiper/css';
-
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
@@ -72,9 +74,6 @@ const swiper = ref(null);
 
 // ------------------------------------------------------
 const store = useStore();
-// const router = useRouter();, ref
-// c, refonst route = useRoute();
-// const child_id = route.query.child_id;
 
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
@@ -102,19 +101,18 @@ const goSpendList = (child_id) => {
 // onMount
 onMounted(() => {
     store.dispatch('mission/parentHome');
-    if (swiper.value) {
-        swiper.value.swiper.update();  // swiper 인스턴스 초기화 또는 업데이트
-    }
+    nextTick(() => {
+        if(swiper.value) {
+        swiper.value.swiper.update();
+        }
+    });
 });
 
-watch(
-    () => parentHome.length,
-    () => {
-    if (swiper.value) {
-        swiper.value.swiper.update();  // 슬라이드 변경 시 업데이트
+watch(parentHome, () => {
+    if(swiper.value) {
+        swiper.value.swiper.update();
     }
-}
-);
+});
 
 </script>
 <style scoped>
@@ -139,12 +137,28 @@ watch(
     /* padding-bottom: 40px; */
 }
 
-.swiper-button-prev::after, .swiper-button-next::after {
-    color: #a2caac;
+.v-loop {
+    width: 360px !important;
 }
 
-.swiper-div {
-    gap: 200px;
+.div-swiper {
+
+}
+
+.swiper {
+    width: 90%;
+    height: 90%;
+}
+
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+}
+
+.swiper-button-prev::after, .swiper-button-next::after {
+    color: #a2caac !important;
 }
 
 .no-child {
