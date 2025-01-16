@@ -9,7 +9,7 @@
         <img src="/img/icon-angle-double-right.png" alt="" class="btn-right">
     </div>
 
-    <div class="menu-container" v-show="slidMenu" >
+    <div class="menu-container" v-show="slidMenu">
 
         <!-- 자녀가 있을 때  -->
         <div class="child-box" v-if="childNameList.length > 0" >
@@ -17,15 +17,17 @@
                 <img :src="childProfile.profile || '/profile/default5.webp'" alt="">    
             </div>
             <div class="child-info">
+                <!-- todo nick name 나중에 수정 -->
                 <div class="child-nickname">{{childProfile.nick_name}}</div>
                 <div class="child-name">{{ childProfile.name }}</div>
-                {{ selectedChildId }}
             </div>
 
             <!-- 자녀 프로필 선택 메뉴 -->
             <select name="childName" id="child" v-if="childNameList.length > 0" v-model="selectedChildId">
                 <option value="0" disabled>자녀 선택</option>
-                <option v-for="child in childNameList" :key="child" :value="child.child_id">{{ child.name }}</option>
+                <option v-for="child in childNameList" :key="child" :value="child">
+                    {{ child.name }}
+                </option>
             </select>
         </div>
 
@@ -52,19 +54,19 @@
                     홈
                 </div>
             </router-link>
-            <div class="menu-title" @click="goParentSpend">
+            <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)">
                 <img src="/img/icon-coin.png" alt="" class="menu-icon">
                 지출
             </div>
-            <div class="menu-title" @click="goParentMission(child_id)">
+            <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)">
                 <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                 미션
             </div>
-            <div class="menu-title" @click="goParentCalendar">
+            <div class="menu-title" @click="goParentCalendar(selectedChildId.child_id)">
                 <img src="/img/icon-calendar.png" alt="" class="menu-icon">
                 캘린더
             </div>
-            <div class="menu-title" @click="goParentStat">
+            <div class="menu-title" @click="goParentStatis(selectedChildId.child_id)">
                 <img src="/img/icon-signal.png" alt="" class="menu-icon">
                 통계
             </div>
@@ -77,11 +79,7 @@
                 <img src="/img/icon-shopping-cart.png" alt="" class="menu-icon">
                 상점
             </div> -->
-            <!-- 테스트 -->
-            <div class="menu-title test">
-                <img src="/img/icon-home.png" alt="" class="menu-icon">
-                <div>테스트</div>
-            </div>
+
             <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
         </div>
         <!-- 고객센터 -->
@@ -94,7 +92,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -110,13 +108,17 @@ const closeMenubtn = () => {
 }
 
 // 자녀 프로필 메뉴
-const selectedChildId = ref(0); // 셀렉트 박스로 자녀 선택
-
+const selectedChildId = ref(0); // 셀렉트 박스가 처음에 "0=자녀선택" 표시
 const childNameList = computed(() => store.state.header.childNameList || []); //등록된 자녀 수 확인
-const childProfile = ref({}); 
+const childProfile = ref({}); // 선택된 자녀 정보
 
 
-
+watch(selectedChildId, (newId) => {
+    console.log('선택된 자녀 정보', childProfile);
+    if(selectedChildId) {
+        childProfile.value = newId;
+    }
+})
 
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');
@@ -133,25 +135,16 @@ onBeforeMount(async () => {
     // TODO : 확인용 나중에 삭제 end ----------
 })
 
-// 부모 홈으로 이동
-// const goParentHome = (child_id) => {
-//     console.log('홈으로 이동', child_id);
-//     store.dispatch('mission/parentHome', child_id);
-//     router.push('/parent/home');
-// }
-
-// 부모 지출로 이동
-const goParentSpend = (child_id) => {
-    console.log('지출로 이동', child_id);
-    store.dispatch('transaction/transactionList', child_id);
-    router.push('/parent/spned/list/' + child_id);
+//  부모 캘린더로 이동
+const goParentCalendar = (child_id) => {
+    store.dispatch('calendar/parentCalendar', child_id)
+    router.push('/parent/calendar/'+ child_id);
 }
 
-// 부모 미션으로 이동
-const goParentMission = (child_id) => {
-    console.log('미션으로 이동', child_id);
-    store.dispatch('mission/missionList', child_id);
-    router.push('/parent/mission/list/' + child_id);
+// 부모 통계로 이동
+const goParentStatis = (child_id) => {
+    store.dispatch('transaction/parentStats', child_id)
+    router.push('/parent/stats/' + child_id);
 }
 
 

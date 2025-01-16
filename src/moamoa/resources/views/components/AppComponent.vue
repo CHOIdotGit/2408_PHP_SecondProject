@@ -1,22 +1,23 @@
 <template>
 <div :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }">
 
-<div class="layout">
-    <header v-if="isAuth">
-        <!-- 좌측 메뉴 -->
-        <MenuLeftComponent/>
+<!-- 상단 메뉴 -->
+    <header>
+        <HeaderMenuComponent/>
     </header>
+    
 
-    <main>
-        <div v-if="isAuth" class="top-menu">
-            <!-- 상단 메뉴 -->
-
+    <main class="layout">
+        <!-- 좌측 고정 메뉴 -->
+        <div class="menu-left" v-if="isAuth">
+            <MenuLeftComponent/>
         </div>
+        <!-- 화면 -->
         <div>
             <router-view></router-view>
         </div>
     </main>
-</div>
+
     <!-- footer -->
     <!-- <footer v-if="isAuth">
         <div>
@@ -29,10 +30,10 @@
 
 
 <script setup>
-import HeaderComponent from './layout/HeaderComponent.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import MenuLeftComponent from './layout/MenuLeftComponent.vue';
+import HeaderMenuComponent from './layout/HeaderMenuComponent.vue';
 
 
 const store = useStore();
@@ -48,7 +49,7 @@ const isChilds = computed(() => store.state.auth.childFlg);
 
 <style>
 @import url("../../css/common.css");
-@import url("../../css/header.css");
+
 /* footer */
 footer > p {
     text-align: center;
@@ -56,16 +57,6 @@ footer > p {
 }
 
 .layout {
-    display: flex;
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.top-menu {
     display: flex;
 }
 
