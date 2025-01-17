@@ -25,15 +25,14 @@
 }
 
 .swiper {
-    margin-top: 2rem;
-    height: 100%;
+    padding-left: 60px !important;
 }
 
-.swiper-wrapper {
-    gap: 7rem !important;
-    margin-left: 6rem;
+/* .swiper-wrapper {
+    gap: 63px !important;
+    justify-content: center;
 }
 
 .v-loop {
-    width: 360px !important;
-}
+    width: 300px !important;
+} */

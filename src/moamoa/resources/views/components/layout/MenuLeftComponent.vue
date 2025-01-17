@@ -234,7 +234,7 @@ button {
 /* 좌측 메뉴 */
 .menu-container {
     width: 250px;
-    height: 100vh;
+    height: 51.55rem;
 }
 
 /* 반응형 버튼 */

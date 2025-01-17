@@ -13,7 +13,7 @@
             <MenuLeftComponent/>
         </div>
         <!-- 화면 -->
-        <div>
+        <div class="app-div">
             <router-view></router-view>
         </div>
     </main>
@@ -58,6 +58,14 @@ footer > p {
 
 .layout {
     display: flex;
+}
+
+.app-div {
+    width: 1670px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 </style>

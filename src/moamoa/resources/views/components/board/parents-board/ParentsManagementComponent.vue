@@ -11,15 +11,13 @@
                 :scrollbar="true"
             >
                 <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="v-loop">
-                    <div>
-                        <div class="blank">-</div>
+                    <div class="child-div">
                         <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
-                        <div class="blank">-</div>
                         <div class="child">
                             <h3 class="name">{{ item.name }}</h3>
                             <div class="expense-box">
-                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
-                            <div>
+                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역</p>
+                            <div class="amount-div">
                                 <div v-if="item.transactions && item.transactions.length === 0">
                                 <p class="no-amount">최근 지출한 금액이 없습니다.</p>
                                 </div>
@@ -31,7 +29,7 @@
                             </div>
                             </div>
                             <div class="child-mission">
-                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션</p>
                             <div class="chk-div">
                                 <div v-if="item.missions && item.missions.length === 0" class="margin-top">
                                 <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
@@ -106,9 +104,9 @@ import { useStore } from 'vuex';
 
 // 스와이퍼
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import { Navigation, Scrollbar } from 'swiper/modules';
 
-const modules = [Navigation, Pagination, Scrollbar, A11y];
+const modules = [Navigation, Scrollbar];
 // Swiper 스타일 임포트
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -152,18 +150,15 @@ onMounted(() => {
 
 /* 메인 화면 */
 .d-flex {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 80%;
-    margin-top: 5rem;
+    width: 1150px;
+    height: 720px;
 }
 
 .container {
-    width: 1450px;
-    height: 100%;
+    width: 100%;
+    height: 700px;
     background-color: white;
-    margin-left: 7rem;
+    margin-top: 20px;
 }
 
 .no-child {
@@ -179,25 +174,30 @@ onMounted(() => {
     background-color: white;
     border-radius: 50%;
     padding: 3px;
-    margin-left: 120px;
+    margin-left: 90px;
 }
 
 .mission-title{
-    height: 40px;
+    
+}
+.child-div {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .child {
     background-color: white;
     border: solid #A2CAAC 5px;
-    width: 360px;
-    height: 450px;
-    /* margin-top: 15px; */
+    width: 300px;
+    height: 500px;
+    border-radius: 25px;
 }
 
 /* 프로필 텍스트 */
 .name {
     font-size: 2rem;
-    margin-top: 5px;
+    margin-top: 20px;
     text-align: center;
     color: #000000;
 }
@@ -216,18 +216,22 @@ onMounted(() => {
 }
 
 .child-mission {
-    height: 184px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .mission {
+    background-color: #A2CAAC;
+    color: #FFFFFF;
+    border-radius: 10px;
     width: 250px;
-    border-bottom: 5px solid #A2CAAC;
+    height: 40px;
     font-size: 1.7rem;
-    margin-top: 20px;
+    margin-top: 15px;
+    text-align: center;
     cursor: pointer;
+    padding-top: 5px;
 }
 
 .mission-box {
@@ -241,18 +245,27 @@ onMounted(() => {
 }
 
 .recent-expenses {
-    border-bottom: 5px solid #A2CAAC;
-    width: 200px;
+    background-color: #A2CAAC;
+    color: #FFFFFF;
+    border-radius: 10px;
+    width: 140px;
+    height: 40px;
     font-size: 1.7rem;
-    margin-top: 20px;
+    margin-top: 15px;
     text-align: center;
     cursor: pointer;
+    padding-top: 5px;
+}
+
+.amount-div {
+    margin-top: 10px;
+
 }
 
 .amount {
     font-size: 1.5rem;
-    margin-top: 10px;
     text-align: center;
+    margin-top: 10px;
 }
 
 .no-amount {
@@ -304,9 +317,7 @@ onMounted(() => {
 .chk-div {
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 1.5rem;
 }
 
@@ -314,6 +325,7 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
 }
 
 /* 기본 체크박스 숨기기 */

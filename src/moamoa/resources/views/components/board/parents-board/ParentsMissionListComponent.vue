@@ -26,7 +26,6 @@
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
-                        
                     </div>
                 </div>
             </div>
