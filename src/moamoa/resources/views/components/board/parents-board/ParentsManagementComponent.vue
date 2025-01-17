@@ -1,20 +1,22 @@
 <template>
     <div class="d-flex">
         <div class="container">
-            <!-- 왼쪽 내비게이션 버튼 -->
-            <!-- <div class="child-list-triangle" v-if="parentHome.length > 1" @click="goToPrev">◀</div> -->
-            <!-- Swiper 적용 부분 :spaceBetween="100" :loop="true"   -->
-            <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :slidesPerGroup="1" :loop="true" ref="swiper" :navigation="{ clickable: true }" :spaceBetween="10">
-            <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
-                <div class="div-swiper">
-                    <SwiperSlide v-for="item in parentHome" :key="item.child_id">
-                    <div class="v-loop">
+            <!-- :space-between="50" -->
+            <Swiper v-if="parentHome.length > 0"
+                :slides-per-view="3"
+                ref="swiper"
+                :loop="true"
+                :modules="modules"
+                :navigation="true"
+                :scrollbar="true"
+            >
+                <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="v-loop">
+                    <div>
                         <div class="blank">-</div>
                         <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
                         <div class="blank">-</div>
                         <div class="child">
                             <h3 class="name">{{ item.name }}</h3>
-                            <!-- <p class="nickname">{{ item.nick_name }}</p> -->
                             <div class="expense-box">
                             <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
                             <div>
@@ -43,10 +45,51 @@
                             </div>
                         </div>
                     </div>
-                    </SwiperSlide>
-                </div>
+                </SwiperSlide>
             </Swiper>
-            
+
+            <!-- 왼쪽 내비게이션 버튼 -->
+            <!-- <div class="child-list-triangle" v-if="parentHome.length > 1" @click="goToPrev">◀</div> -->
+            <!-- Swiper 적용 부분 :spaceBetween="100" :loop="true"   -->
+            <!-- <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :loop="true" ref="swiper" :navigation="{ clickable: true }" :spaceBetween="10"> -->
+            <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
+                <!-- <SwiperSlide v-for="item in parentHome" :key="item.child_id">
+                    <div class="v-loop">
+                        <div class="blank">-</div>
+                        <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
+                        <div class="blank">-</div>
+                        <div class="child">
+                            <h3 class="name">{{ item.name }}</h3>
+                            <div class="expense-box">
+                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
+                            <div>
+                                <div v-if="item.transactions && item.transactions.length === 0">
+                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
+                                </div>
+                                <div v-else>
+                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
+                                    {{ transaction.amount.toLocaleString() }}원
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="child-mission">
+                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
+                            <div class="chk-div">
+                                <div v-if="item.missions && item.missions.length === 0" class="margin-top">
+                                <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
+                                </div>
+                                <div v-else>
+                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
+                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </SwiperSlide>
+            </Swiper> -->
             <div v-else>
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
@@ -63,7 +106,9 @@ import { useStore } from 'vuex';
 
 // 스와이퍼
 import { Swiper, SwiperSlide } from 'swiper/vue';
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 
+const modules = [Navigation, Pagination, Scrollbar, A11y];
 // Swiper 스타일 임포트
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -101,64 +146,24 @@ const goSpendList = (child_id) => {
 // onMount
 onMounted(() => {
     store.dispatch('mission/parentHome');
-    nextTick(() => {
-        if(swiper.value) {
-        swiper.value.swiper.update();
-        }
-    });
 });
-
-watch(parentHome, () => {
-    if(swiper.value) {
-        swiper.value.swiper.update();
-    }
-});
-
 </script>
 <style scoped>
 
 /* 메인 화면 */
-.container {
-    margin-top: 20px;
-    width: 100%;
-    background-color: white;
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    align-items: center;   
-}
-
-/* 플랙스 적용 */
 .d-flex {
-    /* margin-left: 50px; */
     display: flex;
-    justify-content: center;
     align-items: center;
-    /* padding-bottom: 40px; */
+    width: 100%;
+    height: 80%;
+    margin-top: 5rem;
 }
 
-.v-loop {
-    width: 360px !important;
-}
-
-.div-swiper {
-
-}
-
-.swiper {
-    width: 90%;
-    height: 90%;
-}
-
-.swiper-slide {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 2%;
-}
-
-.swiper-button-prev::after, .swiper-button-next::after {
-    color: #a2caac !important;
+.container {
+    width: 1450px;
+    height: 100%;
+    background-color: white;
+    margin-left: 7rem;
 }
 
 .no-child {
@@ -185,7 +190,7 @@ watch(parentHome, () => {
     background-color: white;
     border: solid #A2CAAC 5px;
     width: 360px;
-    height: 550px;
+    height: 450px;
     /* margin-top: 15px; */
 }
 
@@ -197,6 +202,12 @@ watch(parentHome, () => {
     color: #000000;
 }
 
+.expense-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .nickname {
     font-size: 1.5rem;
     margin-top: 5px;
@@ -206,6 +217,9 @@ watch(parentHome, () => {
 
 .child-mission {
     height: 184px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mission {
@@ -213,8 +227,6 @@ watch(parentHome, () => {
     border-bottom: 5px solid #A2CAAC;
     font-size: 1.7rem;
     margin-top: 20px;
-    margin-left: 40px;
-    text-align: center;
     cursor: pointer;
 }
 
@@ -233,7 +245,6 @@ watch(parentHome, () => {
     width: 200px;
     font-size: 1.7rem;
     margin-top: 20px;
-    margin-left: 60px;
     text-align: center;
     cursor: pointer;
 }
