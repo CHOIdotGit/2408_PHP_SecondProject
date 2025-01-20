@@ -41,7 +41,7 @@ class DeleteOldDataCommand extends Command {
     // 지금부터 6개월 전의 데이터
     $sixMonthDate = Carbon::now()->subMonths(6);
 
-    foreach ($models as $model) {
+    foreach($models as $model) {
       $deletedRecords = $model::onlyTrashed() // 소프트 딜리트 레코드 검색
         ->where('deleted_at', '<=', $sixMonthDate) // 6개월 전의 데이터보다 작거나 같으면
         ->forceDelete(); // 물리 삭제 실행

@@ -3,9 +3,10 @@
 namespace App\Http\Requests;
 
 use App\Rules\CheckPasswordRule;
+use App\Rules\NotSamePasswordRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class PasswordRequest extends FormRequest {
 
@@ -16,16 +17,27 @@ class PasswordRequest extends FormRequest {
    */
   public function rules() {
     $rules = [
+      // 기본적으로 로그인한 유저의 비밀번호 일치를 체크
       'password' => ['required', new CheckPasswordRule]
     ]; 
-    
+
+    // 비밀번호 변경이 실행될 경우
+    if($this->routeIs('auth.change.password')) {
+      $rules['newPassword'] = ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,30}$/', new NotSamePasswordRule]; // 영문 숫자 조합 6자리 이상
+      $rules['newPasswordChk'] = ['required', 'same:newPassword'];
+    }
+    // /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/ // 영문 숫자 특수기호 조합 8자리 이상
     return $rules;
   }
 
   public function messages() {
     return [
       'password.required' => '비밀번호를 입력해주세요.'
-      ,'password.regex' => '비밀번호 형식이 맞지 않습니다.'
+      // ,'password.regex' => '비밀번호 형식이 맞지 않습니다.'
+      ,'newPassword.required' => '비밀번호를 입력해주세요.'
+      ,'newPassword.regex' => '비밀번호 형식이 맞지 않습니다.'
+      ,'newPasswordChk.required' => '비밀번호 확인을 입력해주세요.'
+      ,'newPasswordChk.same' => '비밀번호가 서로 일치하지 않습니다.'
     ];
   }
 

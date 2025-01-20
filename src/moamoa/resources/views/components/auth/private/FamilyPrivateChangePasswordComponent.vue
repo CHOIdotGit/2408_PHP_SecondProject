@@ -2,38 +2,69 @@
   <!-- 중앙 박스 컨테이너 DIV -->
   <div class="d-flex">
     <div class="container">
+
       <p v-if="errMsg.common" class="err-msg">
         {{ errMsg.common }}
       </p>
-
-      <div v-if="parent?.children?.length > 0" class="empty-msg color-red">
-        연결된 자녀들이 모두 탈퇴를 진행해야 가능합니다.
-      </div>
-      <div v-else>
-        <div class="data-form">
-          <label for="password">
-            비밀번호
-            <span v-if="errMsg.password" class="err-msg">
-              {{ errMsg.password }}
-            </span>
-          </label>
-          <input v-model="removeInfo" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
-        </div>
-
-        <div class="consent-form">
-          <span class="color-red">
-            회원 탈퇴 진행 시 현재 가지고 있는 포인트 포함 모든 데이터가 삭제됩니다. <br> 
-            30일 이내로 재로그인 시 계정 및 데이터 복구 요청이 가능하며 <br>
-            계정 복구 시 자녀 계정도 복구 요청이 가능합니다.
+      
+      <div class="data-form">
+        <label for="password">
+          현재 비밀번호
+          <span v-if="errMsg.password" class="err-msg">
+            {{ errMsg.password }}
           </span>
+        </label>
 
-          <div class="consent-group">
-            <input v-model="isChecked" type="checkbox" name="consent" id="consent" autocomplete="off" required>
-            <label for="consent">안내 사항을 모두 확인하였으며, 이에 동의합니다.</label>
-          </div>
+        <input 
+          v-model="changeInfo.password" 
+          :class="{ 'err-border' : errMsg.password }" 
+          type="password" 
+          name="password" 
+          id="password" 
+          autocomplete="off" 
+        required>
+      </div>
+      
+      <div class="data-form">
+        <label for="password">
+          변경 비밀번호
+          <span v-if="errMsg.newPassword" class="err-msg">
+            {{ errMsg.newPassword }}
+          </span>
+        </label>
 
-          <button @click="nextRemove" type="button" class="btn-submit">회원 탈퇴</button>
-        </div>
+        <input 
+          v-model="changeInfo.newPassword" 
+          :class="{ 'err-border' : errMsg.newPassword }" 
+          type="password" 
+          name="newPassword" 
+          id="newPassword" 
+          autocomplete="off" 
+        required>
+      </div>
+      
+      <div class="data-form">
+        <label for="password">
+          변경 비밀번호 확인
+          <span v-if="errMsg.newPasswordChk" class="err-msg">
+            {{ errMsg.newPasswordChk }}
+          </span>
+        </label>
+
+        <input 
+          v-model="changeInfo.newPasswordChk" 
+          :class="{ 'err-border' : errMsg.newPasswordChk }" 
+          type="password" 
+          name="newPasswordChk" 
+          id="newPasswordChk" 
+          autocomplete="off" 
+        required>
+      </div>
+
+      <div>
+        <button @click="nextChange" type="button" class="btn-submit">
+          비밀번호 변경
+        </button>
       </div>
       
     </div>
@@ -41,7 +72,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, reactive } from 'vue';
 import { useStore } from 'vuex';
 
   const store = useStore();
@@ -49,29 +80,21 @@ import { useStore } from 'vuex';
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);
 
-  // 부모 정보 ---------------------------------------------------------------------------------------------
-  const parent = computed(() => store.state.auth.parentInfo);
-
-  const isChecked = ref(false);
-  const removeInfo = ref();
-  
-  onBeforeMount(() => {
-    store.dispatch('auth/parentInfo'); // 부모 정보 로드
+  // 인풋 정보 ---------------------------------------------------------------------------------------------
+  const changeInfo = reactive({
+    password: '',
+    newPassword: '',
+    newPasswordChk: '',
   });
-  
-  const nextRemove = () => {
+
+  const nextChange = () => {
+    // 에러메세지 리셋
     if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
-  
-    // 체크박스 검사
-    if(!isChecked.value) {
-      alert('안내 사항에 동의해주세요.');
-      return;
-    }
     
-    store.dispatch('auth/removeUser', removeInfo.value);
-  };
+    store.dispatch('auth/changePassword', changeInfo);
+  }
 
 </script>
 
@@ -135,8 +158,8 @@ import { useStore } from 'vuex';
     width: 100%;
     margin: 10px 0;
     padding: 20px;
-    background-color: #f55d5d;
-    font-size: 2rem;
+    background-color: #5c5cfa;
+    font-size: 1.8rem;
     color: #fff;
   }
 
@@ -158,13 +181,5 @@ import { useStore } from 'vuex';
   .err-border:invalid {
     border: 2px solid rgba(255, 0, 0, 0.6);
     box-shadow: 0 0 5px #ff0000;
-  }
-
-  .consent-form {
-    margin-top: 20px;
-  }
-
-  .empty-msg {
-    font-size: 1.8rem;
   }
 </style>

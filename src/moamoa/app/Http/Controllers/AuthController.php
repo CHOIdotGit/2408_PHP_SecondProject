@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthRequest;
+use App\Http\Requests\FamilyCodeRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -98,6 +99,19 @@ class AuthController extends Controller {
    */
   public function settingCsrfToken() {
     return response()->json(['csrf_token' => csrf_token()], 200);
+  }
+
+  /**
+   * 로그인 세션 만료 체크
+   * 
+   * @return Boolean $result
+   */
+  public function checkSession() {
+    $parent = Auth::guard('parents')->check();
+    $child = Auth::guard('children')->check();
+    $result = ($parent || $child) ? true : false;
+
+    return response()->json(['isExpired' => $result], 200);
   }
 
   /**
@@ -415,4 +429,73 @@ class AuthController extends Controller {
     }
   }
 
+  /**
+   * 회원 비밀번호 변경 처리
+   * 
+   * @param PasswordRequest $request
+   * 
+   * @return JSON $responseData
+   */
+  public function changePassword(PasswordRequest $request) {
+    if(empty($request->all()) || $request->missing(['password', 'newPassword', 'newPasswordChk'])) { 
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      try {
+        // 로그인한 유저 정보를 세팅
+        if(Auth::guard('parents')->check()) {
+          $user = Auth::guard('parents')->user();
+          $colName = 'parent_id';
+        }else {
+          $user = Auth::guard('children')->user();
+          $colName = 'child_id';
+        }
+        
+        $userInfo = [
+          'column_name' => $colName,
+          'column_id' => $user->$colName
+        ];
+
+        $updateData = [
+          'password' => Hash::make($request->newPassword)
+        ];
+
+        // 비밀번호 업데이트 실행
+        $this->authRepository->updateUser($userInfo, $updateData);
+
+        $responseData = [
+          'success' => true,
+          'msg' => '비밀번호 변경 성공'
+        ];
+
+        return response()->json($responseData, 200);
+        
+      }catch(Throwable $th) {
+        return response()->json([
+          'success' => false,
+          'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
+        ], $th->getCode());
+      }
+    }
+  }
+
+  /**
+   * 자녀 연결 레코드 처리
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function childManyInfo() {
+    $child = Auth::guard('children')->user();
+
+    $childInfo = $this->authRepository->childInfoWithMissionsAndTransactions($child->child_id);
+
+    return response()->json([
+      'success' => true,
+      'child' => $childInfo,
+    ]);
+  }
 }

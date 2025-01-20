@@ -44,4 +44,9 @@ class AuthRepository extends Repositories {
   public function childInfoWithParent($child_id) {
     return $this->child->where('child_id', $child_id)->with('parent')->first();
   }
+
+  // 자녀 연결 정보 획득
+  public function childInfoWithMissionsAndTransactions($child_id) {
+    return $this->child->where('child_id', $child_id)->with(['missions', 'transactions'])->first();
+  }
 }

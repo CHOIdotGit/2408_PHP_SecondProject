@@ -2,75 +2,87 @@
   <!-- 중앙 박스 컨테이너 DIV -->
   <div class="d-flex">
     <div class="container">
+
       <p v-if="errMsg.common" class="err-msg">
         {{ errMsg.common }}
       </p>
-
-      <div v-if="parent?.children?.length > 0" class="empty-msg color-red">
-        연결된 자녀들이 모두 탈퇴를 진행해야 가능합니다.
+      
+      <div v-if="child?.missions?.length > 0 || child?.transactions?.length > 0" class="empty-msg color-red">
+        미션 및 지출을 진행한 기록이 감지되었습니다. <br>
+        해당 계정의 재매칭은 진행이 불가합니다. <br>
       </div>
       <div v-else>
         <div class="data-form">
           <label for="password">
-            비밀번호
-            <span v-if="errMsg.password" class="err-msg">
-              {{ errMsg.password }}
+            가족코드
+            <span v-if="errMsg.fam_code" class="err-msg">
+              {{ errMsg.fam_code }}
             </span>
           </label>
-          <input v-model="removeInfo" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
+          <input v-model="matchInfo.fam_code" :class="{ 'err-border' : errMsg.fam_code }" type="text" name="fam_code" id="fam_code" autocomplete="off" required>
         </div>
 
         <div class="consent-form">
           <span class="color-red">
-            회원 탈퇴 진행 시 현재 가지고 있는 포인트 포함 모든 데이터가 삭제됩니다. <br> 
-            30일 이내로 재로그인 시 계정 및 데이터 복구 요청이 가능하며 <br>
-            계정 복구 시 자녀 계정도 복구 요청이 가능합니다.
+            부모지정을 잘못하여 가입된 경우를 대비하여 재매칭을 진행할 수 있습니다. <br> 
+            &nbsp;미션이나 지출을 한번도 진행하지 않을 시에만 부모 재매칭이 가능합니다. <br> 
+            <!-- 부모 교체는 3회로 제한되며, 초과할 시 재매칭을 더이상 진행할 수 없습니다. <br> -->
+            <!-- 보다 신중히 선택을 하시기를 바랍니다. <br> -->
           </span>
 
           <div class="consent-group">
-            <input v-model="isChecked" type="checkbox" name="consent" id="consent" autocomplete="off" required>
-            <label for="consent">안내 사항을 모두 확인하였으며, 이에 동의합니다.</label>
+            <!-- <input v-model="isChecked" type="checkbox" name="consent" id="consent" autocomplete="off" required>
+            <label for="consent">안내 사항을 모두 확인하였으며, 이에 동의합니다.</label> -->
           </div>
 
-          <button @click="nextRemove" type="button" class="btn-submit">회원 탈퇴</button>
+          <button @click="nextMatch" type="button" class="btn-submit">부모 매칭</button>
         </div>
       </div>
+
+      <MatchingModalComponent
+        :sendInfo="matchInfo"
+        message="님이 맞습니까?"
+        action="modifyUser"
+      />
       
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
+import MatchingModalComponent from '../../modal/MatchingModalComponent.vue';
 
   const store = useStore();
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);
 
-  // 부모 정보 ---------------------------------------------------------------------------------------------
-  const parent = computed(() => store.state.auth.parentInfo);
+  // 자녀 정보 ---------------------------------------------------------------------------------------------
+  const child = computed(() => store.state.auth.childInfo);
 
-  const isChecked = ref(false);
-  const removeInfo = ref();
-  
-  onBeforeMount(() => {
-    store.dispatch('auth/parentInfo'); // 부모 정보 로드
+  const matchInfo = reactive({
+    fam_code: null,
+    parent_id: '',
   });
   
-  const nextRemove = () => {
+  onBeforeMount(() => {
+    store.dispatch('auth/childManyInfo'); // 자녀 정보 로드
+  });
+  
+  const nextMatch = () => {
     if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
   
     // 체크박스 검사
-    if(!isChecked.value) {
-      alert('안내 사항에 동의해주세요.');
-      return;
-    }
+    // if(!isChecked.value) {
+    //   alert('안내 사항에 동의해주세요.');
+    //   return;
+    // }
     
-    store.dispatch('auth/removeUser', removeInfo.value);
+    store.dispatch('auth/childReMatching', matchInfo);
   };
 
 </script>
@@ -135,7 +147,7 @@ import { useStore } from 'vuex';
     width: 100%;
     margin: 10px 0;
     padding: 20px;
-    background-color: #f55d5d;
+    background-color: #0da80d;
     font-size: 2rem;
     color: #fff;
   }
@@ -160,11 +172,12 @@ import { useStore } from 'vuex';
     box-shadow: 0 0 5px #ff0000;
   }
 
+  .empty-msg {
+    font-size: 1.8rem;
+  }
+
   .consent-form {
     margin-top: 20px;
   }
 
-  .empty-msg {
-    font-size: 1.8rem;
-  }
 </style>

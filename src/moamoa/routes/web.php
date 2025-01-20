@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/api/login', [AuthController::class, 'login'])->name('auth.login');
 Route::post('/api/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::get('/api/csrf-token', [AuthController::class, 'settingCsrfToken'])->name('auth.csrf.token');
+Route::get('/api/check-session', [AuthController::class, 'checkSession'])->name('auth.check.session');
 
 Route::prefix('/api/auth')->group(function () {
     Route::get('/chkAccount/{account}', [AuthController::class, 'chkAccount'])->name('auth.chk.account');
@@ -36,6 +37,9 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/childInfo', [AuthController::class, 'childInfo'])->name('auth.child.info');
     Route::post('/modifyUser', [AuthController::class, 'modifyUser'])->name('auth.modify.user');
     Route::post('/removeUser', [AuthController::class, 'removeUser'])->name('auth.remove.user');
+    Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
+    Route::post('/childManyInfo', [AuthController::class, 'childManyInfo'])->name('auth.child.many.info');
+    Route::post('/childReMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.matching');
 });
 // 
 

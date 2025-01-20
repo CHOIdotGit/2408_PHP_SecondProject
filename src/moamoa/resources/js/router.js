@@ -30,9 +30,23 @@ import ParentPrivateFamCodeComponent from '../views/components/auth/private/Pare
 import FamilyPrivateEditComponent from '../views/components/auth/private/FamilyPrivateEditComponent.vue';
 import ParentPrivateWithdrawalComponent from '../views/components/auth/private/ParentPrivateWithdrawalComponent.vue';
 import ChildPrivateWithdrawalComponent from '../views/components/auth/private/ChildPrivateWithdrawalComponent.vue';
+import FamilyPrivateChangePasswordComponent from '../views/components/auth/private/FamilyPrivateChangePasswordComponent.vue';
+import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
+import axios from './axios';
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
+
+    // 세션 상태 체크
+    axios.get('/api/check-session')
+    .then(res => {
+        // 세션이 만료되었으면 로그아웃 처리
+        if(!res.data.isExpired) {
+            store.dispatch('auth/logout');
+            next('/login');
+            return;
+        }
+    });
 
     // 로그인 상태 변수
     const authFlg = store.state.auth.authFlg;
@@ -132,6 +146,12 @@ const routes = [
         component: ParentPrivateWithdrawalComponent,
         beforeEnter: chkAuth,
     },
+    // 부모 회원 비밀번호 변경 페이지
+    {
+        path: '/parent/private/password',
+        component: FamilyPrivateChangePasswordComponent,
+        beforeEnter: chkAuth,
+    },
 
     // +==================================+
     // +          부모 미션 모음           +
@@ -213,6 +233,18 @@ const routes = [
     {
         path: '/child/private/withdrawal',
         component: ChildPrivateWithdrawalComponent,
+        beforeEnter: chkAuth,
+    },
+    // 자녀 회원 비밀번호 변경 페이지
+    {
+        path: '/child/private/password',
+        component: FamilyPrivateChangePasswordComponent,
+        beforeEnter: chkAuth,
+    },
+    // 자녀 부모 재매칭 페이지
+    {
+        path: '/child/private/rematching',
+        component: ChildPrivateMatchingComponent,
         beforeEnter: chkAuth,
     },
     // +==================================+

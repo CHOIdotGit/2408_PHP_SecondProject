@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\CheckPasswordRule;
 use App\Rules\ExistsFamilyRule;
+use App\Rules\NotSameFamilyCodeRule;
 use App\Rules\UniqueFamilyRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -12,26 +13,38 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 class AuthRequest extends FormRequest {
   // 어스 유효성 룰 정책. 로그인과 회원가입만 들어갈 예정
   public function rules() {
-    $rules = [
-      // 영문 대소문자 시작 및 숫자조합 6 ~ 18글자
-      // 'account' => ['required', 'between:6,18', 'regex:^[a-zA-Z][a-zA-Z0-9]$'] 
-      // 영대문자 및 숫자 반드시 포함 6 ~ 20글자 
-      // ,'password' => ['required', 'between:6,20', 'regex:/^[a-zA-Z0-9!@]+$/']
-      
-      // 테스트용으로 위의 정규식 잠깐 제외
-      'account' => ['required']
-      ,'password' => ['required']
-    ];
+    // 자녀 재매칭 감지
+    $rules = !$this->routeIs('auth.child.matching')
+    ? [
+        // 영문 대소문자 시작 및 숫자조합 6 ~ 18글자
+        // 'account' => ['required', 'between:6,18', 'regex:^[a-zA-Z][a-zA-Z0-9]$'] 
+        // 영문 및 숫자조합 6 ~ 30글자 
+        // ,'password' => ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,30}$/']
+        
+        // 테스트용으로 위의 정규식 제외
+        'account' => ['required']
+        ,'password' => ['required']
+      ]
+    : [ 'fam_code' => ['required', 'regex:/^[A-Z0-9]{8}$/', new NotSameFamilyCodeRule] ];
 
     // 로그인 체크, 부모 테이블이나 자녀 테이블에 해당 아이디가 있는지 확인함
     if($this->routeIs('auth.login')) {
       $rules['account'][] = new ExistsFamilyRule;
     }
 
-    // 회원가입 실행시 유효성 체크
-    elseif($this->routeIs('auth.store.user') || $this->routeIs('auth.child.regist.matching')) {
-      // 유니크 ID가 두 테이블(부모, 자녀)에 존재하는지 검사
-      $rules['account'][] = new UniqueFamilyRule;
+    // 그 외 유효성 체크
+    elseif($this->routeIs('auth.store.user') // 회원가입
+        || $this->routeIs('auth.child.regist.matching')  // 자녀 회원가입 매칭
+        || $this->routeIs('auth.modify.user') // 회원수정
+    ) {
+      // 회원수정 감지
+      !$this->routeIs('auth.modify.user')
+        // 유니크 ID가 두 테이블(부모, 자녀)에 존재하는지 검사
+        ? $rules['account'][] = new UniqueFamilyRule
+        // 로그인한 부모나 자녀의 비밀번호 일치 비교
+        : $rules['password'][] = new CheckPasswordRule;
+      
+      // 필수 체크 정보들
       $rules['password_chk'] = ['required', 'same:password'];
       $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
       $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
@@ -46,14 +59,6 @@ class AuthRequest extends FormRequest {
       elseif($this->routeIs('auth.child.regist.matching')) {
         $rules['fam_code'] = ['required', 'regex:/^[A-Z0-9]{8}$/'];
       }
-    }elseif($this->routeIs('auth.modify.user')) {
-      // 로그인한 부모나 자녀의 비밀번호 일치 비교
-      $rules['password'][] = new CheckPasswordRule; 
-      $rules['password_chk'] = ['required', 'same:password'];
-      $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
-      $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; 
-      $rules['tel'] = ['required', 'regex:/^010\d{8,9}$/'];
-      $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
     }
 
     return $rules;

@@ -1,7 +1,7 @@
 /**
  * 어스 스토어 모듈
  * 개인 보안 관련 처리하는 모듈
- * 주로 로그인, 회원가입, 개인정보 관리등을 여기서 작성
+ * 주로 로그인, 회원가입, 개인정보 관리등을 여기에 작성
  * 
  * 241212 V001 김현석 초기구축
  */
@@ -27,10 +27,13 @@ export default {
       email: null,
       tel: null,
       fam_code: null,
+      newPassword: null,
+      newPasswordChk:null,
     },
     // 모달 관련 ---------------------------------------------------------------------------------------------
     modalText: '',
     modalColor: false,
+    modalFlg: false,
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     registFlg: true, // 자녀 페이지 전환용 플래그
     registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입 폼 정보
@@ -61,6 +64,9 @@ export default {
     setModalColor(state, modalColor) {
       state.modalColor = modalColor;
     },
+    setModalFlg(state, modalFlg) {
+      state.modalFlg = modalFlg;
+    },
     // 회원가입 관련 ---------------------------------------------------------------------------------------------
     setRegistInfo(state, registInfo) {
       state.registInfo = registInfo;
@@ -79,6 +85,9 @@ export default {
     },
     setMatchInfo(state, matchInfo) {
       state.matchInfo = matchInfo;
+    },
+    setChildInfo(state, childInfo) {
+      state.childInfo = childInfo;
     },
     // 예외 메세지 관련 ------------------------------------------------------------------------------------------
     setErrMsgCommon(state, errMsg) {
@@ -108,8 +117,11 @@ export default {
     setErrMsgFamCode(state, errMsg) {
       state.errMsg.fam_code = errMsg;
     },
-    setChildInfo(state, childInfo) {
-      state.childInfo = childInfo;
+    setErrMsgNewPassword(state, errMsg) {
+      state.errMsg.newPassword = errMsg;
+    },
+    setErrMsgNewPasswordChk(state, errMsg) {
+      state.errMsg.newPasswordChk = errMsg;
     },
     
     // 초기화 관련 ------------------------------------------------------------------------------------------
@@ -138,6 +150,8 @@ export default {
         email: null,
         tel: null,
         fam_code: null,
+        newPassword: null,
+        newPasswordChk:null,
       };
     },
   },
@@ -264,7 +278,7 @@ export default {
 
     /**
      * 회원가입 처리
-     * 부모, 자녀와 같이 처리할 예정
+     * 부모, 자녀와 공용 처리
      * 
      * @param {*} context
      * @param {*} registInfo
@@ -422,6 +436,20 @@ export default {
     },
 
     /**
+     * 로그인 자녀에 연결된 미션과 지출 정보 로드
+     * 
+     * @param {*} context
+     */
+    childManyInfo(context) {
+      const url = '/api/auth/childManyInfo';
+
+      axios.post(url)
+      .then(res => {
+        context.commit('setChildInfo', res.data.child);
+      });
+    },
+
+    /**
      * 회원정보 수정
      */
     modifyUser(context, editInfo) {
@@ -510,6 +538,89 @@ export default {
         // 유효성 검사 실패
         if(err.response.status === 422 && errData.password[0]) { 
           context.commit('setErrMsgPassword', errData.password[0]);
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+    },
+
+    /**
+     * 회원 비밀번호 변경
+     * 
+     * @param {*} context 
+     * @param {*} changeInfo 
+     */
+    changePassword(context, changeInfo) {
+      const url = '/api/auth/changePassword';
+      const data = JSON.stringify(changeInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        // console.log(res.data);
+        alert('비밀번호 변경이 완료되었습니다.');
+        router.replace('/');
+      }).catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          // 에러 정보값 세팅
+          const errInfo = {
+            password: 'setErrMsgPassword',
+            newPassword: 'setErrMsgNewPassword',
+            newPasswordChk: 'setErrMsgNewPasswordChk',
+          };
+
+          // 돌려서 있는것만 데이터 담음
+          Object.entries(errData).forEach(([key, val]) => {
+            if(val[0] && errInfo[key]) {
+              context.commit(errInfo[key], val[0]);
+            }
+          });
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+    },
+
+    /**
+     * 자녀의 부모 재매칭
+     * 
+     * @param {*} context 
+     * @param {*} sendInfo 
+     */
+    childReMatching(context, sendInfo) {
+      const url = '/api/auth/childReMatching';
+      const data = JSON.stringify(sendInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        // 담겨온 부모 정보를 state에 세팅
+        context.commit('setMatchInfo', res.data.parent);
+
+        // 모달 활성화
+        context.commit('setModalFlg', true);
+
+      }).catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+
+        // 유효성 검사 실패
+        if(err.response.status === 422 && errData.fam_code[0]) {
+          context.commit('setErrMsgFamCode', errData.fam_code[0]);
         }
         // 공용 실패
         else if(err.response.status === 401) {
