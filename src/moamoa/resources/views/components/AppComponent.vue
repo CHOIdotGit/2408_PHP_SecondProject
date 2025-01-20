@@ -49,6 +49,7 @@ const isChilds = computed(() => store.state.auth.childFlg);
 
 <style>
 @import url("../../css/common.css");
+@import url("../../css/swiper.css");
 
 /* footer */
 footer > p {

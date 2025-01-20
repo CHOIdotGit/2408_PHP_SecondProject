@@ -18,21 +18,3 @@
     box-sizing: border-box;
     font-family: 'MangoDdobak-R';
 }
-
-/* 스와이퍼 css */
-.swiper-button-prev, .swiper-button-next {
-    color: #a2caac !important;
-}
-
-.swiper {
-    padding-left: 60px !important;
-}
-
-/* .swiper-wrapper {
-    gap: 63px !important;
-    justify-content: center;
-}
-
-.v-loop {
-    width: 300px !important;
-} */

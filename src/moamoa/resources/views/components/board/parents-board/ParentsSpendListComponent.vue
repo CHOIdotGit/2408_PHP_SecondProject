@@ -10,7 +10,7 @@
             <div class="scroll">
                 <div v-if="transactionList && transactionList.length" v-for="item in transactionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
-                        <p @click="goTransactionDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p>
+                        <p @click="goTransactionDetail(item.transaction_id)" class="sp-title">{{ getTruncatedTitle(item.title) }}</p>
                         <p class="category">{{ getCategoryText(item.category) }}</p>
                         <p class="charge">{{ Number(item.amount).toLocaleString() }}원</p>
                         <p class="due-date">{{ item.transaction_date }}</p>
@@ -171,11 +171,11 @@ onMounted(() => {
     height: 420px;
 }
 
-.title {
+.sp-title {
     cursor: pointer;
 }
 
-.title:hover {
+.sp-title:hover {
     color: #A2CAAC;
 }
 </style>

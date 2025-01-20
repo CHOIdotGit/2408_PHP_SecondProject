@@ -1,0 +1,16 @@
+/* 적용 중인 컴포넌트
+    부모 홈(ParentManagement)
+*/
+
+/* 스와이퍼 css */
+.swiper-button-prev, .swiper-button-next {
+    color: #a2caac !important;
+}
+
+.swiper {
+    padding-left: 60px !important;
+}
+
+/* .swiper-wrapper {
+    justify-content: center;
+} */

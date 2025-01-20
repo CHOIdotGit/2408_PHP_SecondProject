@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
         // Mission::factory(1000)->create();
         // Transaction::factory(300000)->create();
 
-        for ($i = 0; $i < 300; $i++) { // 1000개씩 300번 반복
-            Transaction::factory(1000)->create();
-        }
+        // for ($i = 0; $i < 300; $i++) { // 1000개씩 300번 반복
+        //     Transaction::factory(1000)->create();
+        // }
 
         for ($i = 0; $i < 300; $i++) { // 1000개씩 300번 반복
             Mission::factory(1000)->create();

@@ -1,15 +1,15 @@
 <template>
     <div class="d-flex">
         <div class="container">
-            <!-- :space-between="50" -->
             <Swiper v-if="parentHome.length > 0"
-                :slides-per-view="3"
+                :slides-per-view="parentHome.length === 2 ? 2 : 3"
                 ref="swiper"
-                :loop="true"
+                :loop="parentHome.length > 2"
                 :modules="modules"
-                :navigation="true"
+                :navigation="parentHome.length > 2"
                 :scrollbar="true"
-            >
+                :centeredSlides="parentHome.length < 2"
+                >
                 <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="v-loop">
                     <div class="child-div">
                         <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
@@ -45,61 +45,15 @@
                     </div>
                 </SwiperSlide>
             </Swiper>
-
-            <!-- 왼쪽 내비게이션 버튼 -->
-            <!-- <div class="child-list-triangle" v-if="parentHome.length > 1" @click="goToPrev">◀</div> -->
-            <!-- Swiper 적용 부분 :spaceBetween="100" :loop="true"   -->
-            <!-- <Swiper v-if="parentHome.length > 0" :slidesPerView="3" :loop="true" ref="swiper" :navigation="{ clickable: true }" :spaceBetween="10"> -->
-            <!-- ref를 추가하여 제어 가능하게 함, 내비게이션 활성화 -->
-                <!-- <SwiperSlide v-for="item in parentHome" :key="item.child_id">
-                    <div class="v-loop">
-                        <div class="blank">-</div>
-                        <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
-                        <div class="blank">-</div>
-                        <div class="child">
-                            <h3 class="name">{{ item.name }}</h3>
-                            <div class="expense-box">
-                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역 ></p>
-                            <div>
-                                <div v-if="item.transactions && item.transactions.length === 0">
-                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
-                                </div>
-                                <div v-else>
-                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
-                                    {{ transaction.amount.toLocaleString() }}원
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="child-mission">
-                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션 ></p>
-                            <div class="chk-div">
-                                <div v-if="item.missions && item.missions.length === 0" class="margin-top">
-                                <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
-                                </div>
-                                <div v-else>
-                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
-                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </SwiperSlide>
-            </Swiper> -->
             <div v-else>
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
-            <!-- 오른쪽 내비게이션 버튼 -->
-            <!-- <div class="child-list-triangle"  @click="goToNext">▶</div> -->
         </div>
     </div>
 </template>
 <script setup>
 
 import { computed, ref, onMounted, watch, nextTick } from 'vue';
-// import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 // 스와이퍼
@@ -269,7 +223,7 @@ onMounted(() => {
 }
 
 .no-amount {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     margin: 50px 0;
     text-align: center;
 }
@@ -318,7 +272,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
 }
 
 .chk-div-box {
