@@ -1,11 +1,11 @@
 <template>
     <div class="main-container">
-        <div class="create-container">
+        <div class="board-container">
             <div class="content-list">
                 <div class="content">
                     <p class="title">미션 제목</p>
-                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
-                    <div class="date">
+                    <input v-model="missionCreate.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
+                    <div class="date deco">
                         <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
                         <span>⁓</span>
                         <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
@@ -13,22 +13,22 @@
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">종류</p>
+                    <p class="title">미션 종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p class="categoryName">{{ item.name }}</p>
+                            <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">내용</p>
-                    <textarea v-model="missionCreate.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <p class="title">미션 내용</p>
+                    <textarea v-model="missionCreate.content" class="ms-content deco" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
-                    <p class="title">금액</p>
-                    <input v-model="missionCreate.amount" type="num" class="ms-amount" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
+                    <p class="title">미션 금액</p>
+                    <input v-model="missionCreate.amount" type="num" class="ms-amount deco" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.replace('/child/mission/list')" class="create-btn">등록 취소</button>
@@ -72,77 +72,12 @@ const missionCreate = reactive({
 
 
 <style scoped>
-
-.main-container{
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.create-container {
-    background-color: #FFFFFF;
-    width: 1500px;
-    margin-top: 20px;
-    height: 720px;
-}
-
-.content-list {
-    display: grid;
-    margin-top: 50px;
-    margin-left: 20px;
-    justify-content: center;
-}
-
-
-.content {
-    display: flex;
-    padding: 20px;
-    margin: 0 300px;
-    gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
-    width: 1000px;
-}
-
-
-.title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
-    padding: 10px;
-    width: 150px;
-    text-align: center;
-
-}
-
-/* 미션 제목 */
-.ms-title {
-    width: 300px;
+@import url('../../../../css/boardCommon.css');
+/* 입력란 테두리 */
+.deco {
     border: 3px solid #5589e996;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
 }
 
-/* 미션 날짜 */
-.date {
-    border: 3px solid #5589e996;
-    border-radius: 10px;
-    padding: 10px;
-    margin-left: 30px;
-}
-
-span {
-    padding: 5px;
-}
-
-.ms-date {
-    border: none;
-    outline: none;
-    /* width: 200px; */
-    font-size: 1.5rem;
-    text-align: center;
-}
 
 /* 미션 종류 카테고리 이미지 */
 .category-btn {
@@ -175,41 +110,13 @@ span {
     border: none;
 }
 
+/* 선택된 카테고리 색깔 */
 .checked-category-btn {
     background-color: #5589e996;
 }
 
-.categoryName {
-    margin-top: 10px;
-}
+/* ******************************** */
 
-/* 미션 내용 */
-.ms-content {
-    width: 500px;
-    height: 150px;
-    resize: none;
-    padding: 10px;
-    outline: none;
-    border-radius: 10px;
-    border: 3px solid #5589e996;
-    font-size: 1.5rem;
-}
-
-/* 미션 금액 */
-.ms-amount {
-    width: 300px;
-    border: 3px solid #5589e996;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-}
-
-.ms-amount::-webkit-outer-spin-button,
-.ms-amount::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
 .bottom-btn{
     display: flex;

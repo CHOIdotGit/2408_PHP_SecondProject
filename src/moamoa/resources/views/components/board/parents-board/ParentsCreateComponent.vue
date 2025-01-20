@@ -1,11 +1,11 @@
 <template>
     <div class="main-container">
-        <div class="create-container">
+        <div class="board-container">
             <div class="content-list">
                 <div class="content">
                     <p class="title">제목</p>
-                    <input v-model="missionCreate.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
-                    <div class="date">
+                    <input v-model="missionCreate.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
+                    <div class="date deco">
                         <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  >
                         <span>⁓</span>
                         <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01" >
@@ -28,15 +28,15 @@
                 </div>
                 <div class="content">
                     <p class="title">내용</p>
-                    <textarea v-model="missionCreate.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <textarea v-model="missionCreate.content" class="ms-content deco" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액</p>
-                    <input v-model="missionCreate.amount" type="nume" class="ms-amount" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
+                    <input v-model="missionCreate.amount" type="nume" class="ms-amount deco" id="ms-amount" min="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
                 <div class="bottom-btn">
                     <button @click="getChildId(childId)" class="create-btn cancel">등록 취소</button>
-                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="create-btn">미션 등록</button>
+                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="parent create-btn">미션 등록</button>
                 </div>
             </div>
         </div>
@@ -103,153 +103,15 @@ const getChildId = (child_id) => {
 
 
 <style scoped>
+@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/category.css');
 
-.main-container{
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.create-container {
-    background-color: #FFFFFF;
-    width: 1500px;
-    margin-top: 20px;
-    height: 720px;
-}
-
-.content-list {
-    /* display: grid; */
-    margin-top: 100px;
-    /* margin-left: 20px; */
-    justify-content: center;
-}
-
-
-.content {
-    display: flex;
-    padding: 20px;
-    margin: 0 300px;
-    gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
-    width: 1000px;
-}
-
-
-.title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
-    padding: 10px;
-    width: 150px;
-    text-align: center;
-
-}
-
-/* 미션 제목 */
-.ms-title {
-    width: 300px;
-    border: 3px solid #A2CAAC;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-}
-
-/* 미션 날짜 */
-.date {
-    border: 3px solid #A2CAAC;
-    border-radius: 10px;
-    padding: 10px;
-    margin-left: 30px;
-}
-
-span {
-    padding: 5px;
-}
-
-.ms-date {
-    border: none;
-    outline: none;
-    /* width: 200px; */
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-/* 미션 종류 카테고리 이미지 */
-.category-btn {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding-right: 30px;
-}
-
-.category-btn > input {
-    display: none;
-}
-
-.ms-category-btn {
-    width: 80px;
-    height: 80px;
-    border-radius: 50px;
-    background-color: #c9cfca;
-    text-align: center;
-    cursor: pointer;
-}
-
-.ms-category-img {
-    margin-top: 13px;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    border: none;
-
-
-}
-
-/* 선택된 카테고리 */
-/* .category-btn > input[type=radio]:checked + label {
-    background-color: #A2CAAC;
-    border-radius: 50px;
-} */
-
+/* 선택된 카테고리 색깔 */
 .checked-category-btn {
     background-color: #A2CAAC;
 }
 
-.category-name {
-    margin-top: 10px;
-}
-
-
-/* 미션 내용 */
-.ms-content {
-    width: 500px;
-    height: 150px;
-    resize: none;
-    padding: 10px;
-    outline: none;
-    border-radius: 10px;
-    border: 3px solid #A2CAAC;
-    font-size: 1.5rem;
-}
-
-/* 미션 금액 */
-.ms-amount {
-    width: 300px;
-    border: 3px solid #A2CAAC;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-}
-
-.ms-amount::-webkit-outer-spin-button,
-.ms-amount::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
+/* 하단 버튼 영역 */
 .bottom-btn{
     display: flex;
     justify-content: right;
@@ -260,14 +122,12 @@ span {
 
 }
 
-
 /* 취소/미션등록 버튼 */
 .create-btn {
     width: 120px;
     height: 50px;
     font-size: 1.5rem;
     border: none;
-    background-color: #A2CAAC ;
     margin-bottom: 30px;
     cursor: pointer;
     color: #FFFFFF;
@@ -278,5 +138,17 @@ span {
     background-color: #FFFFFF;
     border: 1px solid #ACACAC;
 }
+
+/* 입력란 테두리 */
+.deco {
+    border: 3px solid #A2CAAC;
+}
+
+/* 부모쪽 버튼 색깔 */
+.parent {
+    background-color: #A2CAAC ;
+}
+
+
 
 </style>

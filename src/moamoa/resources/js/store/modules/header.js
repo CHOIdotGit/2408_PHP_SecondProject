@@ -46,6 +46,7 @@ export default {
     
                     console.log(response.data.childNameList);
                     context.commit('setChildNameList', response.data.childNameList);
+                    
                     return resolve();
                 })
                 .catch(error => {

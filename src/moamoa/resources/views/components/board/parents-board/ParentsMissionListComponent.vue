@@ -2,7 +2,6 @@
     <div class="container">
         <div class="list-container">
             <div class="for-buttons">
-                <p class="who">{{ childName }}의 미션 리스트</p>
                 <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
                 <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
             </div>
@@ -27,7 +26,6 @@
                         <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p>
                         <p class="mission-amount">{{ item.amount.toLocaleString() }}원</p>
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
-                        
                     </div>
                 </div>
             </div>

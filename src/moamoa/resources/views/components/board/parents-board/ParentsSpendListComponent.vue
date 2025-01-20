@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <div class="list-container">
-            <p class="who">{{ childName }}의 지출 리스트</p>
             <div class="mission-title-bar">
                 <p class="top-title">제목</p>
                 <span class="category">종류</span>

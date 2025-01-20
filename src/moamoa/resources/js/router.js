@@ -284,11 +284,14 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
+    // +==================================+
+    // +          페이지 못찾음            +
+    // +==================================+
     {
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
     }
-        
+
 
 ];
 

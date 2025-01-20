@@ -1,28 +1,40 @@
 <template>
 <div :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }">
-    <header v-if="isAuth">
-        <HeaderComponent/>
+
+<!-- 상단 메뉴 -->
+    <header>
+        <HeaderMenuComponent/>
     </header>
-
-    <!-- main -->
-    <main>
-        <router-view></router-view>
-
-    </main>
     
+
+    <main class="layout">
+        <!-- 좌측 고정 메뉴 -->
+        <div class="menu-left" v-if="isAuth">
+            <MenuLeftComponent/>
+        </div>
+        <!-- 화면 -->
+        <div class="app-div">
+            <router-view></router-view>
+        </div>
+    </main>
+
     <!-- footer -->
-    <footer v-if="isAuth">
-        <p>© 2024. Moa Co. all rights reserved.</p>
-    </footer>
+    <!-- <footer v-if="isAuth">
+        <div>
+
+        </div>
+    </footer> -->
 </div>
 </template>
 
 
 
 <script setup>
-import HeaderComponent from './layout/HeaderComponent.vue';
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import MenuLeftComponent from './layout/MenuLeftComponent.vue';
+import HeaderMenuComponent from './layout/HeaderMenuComponent.vue';
+
 
 const store = useStore();
 
@@ -36,14 +48,24 @@ const isChilds = computed(() => store.state.auth.childFlg);
 
 
 <style>
-    @import url("../../css/common.css");
-    @import url("../../css/header.css");
-    /* footer */
-    footer > p {
-        text-align: center;
-        color: white;
-    }
+@import url("../../css/common.css");
 
+/* footer */
+footer > p {
+    text-align: center;
+    color: white;
+}
 
+.layout {
+    display: flex;
+}
+
+.app-div {
+    width: 1670px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 </style>

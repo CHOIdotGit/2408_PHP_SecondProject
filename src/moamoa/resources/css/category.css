@@ -1,0 +1,39 @@
+.category-btn {
+    display: flex;
+    flex-direction: column;
+    /* width: 80px;
+    height: 80px; */
+    align-items: center;
+    background-color: #c9cfca;
+    margin-right: 20px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+}
+
+.category-btn > input {
+    display: none;
+}
+
+.ms-category-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: #c9cfca;
+    text-align: center;
+    cursor: pointer;
+}
+
+.ms-category-img {
+    margin-top: 13px;
+    width: 50px;
+    height: 50px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/* 카테고리 이름 */
+.category-name {
+    margin-top: 10px;
+    font-size: 1.2rem;
+}

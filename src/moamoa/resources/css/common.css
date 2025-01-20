@@ -1,6 +1,13 @@
 @font-face {
-    font-family: 'Ownglyph_okticon-Bd';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/Ownglyph_okticon-Bd.woff2') format('woff2');
+    font-family: 'MangoDdobak-R';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-R.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MangoDdobak-B';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-B.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
 }
@@ -9,31 +16,23 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Ownglyph_okticon-Bd';
+    font-family: 'MangoDdobak-R';
 }
 
-.bg-childs {
-    background-image: url('/img/child-bck.jpg');
-    /* background-repeat: no-repeat; */
-    /* background-size: cover; */
-    width: 100vw;
-    height: 100vh;
+/* 스와이퍼 css */
+.swiper-button-prev, .swiper-button-next {
+    color: #a2caac !important;
 }
 
-.bg-parents {
-    background-image: url('/img/bck.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
+.swiper {
+    padding-left: 60px !important;
 }
 
-.bg-auth {
-    background-image: url('/img/background.png');
-    background-size: cover;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
+/* .swiper-wrapper {
+    gap: 63px !important;
     justify-content: center;
-    align-items: center;
 }
+
+.v-loop {
+    width: 300px !important;
+} */
