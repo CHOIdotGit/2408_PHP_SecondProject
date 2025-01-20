@@ -1,19 +1,19 @@
 <template>
     <div class="main-container">
-        <div class="detail-container">
+        <div class="board-container">
             <div class="content-list">
                 <div class="content" v-if="transactionDetail">
-                    <p class="title">제목</p>
+                    <p class="title">지출 제목</p>
                     <span class="ms-title">{{ transactionDetail.title }}</span>
-                    <div class="date">
+                    <div class="date deco">
                         <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
                     </div>
                 </div>
                 <div class="content">
-                    <p class="title">종류</p>
+                    <p class="title">지출 종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
-                        <img class="ms-category" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
-                        <p>{{ item.name }}</p>
+                        <img class="ms-category-img" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
+                        <p class="category-name">{{ item.name }}</p>
                     </div>
                 </div>
                 <div class="content">
@@ -21,7 +21,7 @@
                     <div class="ms-content">{{ transactionDetail.memo }}</div>
                 </div>
                 <div class="content">
-                    <p class="title">금액</p>
+                    <p class="title">지출 금액</p>
                     <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
                 </div>
                 <div class="bottom-btn">
@@ -112,112 +112,30 @@ const delCloseModal = () => {
 </script>
 
 <style scoped>
+@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/boardCommon.css');
 
-.main-container{
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.detail-container {
-    background-color: #FFFFFF;
-    width: 1500px;
-    margin-top: 20px;
-    height: 720px;
-}
-.content-list {
-    display: grid;
-    margin-top: 50px;
-    margin-left: 20px;
-    justify-content: center;
-}
-
-
-.content {
-    display: flex;
-    padding: 20px;
-    margin: 0 300px;
-    gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
-    width: 1000px;
-}
-
-
-.title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
-    padding: 10px;
-    width: 160px;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 미션 제목 */
+/* 미션(지출) 제목 입력란 */
 .ms-title {
-    width: 450px;
-    /* border: 3px solid #5589e996; */
-    outline: none;
-    border-radius: 10px;
-    font-size: 2rem;
-    padding-left: 5px;
     display: flex;
     align-items: center;
 }
 
-/* 미션 날짜 */
-.date {
-    /* border: 3px solid #5589e996; */
-    border-radius: 10px;
-    padding: 10px;
-    margin-left: 30px;
-}
-
-span {
-    padding: 5px;
-}
-
-.ms-date {
-    border: none;
-    outline: none;
-    /* width: 200px; */
-    font-size: 1.5rem;
-    text-align: center;
+/* 날짜 입력란 배경색 */
+.deco {
     background-color: #5589e996;
-    border-radius: 10px;
-    padding: 10px;
 }
 
-/* 미션 종류 카테고리 이미지 */
-.category-btn {
+/* 미션 금액 입력란 */
+.ms-amount {
     display: flex;
-    flex-direction: column;
-    text-align: center;
-    padding-right: 30px;
+    align-items: center;
 }
 
-.category-btn > label {
-    color: #c9cfca;
-    font-size: 0.9rem;
-    padding-top: 5px;
-}
-
-.category-btn > input {
-    display: none;
-}
-
-.ms-category {
-    width: 60px;
-    height: 60px;
-    background-size: cover;
-    background-repeat: no-repeat;
-    border: none;
-    background-color: #c9cfca;
-    cursor: pointer;
-    border-radius: 50px;
-    padding: 5px;
+/* 미션(지출) 종류 카테고리 */
+.category-btn {
+    width: 80px;
+    height: 80px;
 }
 
 /* db에 저장된 카테고리 표시 */
@@ -225,29 +143,6 @@ span {
     background-color: #5589e996;
 }
 
-/* 미션 내용 */
-.ms-content {
-    width: 500px;
-    height: 150px;
-    padding: 10px;
-    border-radius: 10px;
-    /* border: 3px solid #5589e996; */
-    font-size: 1.3rem;
-    display: flex;
-    /* align-items: center; */
-}
-
-/* 미션 금액 */
-.ms-amount {
-    width: 300px;
-    /* border: 3px solid #5589e996; */
-    border-radius: 10px;
-    font-size: 1.3rem;
-    padding-left: 5px;
-    line-height: 45px;
-    display: flex;
-    align-items: center;
-}
 
 /* 취소버튼 */
 .ms-cancel {

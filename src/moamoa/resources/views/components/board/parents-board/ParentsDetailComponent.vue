@@ -1,11 +1,11 @@
 <template>
 <div class="main-container">
-    <div class="detail-container">
+    <div class="board-container">
         <div class="content-list">
             <div class="content" v-if="missionDetail">
                 <p class="title">제목</p>
                 <p class="ms-title">{{ missionDetail.title }}</p>
-                <div class="date">
+                <div class="date deco">
                     <span class="ms-date">{{ missionDetail.start_at }}</span>
                     <span>⁓</span>
                     <span class="ms-date">{{ missionDetail.end_at }}</span>
@@ -13,7 +13,7 @@
             </div>
             <div class="content">
                 <p class="title">종류</p>
-                <div class="categorybtn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
+                <div class="category-btn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                     <img class="ms-category-img" :src="item.img" >
                     <p class="category-name">{{ item.name }}</p>
                 </div>
@@ -130,140 +130,35 @@ const approvalMission = () => {
 </script>
 
 <style scoped>
+@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/category.css');
 
-.main-container{
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.detail-container {
-    background-color: #FFFFFF;
-    width: 1500px;
-    margin-top: 20px;
-    height: 720px;
-}
-.content-list {
-    display: grid;
-    margin-top: 50px;
-    /* margin-left: 20px; */
-    /* justify-content: center; */
-    justify-items: center;
-}
-
-
-.content {
-    display: flex;
-    padding: 20px;
-    margin: 0 300px;
-    gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
-    width: 1000px;
-}
-
-
-.title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
-    padding: 10px;
-    width: 160px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 미션 제목 */
+/* 미션 제목 입력란 */
 .ms-title {
-    width: 450px;
-    /* border: 3px solid #A2CAAC; */
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
     display: flex;
     align-items: center;
 }
 
-/* 미션 날짜 */
-.date {
-    /* border: 3px solid #A2CAAC; */
-    border-radius: 10px;
-    padding: 10px;
-    /* margin-left: 30px; */
+/* 날짜 입력란 배경색 */
+.deco {
     background-color: #A2CAAC;
-    border-radius: 10px;
-    width: 320px;
+}
+
+/* 미션 금액 입력란 */
+.ms-amount {
     display: flex;
-    justify-content: center;
     align-items: center;
 }
 
-span {
-    padding: 5px;
-}
-
-.ms-date {
-    border: none;
-    outline: none;
-    /* width: 200px; */
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-/* 미션 종류 카테고리 이미지 */
-.categorybtn {
-    display: flex;
-    flex-direction: column;
+/* 미션(지출) 카테고리 */
+.category-btn {
     width: 80px;
     height: 80px;
-    background-color: #c9cfca;
-    border-radius: 50px;
-    align-items: center;
-    margin-right: 20px;
-    
 }
 
 /* db에 저장된 카테고리 표시 */
 .categorybtn-green {
     background-color: #A2CAAC;
-}
-
-.ms-category-img {
-    margin-top: 13px;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    border: none;
-
-}
-
-.category-name {
-    margin-top: 15px;
-}
-
-/* 미션 내용 */
-.ms-content {
-    width: 500px;
-    height: 150px;
-    padding: 10px;
-    border-radius: 10px;
-    /* border: 3px solid #A2CAAC; */
-    font-size: 1.3rem;
-}
-
-/* 미션 금액 */
-.ms-amount {
-    width: 300px;
-    /* border: 3px solid #A2CAAC; */
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-    line-height: 45px;
-    display: flex;
-    align-items: center;
 }
 
 /* 취소버튼 */

@@ -1,0 +1,110 @@
+/* ************ 적용되는 component *********** */
+/* 부모 Mission detail, create, update         */
+/* 부모 Spend  detail                          */
+/* 자녀 Mission detail, create, update         */
+/* 자녀 Spend detail, create, update           */
+/* ******************************************  */
+
+/* 전체 화면 영역 */
+.main-container {
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 게시판 틀 */
+.board-container {
+    width: 1500px;
+    margin-top: 20px;
+    height: 720px;
+}
+
+.content-list {
+    /* margin-top: 100px;
+    justify-content: center; */
+    display: grid;
+    margin-top: 50px;
+    margin-left: 20px;
+    justify-content: center;
+}
+
+.content {
+    display: flex;
+    padding: 20px;
+    margin: 0 300px;
+    gap: 10px;
+    border-bottom: 2px solid #dfdfdf;
+    width: 1000px;
+}
+
+/* 제목 */
+.title {
+    font-size: 2rem;
+    border-right: 2px solid #dfdfdf;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 미션(지출) 제목 입력란 */
+.ms-title {
+    width: 300px;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    padding-left: 5px;
+}
+
+/* 미션(지출) 날짜 영역*/
+.date {
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+}
+
+/* 날짜 ~ */
+span {
+    padding: 5px;
+}
+
+/* 미션(지출) 날짜 입력란 */
+.ms-date {
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* 미션(지출) 내용 입력란 */
+.ms-content {
+    width: 500px;
+    height: 150px;
+    resize: none;
+    padding: 10px;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+}
+
+/* 미션(지출) 금액 입력란 */
+.ms-amount {
+    width: 300px;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    padding-left: 5px;
+}
+
+.ms-amount::-webkit-outer-spin-button,
+.ms-amount::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+

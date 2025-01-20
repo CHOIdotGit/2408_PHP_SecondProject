@@ -1,11 +1,11 @@
 <template>
     <div class="main-container">
-        <div class="create-container">
+        <div class="board-container">
             <div class="content-list">
                 <div class="content">
                     <p class="title">제목</p>
-                    <input v-model="missionDetail.title" type="text" class="ms-title" id="ms-title" maxlength="10" autofocus>
-                    <div class="date">
+                    <input v-model="missionDetail.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus>
+                    <div class="date deco">
                         <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01" >
                         <span>⁓</span>
                         <input type="date" v-model="missionDetail.end_at" class="ms-date" id="ms-date" min="2000-01-01" >
@@ -25,11 +25,11 @@
                 </div>
                 <div class="content">
                     <p class="title">내용</p>
-                    <textarea v-model="missionDetail.content" class="ms-content" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
+                    <textarea v-model="missionDetail.content" class="ms-content deco" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
                 <div class="content">
                     <p class="title">금액</p>
-                    <input v-model="missionDetail.amount" type="number" class="ms-amount" id="ms-amount" required>
+                    <input v-model="missionDetail.amount" type="number" class="ms-amount deco" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push(`/child/mission/detail/${mission_id}`)" class="create-btn">수정 취소</button>
@@ -74,157 +74,20 @@ const getUpdateMission = () => {
 </script>
 
 <style scoped>
-.main-container{
-    margin-left: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/category.css');
 
-.create-container {
-    background-color: #FFFFFF;
-    width: 1500px;
-    margin-top: 20px;
-    height: 720px;
-}
-
-.content-list {
-    display: grid;
-    margin-top: 50px;
-    margin-left: 20px;
-    justify-content: center;
-}
-
-
-.content {
-    display: flex;
-    padding: 20px;
-    margin: 0 300px;
-    gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
-    width: 1000px;
-}
-
-
-.title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
-    padding: 10px;
-    width: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* 미션 제목 */
-.ms-title {
-    width: 300px;
+/* 입력란 테두리 */
+.deco {
     border: 3px solid #5589e996;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-    display: flex;
-    align-items: center;
 }
 
-/* 미션 날짜 */
-.date {
-    border: 3px solid #5589e996;
-    border-radius: 10px;
-    padding: 10px;
-    margin-left: 30px;
-    /* width: 300px; */
-}
-
-span {
-    padding: 5px;
-}
-
-.ms-date {
-    border: none;
-    outline: none;
-    /* width: 200px; */
-    font-size: 1.5rem;
-    text-align: center;
-}
-
-/* 미션 종류 카테고리 이미지 */
-.category-btn {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    width: 80px;
-    height: 80px;
-    padding-right: 30px;
-    border-radius: 50px;
-    align-items: center;
-    margin-right: 20px;
-    margin-left: 10px;
-}
-
-.m-top {
-    margin-top: 10px;
-}
-
-.category-btn > input {
-    display: none;
-}
-
-.ms-category-btn {
-    width: 80px;
-    height: 80px;
-    border-radius: 50px;
-    background-color: #c9cfca;
-    text-align: center;
-    cursor: pointer;
-}
-
+/* 선택된 카테고리 색깔 */
 .checked-category-btn {
     background-color: #5589e996;
 }
 
-.ms-category-img {
-    margin-top: 13px;
-    width: 50px;
-    height: 50px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    border: none;
 
-}
-
-/* 미션 내용 */
-.ms-content {
-    width: 500px;
-    height: 150px;
-    resize: none;
-    padding: 10px;
-    outline: none;
-    border-radius: 10px;
-    border: 3px solid #5589e996;
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-}
-
-/* 미션 금액 */
-.ms-amount {
-    width: 300px;
-    border: 3px solid #5589e996;
-    outline: none;
-    border-radius: 10px;
-    font-size: 1.8rem;
-    padding-left: 5px;
-    display: flex;
-    align-items: center;
-}
-
-.ms-amount::-webkit-outer-spin-button,
-.ms-amount::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 
 .bottom-btn{
     display: flex;
