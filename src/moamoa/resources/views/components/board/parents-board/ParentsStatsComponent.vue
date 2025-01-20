@@ -68,14 +68,16 @@ const getCategoryText = (category) => {
 // ✅ **막대 그래프 설정**
 const graphCanvas = ref(null);
 let graphChartInstance = null;
+const weeklyOutgoData = computed(() => store.state.transaction.weeklyOutgoData)
+const weekly = ref([]);
 
 const graphChartData = {
-  labels: ['1주', '2주', '3주', '4주'],
+  labels: weekly.value,
   datasets: [
     {
       label: '주차별 소비 합계',
-      data: [15000, 30000, 45000, 60000],
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+      data: weeklyOutgoData.value,
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#ffffff', '#000000'],
       borderWidth: 0.8,
     },
   ],
@@ -116,7 +118,7 @@ const doughnutData = computed(() => store.state.transaction.doughnutData);
 
 
 const doughnutChartData = {
-  labels: ['교통비', '취미', '쇼핑', '기타'],
+  labels: ['교통비', '식비', '쇼핑', '기타'],
   datasets: [
     {
       label: '지출 비율',
@@ -157,6 +159,7 @@ onBeforeMount(() => {
 onMounted(async () => {
   await store.dispatch('transaction/parentStats', route.params.child_id);
   doughnutChartData.datasets[0].data = doughnutData.value;
+  graphChartData.datasets[0].data = weeklyOutgoData.value;
   renderGraphChart();
   renderDoughnutChart();
 });
@@ -168,10 +171,20 @@ watch(
     renderDoughnutChart();
   }
 );
+watch(
+  () => weeklyOutgoData.value
+  , newQuestion => {
+    weekly.value = weeklyOutgoData.value.map((val, key) => ++key + '주차');
+    graphChartData.labels = weekly.value;
+    graphChartData.datasets[0].data = weeklyOutgoData.value;
+    renderGraphChart();
+  }
+);
 </script>
 
 
 <style scoped>
+
 .stat-container {
   width: 1500px;
   height: 720px;

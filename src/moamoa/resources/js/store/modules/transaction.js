@@ -22,6 +22,7 @@ export default {
         ,categoryData: []
         ,parentStats:[]
         ,doughnutData: [0]
+        ,weeklyOutgoData: [0]
 
     }),
     mutations: {
@@ -137,8 +138,9 @@ export default {
                         context.commit('setChildId', child_id);
                         context.commit('setParentStats', response.data.data);
                         const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount);
-                        context.commit('setWeeklyOutgoData', response.data.data);
+                        const weeklyExpenseAmount = response.data.weeklyOutgoData.map(item => item.total);
                         context.commit('setDoughnutData', eachCategoryTransaction);
+                        context.commit('setWeeklyOutgoData', weeklyExpenseAmount);
                         return resolve();
                     })
                     .catch((error) => {

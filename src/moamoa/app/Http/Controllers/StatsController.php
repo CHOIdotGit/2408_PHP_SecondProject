@@ -26,40 +26,24 @@ class StatsController extends Controller
         $startOfMonth = Carbon::create($year, $month, 1)->startOfDay(); // 해당 월의 첫 날
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
-
-        // $childHome = Child::select('children.child_id', 'children.name')
-        //                             ->where('children.parent_id', $parent->parent_id)
-        //                             ->find();
-                                    
-        // $childNameList = Child::select('child_id' , 'name')
-        //                     ->withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
-        //                         $query
-        //                         ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
-        //                         ->orderBy('amount', 'DESC'); // 가장 큰 지출
-        //                     }], 'amount')
-        //                     ->withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
-        //                         $query
-        //                         ->select(DB::raw('MAX(amount) total'))
-        //                         ->groupBy('category')
-        //                         ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
-        //                         ->orderBy('count', 'DESC')
-        //                         ->limit(1);
-        //                     }], 'total')
-        //                     // ->
-        //                     ->where('parent_id', $parent->parent_id)
-        //                     ->get();
         
         //+=========================================+
         //+      자녀, 가장 큰 지출(최종 수정)        +
         //+=========================================+
-        $transactionAmount = Child::withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
-                                        $query
-                                        ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
-                                        ->orderBy('amount', 'DESC'); // 가장 큰 지출
-                                    }], 'amount')
-                                    ->where('parent_id', $parent->parent_id)
-                                    ->where('child_id', $child_id)
-                                    ->first();
+        // $transactionAmount = Child::withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+        //                                 $query
+        //                                 ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        //                                 ->where('transactions.transaction_code', '1')
+        //                                 ->orderBy('amount', 'DESC'); // 가장 큰 지출
+        //                             }], 'amount')
+        //                             ->where('parent_id', $parent->parent_id)
+        //                             ->where('child_id', $child_id)
+        //                             ->first();
+
+        $transactionAmount =Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->where('transaction_code', '1')
+                                        ->where('child_id', $child_id)
+                                        ->max('amount');
 
         // 자녀 홈, 가장 큰 지출(상민씨 요거 어떻게 수정됐는지 한번 공부해봐요~)
         // $transactionAmount = $childHome->transactions()
@@ -70,15 +54,25 @@ class StatsController extends Controller
         //                         ->first();
 
         //+=========================================+
-        //+  자녀, 가장 사용한 카테고리(최종 수정)     +
+        //+  자녀, 가장 자주 사용한 카테고리(최종 수정)     +
         //+=========================================+
-        $mostUsedCategory = Child::withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
-                                        $query
-                                        ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
-                                        ->orderBy('count', 'DESC');
-                                        }], 'category')
-                                        ->where('parent_id', $parent->parent_id)
+        // $mostUsedCategory = Child::withMax(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+        //                                 $query
+        //                                     ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        //                                     ->where('transactions.transaction_code', '1')
+        //                                     ->orderBy('count', 'DESC');
+        //                                 }], 'category')
+        //                                 ->where('parent_id', $parent->parent_id)
+        //                                 ->where('child_id', $child_id)
+        //                                 ->first();
+
+        $mostUsedCategory =Transaction::select('category', DB::raw('COUNT(*) cnt'))
+                                        ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->where('transaction_code', '1')
                                         ->where('child_id', $child_id)
+                                        ->groupBy('category')
+                                        ->orderBy('cnt', 'DESC')
+                                        ->orderBy('transaction_date', 'DESC')
                                         ->first();
         // // 자녀 홈, 가장 많이 사용한 카테고리
         // $mostUsedCategory = $childHome->transactions()
@@ -92,13 +86,21 @@ class StatsController extends Controller
         //+=========================================+
         //+     자녀, 한달 지출 총합(최종 수정)       +
         //+=========================================+
-        $totalAmountChild = Child::withSum(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
-                                        $query
-                                        ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
-                                        }], 'amount')
-                                        ->where('parent_id', $parent->parent_id)
+        // $totalAmountChild = Child::withSum(['transactions' => function($query) use ($startOfMonth, $endOfMonth) {
+        //                                     $query
+        //                                     ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        //                                     ->where('transactions.transaction_code', '1');
+        //                                 }], 'amount')
+        //                                 ->where('parent_id', $parent->parent_id)
+        //                                 ->where('child_id', $child_id)
+        //                                 ->first();
+
+        // select(DB::raw('SUM(amount) transactions_sum_amount'))
+        //                                 ->
+        $totalAmountChild = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->where('transaction_code', '1')
                                         ->where('child_id', $child_id)
-                                        ->first();
+                                        ->sum('amount');
 
         // // // 해당 월(예시, 12월 한 달)의 지출 총 합
         // $totalAmount = $childHome->transactions()
@@ -110,8 +112,8 @@ class StatsController extends Controller
         //+     자녀, 한달 용돈 총합(최종 수정)       +
         //+=========================================+
         $totalExpenses = Child::withSum(['missions' => function($query) use ($startOfMonth, $endOfMonth) {
-                                $query
-                                ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
+                                    $query
+                                    ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
                                 }], 'amount')
                                 ->where('parent_id', $parent->parent_id)
                                 ->where('child_id', $child_id)
@@ -123,23 +125,14 @@ class StatsController extends Controller
         //                         ->whereNull('missions.deleted_at')
         //                         ->whereBetween('missions.created_at', [$startOfMonth, $endOfMonth])
         //                         ->sum('missions.amount');
-
-        // 총지출
-        $totalAmount = Transaction::where('parent_id', $parent->parent_id)
-        ->whereBetween('created_at', [$startOfMonth, $endOfMonth])
-        ->sum('amount');
-
         
-
-
-
-         //  카테고리별 지출 및 비율 구하기**
+         //  카테고리별 지출 구하기**
         $eachCategoryTransaction = Transaction::select(
             'category',
             DB::raw('SUM(amount) as total_amount')
         )
         ->where('parent_id', $parent->parent_id)
-        ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])
+        ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
         ->where('child_id', $child_id)
         // ->where('transaction_code', 1)
         ->groupBy('category')
@@ -147,25 +140,32 @@ class StatsController extends Controller
         ->get();
 
         // 주간별 지출
-        $weeklyOutgoData = Transaction::selectRaw(
-            "DATE_FORMAT(transaction_date, 'w%U') as weeks, SUM(amount) as total"
-        )
-        ->whereBetween('transaction_date', [$startOfMonth, $endOfMonth])    
-        ->where('child_id', $child_id)
-        ->where('parent_id', $parent->parent_id)
-        ->groupBy('weeks')
-        ->orderBy('weeks')
-        ->get();
+        // $weeklyOutgoData = Transaction::selectRaw(
+        //     "DATE_FORMAT(transaction_date, 'w%U') as weeks, SUM(amount) as total"
+        // )
+        // ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])    
+        // ->where('child_id', $child_id)
+        // ->where('parent_id', $parent->parent_id)
+        // ->groupBy('weeks')
+        // ->orderBy('weeks')
+        // ->get();
 
-
+        $weeklyOutgoData = DB::select('CALL myStoredProcedure(?, ?, ?)', [$startOfMonth, $endOfMonth, $child_id]);
+        
 
         // 통계 
         $data = [
-            'transactions_max_amount' => $transactionAmount->transactions_max_amount,
-            'transactions_max_category' => $mostUsedCategory->transactions_max_category,
-            'missions_sum_amount' => $totalExpenses->missions_sum_amount,
-            'totalExpenses' => $totalAmountChild->transactions_sum_amount
+            'transactions_max_amount' => (int)$transactionAmount,
+            'transactions_max_category' => $mostUsedCategory->category,
+            'missions_sum_amount' => (int)$totalExpenses->missions_sum_amount,
+            'totalExpenses' => (int)$totalAmountChild
         ];
+        // $data = [
+        //     'transactions_max_amount' => $transactionAmount->transactions_max_amount,
+        //     'transactions_max_category' => $mostUsedCategory->transactions_max_category,
+        //     'missions_sum_amount' => $totalExpenses->missions_sum_amount,
+        //     'totalExpenses' => $totalAmountChild
+        // ];
 
         $responseData = [
             'success' => true
@@ -173,7 +173,7 @@ class StatsController extends Controller
             ,'data' => $data
             ,'eachCategoryTransaction' => $eachCategoryTransaction
             ,'weeklyOutgoData' => $weeklyOutgoData
-            ,
+            
 
         ];
         
