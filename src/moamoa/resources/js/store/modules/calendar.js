@@ -48,14 +48,14 @@ export default {
         }
     },
     actions: {
-        // 캘린더에서 이름불러오기
+        // 자녀 캘린더 불러오기
         childCalendarInfo(context, objDate) {
             return new Promise((resolve, reject) => {
                 const url = '/api/child/calendar?year=' + objDate.getFullYear() + '&month=' + (objDate.getMonth() + 1);
                 console.log('childCalendarInfo',url)
                 axios.get(url)
                 .then(response => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     context.commit('setCalendarInfo', response.data);
                     resolve();
                 })
@@ -65,7 +65,7 @@ export default {
                 });
             });
         },
-        
+        // 부모 캘린더 불러오기
         parentCalendarInfo(context, objDate) {
             return new Promise((resolve, reject) => {
                 const url = '/api/parent/calendar/' + objDate.child_id + '?year=' + objDate.date.getFullYear() + '&month=' + (objDate.date.getMonth() + 1);

@@ -33,6 +33,8 @@ import ChildPrivateWithdrawalComponent from '../views/components/auth/private/Ch
 import FamilyPrivateChangePasswordComponent from '../views/components/auth/private/FamilyPrivateChangePasswordComponent.vue';
 import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
 import axios from './axios';
+import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
+
 
 const chkAuth = (to, from, next) => {
     const store = useStore();
@@ -315,6 +317,15 @@ const routes = [
         component: ChildCalendarComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          테스트 하는 중           +
+    // +==================================+
+    {
+        path: '/test/login',
+        component: LoginTestComponent,
+    },
+
 
     // +==================================+
     // +          페이지 못찾음            +

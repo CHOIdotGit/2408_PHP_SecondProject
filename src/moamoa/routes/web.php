@@ -132,6 +132,9 @@ Route::get('/api/parent/header', [HeaderController::class, 'index']);
 // 헤더 관련(미션/지출 등록/승인 알람)
 Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 
+// 헤더 관련(자녀 로그인 시 자녀 프로필 출력)
+Route::get('/api/child/info', [HeaderController::class, 'childInfo']);
+
 
 // ******************************
 // *         달력 관련           *

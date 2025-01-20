@@ -88,7 +88,7 @@ export default {
                     // 세션 스토리지에 자녀ID 세팅
                     sessionStorage.setItem('child_id', child_id);
                     context.commit('setChildId', child_id);
-                    // router.push('/parent/mission/list/' + child_id);
+                    router.push('/child/mission/list');
                     
                     // console.log('자녀 확인', context.state.childId);
                 })

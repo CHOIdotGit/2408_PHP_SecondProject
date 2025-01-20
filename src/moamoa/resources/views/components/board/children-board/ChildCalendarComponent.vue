@@ -251,7 +251,7 @@ function getYearMonth(day) {
 // 일별 수입/지출 반환
 function getDailyIncomeExpense(day, data, incomFlg) {
     const item = data.find(item => item.target_at === getYearMonth(day));
-    console.log('item', item);
+    // console.log('item', item);
     const symbol = incomFlg ? '+' : '-';
     if(item) {
         const money = incomFlg ? item.income : item.outgo;

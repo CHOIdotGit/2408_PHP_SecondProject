@@ -7,6 +7,7 @@ export default {
     state: () => ({
         childNameList: [], // 자녀 이름 목록
         bellContent: [],
+        childInfo: [], // 로그인한 자녀 프로필 정보
     }),
     mutations: {
         setChildNameList(state, childNameList) {
@@ -14,6 +15,9 @@ export default {
         },
         setBellContent(state, bellContent) {
             state.bellContent = bellContent
+        },
+        setChildInfo(state, childInfo) {
+            state.childInfo = childInfo
         },
     },
     actions: {
@@ -54,9 +58,25 @@ export default {
                     return resolve();
                 });
             });
-        }
-
-
+        },
+        // ***************************
+        // 로그인한 자녀 프로필 정보
+        // ***************************
+        childInfo(context) {
+            return new Promise((resolve, reject) => {
+                const url = '/api/child/info';
+                axios.get(url)
+                .then(response => {
+                    console.log('로그인한 자녀 프로필 확인', response.data.childInfo[0]);
+                    context.commit('setChildInfo', response.data.childInfo[0]);
+                    return resolve();
+                })
+                .catch(error => {
+                    console.log('로그인한 자녀 프로필 불러오기 실패 ', error);
+                    return resolve();
+                });
+            });
+        },
     },
     getters: {
 

@@ -56,6 +56,7 @@ export default {
                 // 세션 스토리지에 자녀ID 세팅
                 sessionStorage.setItem('child_id', child_id);
                 context.commit('setChildId', child_id);
+                router.push('/child/spend/list');
             })
             .catch(error => {
                 console.error('지출 리스트 불러오기 오류', error);

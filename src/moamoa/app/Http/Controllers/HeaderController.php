@@ -63,4 +63,22 @@ public function bellList() {
     return response()->json($responseData, 200);
 }
 
+public function childInfo() {
+    // ************************************************
+    // *********로그인한 자녀의 프로필 정보 출력**********
+    // ************************************************ 
+    $child = Auth::guard('children')->user();
+
+    $childInfo = Child::select('children.name', 'children.nick_name', 'children.profile')
+                        ->where('children.child_id', $child->child_id)
+                        ->get();
+    
+    $responseData = [
+        'success' => true
+        ,'msg' => '로그인한 자녀 프로필 정보 불러오기 성공'
+        ,'childInfo' => $childInfo->toArray()
+    ];
+    return response()->json($responseData, 200);
+}
+
 }
