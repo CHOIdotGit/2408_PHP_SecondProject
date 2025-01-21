@@ -109,9 +109,11 @@ class AuthController extends Controller {
   public function checkSession() {
     $parent = Auth::guard('parents')->check();
     $child = Auth::guard('children')->check();
-    $result = ($parent || $child) ? true : false;
 
-    return response()->json(['isExpired' => $result], 200);
+    return response()->json([
+      // 인증 사용자의 세션이 남아있으면 true, 없을경우 false
+      'isExpired' => ($parent || $child)
+    ], 200);
   }
 
   /**
@@ -305,6 +307,25 @@ class AuthController extends Controller {
   }
 
   /**
+   * 자녀 연결 레코드 조회
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function childManyInfo() {
+    $child = Auth::guard('children')->user();
+
+    // 자녀 레코드 + 연결된 미션,지출 레코드
+    $childInfo = $this->authRepository->childInfoWithMissionsAndTransactions($child->child_id);
+
+    return response()->json([
+      'success' => true,
+      'child' => $childInfo,
+    ]);
+  }
+
+  /**
    * 회원 정보 수정
    * 
    * @param AuthRequest $request
@@ -476,26 +497,58 @@ class AuthController extends Controller {
         return response()->json([
           'success' => false,
           'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
-        ], $th->getCode());
+        ], 500);
       }
     }
   }
 
   /**
-   * 자녀 연결 레코드 처리
-   * 
-   * @param Request $request
-   * 
-   * @return JSON $responseData
+   * 자녀 부모ID 갱신 처리
    */
-  public function childManyInfo() {
-    $child = Auth::guard('children')->user();
+  public function modifyReMatching(Request $request) {
+    if(empty($request->all()) || $request->missing(['parent_id'])) {
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      try {
+        // 로그인한 유저 정보를 세팅
+        if(!Auth::guard('children')->check()) {
+          return response()->json([
+            'success' => false,
+            'error' => '잘못된 접근이 감지되었습니다.',
+          ], 401);
+        }else {
+          $user = Auth::guard('children')->user();
+          $colName = 'child_id';
+        }
+        
+        $userInfo = [
+          'column_name' => $colName,
+          'column_id' => $user->$colName
+        ];
 
-    $childInfo = $this->authRepository->childInfoWithMissionsAndTransactions($child->child_id);
+        $updateData = [
+          'parent_id' => $request->parent_id
+        ];
 
-    return response()->json([
-      'success' => true,
-      'child' => $childInfo,
-    ]);
+        // 부모 변경 실행
+        $this->authRepository->updateUser($userInfo, $updateData);
+
+        $responseData = [
+          'success' => true,
+          'msg' => '부모 변경 성공'
+        ];
+
+        return response()->json($responseData, 200);
+
+      }catch(Throwable $th) {
+        return response()->json([
+          'success' => false,
+          'error' => '부모 변경 실패: ' . $th->getMessage(),
+        ], 500);
+      }
+    }
   }
 }

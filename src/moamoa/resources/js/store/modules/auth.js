@@ -633,6 +633,35 @@ export default {
       });
     },
 
+    /**
+     * 자녀의 부모 재매칭 처리
+     * 
+     * @param {*} context 
+     * @param {*} sendInfo 
+     */
+    modifyReMatching(context, sendInfo) {
+      const url = '/api/auth/modifyReMatching';
+      const data = JSON.stringify(sendInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        alert('부모의 변경이 정상적으로 완료되었습니다.');
+        context.commit('setModalFlg', false);
+        router.replace('/');
+      }).catch(err => {
+        const errData = err.response.data.error;
+
+        // 공용 실패
+        if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+    }
+
   },
   getters: {
 

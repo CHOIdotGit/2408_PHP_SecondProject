@@ -42,7 +42,7 @@
       <MatchingModalComponent
         :sendInfo="matchInfo"
         message="님이 맞습니까?"
-        action="modifyUser"
+        action="modifyReMatching"
       />
       
     </div>
@@ -64,7 +64,7 @@ import MatchingModalComponent from '../../modal/MatchingModalComponent.vue';
 
   const matchInfo = reactive({
     fam_code: null,
-    parent_id: '',
+    parent_id: null,
   });
   
   onBeforeMount(() => {

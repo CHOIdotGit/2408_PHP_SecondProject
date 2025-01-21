@@ -40,6 +40,7 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
     Route::post('/childManyInfo', [AuthController::class, 'childManyInfo'])->name('auth.child.many.info');
     Route::post('/childReMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.matching');
+    Route::post('/modifyReMatching', [AuthController::class, 'modifyReMatching'])->name('auth.modify.re.matching');
 });
 // 
 
