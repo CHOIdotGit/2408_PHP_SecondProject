@@ -39,21 +39,24 @@ import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue'
 const chkAuth = (to, from, next) => {
     const store = useStore();
 
-    // 세션 상태 체크
-    axios.get('/api/check-session')
-    .then(res => {
-        // 세션이 만료되었으면 로그아웃 처리
-        if(!res.data.isExpired) {
-            store.dispatch('auth/logout');
-            next('/login');
-            return;
-        }
-    });
-
     // 로그인 상태 변수
     const authFlg = store.state.auth.authFlg;
     const parentFlg = store.state.auth.parentFlg;
     const childFlg = store.state.auth.childFlg;
+
+    // 로그인 상태일 때만 세션 체크 실행
+    if(authFlg) {
+        // 세션 상태 체크
+        axios.get('/api/check-session')
+        .then(res => {
+            // 세션이 만료되었으면 로그아웃 처리
+            if(!res.data.isExpired) {
+                store.dispatch('auth/logout');
+                next('/login');
+                return;
+            }
+        });
+    }
 
     // 비인증용 경로 변수
     const notAuthPath = (to.path === '/' || to.path === '/login' || to.path.startsWith('/regist/'));
