@@ -1,22 +1,26 @@
 <template>
-<!-- ************************* -->
-<!-- ********삭제 모달********* -->
-<!-- ************************* -->
-<div class="del-modal-black" v-show="delModal">
-    <div class="del-modal-white">
-        <div class="modal-content">
-            <img src="/img/icon-trash.png" class="modal-img">
-            <p class="modal-ms-title">지출 : {{ transactionDetail.title }}</p>
-            <div class="del-guide">해당 지출이 삭제됩니다.</div>
-        </div>
-        <div class="del-btn">
-            <button @click="delCloseModal" class="modal-cancel">취소</button>
-            <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제하기</button>
+    <!-- 삭제 모달 -->
+    <!-- 부모 mission detail 삭제 모달 -->
+    <!-- 자녀 mission/spend detial 삭제 모달 -->
+    <div class="del-modal-black">
+        <div class="del-modal-white">
+            <div class="modal-content">
+                <img src="/img/icon-trash.png" class="modal-img">
+                <!-- 지출 게시판에서 -->
+                <p class="modal-ms-title" v-if="transactionDetail">지출 : {{ transactionDetail.title }}</p>
+                <div class="del-guide" v-if="transactionDetail">해당 지출이 삭제됩니다.</div>
+                <!-- 미션 게시판에서  -->
+                <p class="modal-ms-title" v-if="missionDetail">미션 : {{ missionDetail.title }}</p>
+                <div class="del-guide" v-if="missionDetail">해당 미션이 삭제됩니다.</div>
+            </div>
+            <div class="del-btn">
+                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="" class="modal-del">삭제하기</button>
+            </div>
         </div>
     </div>
-</div>
 </template>
-
+    
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -25,7 +29,12 @@ import { useStore } from 'vuex';
 const store = useStore();
 const router = useRouter();
 
-// 지출 상세 정보 불러오기기
+// 미션 상세 정보 불러오기
+const childmissionDetail = computed(() => store.state.childMission.showmissionDetail);
+const missionDetail = computed(() => store.state.mission.missionDetail);
+
+// 지출 상세 정보 불어오기
+
 const transactionDetail = computed(() => store.state.childTransaction.transactionDetail);
 
 
@@ -58,10 +67,10 @@ const delCloseModal = () => {
 }
 
 .del-modal-white {
-    width: 400px;
-    height: 500px;
+    width: 500px;
+    height: 400px;
     background-color: #FFFFFF;
-    border: 3px solid #5589e996;
+    border: 3px solid #A2CAAC;
     /* margin: 170px; */
     display: flex;
     flex-direction: column;
@@ -72,7 +81,6 @@ const delCloseModal = () => {
 
 .modal-content {
     text-align: center;
-    margin: 60px;
 }
 
 .modal-name {
@@ -90,13 +98,35 @@ const delCloseModal = () => {
     padding: 15px;
 }
 
-
 .modal-img{
     width: 100px;
     height: 100px;
-    background-color: #FFFFFF;
-    /* border: 3px solid #5589e996; */
     border-radius: 50px;
     padding: 3px;
 }
+
+/* 삭제 모달 버튼 */
+.modal-cancel {
+    color: #ACACAC;
+    background-color: #FFFFFF;
+    font-size: 1.2rem;
+    border: 1px solid #ACACAC;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.modal-del {
+    color: #FFFF;
+    background-color: #A2CAAC;
+    font-size: 1.2rem;
+    border: 1px solid #A2CAAC;
+    padding: 5px;
+    width: 100px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+
 </style>

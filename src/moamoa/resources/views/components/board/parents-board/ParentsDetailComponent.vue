@@ -32,7 +32,7 @@
                     <!-- <div class="btn-flex"> -->
                 </div>
                 <div class="bottom-btn right">
-                    <button @click="delOpenModal" class="ms-del">미션 삭제</button>
+                    <button @click="delOpenModal(missionDetail.mission_id)" class="ms-del">미션 삭제</button>
                     <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">미션 수정</button>
                     <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-comfirm">미션 승인</button>
                 </div>
@@ -41,23 +41,10 @@
         </div>
     </div>
 </div>
-    <!-- ************************* -->
-    <!-- ********삭제 모달********* -->
-    <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal">
-        <div class="del-modal-white">
-            <div class="modal-content">
-                <img src="/img/icon-trash.png" class="modal-img" alt=".">
-                <p class="modal-name">{{ missionDetail.name }}</p>
-                <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
-                <div class="del-guide">해당 미션이 삭제됩니다.</div>
-            </div>
-            <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
-            </div>
-        </div>
-    </div>
+<!-- ********삭제 모달********* -->
+<div class="delModal" v-if="delModal">
+    <ModalComponent @click="delCloseModal" />
+</div>
 
     
 </template>
@@ -66,6 +53,7 @@
 import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import ModalComponent from '../../modal/ModalComponent.vue';
 
 // *****미션 상세 정보******
 const store = useStore();
@@ -93,7 +81,10 @@ const categories = reactive([
 // *****삭제 모달창********** 
 const delModal = ref(false);
 
-const delOpenModal = () => { //모달창 열기
+// 해당 게시물 모달창 열기
+const delOpenModal = (mission_id) => { 
+    console.log('모달창 열기');
+    store.dispatch('mission/showMissionDetail', mission_id);
     delModal.value = true;
 }
 

@@ -31,7 +31,7 @@
                         <button @click="goBack(missionDetail.child_id)" class="create-btn ms-cancel">뒤로가기</button>
                     </div>
                     <div class="bottom-btn right">
-                        <button @click="delOpenModal" class="create-btn ms-del">미션 삭제</button>
+                        <button @click="delOpenModal(missionDetail.mission_id)" class="create-btn ms-del">미션 삭제</button>
                         <button class="create-btn ms-up">미션 완료</button>
                         <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">미션 수정</button>
                     </div>
@@ -39,23 +39,11 @@
             </div>
         </div>
     </div>
-    <!-- ************************* -->
-    <!-- ********삭제 모달********* -->
-    <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal">
-        <div class="del-modal-white">
-            <div class="modal-content">
-                <img src="/img/icon-trash.png" class="modal-img" alt=".">
-                <p class="modal-name"></p>
-                <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
-                <div class="del-guide">해당 미션이 삭제됩니다.</div>
-            </div>
-            <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
-            </div>
-        </div>
-    </div>
+
+<!-- ********삭제 모달********* -->
+<div class="delModal child-theme" v-if="delModal">
+    <ModalComponent @click="delCloseModal" />
+</div>
 
 </template>
 
@@ -63,6 +51,7 @@
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import ModalComponent from '../../modal/ModalComponent.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -102,10 +91,12 @@ const goUpdate = (mission_id) => {
     router.push('/child/mission/update/'+ mission_id);
 }
 
-// 삭제 모달
+// *****삭제 모달창********** 
 const delModal = ref(false);
 
-const delOpenModal = () => {
+const delOpenModal = (mission_id) => {
+    console.log('모달창에서 자녀 mission id 불러오기 ');
+    store.dispatch('childMission/showMissionDetail', mission_id);
     delModal.value = true;
 }
 
@@ -298,4 +289,7 @@ const delCloseModal = () => {
     margin: 10px;
 }
 
+.child-theme {
+    background-color: #5589e996;
+}
 </style>

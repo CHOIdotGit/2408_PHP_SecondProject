@@ -79,8 +79,6 @@
                 <img src="/img/icon-shopping-cart.png" alt="" class="menu-icon">
                 상점
             </div> -->
-
-            <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
         </div>
         <!-- 고객센터 -->
         <div class="cs">
@@ -226,6 +224,7 @@ button {
 
 .menu-left {
     background-color: #A2CAAC;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 }
 

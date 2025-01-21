@@ -1,53 +1,41 @@
 <template>
-    <div class="main-container">
-        <div class="board-container">
-            <div class="content-list">
-                <div class="content" v-if="transactionDetail">
-                    <p class="title">지출 제목</p>
-                    <span class="ms-title">{{ transactionDetail.title }}</span>
-                    <div class="date deco">
-                        <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
-                    </div>
+<div class="main-container">
+    <div class="board-container">
+        <div class="content-list">
+            <div class="content" v-if="transactionDetail">
+                <p class="title">지출 제목</p>
+                <span class="ms-title">{{ transactionDetail.title }}</span>
+                <div class="date deco">
+                    <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
                 </div>
-                <div class="content">
-                    <p class="title">지출 종류</p>
-                    <div class="category-btn" v-for="item in categories" :key="item">
-                        <img class="ms-category-img" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
-                        <p class="category-name">{{ item.name }}</p>
-                    </div>
+            </div>
+            <div class="content">
+                <p class="title">지출 종류</p>
+                <div class="category-btn" v-for="item in categories" :key="item">
+                    <img class="ms-category-img" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
+                    <p class="category-name">{{ item.name }}</p>
                 </div>
-                <div class="content">
-                    <p class="title">사용 내역</p>
-                    <div class="ms-content">{{ transactionDetail.memo }}</div>
-                </div>
-                <div class="content">
-                    <p class="title">지출 금액</p>
-                    <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
-                </div>
-                <div class="bottom-btn">
-                    <button @click="goBack" class="ms-cancel left">뒤로가기</button>
-                    <button @click="delOpenModal" class="btn">지출 삭제</button>
-                    <button @click="goUpdate(transactionDetail.transaction_id)" class="btn">지출 수정</button>
-                </div>
+            </div>
+            <div class="content">
+                <p class="title">사용 내역</p>
+                <div class="ms-content">{{ transactionDetail.memo }}</div>
+            </div>
+            <div class="content">
+                <p class="title">지출 금액</p>
+                <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
+            </div>
+            <div class="bottom-btn">
+                <button @click="goBack" class="ms-cancel left">뒤로가기</button>
+                <button @click="delOpenModal(transactionDetail.transaction_id)" class="btn">지출 삭제</button>
+                <button @click="goUpdate(transactionDetail.transaction_id)" class="btn">지출 수정</button>
             </div>
         </div>
     </div>
-    <!-- ************************* -->
-    <!-- ********삭제 모달********* -->
-    <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal">
-        <div class="del-modal-white">
-            <div class="modal-content">
-                <img src="/img/icon-trash.png" class="modal-img">
-                <p class="modal-ms-title">지출 : {{ transactionDetail.title }}</p>
-                <div class="del-guide">해당 지출이 삭제됩니다.</div>
-            </div>
-            <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
-                <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제하기</button>
-            </div>
-        </div>
-    </div>
+</div>
+<!-- ********삭제 모달********* -->
+<div class="delModal child-theme" v-if="delModal">
+    <ModalComponent @click="delCloseModal" />
+</div>
 
 </template>
 
@@ -55,6 +43,7 @@
 import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import ModalComponent from '../../modal/ModalComponent.vue';
 
 const store = useStore();
 const router = useRouter();
@@ -100,7 +89,8 @@ const goUpdate = (transaction_id) => {
 // 모달
 const delModal = ref(false);
 
-const delOpenModal = () => {
+const delOpenModal = (transaction_id) => {
+    store.dispatch('childTransaction/showTransactionDetail', transaction_id);
     delModal.value = true;
 }
 
@@ -306,6 +296,10 @@ const delCloseModal = () => {
     width: 100px;
     cursor: pointer;
     margin: 10px;
+}
+
+.child-theme {
+        background-color: #5589e996;
 }
 
 </style>
