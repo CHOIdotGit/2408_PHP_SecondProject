@@ -1,30 +1,35 @@
 <template>
 <div :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }">
+    <div class="container">
+    <!-- 상단 메뉴 -->
+        <header>
+            <!-- 좌측 고정 메뉴 -->
+            <div class="menu-left" v-if="isAuth">
+                <MenuLeftComponent/>
+            </div>
+        </header>
+        
+        
+        <main class="layout">
+            <!-- 상단 메뉴 버튼 -->
+            <div v-if="isAuth">
+                <HeaderMenuComponent/>
+            </div>
+            <!-- 화면 -->
+            <div class="app-div">
+                <router-view></router-view>
+            </div>
+        </main>
 
-<!-- 상단 메뉴 -->
-    <header>
-        <HeaderMenuComponent/>
-    </header>
-    
+        <!-- footer -->
+        <!-- <footer v-if="isAuth">
+            <div>
 
-    <main class="layout">
-        <!-- 좌측 고정 메뉴 -->
-        <div class="menu-left" v-if="isAuth">
-            <MenuLeftComponent/>
-        </div>
-        <!-- 화면 -->
-        <div class="app-div">
-            <router-view></router-view>
-        </div>
-    </main>
-
-    <!-- footer -->
-    <!-- <footer v-if="isAuth">
-        <div>
-
-        </div>
-    </footer> -->
+            </div>
+        </footer> -->
+    </div>
 </div>
+
 </template>
 
 
@@ -47,7 +52,7 @@ const isChilds = computed(() => store.state.auth.childFlg);
 
 
 
-<style>
+<style scoped>
 @import url("../../css/common.css");
 @import url("../../css/swiper.css");
 
@@ -57,8 +62,15 @@ footer > p {
     color: white;
 }
 
+.container {
+    display: flex;
+}
+
+
+
 .layout {
     display: flex;
+    flex-direction: column;
 }
 
 .app-div {

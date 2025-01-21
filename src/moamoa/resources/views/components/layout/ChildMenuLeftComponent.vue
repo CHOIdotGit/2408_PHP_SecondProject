@@ -127,6 +127,14 @@ button {
     transition: left .3s;
 }
 
+/* 자녀 일때 메뉴 배경색 */
+.child-theme {
+    background-color: #5589e996;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+
+
 @font-face {
     font-family: 'MangoDdobak-R';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-R.woff2') format('woff2');
@@ -178,10 +186,7 @@ button {
     background-color: #e9e9e9;
 }
 
-.child-theme {
-    background-color: #5589e996;
 
-}
 
 /* 좌측 메뉴 */
 .menu-container {
