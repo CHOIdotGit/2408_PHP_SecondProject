@@ -20,7 +20,7 @@ class TransactionChildrenController extends Controller
                                         ->whereNull('transactions.deleted_at')
                                         ->orderBy('transactions.transaction_date', 'DESC')
                                         // ->latest()
-                                        ->paginate(15);
+                                        ->paginate(20);
 
 
         $responseData = [

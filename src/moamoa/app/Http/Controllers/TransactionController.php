@@ -20,7 +20,7 @@ class TransactionController extends Controller
                                     ,['transactions.transaction_code', '1']
                                 ])
                                 ->orderBy('transactions.transaction_date' ,'DESC')
-                                ->paginate(15);
+                                ->paginate(20);
 
         // $transactionInfo = Transaction::select('transactions.child_id', 'transactions.status', 'transactions.category', 'transactions.title', 'transactions.amount', 'transactions.start_at', 'transactions.end_at')
         //                         ->with('child')

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Child;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +18,8 @@ class MissionFactory extends Factory
     public function definition()
     {
         return [
-            'parent_id' => rand(1, 1000),
-            'child_id' => rand(1, 2500),
+            'child_id' => $childId = Child::inRandomOrder()->value('child_id'),
+            'parent_id' => Child::where('child_id', $childId)->value('parent_id'),
             'category' => rand(0, 4),
             'title' => $this->faker->realText(10),
             'content' => $this->faker->realText(50),

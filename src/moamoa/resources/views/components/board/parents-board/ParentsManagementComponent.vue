@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex">
-        <div class="container">
+        <div class="div-container">
             <Swiper v-if="parentHome.length > 0"
                 :slides-per-view="parentHome.length === 2 ? 2 : 3"
                 ref="swiper"
@@ -9,6 +9,7 @@
                 :navigation="parentHome.length > 2"
                 :scrollbar="true"
                 :centeredSlides="parentHome.length < 2"
+                class="div-swiper"
                 >
                 <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="v-loop">
                     <div class="child-div">
@@ -104,11 +105,19 @@ onMounted(() => {
 
 /* 메인 화면 */
 .d-flex {
+    width: 1670px;
+    height: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-container {
     width: 1150px;
     height: 720px;
 }
 
-.container {
+.div-swiper{
     width: 100%;
     height: 700px;
     background-color: white;

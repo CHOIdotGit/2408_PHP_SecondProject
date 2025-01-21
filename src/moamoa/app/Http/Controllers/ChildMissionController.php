@@ -23,7 +23,7 @@ class ChildMissionController extends Controller
                                     // ->whereNull('missions.deleted_at')
                                     ->orderBy('missions.status')
                                     ->latest()
-                                    ->paginate(15);
+                                    ->paginate(20);
                 
         $responseData = [
             'success' => true

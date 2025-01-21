@@ -232,7 +232,7 @@ button {
 /* 좌측 메뉴 */
 .menu-container {
     width: 250px;
-    height: 51.55rem;
+    height: 46.3rem;
 }
 
 /* 반응형 버튼 */

@@ -1,5 +1,5 @@
 <template>
-<div :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }">
+    <!-- :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }" -->
     <div class="container">
     <!-- 상단 메뉴 -->
         <header>
@@ -28,8 +28,6 @@
             </div>
         </footer> -->
     </div>
-</div>
-
 </template>
 
 
@@ -63,22 +61,13 @@ footer > p {
 }
 
 .container {
+    width: 100vw;
+    height: 100vh;
     display: flex;
 }
-
-
 
 .layout {
     display: flex;
     flex-direction: column;
 }
-
-.app-div {
-    width: 1670px;
-    height: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 </style>

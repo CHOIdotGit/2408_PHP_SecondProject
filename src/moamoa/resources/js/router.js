@@ -34,6 +34,7 @@ import FamilyPrivateChangePasswordComponent from '../views/components/auth/priva
 import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
 import axios from './axios';
 import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
+import ParentsBankBookComponent from '../views/components/board/parents-board/ParentsBankBookComponent.vue';
 
 
 const chkAuth = (to, from, next) => {
@@ -220,6 +221,18 @@ const routes = [
         component: ParentsStatsComponent,
         beforeEnter: chkAuth,
     },
+
+    // +==================================+
+    // +          부모 통장 페이지         +
+    // +==================================+
+
+    // 부모 통장 페이지
+    {
+        path: '/parent/bankbook/:child_id',
+        component: ParentsBankBookComponent,
+        beforeEnter: chkAuth,
+    },
+
     //**************************************************** */
     // 자녀 페이지 모음
     // 자녀 홈페이지
