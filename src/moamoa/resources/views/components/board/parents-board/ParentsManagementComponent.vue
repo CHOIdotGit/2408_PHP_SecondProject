@@ -147,6 +147,7 @@ onMounted(() => {
     border-radius: 50%;
     padding: 3px;
     margin-left: 90px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .mission-title{
@@ -164,6 +165,7 @@ onMounted(() => {
     width: 300px;
     height: 500px;
     border-radius: 25px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 /* 프로필 텍스트 */
@@ -200,10 +202,12 @@ onMounted(() => {
     width: 250px;
     height: 40px;
     font-size: 1.7rem;
+    font-weight: 600;
     margin-top: 15px;
     text-align: center;
     cursor: pointer;
     padding-top: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .mission-box {
@@ -223,10 +227,12 @@ onMounted(() => {
     width: 140px;
     height: 40px;
     font-size: 1.7rem;
+    font-weight: 600;
     margin-top: 15px;
     text-align: center;
     cursor: pointer;
     padding-top: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .amount-div {
@@ -365,6 +371,6 @@ onMounted(() => {
 
 .no-mission {
     text-align: center;
-
+    font-weight: 600;
 }
 </style>

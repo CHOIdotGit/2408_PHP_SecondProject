@@ -228,9 +228,16 @@ const routes = [
 
     // 부모 통장 페이지
     {
-        path: '/parent/bankbook/:child_id',
+        path: '/parent/bankbook/',
         component: ParentsBankBookComponent,
         beforeEnter: chkAuth,
+    },
+
+    // 부모 통장 상세 페이지
+    {
+        // path: '/parent/bankbook/:child_id',
+        // component: ParentsBankBookComponent,
+        // beforeEnter: chkAuth,
     },
 
     //**************************************************** */

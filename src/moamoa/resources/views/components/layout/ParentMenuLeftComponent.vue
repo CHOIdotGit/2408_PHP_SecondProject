@@ -144,6 +144,15 @@ const goParentStatis = (child_id) => {
     store.dispatch('transaction/parentStats', child_id)
     router.push('/parent/stats/' + child_id);
 }
+
+// 부모 통장 페이지
+const goBankbook = () => {
+    router.push('/parent/bankbook/');
+}
+// const goBankbook = (child_id) => {
+//     store.dispatch('bankbook/', child_id)
+//     router.push('/parent/bankbook/');
+// }
 </script>
 
 <style scoped>
@@ -272,6 +281,7 @@ button {
     background-color: #FFFFFF;
     border-radius: 50px;
     margin: 5px;
+    object-fit: cover;
 }
 
 .child-info {
