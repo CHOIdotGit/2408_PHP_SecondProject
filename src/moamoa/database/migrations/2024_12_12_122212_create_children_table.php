@@ -12,7 +12,6 @@ return new class extends Migration {
       $table->string('account', 20)->unique();
       $table->string('password');
       $table->string('name', 20);
-      $table->string('nick_name', 20)->nullable();
       $table->string('email', 100);
       $table->string('tel', 30)->comment('하이픈(-) 제외 숫자만');
       $table->string('profile', 100)->nullable()->default('/profile/default.webp');

@@ -34,6 +34,10 @@ class Child extends Authenticatable {
         return $this->hasMany(Mission::class, 'child_id');
     }
 
+    public function points() {
+        return $this->hasMany(Point::class, 'child_id');
+    }
+
     public function transactions() {
         return $this->hasMany(Transaction::class, 'child_id', 'child_id');
     }
