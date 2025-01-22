@@ -17,8 +17,11 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
+        $childId = Child::whereNotIn('child_id', [1, 2, 3])->inRandomOrder()->value('child_id');
+
         return [
-            'child_id' => $childId = Child::inRandomOrder()->value('child_id'),
+            // 'child_id' => $childId = Child::inRandomOrder()->value('child_id'),
+            'child_id' => $childId,
             'parent_id' => Child::where('child_id', $childId)->value('parent_id'),
             'category' => rand(0, 4),
             'title' => $this->faker->realText(10),
