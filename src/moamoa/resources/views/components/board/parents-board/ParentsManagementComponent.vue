@@ -70,6 +70,15 @@ import 'swiper/css/pagination';
 // 스와이퍼 인스턴스
 const swiper = ref(null);
 
+const originalWarn = console.warn;
+
+console.warn = function(message, ...args) {
+  if (message.includes("Swiper Loop Warning")) {
+    return; // Swiper 관련 경고 무시
+  }
+  originalWarn.call(console, message, ...args); // 다른 경고는 그대로 출력
+};
+
 // ------------------------------------------------------
 const store = useStore();
 
