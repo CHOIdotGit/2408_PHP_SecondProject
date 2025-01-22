@@ -1,9 +1,44 @@
 <template>
     <div class="container">
         <div class="list-container">
-            <div class="for-buttons">
+            <div class="route"> 홈  > 미션 </div>
+            <div class="top-btns">
+                <button @click="getChildId(childId)" class="btn-top mission-regist">미션 등록</button>
                 <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
                 <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
+            </div>
+            <div class="top-menu">
+                <div class="search-option">
+                    <div class="search-date">
+                        <p> 등록 일자</p> 
+                        <input type="date" min="2000-01-01" >
+                        <p>~</p>
+                        <input type="date" min="2000-01-01" >
+                    </div>
+                    <div class="search-filter">
+                        <p> 종류 </p> 
+                        <select name="mission-type">
+                            <option value="all">전체</option>
+                            <option value="shinhan">집안일</option>
+                            <option value="hana">기타</option>
+                            <option value="kb" >생활습관</option>
+                            <option value="woori">취미</option>
+                        </select>
+                        <select name="status">
+                            <option value="all">전체</option>
+                            <option value="waiting">대기중</option>
+                            <option value="ongoing">진행중</option>
+                            <option value="complete">완료</option>
+                            <option value="cancel" >취소</option>
+                        </select>
+                    </div>
+                    <div class="search">
+                        <input type="search" placeholder="검색어를 입력해주세요">
+                    </div>
+                </div>
+                <div class="search-btn">
+                    <button>검색</button>
+                </div>
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
@@ -29,11 +64,12 @@
                     </div>
                 </div>
             </div>
-            <div class="for-buttons margin-top">
-                <button @click="$router.push('/parent/home')" class="btn-bottom mission-goback">뒤로가기</button>
+            <div class="bottom-menu">
+                <!-- <button @click="$router.push('/parent/home')" class="btn-bottom mission-goback">뒤로가기</button> -->
                 <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
-                <button @click="getChildId(childId)" class="btn-bottom mission-insert">미션 등록</button>
+                
             </div>
+            
         </div>
     </div>
 
@@ -215,37 +251,98 @@ const approvalMission = () => {
 }
 
 .list-container {
-    margin-top: 20px;
-    width: 1500px;
-    height: 720px;
+    /* margin-top: 100px; */
+    /* height: 900px; */
     background-color: white;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    /* justify-content: center; */
-    align-items: center;
+    /* align-items: center; */
+}
+
+.bottom-menu button {
+    width: 120px;
+    height: 50px;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #A2CAAC;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #FFFFFF;
+    margin-left: ;
+}
+
+.search {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+}
+
+.search input {
+    width: 1000px;
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.route {
+    margin-top: 20px;
+    font-size: 1.2rem;
 }
 
 .who {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 30px;
     /* margin-right: 1150px; */
 }
 
-.mission-confirm {
-    margin-left: 850px;
+.search-date {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+    p {
+        margin: 0; /* 기본 여백 제거 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
 }
 
+.search-date input[type="date"] {
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+}
+
+.search-filter {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+    p {
+        margin: 0; /* 기본 여백 제거 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+}
+
+.search-filter select {
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+}
 .mission-title-bar {
     display: grid;
     grid-template-columns: 40px 210px 100px 100px 150px 340px;
     height: 60px;
     gap: 75px;
-    background-color: #F5F5F5;
+    background-color: #afafaf;
     font-size: 2rem;
     /* margin: 10px; */
     align-items: center;
-    width: 1400px;
+    /* width: 78%; */
     text-align: center;
 }
 
@@ -253,6 +350,37 @@ const approvalMission = () => {
     cursor: pointer;
 }
 
+.search-btn button{
+    width: 120px;
+    height: 150px;
+    margin-top: 20px;
+    font-weight: 800;
+    align-content: space-between;
+    margin-left: 210px;
+    background-color: #A2CAAC;
+    font-size: 1.5rem;
+    border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+}
+
+.search-btn button:hover {
+    color: #ffffff;
+    background-color: #6a8f73;
+}
+
+.mission-confirm {
+    margin-left: 20px;
+}
+
+.mission-delete {
+    margin-left: 20px;
+}
+
+.mission-regist {
+    margin-left: 1000px;
+
+}
 .mission-title:hover {
     color: #A2CAAC;
 }
@@ -260,27 +388,28 @@ const approvalMission = () => {
 .mission-content {
     display: grid;
     grid-template-columns: 40px 210px 100px 100px 150px 340px;
-    height: 40px;
     gap: 75px;
-    /* background-color: #F5F5F5; */
     font-size: 1.3rem;
-    /* margin: 10px; */
     align-items: center;
-    width: 1400px;
     text-align: center;
-    /* border-bottom: 2px solid black; */
 }
 
-.for-buttons{
+.top-menu{
     display: flex;
-    align-items: center;
+    flex-direction: row;
+    
+    background-color: #d3e2d7;
+    /* margin-top: 20px; */
+    /* align-items: center; */
+    height: 200px;
+    /* width: 78%; */
     gap: 30px;
 }
 
 .btn-top {
     width: 120px;
     height: 50px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border: none;
     background-color:#A2CAAC ;
     margin-top: 30px;
@@ -341,22 +470,13 @@ const approvalMission = () => {
 }
 
 .mission-inserted-list {
-    height: 60px;
+    /* height: 15%; */
     display: grid;
+    margin-top: 15px ;
 }
 
 .margin-top {
     margin-top: 20px;
-}
-
-.scroll {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    height: 400px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    width: 1400px;
 }
 
 /* ********************* */
