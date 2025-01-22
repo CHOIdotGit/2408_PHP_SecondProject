@@ -6,6 +6,7 @@ import header from './modules/header';
 import transaction from './modules/transaction';
 import childMission from './modules/childMission';
 import childTransaction from './modules/childTransaction';
+import mobile from './modules/mobile';
 
 export default createStore({
     modules: {
@@ -16,6 +17,7 @@ export default createStore({
         header,
         childMission,
         childTransaction,
+        mobile,
     },
 });
 
