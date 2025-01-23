@@ -17,10 +17,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call([
-        //     ParentSeeder::class
-        //     ,ChildrenSeeder::class
-        // ]);
+        $this->call([
+            // ParentSeeder::class
+            // ,ChildrenSeeder::class
+        ]);
         // Mission::factory(100)->create();
         // Transaction::factory(300000)->create();
 

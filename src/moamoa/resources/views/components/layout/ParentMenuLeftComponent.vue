@@ -218,8 +218,8 @@ button {
 
 /* 좌측 메뉴 */
 .menu-container {
-    /* position : absolute;
-    left: -220px; */
+    /* width: 250px;
+    height: 93vh; */
 
     width: 300px;
     height: 100%;

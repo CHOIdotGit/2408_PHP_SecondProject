@@ -8,9 +8,13 @@
 }
 
 .swiper {
-    padding-left: 60px !important;
+    padding-left: 80px !important;
 }
 
-/* .swiper-wrapper {
-    justify-content: center;
-} */
+.swiper-slide {
+    width: 300px !important;
+}
+
+.swiper-wrapper {
+    gap: 115px;
+}

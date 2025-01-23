@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('trophies', function (Blueprint $table) {
             $table->id('trophy_id');
             $table->unsignedBigInteger('child_id');
-            $table->varchar('quest', 50);
-            $table->varchar('daily_quest', 50)->comment('매일 날짜 갱신');
+            $table->string('quest', 50);
+            $table->string('daily_quest', 50)->comment('매일 날짜 갱신');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -1,8 +1,9 @@
 <template>
     <div class="d-flex">
         <div class="div-container">
+            <!-- :slides-per-view="parentHome.length === 2 ? 2 : 3" -->
             <Swiper v-if="parentHome.length > 0"
-                :slides-per-view="parentHome.length === 2 ? 2 : 3"
+                :breakpoints="breakpoints"
                 ref="swiper"
                 :loop="parentHome.length > 2"
                 :modules="modules"
@@ -54,7 +55,7 @@
 </template>
 <script setup>
 
-import { computed, ref, onMounted, watch, nextTick } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 // 스와이퍼
@@ -105,10 +106,25 @@ const goSpendList = (child_id) => {
     store.dispatch('transaction/transactionList', child_id);
 };
 
+
+// 반응형 설정 (화면 크기에 따른 슬라이드 수 조절)
+const breakpoints = {
+    0: {
+        slidesPerView: 1,
+    },
+    1200: {
+        slidesPerView: 2,
+    },
+    1500: {
+        slidesPerView: 3,
+    },
+};
+
 // onMount
 onMounted(() => {
     store.dispatch('mission/parentHome');
 });
+
 </script>
 <style scoped>
 
@@ -122,13 +138,13 @@ onMounted(() => {
 }
 
 .div-container {
-    width: 1150px;
-    height: 720px;
+    width: 1300px;
+    height: 100%;
 }
 
 .div-swiper{
     width: 100%;
-    height: 700px;
+    height: 780px;
     background-color: white;
     margin-top: 20px;
 }

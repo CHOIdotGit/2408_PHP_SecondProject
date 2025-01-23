@@ -20,7 +20,6 @@ class Child extends Authenticatable {
         ,'account'
         ,'password'
         ,'name'
-        ,'nick_name'
         ,'email'
         ,'tel'
         ,'profile'

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('points', function (Blueprint $table) {
             $table->id('point_id');
             $table->unsignedBigInteger('child_id');
-            $table->INT('point', 6)->default(0);
+            $table->integer('point')->default(0);
             $table->char('point_code', 1)->comment('0 : 출석 체크 1 : 미션 수행, 2 : 이자, 3 : 소비, 4 : 도전 과제/ 거래내용 항목');
             $table->date('payment_at');
             $table->timestamps();

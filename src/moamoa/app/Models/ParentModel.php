@@ -19,7 +19,6 @@ class ParentModel extends Authenticatable {
         'account'
         ,'password'
         ,'name'
-        ,'nick_name'
         ,'email'
         ,'tel'
         ,'profile'

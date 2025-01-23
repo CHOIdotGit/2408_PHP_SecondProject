@@ -34,7 +34,7 @@ import FamilyPrivateChangePasswordComponent from '../views/components/auth/priva
 import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
 import axios from './axios';
 import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
-import ParentsBankBookComponent from '../views/components/board/parents-board/ParentsBankBookComponent.vue';
+import ParentsMoaBankComponent from '../views/components/board/parents-board/ParentsMoaBankComponent.vue';
 
 
 const chkAuth = (to, from, next) => {
@@ -228,8 +228,8 @@ const routes = [
 
     // 부모 통장 페이지
     {
-        path: '/parent/bankbook/',
-        component: ParentsBankBookComponent,
+        path: '/parent/moabank/',
+        component: ParentsMoaBankComponent,
         beforeEnter: chkAuth,
     },
 

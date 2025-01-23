@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->id('shop_id');
-            $table->int('price', 6)->comment('화폐 단위 : 모아');
-            $table->varchar('medal', 20)->comment('상점에서 초보 칭호 살 수 있도록 null 허용');
-            $table->varchar('theme', 20)->comment('기본 색상이 null');
+            $table->char('price', 6)->comment('화폐 단위 : 모아');
+            $table->string('medal', 20)->comment('상점에서 초보 칭호 살 수 있도록 null 허용');
+            $table->string('theme', 20)->comment('기본 색상이 null');
             $table->timestamps();
             $table->softDeletes();
         });

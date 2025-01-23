@@ -17,7 +17,8 @@ class MissionFactory extends Factory
      */
     public function definition()
     {
-        $childId = Child::whereNotIn('child_id', [1, 2, 3])->inRandomOrder()->value('child_id');
+        // $childId = Child::whereNotIn('child_id', [1, 2, 3])->inRandomOrder()->value('child_id');
+        $childId = Child::whereBetween('child_id', [26, 305])->inRandomOrder()->value('child_id');
 
         return [
             // 'child_id' => $childId = Child::inRandomOrder()->value('child_id'),
