@@ -1,15 +1,6 @@
 <template>
 <!-- 자녀가 로그인 했을 때 표시되는 왼쪽 메뉴 -->
     <div class="menu-left child-theme">
-        <!-- 반응형 버튼튼 -->
-        <div class="menu-btn">
-            <!-- 반응형 버튼(닫는거) -->
-            <img src="/img/icon-angle-double-left.png" alt="" class="btn-left" @click="closeMenubtn">
-    
-            <!-- 반응형 버튼(여는거) -->
-            <img src="/img/icon-angle-double-right.png" alt="" class="btn-right">
-        </div>
-    
         <div class="menu-container" v-show="slidMenu">
     
         <!-- 자녀 프로필 표시 영역  -->
@@ -116,25 +107,6 @@ button {
     color: #000000;
 }
 
-.menu-container {
-    /* position : absolute;
-    left: -220px; */
-
-    -webkit-transition: left .3s;
-    -moz-transition: left .3s;
-    -ms-transition: left .3s;
-    -o-transition: left .3s;
-    transition: left .3s;
-}
-
-/* 자녀 일때 메뉴 배경색 */
-.child-theme {
-    background-color: #5589e996;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-
-
 @font-face {
     font-family: 'MangoDdobak-R';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-R.woff2') format('woff2');
@@ -149,29 +121,10 @@ button {
     font-style: normal;
 }
 
-/* 가장 작은 화면에서 최대 800px까지 적용  */
-@media (max-width:800px) {
-    .menu-container {
-        display: none;
-    }
-    .menu-box {
-        display: none;
-    }
-    .btn-left {
-        display: none;
-    }
-    .menu-btn {
-        width: 60px;
-        background-color: #ffffff;
-    }
-    
-}
-
-/* 801px 부터 적용*/
-@media (min-width:801px) {
-    .btn-right {
-        display: none;
-    }
+.menu-left {
+    height: 100%;
+    background-color: #5589e996;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 /* 상단 메뉴 */
@@ -186,12 +139,16 @@ button {
     background-color: #e9e9e9;
 }
 
-
-
 /* 좌측 메뉴 */
 .menu-container {
-    width: 250px;
-    height: 51.55rem;
+    width: 300px;
+    height: 100%;
+    min-height: 100vh;
+    -webkit-transition: left .3s;
+    -moz-transition: left .3s;
+    -ms-transition: left .3s;
+    -o-transition: left .3s;
+    transition: left .3s;
 }
 
 /* 반응형 버튼 */

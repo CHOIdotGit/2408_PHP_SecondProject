@@ -7,7 +7,7 @@
                 <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
                 <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
             </div>
-            <div class="top-menu">
+            <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
                         <p> 등록 일자</p> 
@@ -64,12 +64,6 @@
                     </div>
                 </div>
             </div>
-            <div class="bottom-menu">
-                <!-- <button @click="$router.push('/parent/home')" class="btn-bottom mission-goback">뒤로가기</button> -->
-                <!-- <router-link to="/parent/mission/create"><button  class="btn-bottom mission-insert">+ 등록</button></router-link> -->
-                
-            </div>
-            
         </div>
     </div>
 
@@ -243,33 +237,17 @@ const approvalMission = () => {
 
 <style scoped>
 .container {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-bottom: 40px; */
 }
 
 .list-container {
-    /* margin-top: 100px; */
-    /* height: 900px; */
     background-color: white;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    /* align-items: center; */
-}
-
-.bottom-menu button {
-    width: 120px;
-    height: 50px;
-    font-size: 1.2rem;
-    border: none;
-    background-color: #A2CAAC;
-    margin-top: 30px;
-    cursor: pointer;
-    color: #FFFFFF;
-    margin-left: ;
 }
 
 .search {
@@ -289,13 +267,7 @@ const approvalMission = () => {
 }
 .route {
     margin-top: 20px;
-    font-size: 1.2rem;
-}
-
-.who {
-    font-size: 1.2rem;
-    margin-top: 30px;
-    /* margin-right: 1150px; */
+    font-size: 1.7rem;
 }
 
 .search-date {
@@ -333,16 +305,15 @@ const approvalMission = () => {
     padding: 5px; /* 적절한 여백 추가 */
     font-size: 1.2rem;
 }
+
 .mission-title-bar {
     display: grid;
     grid-template-columns: 40px 210px 100px 100px 150px 340px;
     height: 60px;
     gap: 75px;
-    background-color: #afafaf;
+    background-color: #d1d1d1;
     font-size: 2rem;
-    /* margin: 10px; */
     align-items: center;
-    /* width: 78%; */
     text-align: center;
 }
 
@@ -394,15 +365,11 @@ const approvalMission = () => {
     text-align: center;
 }
 
-.top-menu{
+.search-menu{
     display: flex;
     flex-direction: row;
-    
     background-color: #d3e2d7;
-    /* margin-top: 20px; */
-    /* align-items: center; */
     height: 200px;
-    /* width: 78%; */
     gap: 30px;
 }
 
@@ -426,13 +393,6 @@ const approvalMission = () => {
     margin-bottom: 30px;
     cursor: pointer;
     color: #FFFFFF;
-}
-
-.mission-goback {
-    color: #ACACAC;
-    background-color: #FFFFFF;
-    border: 1px solid #ACACAC;
-    margin-left: 1100px;
 }
 
 .checkbox {
@@ -470,7 +430,6 @@ const approvalMission = () => {
 }
 
 .mission-inserted-list {
-    /* height: 15%; */
     display: grid;
     margin-top: 15px ;
 }

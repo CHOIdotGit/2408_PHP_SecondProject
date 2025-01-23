@@ -34,16 +34,16 @@
     padding: 20px;
     margin: 0 300px;
     gap: 10px;
-    border-bottom: 2px solid #dfdfdf;
+    /* border-bottom: 2px solid #dfdfdf; */
     width: 1000px;
 }
 
 /* 제목 */
 .title {
-    font-size: 2rem;
-    border-right: 2px solid #dfdfdf;
+    /* font-size: 2rem; */
+    /* border-right: 2px solid #dfdfdf; */
     padding: 10px;
-    width: 150px;
+    /* width: 150px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +51,7 @@
 
 /* 미션(지출) 제목 입력란 */
 .ms-title {
-    width: 300px;
+    /* width: 300px; */
     outline: none;
     border-radius: 10px;
     font-size: 1.8rem;

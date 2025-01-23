@@ -1,6 +1,36 @@
 <template>
     <div class="container">
         <div class="list-container">
+            <div class="route"> 홈  > 지출 </div>
+            <div class="top-btn">
+                <div></div>
+            </div>
+            <div class="search-menu">
+                <div class="search-option">
+                    <div class="search-date">
+                        <p> 등록 일자</p> 
+                        <input type="date" min="2000-01-01" >
+                        <p>~</p>
+                        <input type="date" min="2000-01-01" >
+                    </div>
+                    <div class="search-filter">
+                        <p> 종류 </p> 
+                        <select name="mission-type">
+                            <option value="woori">전체</option>
+                            <option value="all">쇼핑</option>
+                            <option value="shinhan">교통비</option>
+                            <option value="kb" >식비</option>
+                            <option value="hana">기타</option>
+                        </select>
+                    </div>
+                    <div class="search">
+                        <input type="search" placeholder="검색어를 입력해주세요">
+                    </div>
+                </div>
+                <div class="search-btn">
+                    <button>검색</button>
+                </div>
+            </div>
             <div class="mission-title-bar">
                 <p class="top-title">제목</p>
                 <span class="category">종류</span>
@@ -76,63 +106,81 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import url('../../../../css/list.css');
+
 .container {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
     /* padding-bottom: 40px; */
 }
 
-.who {
-    font-size: 1.5rem;
-    margin-right: 1150px;
-}
-
 .list-container {
-    margin-top: 20px;
-    width: 1500px;
-    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;   
+    gap: 20px;  
 }
 
 .mission-title-bar {
+    width: 1400px;
     display: grid;
-    grid-template-columns:210px 90px 150px 280px;
+    grid-template-columns:450px 150px 150px 280px;
     height: 60px;
-    gap: 150px;
-    background-color: #F5F5F5;
+    gap: 75px;
+    background-color: #d1d1d1;
     font-size: 2rem;
     align-items: center;
-    width: 1400px;
-    margin-top: 15px;
     text-align: center;
-    padding-left: 50px;
 }
 
 .mission-content {
     display: grid;
-    grid-template-columns: 210px 90px 150px 280px;
+    grid-template-columns: 450px 150px 150px 280px;
     min-height: 60px;
-    gap: 150px;
+    gap: 75px;
     font-size: 1.3rem;
     align-items: center;
     width: 1400px;
     text-align: center;
-    padding-left: 50px;
 }
 
+.top-btn div {
+    height: 80px;
+}
 .for-buttons{
     display: flex;
     justify-content: right;
     /* gap: 30px; */
     margin-left: 1170px;
     height: 50px;
+}
+.search-menu{
+    display: flex;
+    flex-direction: row;
+    background-color: #d3e2d7;
+    height: 200px;
+    gap: 30px;
+}
+
+.search-btn button{
+    width: 120px;
+    height: 150px;
+    margin-top: 20px;
+    font-weight: 800;
+    align-content: space-between;
+    margin-left: 210px;
+    background-color: #A2CAAC;
+    font-size: 1.5rem;
+    border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+}
+
+.search-btn button:hover {
+    color: #ffffff;
+    background-color: #6a8f73;
 }
 
 .btn-top {
@@ -163,12 +211,6 @@ onMounted(() => {
 .mission-inserted-list {
     height: 60px;
     display: grid;
-}
-
-.scroll {
-    overflow-y: auto;
-    overflow-x: hidden;
-    height: 420px;
 }
 
 .sp-title {

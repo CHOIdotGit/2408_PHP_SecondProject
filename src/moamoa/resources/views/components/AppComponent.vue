@@ -4,11 +4,8 @@
     <!-- 상단 메뉴 -->
         <header>
             <!-- 좌측 고정 메뉴 -->
-            <div class="menu-left" v-if="isAuth">
-                <MenuLeftComponent/>
-            </div>
+                <MenuLeftComponent v-if="isAuth"/>
         </header>
-        
         
         <main class="layout">
             <!-- 상단 메뉴 버튼 -->
@@ -61,8 +58,9 @@ footer > p {
 }
 
 .container {
-    width: 100vw;
-    height: 100vh;
+    /* width: 100vw; */
+    /* min-height: 100%; */
+    /* height: 100vh; */
     display: flex;
 }
 

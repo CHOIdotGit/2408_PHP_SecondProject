@@ -1,14 +1,5 @@
 <template>
 <div class="menu-left">
-    <!-- 반응형 버튼튼 -->
-    <div class="menu-btn">
-        <!-- 반응형 버튼(닫는거) -->
-        <img src="/img/icon-angle-double-left.png" alt="" class="btn-left" @click="closeMenubtn">
-
-        <!-- 반응형 버튼(여는거) -->
-        <img src="/img/icon-angle-double-right.png" alt="" class="btn-right">
-    </div>
-
     <div class="menu-container" v-show="slidMenu">
 
         <!-- 자녀가 있을 때  -->
@@ -168,18 +159,6 @@ button {
     text-decoration: none;
     color: #000000;
 }
-
-.menu-container {
-    /* position : absolute;
-    left: -220px; */
-
-    -webkit-transition: left .3s;
-    -moz-transition: left .3s;
-    -ms-transition: left .3s;
-    -o-transition: left .3s;
-    transition: left .3s;
-}
-
 @font-face {
     font-family: 'MangoDdobak-R';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405-3@1.1/MangoDdobak-R.woff2') format('woff2');
@@ -195,7 +174,7 @@ button {
 }
 
 /* 가장 작은 화면에서 최대 800px까지 적용  */
-@media (max-width:800px) {
+/* @media (max-width:800px) {
     .menu-container {
         display: none;
     }
@@ -210,14 +189,14 @@ button {
         background-color: #ffffff;
     }
     
-}
+} */
 
 /* 801px 부터 적용*/
-@media (min-width:801px) {
+/* @media (min-width:801px) {
     .btn-right {
         display: none;
     }
-}
+} */
 
 /* 상단 메뉴 */
 .header-container {
@@ -232,15 +211,24 @@ button {
 }
 
 .menu-left {
+    height: 100%;
     background-color: #A2CAAC;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-
 }
 
 /* 좌측 메뉴 */
 .menu-container {
-    width: 250px;
-    height: 46.3rem;
+    /* position : absolute;
+    left: -220px; */
+
+    width: 300px;
+    height: 100%;
+    min-height: 100vh;
+    -webkit-transition: left .3s;
+    -moz-transition: left .3s;
+    -ms-transition: left .3s;
+    -o-transition: left .3s;
+    transition: left .3s;
 }
 
 /* 반응형 버튼 */

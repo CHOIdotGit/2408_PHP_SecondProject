@@ -1,6 +1,37 @@
 <template>
     <div class="container">
         <div class="list-container">
+            <div class="route"> 홈  > 지출 </div>
+            <div class="for-buttons">
+                <button @click="delOpenModal" class="btn mission-delete">지출 삭제</button>
+                <button @click="goSpendCreate" class="btn mission-insert">지출 작성</button>
+            </div>
+            <div class="search-menu">
+                <div class="search-option">
+                    <div class="search-date">
+                        <p> 등록 일자</p> 
+                        <input type="date" min="2000-01-01" >
+                        <p>~</p>
+                        <input type="date" min="2000-01-01" >
+                    </div>
+                    <div class="search-filter">
+                        <p> 종류 </p> 
+                        <select name="mission-type">
+                            <option value="woori">전체</option>
+                            <option value="all">쇼핑</option>
+                            <option value="shinhan">교통비</option>
+                            <option value="kb" >식비</option>
+                            <option value="hana">기타</option>
+                        </select>
+                    </div>
+                    <div class="search">
+                        <input type="search" placeholder="검색어를 입력해주세요">
+                    </div>
+                </div>
+                <div class="search-btn">
+                    <button>검색</button>
+                </div>
+            </div>
             <div class="mission-title">
                 <div class="chk-div">
                     <input type="checkbox" id="checkbox" class="checkbox" name="checkAll" @change="checkAll" :checked="isAllChecked">
@@ -23,10 +54,7 @@
                     </div>
                 </div>
             </div>
-            <div class="for-buttons">
-                <button @click="delOpenModal" class="btn-bottom mission-go-back">지출 삭제</button>
-                <button @click="goSpendCreate" class="btn-bottom mission-insert">지출 작성</button>
-            </div>
+            
         </div>
     </div>
     <!-- ************************* -->
@@ -149,8 +177,10 @@ const delCloseModal = () => { //모달창 닫기
 </script>
 
 <style scoped>
+@import url('../../../../css/list.css');
+
 .container {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,27 +188,21 @@ const delCloseModal = () => { //모달창 닫기
 }
 
 .list-container {
-    margin-top: 20px;
-    width: 1500px;
-    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
-    align-items: center;   
 }
 
 .mission-title {
+    width: 1400px;
     display: grid;
-    grid-template-columns: 70px 210px 400px 150px 300px;  
+    grid-template-columns: 40px 450px 150px 150px 280px;  
     height: 60px;
     gap: 75px;
-    background-color: #F5F5F5;
+    background-color: #d1d1d1;
     font-size: 2rem;
-    margin: 10px;
     align-items: center;
-    width: 1420px;
     text-align: center;
 }
 
@@ -190,11 +214,10 @@ const delCloseModal = () => { //모달창 닫기
 
 .mission-content {
     display: grid;
-    grid-template-columns: 48px 225px 400px 150px 300px;
+    grid-template-columns:40px 450px 150px 150px 280px;
     min-height: 60px;
     gap: 75px;
     font-size: 1.3rem;
-    margin: 10px;
     align-items: center;
     width: 1400px;
     text-align: center;
@@ -208,45 +231,26 @@ const delCloseModal = () => { //모달창 닫기
     color: #5589e996;
 }
 
-.for-buttons{
-    display: flex;
-    justify-content: right;
-    gap: 30px;
-    margin-left: 1170px;
-    height: 60px;
-}
-
-.btn-top {
+.btn {
     width: 120px;
     height: 50px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border: none;
-    background-color:#5589e996;
+    background-color:#5589e996 ;
     margin-top: 30px;
-}
-
-.btn-bottom {
-    width: 120px;
-    height: 50px;
-    font-size: 1.5rem;
-    border: none;
-    color: white;
-    background-color:#5589e996;
-    margin: 30px 0;
     cursor: pointer;
+    color: #FFFFFF;
 }
 
+.mission-delete {
+    margin-right: 20px;
+    margin-left: 1140px;
+}
 #checkbox9 {
     margin: 15px;
 }
 
-.who-div {
-    margin-right: 1150px;
-}
 
-.who {
-    font-size: 1.5rem;
-}
 
 .mission-inserted-list {
     height: 60px;
@@ -258,6 +262,35 @@ const delCloseModal = () => { //모달창 닫기
     height: 420px;
     background-color: #F5F5F550;
 }
+
+.search-btn button{
+    width: 120px;
+    height: 150px;
+    margin-top: 20px;
+    font-weight: 800;
+    align-content: space-between;
+    margin-left: 210px;
+    background-color: #5589e996;
+    font-size: 1.5rem;
+    border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+}
+
+.search-btn button:hover {
+    color: #ffffff;
+    background-color: #214c9c96;
+}
+
+.search-menu{
+    width: 1400px;
+    display: flex;
+    flex-direction: row;
+    background-color: #b3c6e7;
+    height: 200px;
+    gap: 30px;
+}
+
 
 /* ********************* */
 /* *******삭제 모달****** */

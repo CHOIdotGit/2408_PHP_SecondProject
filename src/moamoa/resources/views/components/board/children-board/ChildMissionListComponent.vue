@@ -1,8 +1,42 @@
 <template>
     <div class="container">
         <div class="list-container">
+            <div class="route"> 홈  > 미션 </div>
             <div class="for-buttons">
                 <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
+            </div>
+            <div class="search-menu">
+                <div class="search-option">
+                    <div class="search-date">
+                        <p> 등록 일자</p> 
+                        <input type="date" min="2000-01-01" >
+                        <p>~</p>
+                        <input type="date" min="2000-01-01" >
+                    </div>
+                    <div class="search-filter">
+                        <p> 종류 </p> 
+                        <select name="mission-type">
+                            <option value="all">전체</option>
+                            <option value="shinhan">집안일</option>
+                            <option value="hana">기타</option>
+                            <option value="kb" >생활습관</option>
+                            <option value="woori">취미</option>
+                        </select>
+                        <select name="status">
+                            <option value="all">전체</option>
+                            <option value="waiting">대기중</option>
+                            <option value="ongoing">진행중</option>
+                            <option value="complete">완료</option>
+                            <option value="cancel" >취소</option>
+                        </select>
+                    </div>
+                    <div class="search">
+                        <input type="search" placeholder="검색어를 입력해주세요">
+                    </div>
+                </div>
+                <div class="search-btn">
+                    <button>검색</button>
+                </div>
             </div>
             <div class="mission-title-bar">
                 <div class="chk-div">
@@ -190,8 +224,8 @@ const getChildId = () => {
 </script>
 
 <style scoped>
+@import url('../../../../css/list.css');
 .container {
-    margin-left: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -199,32 +233,21 @@ const getChildId = () => {
 }
 
 .list-container {
-    margin-top: 20px;
-    width: 1500px;
-    height: 720px;
     background-color: white;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
-    align-items: center;   
 }
 
-.who {
-    font-size: 1.5rem;
-    margin-top: 15px;
-}
 
 .mission-title-bar {
     display: grid;
-    grid-template-columns: 70px 220px 90px 120px 90px 300px;
+    grid-template-columns: 40px 210px 100px 100px 150px 340px;
     height: 60px;
-    gap: 90px;
-    background-color: #F5F5F5;
+    gap: 75px;
+    background-color: #d1d1d1;
     font-size: 2rem;
-    margin: 10px;
     align-items: center;
-    width: 1400px;
     text-align: center;
 }
 
@@ -244,32 +267,25 @@ const getChildId = () => {
 
 .mission-content {
     display: grid;
-    grid-template-columns: 50px 220px 90px 90px 90px 300px;  
-    height: 40px;
-    gap: 100px;
-    /* background-color: #F5F5F5; */
+    grid-template-columns: 40px 210px 100px 100px 150px 340px;
+    gap: 75px;
     font-size: 1.3rem;
-    margin: 10px;
     align-items: center;
-    width: 1400px;
     text-align: center;
-    /* border-bottom: 2px solid black; */
 }
-
-
 .btn {
-    cursor: pointer;
     width: 120px;
     height: 50px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     border: none;
+    background-color:#5589e996 ;
+    margin-top: 30px;
+    cursor: pointer;
     color: #FFFFFF;
-    background-color:#5589e996;
-    margin-top: 15px;
 }
 
 .btn-top {
-    margin-left: 1250px;
+    margin-left: 1280px;
 }
 
 .btn-bottom {
@@ -328,8 +344,6 @@ const getChildId = () => {
     flex-direction: column;
     gap: 20px;
     height: 400px;
-    overflow-y: scroll;
-    overflow-x: hidden;
 }
 
 /* 스크롤바 커스텀 */
@@ -372,6 +386,34 @@ const getChildId = () => {
     align-items: center;
     justify-content: center;
 
+}
+
+.search-btn button{
+    width: 120px;
+    height: 150px;
+    margin-top: 20px;
+    font-weight: 800;
+    align-content: space-between;
+    margin-left: 210px;
+    background-color: #5589e996;
+    font-size: 1.5rem;
+    border: none;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+
+}
+
+.search-btn button:hover {
+    color: #ffffff;
+    background-color: #214c9c96;
+}
+
+.search-menu{
+    width: 1400px;
+    display: flex;
+    flex-direction: row;
+    background-color: #b3c6e7;
+    height: 200px;
+    gap: 30px;
 }
 
 .modal-content {

@@ -1,0 +1,80 @@
+/* .container {
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.route {
+    margin-top: 20px;
+    font-size: 1.7rem;
+}
+
+.list-container {
+    margin-left: 100px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.route {
+    margin-top: 20px;
+    font-size: 1.7rem;
+}
+
+.search-menu {
+    display: flex;
+}
+.search {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+}
+
+.search input {
+    width: 1000px;
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+
+.search-date {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+    p {
+        margin: 0; /* 기본 여백 제거 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+}
+
+.search-date input[type="date"] {
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+}
+
+.search-filter {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 10px;
+    p {
+        margin: 0; /* 기본 여백 제거 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    }
+}
+
+.search-filter select {
+    padding: 5px; /* 적절한 여백 추가 */
+    font-size: 1.2rem;
+}
