@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
+use App\Models\Mission;
 use App\Models\ParentModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -43,22 +44,54 @@ public function index() {
 
 public function bellList() {
     // ************************************************
-    // *********헤더 미션/지출 알람 목록 출력************
+    // 헤더 알람 : 자녀가 미션 등록하면 알람 목록에 내역 출력
+    // alarm = 0 일 때 체크 안 된 상태
+    // alarm = 1 일 때 체크 한 상태
     // ************************************************ 
     $parent = Auth::guard('parents')->user();
-    $bellContent = Child::select('children.child_id', 'children.name', 'children.profile')
-                        ->where('children.parent_id', $parent->parent_id)
-                        ->with([
-                            'missions' => function ($query) {
-                                $query->where('alarm', 0) // 미션 알람이 0인 조건
-                                        ->orderBy('created_at', 'DESC');
-                            }
-                        ])
-                        ->get();
+    // $bellContent = Child::select('children.child_id', 'children.name', 'children.profile')
+    //                     ->where('children.parent_id', $parent->parent_id)
+    //                     ->with([
+    //                         'missions' => function ($query) {
+    //                             $query->where('alarm', 0) // 미션 알람이 0인 조건
+    //                                     ->orderBy('created_at', 'DESC');
+    //                         }
+    //                     ])
+    //                     ->get();
+    $bellContent = Mission::select('missions.title', 'missions.created_at', 'missions.child_id')
+                            ->where('missions.parent_id', $parent->parent_id)    
+                            ->where('missions.status', 0)
+                            ->where('missions.alarm', 0)
+                            ->orderBy('created_at', 'DESC')
+                            ->with([
+                                'child' => function ($query) {
+                                    $query->select('children.child_id', 'children.name', 'children.profile');
+                                }
+                            ])
+                            ->get();
 
     $responseData = [
         'success' => true
         ,'bellContent' => $bellContent
+    ];
+    return response()->json($responseData, 200);
+}
+
+public function alarmCheck($mission_id) {
+    // ************************************************
+    // 헤더 알람 : 체크누르면 alarm을 1로 변경
+    // alarm = 0 일 때 체크 안 된 상태
+    // alarm = 1 일 때 체크 한 상태
+    // ************************************************ 
+    $parent = Auth::guard('parents')->user();
+    $bellCheck = Mission::where('parent_id', $parent->parent_id)
+                        ->where('mission_id', $mission_id->mission_id)
+                        ->where('alarm', 0)
+                        ->update(['alarm' => 1]);
+
+    $responseData = [
+        'success' => true
+        ,'bellCheck' => $bellCheck
     ];
     return response()->json($responseData, 200);
 }

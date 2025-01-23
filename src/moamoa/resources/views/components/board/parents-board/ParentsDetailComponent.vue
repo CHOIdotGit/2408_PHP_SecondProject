@@ -32,7 +32,7 @@
                     <!-- <div class="btn-flex"> -->
                 </div>
                 <div class="bottom-btn right">
-                    <button @click="delOpenModal(missionDetail.mission_id)" class="ms-del">미션 삭제</button>
+                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del">미션 삭제</button>
                     <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">미션 수정</button>
                     <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-comfirm">미션 승인</button>
                 </div>
@@ -43,7 +43,7 @@
 </div>
 <!-- ********삭제 모달********* -->
 <div class="delModal" v-if="delModal">
-    <ModalComponent @click="delCloseModal" />
+    <ModalComponent :title="modalType" @click="delCloseModal" />
 </div>
 
     
@@ -80,11 +80,15 @@ const categories = reactive([
 
 // *****삭제 모달창********** 
 const delModal = ref(false);
-
+const modalType = ref(''); // 모달 타입 : transaction 인지 mission 인지
 // 해당 게시물 모달창 열기
-const delOpenModal = (mission_id) => { 
-    console.log('모달창 열기');
+const delOpenModal = (type, mission_id) => { 
+    modalType.value = type;
     store.dispatch('mission/showMissionDetail', mission_id);
+    if(type === 'mission') {
+        console.log("이걸 확인하냐?",type);
+        store.dispatch('childMission/showMissionDetail', mission_id);
+    }
     delModal.value = true;
 }
 

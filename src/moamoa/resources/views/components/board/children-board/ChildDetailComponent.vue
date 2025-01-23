@@ -31,7 +31,7 @@
                         <button @click="goBack(missionDetail.child_id)" class="create-btn ms-cancel">뒤로가기</button>
                     </div>
                     <div class="bottom-btn right">
-                        <button @click="delOpenModal(missionDetail.mission_id)" class="create-btn ms-del">미션 삭제</button>
+                        <button @click="delOpenModal('mission', mission_id)" class="create-btn ms-del">미션 삭제</button>
                         <button class="create-btn ms-up">미션 완료</button>
                         <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">미션 수정</button>
                     </div>
@@ -42,7 +42,7 @@
 
 <!-- ********삭제 모달********* -->
 <div class="delModal child-theme" v-if="delModal">
-    <ModalComponent @click="delCloseModal" />
+    <ModalComponent :type="modalType" @click="delCloseModal" />
 </div>
 
 </template>
@@ -91,12 +91,16 @@ const goUpdate = (mission_id) => {
     router.push('/child/mission/update/'+ mission_id);
 }
 
-// *****삭제 모달창********** 
-const delModal = ref(false);
-
-const delOpenModal = (mission_id) => {
-    console.log('모달창에서 자녀 mission id 불러오기 ');
-    store.dispatch('childMission/showMissionDetail', mission_id);
+// ********삭제 모달창********** 
+const delModal = ref(false); // 처음 모달창 닫겨 있는 상태
+const modalType = ref(''); // 모달 타입 : transaction 인지 mission 인지
+// 모달창 열기
+const delOpenModal = (type, mission_id) => {
+    modalType.value = type;
+    console.log('모달창에서 자녀 mission id 불러오기 ', modalType);
+    if(type === 'mission') {
+        store.dispatch('childMission/showMissionDetail', mission_id);
+    }
     delModal.value = true;
 }
 

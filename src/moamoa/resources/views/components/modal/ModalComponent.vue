@@ -7,11 +7,22 @@
             <div class="modal-content">
                 <img src="/img/icon-trash.png" class="modal-img">
                 <!-- 지출 게시판에서 -->
-                <p class="modal-ms-title" v-if="transactionDetail">지출 : {{ transactionDetail.title }}</p>
-                <div class="del-guide" v-if="transactionDetail">해당 지출이 삭제됩니다.</div>
-                <!-- 미션 게시판에서  -->
-                <p class="modal-ms-title" v-if="missionDetail">미션 : {{ missionDetail.title }}</p>
-                <div class="del-guide" v-if="missionDetail">해당 미션이 삭제됩니다.</div>
+                <div v-if="type === 'transaction'">
+                    <p class="modal-ms-title" >지출 : {{ transactionDetail.title }}</p>
+                    <p class="del-guide" >해당 지출이 삭제됩니다.</p>
+                </div>
+
+                <!-- 미션 게시판에서(부모) -->
+                <div v-if="type === 'mission'">
+                    <p class="modal-ms-title" >미션 : {{ missionDetail.title }}</p>
+                    <div class="del-guide" >해당 미션이 삭제됩니다.</div>
+                </div>
+
+                <!-- 미션 게시판에서(자녀) -->
+                <div v-if="type ==='mission'">
+                    <p class="modal-ms-title" >미션 : {{ childmissionDetail.title }}</p>
+                    <div class="del-guide" >해당 미션이 삭제됩니다.</div>
+                </div>
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-cancel">취소</button>
@@ -22,7 +33,7 @@
 </template>
     
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -31,23 +42,17 @@ const router = useRouter();
 
 // 미션 상세 정보 불러오기
 const childmissionDetail = computed(() => store.state.childMission.showmissionDetail);
+
 const missionDetail = computed(() => store.state.mission.missionDetail);
+// defineProps({
+//     type: { type: String, required: true },
+// })
 
 // 지출 상세 정보 불어오기
-
 const transactionDetail = computed(() => store.state.childTransaction.transactionDetail);
 
 
-// 모달
-const delModal = ref(false);
 
-const delOpenModal = () => {
-    delModal.value = true;
-}
-
-const delCloseModal = () => {
-    delModal.value = false;
-}
 </script>
 
 <style scoped>

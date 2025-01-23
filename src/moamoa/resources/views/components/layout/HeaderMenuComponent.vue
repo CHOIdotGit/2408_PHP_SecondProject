@@ -13,15 +13,22 @@
             <!-- 알람 모달 메뉴  -->
             <div class="dropdown-bell" v-if="$store.state.auth.parentFlg" v-show="bellModal">
                 <div class="bell-title">
-                    <p>알림</p>
+                    <!-- 알람 닫기 X 아이콘 -->
                     <img src="/img/icon-cross.png" alt="" class="cross" @click="closeBellModal">
+                    <div>알림함</div>
                 </div>
-                <a href="#" class="alram" v-for="item in bellContent" :key="item">
-                    <div  class="bell-content">
-                        <p>{{ item.name }}(이)의 미션 등록되었어요!</p>
-                        <p>{{ item.created_at }}</p>
-                    </div>
-                </a>
+                <div class="bell-list">
+                    <router-link class="alram" v-for="item in bellContent" :key="item">
+                        <img :src="item.profile" alt="" class="alram-profile">
+                        <div  class="bell-content">
+                            <div>{{ item.child.name }} 님의 미션 {{ item.title }} 이 등록되었어요!</div>
+                            <p>{{ item.created_at }}</p>
+                        </div>
+                        <!-- 체크 버튼 -->
+                        <img src="/img/icon-check.png" alt="" class="alram-check" @click="checkMission(mission_id)">
+                    </router-link>
+                    <div v-if="bellContent.length === 0">등록된 미션이 없습니다</div>
+                </div>
             </div>
             <!-- 햄버거 아이콘 -->
             <div  class="icon-btn" @click="openHamburgerModal" >
@@ -58,6 +65,7 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
+
 /* 햄버거 모달 */
 const hamburgerModal = ref(false);
 
@@ -84,6 +92,13 @@ const openBellModal = () => {
 
 const closeBellModal = () => {
     bellModal.value = false;
+}
+
+// 알람 확인 체크
+const checkMission = (mission_id) => {
+    console.log('알람 확인');
+    store.dispatch('header/bellMenuCheck', mission_id);
+
 }
 
 
@@ -159,7 +174,7 @@ const closeBellModal = () => {
     width: 80px;
 }
 
-/* 햄버거 모달 */
+/* **************햄버거 모달************* */
 .drop-bar {
     display: flex;
     gap: 30px;
@@ -198,45 +213,101 @@ const closeBellModal = () => {
     color: #000;
 }
 
-/* 알람 모달 */
+/* **********알람 모달창*********** */
 .dropdown-bell {
-    width: 260px;
+    width: 300px;
+    /* height: 600px; */
     background-color: #FFFFFF;
-    /* position: relative; */
     position: absolute;
+    z-index: 1000;
     top: 75px;
-    right: 40px;
+    right: 15px;
     display: flex;
     flex-direction: column;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
-
-}
-
-.alram {
-    display: flex;
-    gap: 20px;
-    text-decoration: none;
-    color: #000;
-    font-size: 1.0rem;
-    padding: 10px;
-}
-
-.bell-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-size: 0.9rem;
-}
-
-.cross {
-    width: 10px;
-    height: 10px;
-    cursor: pointer;
 }
 
 .bell-title {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    font-size: 1rem;
+    height: 80px;
+    border-bottom: 1px solid #ddddddee;
 }
+
+.bell-title > div {
+    text-align: center;
+}
+
+/* 알람 닫기 버튼 */
+.bell-title > img {
+    width: 10px;
+    height: 10px;
+    cursor: pointer;
+    text-align: end;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* 알람 내역 리스트 */
+.bell-list {
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+.alram {
+    display: flex;
+    text-decoration: none;
+    color: #000;
+    font-size: 1.0rem;
+    padding: 10px;
+    gap: 5px;
+    height: 90px;
+    border-bottom: 1px solid #ddddddee;
+}
+
+.alram:hover {
+    background-color: #f3f5f5;
+}
+
+.alram-profile {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    border: 2px solid #A2CAAC;
+}
+
+
+.bell-content {
+    display: flex;
+    justify-content: center;
+    font-size: 0.9rem;
+    width: 195px;
+}
+
+.bell-content >p {
+    color: #969696;
+    font-size: 0.8rem;
+}
+
+.bell-content:not(img) {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.alram-check {
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+
+
+
+
 
 </style>

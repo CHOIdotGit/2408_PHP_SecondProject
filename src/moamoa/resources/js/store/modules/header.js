@@ -8,6 +8,7 @@ export default {
         childNameList: [], // 자녀 이름 목록
         bellContent: [],
         childInfo: [], // 로그인한 자녀 프로필 정보
+        checkChildMissionAlarm: [],
     }),
     mutations: {
         setChildNameList(state, childNameList) {
@@ -18,6 +19,10 @@ export default {
         },
         setChildInfo(state, childInfo) {
             state.childInfo = childInfo
+        },
+        setCheckChildMissionAlarm(state, updatedMission) {
+            // Vuex 상태에서 업데이트된 미션을 제거
+            state.bellContent = state.bellContent.filter(item => item.id !== updatedMission.id);
         },
     },
     actions: {
@@ -31,13 +36,30 @@ export default {
             axios.get(url)
             .then(response => {
                 context.commit('setBellContent', response.data.bellContent);
-                console.log('a미션 데이터:', response.data.bellContent );
+                console.log('미션 데이터:', response.data.bellContent );
             })
             .catch(error => {
                 console.log('알람 불러오기 실패', error);
             })
         },
 
+        // ***************************
+        // 알람 메뉴 체크시 확인된 상태로 만들어서 안보이게 출력
+        // ***************************
+        bellMenuCheck(context, mission_id) {
+            const url = '/api/parent/header/bell/check/' + mission_id;
+            console.log('알람 체크 버튼 활성화 확인', url);
+            axios.patch(url)
+            .then(response => {
+                // context.commit('setBellContent', response.data.bellContent);
+                console.log('미션 체크 완료');
+                context.commit('setCheckChildMissionAlarm', response.data.bellCheck);
+            })
+            .catch(error => {
+                console.log('미션 체크 실패', error);
+            })
+
+        },
 
         // ***************************
         // 헤더 자녀 이름 출력

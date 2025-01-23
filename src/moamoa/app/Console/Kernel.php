@@ -25,8 +25,8 @@ class Kernel extends ConsoleKernel
                     ->where('status', 0)
                     ->update(['status' => 3]);
             Log::debug('testest');
-            // })->dailyAt('17:00'); //매일 17시에 실행
-        })->everyMinute();
+                })->dailyAt('17:00'); //매일 17시에 실행
+        // })->everyMinute();
         
         // 매일 자정에 물리삭제 검사 실행
         $schedule->command('records:delete-old')->dailyAt('00:00'); // 매일 자정
