@@ -9,7 +9,7 @@
         
         <main class="layout">
             <!-- 상단 메뉴 버튼 -->
-            <div v-if="isAuth">
+            <div v-if="isAuth" class="top-header-menu">
                 <HeaderMenuComponent/>
             </div>
             <!-- 화면 -->
@@ -68,4 +68,9 @@ footer > p {
     display: flex;
     flex-direction: column;
 }
+
+.top-header-menu {
+    width: 1500px;
+}
+
 </style>

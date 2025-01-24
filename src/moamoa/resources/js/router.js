@@ -340,6 +340,14 @@ const routes = [
         component: ChildCalendarComponent,
         beforeEnter: chkAuth,
     },
+    // +==================================+
+    // +          테스트 하는 중           +
+    // +==================================+
+    {
+        path: '/test/login',
+        component: LoginTestComponent,
+    },
+
 
     // +==================================+
     // +          페이지 못찾음            +

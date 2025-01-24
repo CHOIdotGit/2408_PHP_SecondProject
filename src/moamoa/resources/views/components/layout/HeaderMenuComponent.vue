@@ -21,7 +21,7 @@
                     <router-link class="alram" v-for="item in bellContent" :key="item">
                         <img :src="item.profile" alt="" class="alram-profile">
                         <div  class="bell-content">
-                            <div>{{ item.child.name }} 님의 미션 {{ item.title }} 이 등록되었어요!</div>
+                            <div>{{ item.child.name }} 님의 {{ item.title }} 미션이 등록되었어요!</div>
                             <p>{{ item.created_at }}</p>
                         </div>
                         <!-- 체크 버튼 -->
@@ -111,8 +111,8 @@ const checkMission = (mission_id) => {
     justify-content: flex-end;
     /* background-color: #eeeeee; */
     height: 80px;
-    padding-left: 50px;
-    padding-right: 50px;
+    /* padding-left: 50px;
+    padding-right: 50px; */
     /* background: linear-gradient(180deg, #ffff, #fafafa, #f8f8f8); */
 }
 
@@ -255,7 +255,9 @@ const checkMission = (mission_id) => {
 .bell-list {
     overflow: hidden;
     overflow-y: scroll;
+    min-height: 200px;
 }
+
 
 .alram {
     display: flex;
