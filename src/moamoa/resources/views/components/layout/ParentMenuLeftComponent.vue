@@ -138,7 +138,7 @@ const goParentStatis = (child_id) => {
 
 // 부모 통장 페이지
 const goBankbook = () => {
-    router.push('/parent/bankbook/');
+    router.push('/parent/moabank/');
 }
 // const goBankbook = (child_id) => {
 //     store.dispatch('bankbook/', child_id)

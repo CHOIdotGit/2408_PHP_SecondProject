@@ -35,6 +35,7 @@ import ChildPrivateMatchingComponent from '../views/components/auth/private/Chil
 import axios from './axios';
 import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
 import ParentsMoaBankComponent from '../views/components/board/parents-board/ParentsMoaBankComponent.vue';
+import ChildMoaBankComponent from '../views/components/board/children-board/ChildMoaBankComponent.vue';
 
 
 const chkAuth = (to, from, next) => {
@@ -341,6 +342,13 @@ const routes = [
         component: ChildCalendarComponent,
         beforeEnter: chkAuth,
     },
+    // 자녀 통장 페이지
+    {
+        path: '/child/moabank/',
+        component: ChildMoaBankComponent,
+        beforeEnter: chkAuth,
+    },
+
     // +==================================+
     // +          테스트 하는 중           +
     // +==================================+

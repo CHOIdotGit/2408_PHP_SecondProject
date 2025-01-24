@@ -3,6 +3,7 @@
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChildMissionController;
+use App\Http\Controllers\ChildPointController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
@@ -80,6 +81,9 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 // 부모 통계 페이지
 Route::get('/api/parent/stats/{child_id}', [StatsController::class, 'index']);
 
+// 부모 포인트-은행 페이지
+Route::get('/api/parent/moabank{id}', [ChildPointController::class, 'index']);
+
 
 // ******************************
 // *         자녀 관련           *
@@ -123,6 +127,8 @@ Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenContro
 // 자녀 지출 수정 페이지
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
 
+// 자녀 포인트-은행 페이지
+Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 
 // ******************************
 // *         헤더 관련           *

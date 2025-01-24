@@ -89,8 +89,8 @@ export default {
                 const url = '/api/child/info';
                 axios.get(url)
                 .then(response => {
-                    console.log('로그인한 자녀 프로필 확인', response.data.childInfo[0]);
-                    context.commit('setChildInfo', response.data.childInfo[0]);
+                    console.log('로그인한 자녀 프로필 확인', response.data.childInfo);
+                    context.commit('setChildInfo', response.data.childInfo);
                     return resolve();
                 })
                 .catch(error => {

@@ -6,17 +6,14 @@
         <!-- 자녀 프로필 표시 영역  -->
         <div class="child-box" >
             <div class="child-profile">
-                <img :src="childInfo.profile || '/profile/default5.webp'" alt="">    
+                <img :src="childInfo.profile || '/user-img/default.webp'">    
             </div>
             <div class="child-info">
                 <!-- todo :  nick name 나중에 칭호로 수정 -->
-                <div class="child-nickname">{{ childInfo.nick_name }}</div>
+                <div class="child-nickname">칭호</div>
                 <div class="child-name">{{ childInfo.name }}</div>
             </div>
-
         </div>
-    
-    
             <!-- 메뉴 -->
             <div class="menu-box">
                 <router-link to="/child/home" class="link-deco">

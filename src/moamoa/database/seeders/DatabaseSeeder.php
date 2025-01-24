@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             // ParentSeeder::class
+            PointSeeder::class
             // ,ChildrenSeeder::class
         ]);
         // Mission::factory(100)->create();
@@ -32,15 +33,15 @@ class DatabaseSeeder extends Seeder
         //     Mission::factory(100)->create();
         // }
         
-        $totalRecords = 30_000; // 총 생성할 데이터 개수
-        $chunkSize = 100;      // 한 번에 생성할 데이터 개수
+        // $totalRecords = 30_000; // 총 생성할 데이터 개수
+        // $chunkSize = 100;      // 한 번에 생성할 데이터 개수
 
-        for ($i = 0; $i < ceil($totalRecords / $chunkSize); $i++) {
-            // Transaction 데이터 생성
-            Transaction::factory($chunkSize)->create();
+        // for ($i = 0; $i < ceil($totalRecords / $chunkSize); $i++) {
+        //     // Transaction 데이터 생성
+        //     Transaction::factory($chunkSize)->create();
 
-            // Mission 데이터 생성
-            Mission::factory($chunkSize)->create();
-        }
+        //     // Mission 데이터 생성
+        //     Mission::factory($chunkSize)->create();
+        // }
     }
 }
