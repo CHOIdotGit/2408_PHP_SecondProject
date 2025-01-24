@@ -64,7 +64,7 @@ class HomeController extends Controller
         $startOfMonth = Carbon::create($year, $month, 1)->startOfDay(); // 해당 월의 첫 날
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
-        $childHome = Child::select('children.child_id', 'children.name')
+        $childHome = Child::select('children.child_id', 'children.name', 'children.profile')
                                     ->where('children.child_id', $child->child_id)
                                     ->first();
         // 관계 데이터 추가

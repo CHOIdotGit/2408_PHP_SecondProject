@@ -12,11 +12,11 @@
                         <div>
                             <p class="info-title">가장 큰 지출</p>
                             <!-- <p class="info-content">최근 소비한 내역이 없습니다.</p> -->
-                            <p class="info-content">{{ mostSpendAmount && mostSpendAmount !== 0 ? mostSpendAmount + '원' : '최근 소비한 내역이 없습니다.' }}</p>
+                            <p class="info-content">{{ mostSpendAmount.amount > 0 ? Number(mostSpendAmount.amount).toLocaleString() + '원' : '최근 소비한 내역이 없습니다.' }}</p>
                         </div>
                         <div>
                             <p class="info-title">가장 많이 사용한 카테고리</p>
-                            <p class="info-content">{{ mostUsedCategory ? getCategoryText(mostUsedCategory) : '최근 사용한 카테고리가 없습니다.' }}</p>
+                            <p class="info-content">{{ mostUsedCategory.category ? getCategoryText(mostUsedCategory.category) : '최근 사용한 카테고리가 없습니다.' }}</p>
                         </div>
                         <div>
                             <p class="info-title">지출 총 합</p>
@@ -55,18 +55,21 @@ const store = useStore();
 const route = useRoute();
 
 // 미션 들고오기
-const homeMission = computed(() => store.state.mission.childHome);
+const homeMission = computed(() => store.state.childMission.childHome);
 
 // 가장 큰 지출과 가장 많이 사용한 카테고리
-const mostSpendAmount = computed(() => store.state.transaction.childHomeTransaction);
-const mostUsedCategory = computed(() => store.state.transaction.mostUsedCategory);
-const totalAmount = computed(() => store.state.transaction.totalAmount);
-const totalExpenses = computed(() => store.state.transaction.totalExpenses);
+const mostSpendAmount = computed(() => store.state.childTransaction.transactionAmount);
+const mostUsedCategory = computed(() => store.state.childTransaction.mostUsedCategory);
+const totalAmount = computed(() => store.state.childTransaction.totalAmount);
+const totalExpenses = computed(() => store.state.childTransaction.totalExpenses);
+
+console.log('mostSpendAmount 확인', mostSpendAmount) // 이거 못 들고 옴(postMan은 들고 옴)
+console.log('mostUsedCategory 확인', mostUsedCategory) // 이거 못 들고 옴(postMan은 들고 옴)
 
 const getCategoryText = (category) => {
     const categoryMapping = {
         0: '교통비',
-        1: '취미',
+        1: '식비',
         2: '쇼핑',
         3: '기타',
     };
@@ -160,24 +163,22 @@ const renderDoughnutChart = () => {
 
 // ✅ **마운트 시 그래프 렌더링**
 onBeforeMount(() => {
-    store.dispatch('mission/childHome');
+    store.dispatch('childMission/childHome');
 });
 
 onMounted(async () => {
-    store.dispatch('transaction/childHomeTransaction');
-  await store.dispatch('transaction/parentStats', route.params.child_id);
-  doughnutChartData.datasets[0].data = doughnutData.value;
-  renderGraphChart();
-  renderDoughnutChart();
+    store.dispatch('childTransaction/childHomeTransaction');
+    await store.dispatch('transaction/parentStats', route.params.child_id);
+    doughnutChartData.datasets[0].data = doughnutData.value;
+    renderGraphChart();
+    renderDoughnutChart();
 });
 
-watch(
-  () => doughnutData.value
-  , newQuestion => {
+watch(() => doughnutData.value, newQuestion => {
     console.log('watch', doughnutData.value);
     doughnutChartData.datasets[0].data = doughnutData.value;
     renderDoughnutChart();
-  }
+    }
 );
 
 </script>

@@ -99,26 +99,6 @@ export default {
         },
 
         /**
-         * 자녀 홈 페이지
-         * 
-         * @param {*} context 
-         */
-        childHome(context) {
-            context.commit('setControlFlg', false);
-            
-            const url = '/api/child/home';
-            
-            axios.get(url)
-            .then(response => {
-                context.commit('setChildHome', response.data.childHome.missions);
-                // console.log(response.data);
-            })
-            .catch(error => {
-                console.error('자녀 미션 리스트 불러오기 오류', error);
-            });    
-        },
-
-        /**
          * 부모 미션 리스트 페이지
          * 
          * 미션 정보 획득

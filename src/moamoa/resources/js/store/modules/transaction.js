@@ -110,24 +110,6 @@ export default {
             }) 
         },
 
-        // 자녀 홈 지출 관련
-        childHomeTransaction(context) {
-            const url = '/api/child/home';
-            axios.get(url)
-            .then(response => {
-                context.commit('setMostSpendAmount', response.data.transactionAmount);
-                context.commit('setMostUsedCategory', response.data.mostUsedCategory);
-                context.commit('setTotalAmount', response.data.totalAmount);
-                context.commit('setTotalExpenses', response.data.totalExpenses);
-                
-                // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-            })
-            .catch(error => {
-                console.error('지출 금액 불러오기 실패', error);
-            })
-        },
-
-
         // 부모 통계 불러오기
         parentStats(context, child_id) {
             return new Promise((resolve, reject) => {

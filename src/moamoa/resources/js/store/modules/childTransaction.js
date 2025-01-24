@@ -14,6 +14,10 @@ export default {
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
         ,transactionDetail: {}
+        ,transactionAmount: 0
+        ,mostUsedCategory: ''
+        ,totalAmount: 0
+        ,totalExpenses: 0
     }),
     mutations: {
         setChildTransactionList(state, childTransactionList) {
@@ -40,8 +44,38 @@ export default {
         setUpdateTransaction(state, transactionDetail) {
             state.transactionDetail = transactionDetail;
         },
+        setTransactionAmount(state, transactionAmount) {
+            state.transactionAmount = transactionAmount;
+        },
+        setMostUsedCategory(state, mostUsedCategory) {
+            state.mostUsedCategory = mostUsedCategory;
+        },
+        setTotalAmount(state, totalAmount) {
+            state.totalAmount = totalAmount;
+        },
+        setTotalExpenses(state, totalExpenses) {
+            state.totalExpenses = totalExpenses;
+        },
     },
     actions: {
+
+        // 자녀 홈페이지 지출 관련
+        childHomeTransaction(context) {
+            const url = '/api/child/home';
+            axios.get(url)
+            .then(response => {
+                context.commit('setTransactionAmount', response.data.transactionAmount);
+                context.commit('setMostUsedCategory', response.data.mostUsedCategory);
+                console.log('가장 큰 지출 확인', response.data.transactionAmount);
+                console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
+                context.commit('setTotalAmount', response.data.totalAmount);
+                context.commit('setTotalExpenses', response.data.totalExpenses);
+            })
+            .catch(error => {
+                console.error('지출 금액 불러오기 실패', error);
+            })
+        },
+
         /**
          * 자녀 지출 리스트 페이지
          * 
@@ -79,23 +113,6 @@ export default {
             }) 
         },
 
-        // 자녀 홈페이지 지출 관련
-        childHomeTransaction(context) {
-            const url = '/api/child/home';
-            axios.get(url)
-            .then(response => {
-                context.commit('setMostSpendAmount', response.data.transactionAmount);
-                context.commit('setMostUsedCategory', response.data.mostUsedCategory);
-                console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-                context.commit('setTotalAmount', response.data.totalAmount);
-                context.commit('setTotalExpenses', response.data.totalExpenses);
-                
-                // console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-            })
-            .catch(error => {
-                console.error('지출 금액 불러오기 실패', error);
-            })
-        },
 
         // ***************************
         //  자녀 지출 작성 페이지로 이동
