@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index() {
         $parent = Auth::guard('parents')->user();
-        $parentHome = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+        $parentHome = Child::select('children.child_id', 'children.name', 'children.profile')
                                     ->where('children.parent_id', $parent->parent_id)
                                     ->get();
 

@@ -23,7 +23,7 @@ class CalendarController extends Controller
         // 자녀 정보 가져오기
         $child = Auth::guard('children')->user();
 
-        $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+        $calendarData = Child::select('children.child_id', 'children.name', 'children.profile')
                             ->where('children.child_id', $child->child_id)
                             ->first();
                                 
@@ -87,7 +87,7 @@ class CalendarController extends Controller
         $startDate = $targetDate->startOfMonth()->format('Y-m-d');
         $endDate =  $targetDate->endOfMonth()->format('Y-m-d');
 
-        $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+        $calendarData = Child::select('children.child_id', 'children.name', 'children.profile')
                             ->where('children.child_id', $id)
                             ->first();
 

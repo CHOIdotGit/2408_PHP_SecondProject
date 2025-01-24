@@ -81,7 +81,7 @@ class CalendarController extends Controller
         
         $child = Auth::guard('children')->user();
 
-        $calendarData = Child::select('children.child_id', 'children.name', 'children.nick_name', 'children.profile')
+        $calendarData = Child::select('children.child_id', 'children.name', 'children.profile')
                                 ->find($child->child_id);
                                 
         $categories = [0 => 'traffic', 1 => 'meal', 2 => 'shopping', 3 => 'etc'];
