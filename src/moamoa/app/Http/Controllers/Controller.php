@@ -8,6 +8,12 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 
+/**
+ * @OA\Info(
+ *     title="Laravel Home Traning API",
+ *     version="1.0"
+ * )
+ */
 class Controller extends BaseController {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
@@ -16,4 +22,5 @@ class Controller extends BaseController {
     public function __construct(AuthRepository $authRepository) {
         $this->authRepository = $authRepository;
     }
+    
 }

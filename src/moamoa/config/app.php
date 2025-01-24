@@ -178,7 +178,10 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         // 커스텀 프로바이더 등록은 여기에
-
+            /*
+        * Swagger
+        */
+        \L5Swagger\L5SwaggerServiceProvider::class,
     ],
 
     /*
