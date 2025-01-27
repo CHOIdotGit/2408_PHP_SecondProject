@@ -181,7 +181,7 @@ return [
             /*
         * Swagger
         */
-        \L5Swagger\L5SwaggerServiceProvider::class,
+
     ],
 
     /*

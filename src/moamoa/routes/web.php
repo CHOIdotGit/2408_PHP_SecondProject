@@ -167,6 +167,9 @@ Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);
 // 한국은행 open api 
 Route::get('/api/koreabank', [BankController::class, 'koreaBank']);
 
+// 적금 상품 가입
+Route::get('/api/moabank/product/{id}', [BankController::class, 'product']);
+
 // 이건 마지막 위치
 Route::get('/{any}', function () {
     return view('welcome');

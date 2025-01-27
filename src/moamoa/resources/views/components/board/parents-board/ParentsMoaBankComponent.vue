@@ -2,7 +2,9 @@
     <div class="bankbook">
         <div class="explanation">
             <div class="kr-bank">
-                <h1>이달의 한국은행 기준 금리</h1> <h1 class="red">{{  }}</h1>
+                <h1>이달의 한국은행 기준 금리</h1>
+                <!-- ### 한국은행 기준금리 api ### -->
+                <p class="red" v-if="koreaBankInterest">{{ Number(koreaBankInterest.interest).toFixed(1) }} %</p>
             </div>
             <p class="p-explanation m-t">* 기준금리는 한국은행이 발표하는 정책금리로, 금융기관 간 거래의 기준이 되는 금리입니다.</p>
             <p class="p-explanation">* 기준 금리는 30일 적금 상품에 적용되는 금리입니다.</p>
@@ -70,10 +72,17 @@
 
 
 <script setup>
+import { computed, onMounted } from 'vue';
+import { useStore } from 'vuex';
+
 
 const store = useStore();
 
 
+const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
+onMounted(() => {
+    store.dispatch('bank/koreaBank');
+});
 
 </script>
 
@@ -82,11 +91,14 @@ const store = useStore();
 
 .bankbook {
     width: 1620px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* 설명 적는 div */
 .explanation {
-    width: 100%;
+    width: 85%;
     height: 350px;
     padding: 50px;
     padding-left: 75px;
@@ -95,12 +107,18 @@ const store = useStore();
 
 .kr-bank {
     display: flex;
-    flex-wrap: wrap;
-    gap: 100px;
+    border: 1px solid #e0e7ee;
+    border-radius: 10px;
+    width: 60%;
 }
 
 .red {
     color: red;
+    font-family: 'LAB디지털';
+    background-color: #fff;
+    font-size: 2rem;
+    width: 150px;
+    padding: 5px;
 }
 
 .p-explanation {
@@ -133,7 +151,7 @@ const store = useStore();
     height: 250px;
     margin-right: 50px;
     text-align: center;
-    background: wheat;
+    background: #c9e6d7;
     border-radius: 30px;
 }
 
@@ -203,6 +221,8 @@ const store = useStore();
     background-color: antiquewhite;
 
 }
+
+
 
 .product-title {
     font-size: 1.5rem;

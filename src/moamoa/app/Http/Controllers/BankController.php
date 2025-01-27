@@ -21,13 +21,20 @@ class BankController extends Controller
     // 검색 종료 일자 
     public function koreaBank() {
         $apiKey = env("BANK_KEY");
-        $url = "https://ecos.bok.or.kr/api/StatisticSearch/".$apiKey."/json/kr/1/10/722Y001/M/202301/202401/0101000";
+        $premonth = date("Ym", strtotime("-1 month"));
+        $url = "https://ecos.bok.or.kr/api/StatisticSearch/".$apiKey."/json/kr/1/1/722Y001/M/".$premonth."/".$premonth."/0101000";
+
         Log::debug($url);
 
         $responseKoreaBank = Http::get($url);    
         Log::debug($responseKoreaBank);    
 
-        return $responseKoreaBank;
-        
+        $responseKoreaBankArr = $responseKoreaBank->json();
+        $responseData = [
+            'success' => true
+            ,'msg' => '한국은행 기준금리 받아 오기 성공'
+            ,'interest' => $responseKoreaBankArr['StatisticSearch']['row'][0]['DATA_VALUE']
+        ];
+        return response()->json($responseData, 200);
     }
 }
