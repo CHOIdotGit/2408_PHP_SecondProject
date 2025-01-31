@@ -22,7 +22,7 @@ export default {
         },
         setCheckChildMissionAlarm(state, updatedMission) {
             // Vuex 상태에서 업데이트된 미션을 제거
-            state.bellContent = state.bellContent.filter(item => item.id !== updatedMission.id);
+            state.bellContent = state.bellContent.filter(item => item.mission_id !== updatedMission.mission_id);
         },
     },
     actions: {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\ChildMissionController;
 use App\Http\Controllers\ChildPointController;
 use App\Http\Controllers\HeaderController;
@@ -159,6 +160,15 @@ Route::get('/api/parent/calendar/{id}', [CalendarController::class, 'parentIndex
 
 // 자녀 달력 모달
 Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);
+
+// ******************************
+// *         은행 관련           *
+// ******************************
+// 한국은행 open api 
+Route::get('/api/koreabank', [BankController::class, 'koreaBank']);
+
+// 적금 상품 가입
+Route::get('/api/moabank/product/{id}', [BankController::class, 'product']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {
