@@ -2,19 +2,21 @@
     부모 홈(ParentManagement)
 */
 
-/* 스와이퍼 css */
+/* 네비게이션 버튼 css */
 .swiper-button-prev, .swiper-button-next {
     color: #a2caac !important;
 }
 
+/* 스와이퍼 슬라이드 css */
 .swiper {
-    padding-left: 80px !important;
+    padding-left: 85px !important;
+}
+
+.swiper-wrapper {
+    /* gap: 115px; */
 }
 
 .swiper-slide {
     width: 300px !important;
-}
-
-.swiper-wrapper {
-    gap: 115px;
+    margin-right: 110px
 }

@@ -3,7 +3,7 @@
         <div class="div-container">
             <!-- :slides-per-view="parentHome.length === 2 ? 2 : 3" -->
             <Swiper v-if="parentHome.length > 0"
-                :breakpoints="breakpoints"
+                :slides-per-view="parentHome.length === 2 ? 2 : 3"
                 ref="swiper"
                 :loop="parentHome.length > 2"
                 :modules="modules"
@@ -11,14 +11,14 @@
                 :scrollbar="true"
                 :centeredSlides="parentHome.length < 2"
                 class="div-swiper"
-                >
+            >
                 <SwiperSlide v-for="item in parentHome" :key="item.child_id" class="v-loop">
                     <div class="child-div">
                         <img class="profile-img" :src="item.profile" :style="{ objectFit: 'cover' }">
                         <div class="child">
                             <h3 class="name">{{ item.name }}</h3>
                             <div class="expense-box">
-                            <p class="recent-expenses" @click="goSpendList(item.child_id)">지출 내역</p>
+                            <div class="recent-expenses menu SMN_effect-18" @click="goSpendList(item.child_id)"><span>지출 내역</span></div>
                             <div class="amount-div">
                                 <div v-if="item.transactions && item.transactions.length === 0">
                                 <p class="no-amount">최근 지출한 금액이 없습니다.</p>
@@ -47,7 +47,7 @@
                     </div>
                 </SwiperSlide>
             </Swiper>
-            <div v-else>
+            <div v-if="noChildFlg">
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
         </div>
@@ -55,7 +55,7 @@
 </template>
 <script setup>
 
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onBeforeMount } from 'vue';
 import { useStore } from 'vuex';
 
 // 스와이퍼
@@ -86,6 +86,9 @@ const store = useStore();
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
 
+// 자녀없음 문구 출력 여부 플래그
+const noChildFlg = ref(false);
+
 // 12글자 이후 '...'으로 표기
 const maxLength = 12;
 
@@ -107,34 +110,140 @@ const goSpendList = (child_id) => {
 };
 
 
-// 반응형 설정 (화면 크기에 따른 슬라이드 수 조절)
-const breakpoints = {
-    0: {
-        slidesPerView: 1,
-    },
-    1200: {
-        slidesPerView: 2,
-    },
-    1500: {
-        slidesPerView: 3,
-    },
-};
-
 // onMount
-onMounted(() => {
-    store.dispatch('mission/parentHome');
+onBeforeMount(async () => {
+    try {
+        await store.dispatch('mission/parentHome');
+        noChildFlg.value = parentHome.value.length === 0 ? true : false;
+    } catch(e) {
+        console.log(e);
+    }
 });
 
 </script>
 <style scoped>
 
 /* 메인 화면 */
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+a:hover, a:focus {
+  outline: none;
+}
+
+.back {
+  padding: 50px 0 150px 0;
+}
+
+.menu a {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: Lato;
+  font-size: 17pt;
+  font-weight: 400;
+  padding: 15px 25px;
+  /**/
+  position: relative;
+  display: block;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+/*
+---------------------------------------
+hover effect 18
+---------------------------------------
+*/
+
+.SMN_effect-18 {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
+.SMN_effect-18>span {
+  display: block;
+  padding: 10px 20px;
+  font-size: 20px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.SMN_effect-18:before, .SMN_effect-18:after, .SMN_effect-18>span:before, .SMN_effect-18>span:after {
+  content: "";
+  background: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  transition: all 0.3s ease 0s;
+}
+
+.SMN_effect-18:before, .SMN_effect-18:after {
+  bottom: 0;
+  right: 0;
+}
+
+.SMN_effect-18:before {
+  width: 100%;
+  height: 1px;
+  transform: translateX(-100%);
+  transition-delay: 0.9s;
+}
+
+.SMN_effect-18:after {
+  width: 1px;
+  height: 100%;
+  transform: translateY(100%);
+  transition-delay: 0.6s;
+}
+
+.SMN_effect-18>span:before, .SMN_effect-18>span:after {
+  top: 0;
+  left: 0;
+}
+
+.SMN_effect-18>span:before {
+  width: 100%;
+  height: 1px;
+  transform: translateX(100%);
+  transition-delay: 0.3s;
+}
+
+.SMN_effect-18>span:after {
+  width: 1px;
+  height: 100%;
+  transform: translateY(-100%);
+  transition-delay: 0s;
+}
+
+.SMN_effect-18:hover:before, .SMN_effect-18:hover:after, .SMN_effect-18:hover>span:before, .SMN_effect-18:hover>span:after {
+  transform: translate(0, 0);
+}
+
+.SMN_effect-18:hover:before {
+  transition-delay: 0s;
+}
+
+.SMN_effect-18:hover:after {
+  transition-delay: 0.3s;
+}
+
+.SMN_effect-18:hover>span:before {
+  transition-delay: 0.6s;
+}
+
+.SMN_effect-18:hover>span:after {
+  transition-delay: 0.9s;
+}
+
 .d-flex {
-    width: 1670px;
+    width: 1620px;
     height: 800px;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 55px;
 }
 
 .div-container {
@@ -145,7 +254,7 @@ onMounted(() => {
 .div-swiper{
     width: 100%;
     height: 780px;
-    background-color: white;
+    background-color: transparent;
     margin-top: 20px;
 }
 
@@ -169,6 +278,7 @@ onMounted(() => {
 .mission-title{
     
 }
+
 .child-div {
     display: flex;
     flex-direction: column;
@@ -249,6 +359,10 @@ onMounted(() => {
     cursor: pointer;
     padding-top: 5px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    /* 애니메이션 효과 */
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
 }
 
 .amount-div {

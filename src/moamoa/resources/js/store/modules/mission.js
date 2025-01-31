@@ -2,6 +2,7 @@
 import { set } from 'lodash';
 import axios from '../../axios';
 import router from '../../router';
+import { resolve } from 'chart.js/helpers';
 
 export default {
     namespaced:true,
@@ -78,24 +79,27 @@ export default {
          * @param {*} context commit, state 포함되어있음
          */
         parentHome(context) {
-            context.commit('setControlFlg', false);
-            
-            const url = '/api/parent/home';
-            
-        
-            axios.get(url)
-            .then(response => {
-                const data = response.data.parentHome;
-            if (!data || data.length === 0) {
-                console.log('등록된 자녀가 없습니다.');
-                context.commit('setParentHome', []); // 빈 배열 설정
-                return;
-            }
-            context.commit('setParentHome', data);
-        })
-            .catch(error => {
-                console.error('부모 미션 리스트 불러오기 오류', error);
-            });    
+            return new Promise((resolve, reject) => {
+                context.commit('setControlFlg', false);
+                
+                const url = '/api/parent/home';
+                
+                axios.get(url)
+                .then(response => {
+                    const data = response.data.parentHome;
+                    if (!data || data.length === 0) {
+                        console.log('등록된 자녀가 없습니다.');
+                        context.commit('setParentHome', []); // 빈 배열 설정
+                    } else {
+                        context.commit('setParentHome', data);
+                    }
+                    return resolve();
+                })
+                .catch(error => {
+                    console.error('부모 미션 리스트 불러오기 오류', error);
+                    return reject();
+                });
+            });
         },
 
         /**

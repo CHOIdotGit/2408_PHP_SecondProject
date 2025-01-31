@@ -4,6 +4,9 @@
 
     <div class="top-right-menu" >
         <div class="parent-btn">
+            <div>
+                <img src="/img/logo.png" class="logo">
+            </div>
             <div @click="$store.dispatch('auth/logout')" class="menu-btn">로그아웃</div>
             <div class="menu-btn">이용자 매뉴얼</div>
             <!-- 알람 아이콘 -->
@@ -171,7 +174,10 @@ const checkMission = (mission_id) => {
 }
 
 .logo {
-    width: 80px;
+    position: absolute;
+    width: 300px;
+    left: 350px;
+    top: -30px;
 }
 
 /* **************햄버거 모달************* */
