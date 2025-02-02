@@ -18,30 +18,30 @@
                         <div class="child">
                             <h3 class="name">{{ item.name }}</h3>
                             <div class="expense-box">
-                            <div class="recent-expenses menu SMN_effect-18" @click="goSpendList(item.child_id)"><span>지출 내역</span></div>
-                            <div class="amount-div">
-                                <div v-if="item.transactions && item.transactions.length === 0">
-                                <p class="no-amount">최근 지출한 금액이 없습니다.</p>
+                                <div class="recent-expenses menu SMN_effect-18" @click="goSpendList(item.child_id)"><span>지출 내역</span></div>
+                                <div class="amount-div">
+                                    <div v-if="item.transactions && item.transactions.length === 0">
+                                        <p class="no-amount">최근 지출한 금액이 없습니다.</p>
+                                    </div>
+                                    <div v-else>
+                                        <div class="amount" v-for="transaction in item.transactions" :key="transaction">
+                                            {{ transaction.amount.toLocaleString() }}원
+                                        </div>
+                                    </div>
                                 </div>
-                                <div v-else>
-                                <div class="amount" v-for="transaction in item.transactions" :key="transaction">
-                                    {{ transaction.amount.toLocaleString() }}원
-                                </div>
-                                </div>
-                            </div>
                             </div>
                             <div class="child-mission">
-                            <p class="mission" @click="goMissionList(item.child_id)">승인 대기 중인 미션</p>
-                            <div class="chk-div">
-                                <div v-if="item.missions && item.missions.length === 0" class="margin-top">
-                                <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
+                                <p class="mission menu SMN_effect-18" @click="goMissionList(item.child_id)"><span>승인 대기 중인 미션</span></p>
+                                <div class="chk-div">
+                                    <div v-if="item.missions && item.missions.length === 0" class="margin-top">
+                                        <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
+                                    </div>
+                                    <div v-else class="mission-detail">
+                                        <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
+                                            <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div v-else>
-                                <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
-                                    <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
-                                </div>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -49,6 +49,12 @@
             </Swiper>
             <div v-if="noChildFlg">
                 <p class="no-child">등록된 자녀가 없습니다.</p>
+            </div>
+            <div class="wave-wrapper">
+                <div class="wave-container wave1"></div>
+                <div class="wave-container wave2"></div>
+                <div class="wave-container wave3"></div>
+                <div class="wave-container wave4"></div>
             </div>
         </div>
     </div>
@@ -125,27 +131,21 @@ onBeforeMount(async () => {
 
 /* 메인 화면 */
 
-*, *:after, *:before {
+ *, *:after, *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
-a:hover, a:focus {
+/* a:hover, a:focus {
   outline: none;
 }
 
 .back {
   padding: 50px 0 150px 0;
-}
+}  */
 
-.menu a {
-  color: rgba(255, 255, 255, 0.8);
-  font-family: Lato;
-  font-size: 17pt;
-  font-weight: 400;
-  padding: 15px 25px;
-  /**/
+.menu {
   position: relative;
   display: block;
   text-decoration: none;
@@ -159,82 +159,88 @@ hover effect 18
 */
 
 .SMN_effect-18 {
-  display: inline-block;
-  overflow: hidden;
-  position: relative;
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
 }
 
 .SMN_effect-18>span {
-  display: block;
-  padding: 10px 20px;
-  font-size: 20px;
-  color: #fff;
-  text-transform: uppercase;
+    display: block;
+    /* padding: 10px 20px;
+    font-size: 20px; */
+    color: #fff;
+    text-transform: uppercase;
 }
 
 .SMN_effect-18:before, .SMN_effect-18:after, .SMN_effect-18>span:before, .SMN_effect-18>span:after {
-  content: "";
-  background: rgba(255, 255, 255, 0.3);
-  position: absolute;
-  transition: all 0.3s ease 0s;
+    content: "";
+    /* background: rgba(255, 0, 0, 0.3); */
+    background: rgb(28 105 106 / 75%);
+    position: absolute;
+    transition: all 0.3s ease 0s;
+    margin: 2px;
 }
 
 .SMN_effect-18:before, .SMN_effect-18:after {
-  bottom: 0;
-  right: 0;
+    bottom: 0;
+    right: 0;
 }
 
+/* 위쪽 */
 .SMN_effect-18:before {
-  width: 100%;
-  height: 1px;
-  transform: translateX(-100%);
-  transition-delay: 0.9s;
+    width: 100%;
+    height: 3px;
+    transform: translateX(-100%);
+    transition-delay: 0.9s;
 }
 
+/* 왼쪽 */
 .SMN_effect-18:after {
-  width: 1px;
-  height: 100%;
-  transform: translateY(100%);
-  transition-delay: 0.6s;
+    width: 3px;
+    height: 100%;
+    transform: translateY(100%);
+    transition-delay: 0.6s;
 }
 
 .SMN_effect-18>span:before, .SMN_effect-18>span:after {
-  top: 0;
-  left: 0;
+    top: 0;
+    left: 0;
 }
 
+/* 오른쪽 */
 .SMN_effect-18>span:before {
-  width: 100%;
-  height: 1px;
-  transform: translateX(100%);
-  transition-delay: 0.3s;
+    width: 100%;
+    height: 3px;
+    transform: translateX(100%);
+    transition-delay: 0.3s;
 }
 
+/* 아래쪽 */
 .SMN_effect-18>span:after {
-  width: 1px;
-  height: 100%;
-  transform: translateY(-100%);
-  transition-delay: 0s;
+    width: 3px;
+    height: 100%;
+    transform: translateY(-100%);
+    transition-delay: 0s;
 }
 
 .SMN_effect-18:hover:before, .SMN_effect-18:hover:after, .SMN_effect-18:hover>span:before, .SMN_effect-18:hover>span:after {
-  transform: translate(0, 0);
+    transform: translate(0, 0);
 }
 
 .SMN_effect-18:hover:before {
-  transition-delay: 0s;
+    transition-delay: 0s;
 }
 
 .SMN_effect-18:hover:after {
-  transition-delay: 0.3s;
+     transition-delay: 0.3s;
 }
 
 .SMN_effect-18:hover>span:before {
-  transition-delay: 0.6s;
+     transition-delay: 0.6s;
 }
 
 .SMN_effect-18:hover>span:after {
-  transition-delay: 0.9s;
+    transition-delay: 0.9s;
 }
 
 .d-flex {
@@ -269,14 +275,14 @@ hover effect 18
     height: 120px;
     border: 5px solid #A2CAAC; 
     background-color: white;
-    border-radius: 50%;
+    border-radius: 100%;
     padding: 3px;
     margin-left: 90px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
-.mission-title{
-    
+.mission-detail{
+    margin-top: 10px;
 }
 
 .child-div {
@@ -326,13 +332,13 @@ hover effect 18
     color: #FFFFFF;
     border-radius: 10px;
     width: 250px;
-    height: 40px;
+    height: 50px;
     font-size: 1.7rem;
     font-weight: 600;
     margin-top: 15px;
     text-align: center;
     cursor: pointer;
-    padding-top: 5px;
+    padding-top: 6px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
@@ -350,14 +356,14 @@ hover effect 18
     background-color: #A2CAAC;
     color: #FFFFFF;
     border-radius: 10px;
-    width: 140px;
-    height: 40px;
+    width: 150px;
+    height: 50px;
     font-size: 1.7rem;
     font-weight: 600;
     margin-top: 15px;
     text-align: center;
     cursor: pointer;
-    padding-top: 5px;
+    padding-top: 7px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     /* 애니메이션 효과 */
     display: inline-block;
@@ -455,8 +461,8 @@ hover effect 18
     content: '';
     position: absolute;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 100%;
+    transform: translateY(-100%);
     width: 20px; /* 체크박스 너비 */
     height: 20px; /* 체크박스 높이 */
     border: 2px solid #a2caac; /* 테두리 색상 */
@@ -475,8 +481,8 @@ hover effect 18
     content: '✔'; /* 체크 표시 */
     position: absolute;
     left: 5px; /* 체크 표시 위치 조정 */
-    top: 50%;
-    transform: translateY(-50%);
+    top: 100%;
+    transform: translateY(-100%);
     color: #FFFFFF; /* 체크 표시 색상 */
     font-size: 16px; /* 체크 표시 크기 */
 }
@@ -494,6 +500,7 @@ hover effect 18
     font-size: 4rem;
     border: none;
 }
+
 .text-center{
     text-align: center;
     margin-top: 60px;
@@ -502,5 +509,40 @@ hover effect 18
 .no-mission {
     text-align: center;
     font-weight: 600;
+}
+
+.wave-wrapper {
+    position: relative;
+    width: 1600px;
+    height: 240px; /* 물결이 차지하는 높이 */
+    /* overflow: hidden; 넘치는 부분 숨김  */
+    bottom: 250px;
+    left: -155px;
+}
+
+.wave-container {
+    width: 100%;
+    height: 240px;
+    position: absolute;
+}
+
+.wave1 {
+  clip-path: path('M0,140 C0,120 533,170 900,80 S1333,120 1600,160 V300 H0 Z');
+  background: rgba(173, 216, 230, 0.2);
+}
+
+.wave2 {
+  clip-path: path('M0,90 C267,180 533,30 800,90 S1333,180 1600,90 V300 H0 Z');
+  background: rgba(173, 216, 230, 0.4);
+}
+
+.wave3 {
+  clip-path: path('M0,180 C0,160 533,210 900,120 S1333,160 1600,200 V300 H0 Z');
+  background: rgba(173, 216, 230, 0.6);
+}
+
+.wave4 {
+  clip-path: path('M0,130 C267,220 533,70 800,130 S1333,220 1600,130 V300 H0 Z');
+  background: rgba(173, 216, 230, 0.8);
 }
 </style>
