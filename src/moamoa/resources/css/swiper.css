@@ -9,7 +9,7 @@
 
 /* 스와이퍼 슬라이드 css */
 .swiper {
-    padding-left: 85px !important;
+    padding-left: 77px !important;
 }
 
 .swiper-wrapper {
@@ -17,6 +17,6 @@
 }
 
 .swiper-slide {
-    width: 300px !important;
-    margin-right: 110px
+    width: 320px !important;
+    margin-right: 90px
 }

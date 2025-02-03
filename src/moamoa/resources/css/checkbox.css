@@ -1,0 +1,59 @@
+/* 체크박스 css */
+.chk-div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
+.chk-div-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 기본 체크박스 숨기기 */
+.chk-div input[type="checkbox"] {
+    display: none; /* 기본 체크박스 숨김 */
+}
+
+/* 사용자 정의 체크박스 스타일 */
+.chk-div label {
+    position: relative;
+    padding-left: 30px; /* 체크박스 공간 확보 */
+    cursor: pointer;
+    display: flex;
+    justify-content: start;
+}
+
+/* 체크박스의 사용자 정의 스타일 */
+.chk-div label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 100%;
+    transform: translateY(-100%);
+    width: 20px; /* 체크박스 너비 */
+    height: 20px; /* 체크박스 높이 */
+    border: 2px solid #a2caac; /* 테두리 색상 */
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #FFFFFF; /* 배경색 */
+}
+
+/* 체크박스가 체크되었을 때 스타일 */
+.chk-div input[type="checkbox"]:checked + label::before {
+    background-color: #A2CAAC; /* 체크된 배경색 */
+    border-color: #a2caac; /* 체크된 테두리 색상 */
+}
+
+/* 체크 표시 */
+.chk-div input[type="checkbox"]:checked + label::after {
+    content: '✔'; /* 체크 표시 */
+    position: absolute;
+    left: 5px; /* 체크 표시 위치 조정 */
+    top: 100%;
+    transform: translateY(-100%);
+    color: #FFFFFF; /* 체크 표시 색상 */
+    font-size: 16px; /* 체크 표시 크기 */
+}

@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             // ParentSeeder::class
-            PointSeeder::class
+            // PointSeeder::class
+            // SavingSeeder::class
+            SavingSignUpSeeder::class
             // ,ChildrenSeeder::class
         ]);
         // Mission::factory(100)->create();

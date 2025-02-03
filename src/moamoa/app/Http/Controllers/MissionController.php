@@ -31,7 +31,7 @@ class MissionController extends Controller
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
-            ,'missionList' => $missionList->toArray()
+            ,'missionList' => $missionList
         ];
         return response()->json($responseData, 200);
     }

@@ -4,9 +4,9 @@
 
     <div class="top-right-menu" >
         <div class="parent-btn">
-            <div>
+            <!-- <div>
                 <img src="/img/logo.png" class="logo">
-            </div>
+            </div> -->
             <div @click="$store.dispatch('auth/logout')" class="menu-btn">로그아웃</div>
             <div class="menu-btn">이용자 매뉴얼</div>
             <!-- 알람 아이콘 -->

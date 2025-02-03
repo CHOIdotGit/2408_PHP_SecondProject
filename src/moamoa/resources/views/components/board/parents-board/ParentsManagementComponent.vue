@@ -18,7 +18,7 @@
                         <div class="child">
                             <h3 class="name">{{ item.name }}</h3>
                             <div class="expense-box">
-                                <div class="recent-expenses menu SMN_effect-18" @click="goSpendList(item.child_id)"><span>지출 내역</span></div>
+                                <div class="recent-expenses menu SMN_effect-34" @click="goSpendList(item.child_id)"><span>지출 내역</span></div>
                                 <div class="amount-div">
                                     <div v-if="item.transactions && item.transactions.length === 0">
                                         <p class="no-amount">최근 지출한 금액이 없습니다.</p>
@@ -31,7 +31,7 @@
                                 </div>
                             </div>
                             <div class="child-mission">
-                                <p class="mission menu SMN_effect-18" @click="goMissionList(item.child_id)"><span>승인 대기 중인 미션</span></p>
+                                <p class="mission menu SMN_effect-34" @click="goMissionList(item.child_id)"><span>승인 대기 중인 미션</span></p>
                                 <div class="chk-div">
                                     <div v-if="item.missions && item.missions.length === 0" class="margin-top">
                                         <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
@@ -128,121 +128,9 @@ onBeforeMount(async () => {
 
 </script>
 <style scoped>
+@import url('../../../../css/hoverEffect.css');
 
 /* 메인 화면 */
-
- *, *:after, *:before {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-/* a:hover, a:focus {
-  outline: none;
-}
-
-.back {
-  padding: 50px 0 150px 0;
-}  */
-
-.menu {
-  position: relative;
-  display: block;
-  text-decoration: none;
-  text-transform: uppercase;
-}
-
-/*
----------------------------------------
-hover effect 18
----------------------------------------
-*/
-
-.SMN_effect-18 {
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-}
-
-.SMN_effect-18>span {
-    display: block;
-    /* padding: 10px 20px;
-    font-size: 20px; */
-    color: #fff;
-    text-transform: uppercase;
-}
-
-.SMN_effect-18:before, .SMN_effect-18:after, .SMN_effect-18>span:before, .SMN_effect-18>span:after {
-    content: "";
-    /* background: rgba(255, 0, 0, 0.3); */
-    background: rgb(28 105 106 / 75%);
-    position: absolute;
-    transition: all 0.3s ease 0s;
-    margin: 2px;
-}
-
-.SMN_effect-18:before, .SMN_effect-18:after {
-    bottom: 0;
-    right: 0;
-}
-
-/* 위쪽 */
-.SMN_effect-18:before {
-    width: 100%;
-    height: 3px;
-    transform: translateX(-100%);
-    transition-delay: 0.9s;
-}
-
-/* 왼쪽 */
-.SMN_effect-18:after {
-    width: 3px;
-    height: 100%;
-    transform: translateY(100%);
-    transition-delay: 0.6s;
-}
-
-.SMN_effect-18>span:before, .SMN_effect-18>span:after {
-    top: 0;
-    left: 0;
-}
-
-/* 오른쪽 */
-.SMN_effect-18>span:before {
-    width: 100%;
-    height: 3px;
-    transform: translateX(100%);
-    transition-delay: 0.3s;
-}
-
-/* 아래쪽 */
-.SMN_effect-18>span:after {
-    width: 3px;
-    height: 100%;
-    transform: translateY(-100%);
-    transition-delay: 0s;
-}
-
-.SMN_effect-18:hover:before, .SMN_effect-18:hover:after, .SMN_effect-18:hover>span:before, .SMN_effect-18:hover>span:after {
-    transform: translate(0, 0);
-}
-
-.SMN_effect-18:hover:before {
-    transition-delay: 0s;
-}
-
-.SMN_effect-18:hover:after {
-     transition-delay: 0.3s;
-}
-
-.SMN_effect-18:hover>span:before {
-     transition-delay: 0.6s;
-}
-
-.SMN_effect-18:hover>span:after {
-    transition-delay: 0.9s;
-}
-
 .d-flex {
     width: 1620px;
     height: 800px;
@@ -294,7 +182,7 @@ hover effect 18
 .child {
     background-color: white;
     border: solid #A2CAAC 5px;
-    width: 300px;
+    width: 320px;
     height: 500px;
     border-radius: 25px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -321,30 +209,6 @@ hover effect 18
     color: #000000;
 }
 
-.child-mission {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.mission {
-    background-color: #A2CAAC;
-    color: #FFFFFF;
-    border-radius: 10px;
-    width: 250px;
-    height: 50px;
-    font-size: 1.7rem;
-    font-weight: 600;
-    margin-top: 15px;
-    text-align: center;
-    cursor: pointer;
-    padding-top: 6px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-.mission-box {
-    height: 45px;
-}
 
 .d-flex-start {
     display: flex;
@@ -356,14 +220,14 @@ hover effect 18
     background-color: #A2CAAC;
     color: #FFFFFF;
     border-radius: 10px;
-    width: 150px;
+    width: 160px;
     height: 50px;
     font-size: 1.7rem;
     font-weight: 600;
     margin-top: 15px;
     text-align: center;
     cursor: pointer;
-    padding-top: 7px;
+    padding-top: 10px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     /* 애니메이션 효과 */
     display: inline-block;
@@ -371,9 +235,33 @@ hover effect 18
     position: relative;
 }
 
+.child-mission {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mission {
+    background-color: #A2CAAC;
+    color: #FFFFFF;
+    border-radius: 10px;
+    width: 275px;
+    height: 50px;
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin-top: 15px;
+    text-align: center;
+    cursor: pointer;
+    padding-top: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.mission-box {
+    height: 45px;
+}
+
 .amount-div {
     margin-top: 10px;
-
 }
 
 .amount {
@@ -388,127 +276,20 @@ hover effect 18
     text-align: center;
 }
 
-/* 버튼 설정 */
-.btn-border{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.btn-div{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    /* margin-top: 20px; */
-    vertical-align: middle;
-}
-
-.btn {
-    width: 160px;
-    height: 40px;
-    cursor: pointer;
-}
-
-.btn-disable {
-    display: none;
-    width: 160px;
-    height: 40px;
-    cursor: default;
-    pointer-events: none; /* 클릭 이벤트 막기 */
-}
-
 .margin-top {
     margin-top: 4rem;
-}
-
-.approve {
-    border: none;
-    background-color: #a2caac;
-    color: black;
-    font-size: 1.5rem;
-}
-
-.chk-div {
-    display: flex;
-    flex-direction: column;
-    margin-top: 10px;
-    font-size: 1.3rem;
-}
-
-.chk-div-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 10px;
-}
-
-/* 기본 체크박스 숨기기 */
-.chk-div input[type="checkbox"] {
-    display: none; /* 기본 체크박스 숨김 */
-}
-
-/* 사용자 정의 체크박스 스타일 */
-.chk-div label {
-    position: relative;
-    padding-left: 30px; /* 체크박스 공간 확보 */
-    cursor: pointer;
-    display: flex;
-    justify-content: start;
-}
-
-/* 체크박스의 사용자 정의 스타일 */
-.chk-div label::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 100%;
-    transform: translateY(-100%);
-    width: 20px; /* 체크박스 너비 */
-    height: 20px; /* 체크박스 높이 */
-    border: 2px solid #a2caac; /* 테두리 색상 */
-    border-radius: 4px; /* 모서리 둥글게 */
-    background-color: #FFFFFF; /* 배경색 */
-}
-
-/* 체크박스가 체크되었을 때 스타일 */
-.chk-div input[type="checkbox"]:checked + label::before {
-    background-color: #A2CAAC; /* 체크된 배경색 */
-    border-color: #a2caac; /* 체크된 테두리 색상 */
-}
-
-/* 체크 표시 */
-.chk-div input[type="checkbox"]:checked + label::after {
-    content: '✔'; /* 체크 표시 */
-    position: absolute;
-    left: 5px; /* 체크 표시 위치 조정 */
-    top: 100%;
-    transform: translateY(-100%);
-    color: #FFFFFF; /* 체크 표시 색상 */
-    font-size: 16px; /* 체크 표시 크기 */
-}
-
-.blank {
-    color: transparent;
-    height: 5px;
-}
-
-.child-list-triangle {
-    background-color: transparent;
-    /* width: 40px;
-    height: 40px; */
-    color: #A2CAAC;
-    font-size: 4rem;
-    border: none;
-}
-
-.text-center{
-    text-align: center;
-    margin-top: 60px;
 }
 
 .no-mission {
     text-align: center;
     font-weight: 600;
+    font-size: 1.3rem;
+}
+
+.mission-title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 10px;
 }
 
 .wave-wrapper {
@@ -516,7 +297,7 @@ hover effect 18
     width: 1600px;
     height: 240px; /* 물결이 차지하는 높이 */
     /* overflow: hidden; 넘치는 부분 숨김  */
-    bottom: 250px;
+    bottom: 240px;
     left: -155px;
 }
 
@@ -545,4 +326,60 @@ hover effect 18
   clip-path: path('M0,130 C267,220 533,70 800,130 S1333,220 1600,130 V300 H0 Z');
   background: rgba(173, 216, 230, 0.8);
 }
+
+/* 현재 사용하지 않는 css 효과 */
+/* .blank {
+    color: transparent;
+    height: 5px;
+}
+
+.child-list-triangle {
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+    color: #A2CAAC;
+    font-size: 4rem;
+    border: none;
+}
+
+.text-center{
+    text-align: center;
+    margin-top: 60px;
+} 
+
+.approve {
+    border: none;
+    background-color: #a2caac;
+    color: black;
+    font-size: 1.5rem;
+}
+
+버튼 설정 
+.btn-border{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 20px;
+    vertical-align: middle;
+}
+
+.btn {
+    width: 160px;
+    height: 40px;
+    cursor: pointer;
+}
+
+.btn-disable {
+    display: none;
+    width: 160px;
+    height: 40px;
+    cursor: default;
+    pointer-events: none;  클릭 이벤트 막기 
+}*/
 </style>

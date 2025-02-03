@@ -32,7 +32,7 @@ class PointSeeder extends Seeder
             foreach ($children as $child) {
                 $data = [
                     'child_id' => $child, // 각 child_id 값을 삽입
-                    'point' => 1000000,
+                    'point' => 10000,
                     'point_code' => $code[array_rand($code)], // 랜덤 point_code
                     'payment_at' => $faker->dateTimeBetween('-2 month', 'now')->format('Y-m-d'), // 랜덤 날짜
                 ];
