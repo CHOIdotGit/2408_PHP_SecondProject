@@ -37,6 +37,7 @@ import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue'
 import ParentsMoaBankComponent from '../views/components/board/parents-board/ParentsMoaBankComponent.vue';
 import ChildMoaBankComponent from '../views/components/board/children-board/ChildMoaBankComponent.vue';
 import ChildBankProductComponent from '../views/components/board/children-board/ChildBankProductComponent.vue';
+import ChildBankProductRegisterComponent from '../views/components/board/children-board/ChildBankProductRegisterComponent.vue';
 
 
 const chkAuth = (to, from, next) => {
@@ -247,6 +248,12 @@ const routes = [
         // path: '/parent/bankbook/:child_id',
         // component: ParentsBankBookComponent,
         // beforeEnter: chkAuth,
+    },
+    // 적금 상품 가입 페이지
+    {
+        path: '/moabank/product/regist',
+        component: ChildBankProductRegisterComponent,
+        beforeEnter: chkAuth,
     },
 
     //**************************************************** */

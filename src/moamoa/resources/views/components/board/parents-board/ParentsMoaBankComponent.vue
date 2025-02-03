@@ -59,15 +59,21 @@
                         <p class="rate-percent">이자율 : 4.8%</p>
                         <p class="rate-percent">최소 납입 포인트 : 100moa</p>
                     </div>
-                    <div class="products">
+                    <div>
+                        <p @click="openProducts" class="more">더보기</p>
+                    </div>
+                    <!-- 적금상품 더보여주기 영역 -->
+                    <div class="products" v-show="showProducts">
                         <p class="product-title">49일 적금</p>
-                        <p class="rate-percent">이자율 : 6.7%</p>
+                        <p class="rate-percent">이자율 : 5.0%</p>
                         <p class="rate-percent">최소 납입 포인트 : 100moa</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </template>
 
 
@@ -83,6 +89,8 @@ const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 onMounted(() => {
     store.dispatch('bank/koreaBank');
 });
+
+
 
 </script>
 
@@ -197,8 +205,12 @@ onMounted(() => {
 .outline {
     width: 1470px;
     text-align: center;
-    border: 5px #a2caac solid;
-    border-radius: 30px;
+    /* 부모 색깔 */
+    background-color: #e8ecdc; 
+
+    /* 자녀 색깔 */
+    /* background-color: #e4eff4; */
+    border-radius: 10px;
     height: 350px;
     padding: 20px;
 
@@ -218,7 +230,8 @@ onMounted(() => {
     width: 200px;
     height: 200px;
     padding-top: 20px;
-    background-color: antiquewhite;
+    border: 1px solid #ddd;
+    background-color: #fff;
 
 }
 
@@ -230,6 +243,14 @@ onMounted(() => {
 
 .rate-percent {
     margin-top: 30px;
+}
+
+.more {
+    cursor: pointer;
+}
+
+.more:hover {
+    text-decoration: underline;
 }
 
 </style>

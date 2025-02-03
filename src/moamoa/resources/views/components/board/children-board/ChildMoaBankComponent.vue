@@ -45,22 +45,22 @@
                     <div class="products">
                         <p class="product-title">14일 적금</p>
                         <p class="rate-percent">이자율 : 2.1%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
+                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
                     </div>
                     <div class="products">
                         <p class="product-title">21일 적금</p>
                         <p class="rate-percent">이자율 : 3.4%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
+                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
                     </div>
                     <div class="products">
                         <p class="product-title">35일 적금</p>
                         <p class="rate-percent">이자율 : 4.8%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
+                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
                     </div>
                     <div class="products">
                         <p class="product-title">49일 적금</p>
                         <p class="rate-percent">이자율 : 6.7%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
+                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
                     </div>
                 </div>
             </div>
@@ -186,7 +186,7 @@ onMounted(() => {
 .outline {
     width: 1470px;
     text-align: center;
-    border: 5px #a2caac solid;
+    background-color: #e8ecdc;
     border-radius: 30px;
     height: 350px;
     padding: 20px;
@@ -207,7 +207,7 @@ onMounted(() => {
     width: 200px;
     height: 200px;
     padding-top: 20px;
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
 
 }
 
