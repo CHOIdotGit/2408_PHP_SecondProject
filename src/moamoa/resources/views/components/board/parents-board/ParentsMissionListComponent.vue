@@ -11,33 +11,35 @@
                 <div class="search-option">
                     <div class="search-date">
                         <p> 등록 일자</p> 
-                        <input type="date" min="2000-01-01" >
+                        <input type="date" min="2000-01-01" v-model="filters.startDate">
                         <p>~</p>
-                        <input type="date" min="2000-01-01" >
+                        <input type="date" min="2000-01-01" v-model="filters.endDate">
                     </div>
                     <div class="search-filter">
-                        <p> 종류 </p> 
-                        <select name="mission-type">
-                            <option value="all">전체</option>
-                            <option value="shinhan">집안일</option>
-                            <option value="hana">기타</option>
-                            <option value="kb" >생활습관</option>
-                            <option value="woori">취미</option>
+                        <p>◎ 미션 종류 </p> 
+                        <select name="mission-type" v-model="filters.category" >
+                            <option value="all" >전체</option>
+                            <option value="0">학습</option>
+                            <option value="1">취미</option>
+                            <option value="2" >집안일</option>
+                            <option value="3">생활습관</option>
+                            <option value="4">기타</option>
                         </select>
-                        <select name="status">
+                        <p>◎ 진행 상태 </p> 
+                        <select name="status" v-model="filters.status">
                             <option value="all">전체</option>
-                            <option value="waiting">대기중</option>
-                            <option value="ongoing">진행중</option>
-                            <option value="complete">완료</option>
-                            <option value="cancel" >취소</option>
+                            <option value="0">미션진행</option>
+                            <option value="1">미션대기</option>
+                            <option value="2">미션완료</option>
+                            <option value="3">취소</option>
                         </select>
                     </div>
                     <div class="search">
-                        <input type="search" placeholder="검색어를 입력해주세요">
+                        <input type="search" v-model="filters.keyword" placeholder="검색어를 입력해주세요">
                     </div>
                 </div>
                 <div class="search-btn">
-                    <button>검색</button>
+                    <button @click="missionSearch(childId)">검색</button>
                 </div>
             </div>
             <div class="mission-title-bar">
@@ -63,6 +65,7 @@
                         <p class="mission-due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                     </div>
                 </div>
+                <!-- <div v-else>검색 결과가 없습니다</div> -->
             </div>
             <!-- 버튼 페이지네이션 -->
             <div class="pagination">
@@ -91,7 +94,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 const route = useRoute();
@@ -205,8 +208,7 @@ const checkAll = (e) => {
 //     console.log('체크박스 선택');
 // }
 
-// 미션 리스트 가져오기
-const missionList = computed(() => store.state.mission.missionList);
+
 
 // 첫 번째 자녀의 name을 가져오는 computed
 const childName = computed(() => {
@@ -251,7 +253,10 @@ const getStatusClass = (status) => {
     }
 };
 
-// onMount
+// 미션 리스트 받아오기
+const missionList = computed(() => store.state.mission.missionList);
+
+// onMount(메뉴에서 선택된 자녀 id 받아와서 list 출력)
 onMounted(() => {
     // store.dispatch('mission/missionList', route.params.id);
     fetchMissionList();
@@ -280,6 +285,34 @@ const approvalMission = () => {
         alert('선택되어있는 미션이 없습니다.');
     }
 };
+
+// +=================+
+// +    검색 필터     +
+// +=================+
+// 기본값
+const filters = ref({
+    category: "all",
+    status: "all",
+    startDate: "",
+    endDate: "",
+    keyword: "",
+    child_id: ""
+});
+
+
+const missionSearch = (childId) => {
+    filters.value.child_id = childId;
+    store.dispatch('mission/missionSearch', filters.value);
+};
+
+
+
+
+
+
+
+
+
 
 </script>
 
@@ -379,6 +412,7 @@ const approvalMission = () => {
     background-color: #A2CAAC;
     font-size: 1.5rem;
     border: none;
+    cursor: pointer;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 }

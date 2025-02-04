@@ -27,7 +27,10 @@ class MissionController extends Controller
                                     ->orderBy('missions.status')
                                     ->latest()
                                     ->paginate(20);
-                
+        
+        
+
+        
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
@@ -202,5 +205,73 @@ class MissionController extends Controller
             ], 401);
         }
 
+    }
+
+    // ************************************************
+    // ********************미션 검색 *******************
+    // ************************************************
+    public function search(Request $request) {
+        // 부모 확인
+        $parent = Auth::guard('parents')->user();
+        
+
+        // $category = $request->get('category', 'all');
+        // $status = $request->get('status', 'all');
+        // $startDate = $request->get('start_at');
+        // $endDate = $request->get('end_at');
+        // $keyword = $request->get('keyword', '');
+
+        // $missions = Mission::where('child_id', $request->get('child_id'));
+        // if($category !== 'all') {
+        //     $missions->where('category', $category);
+        // }
+        // if($status !== 'all') {
+        //     $missions->where('status', $status);
+        // }
+        // if($startDate) {
+        //     $missions->whereDate('start_at', '>=', $startDate);
+        // }
+        // if($endDate) {
+        //     $missions->whereDate('end_at', '<=', $endDate);
+        // }
+        // if ($keyword) {
+        //     $missions->where('title', 'like', '%' . $keyword . '%');
+        // }
+
+
+        $category = $request->category;
+        $status = $request->status;
+        $startDate = $request->start_at;
+        $endDate = $request->end_at;
+        $keyword = $request->keyword;
+
+        $missions = Mission::where('child_id', $request->child_id);
+        if($category !== 'all') {
+            $missions->where('category', $category);
+        }
+        if($status !== 'all') {
+            $missions->where('status', $status);
+        }
+        if($startDate) {
+            $missions->whereDate('start_at', '>=', $startDate);
+        }
+        if($endDate) {
+            $missions->whereDate('end_at', '<=', $endDate);
+        }
+        if ($keyword) {
+            $missions->where('title', 'like', '%' . $keyword . '%');
+        }
+        // 페이지네이션 적용
+        $missions = $missions->paginate(20);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '필터 성공'
+            ,'missions' => $missions
+
+        ];
+        return response()->json($responseData, 200);
+
+        
     }
 }

@@ -18,7 +18,8 @@ export default {
         ,missionDetail: {}
         ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
         ,childHome: []
-        ,totalPages: 1, // 총 페이지 수
+        ,totalPages: 1 // 총 페이지 수
+        ,filter: []
         
     }),
     mutations: {
@@ -69,7 +70,10 @@ export default {
         setUpdateMission(state, missionDetail) {
             state.missionDetail = missionDetail;
         },
-        
+        setFilterMissionList(state, missionList) {
+            state.filter = missionList;
+        }
+
 
     },
     actions: {
@@ -347,7 +351,26 @@ export default {
             });
         },
 
+    // 필터&검색기능
+    missionSearch(context, searchData) {
+        const url = '/api/mission/search';
+
+        axios.get(url, {
+            params:  searchData 
+        })
+        .then(response => {
+            context.commit('setMissionList', response.data.missions.data);
+            context.commit('setFilterMissionList', searchData);
+        })
+        .catch(error => {
+            console.log('검색안됨', error);
+        })
     },
+
+    },
+
+
+
 
     getters: {
         getMissionTitle(state) {

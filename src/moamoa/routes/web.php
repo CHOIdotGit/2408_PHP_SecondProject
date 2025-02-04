@@ -132,6 +132,13 @@ Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenCon
 Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 
 // ******************************
+// *         검색 관련           *
+// ******************************
+Route::get('/api/mission/search', [MissionController::class, 'search']);
+
+
+
+// ******************************
 // *         헤더 관련           *
 // ******************************
 // 헤더 관련(드랍메뉴 자녀이름 출력)
