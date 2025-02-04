@@ -14,9 +14,10 @@ class SavingDetail extends Model
 
     protected $fillable = [
         'saving_sign_up_id'
-        ,'deposit_at'
-        ,'category'
-        ,'principal'
+        ,'saving_detail_category'
+        ,'saving_detail_left'
+        ,'saving_detail_income'
+        ,'saving_detail_outcome'
     ];
 
     protected function serializeDate(\DateTimeInterface $date) {

@@ -6,18 +6,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Saving extends Model
+class SavingProduct extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $primaryKey = 'saving_id';
+    protected $primaryKey = 'saving_product_id';
 
     protected $fillable = [
-        'financial_product'
-        ,'period'
-        ,'amount'
-        ,'interest_rate'
-        ,'type'
+        'saving_product_name'
+        ,'saving_product_period'
+        ,'saving_product_amount'
+        ,'saving_product_interest_rate'
+        ,'saving_product_type'
     ];
 
     protected function serializeDate(\DateTimeInterface $date) {

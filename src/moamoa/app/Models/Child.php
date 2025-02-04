@@ -41,6 +41,10 @@ class Child extends Authenticatable {
         return $this->hasMany(Transaction::class, 'child_id', 'child_id');
     }
 
+    public function saving_sign_ups() {
+        return $this->hasMany(SavingSignUp::class, 'child_id', 'child_id');
+    }
+
     public function parent() {
         return $this->belongsTo(ParentModel::class, 'parent_id');
     }

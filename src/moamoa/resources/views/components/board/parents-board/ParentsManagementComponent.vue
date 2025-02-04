@@ -170,7 +170,7 @@ onBeforeMount(async () => {
 }
 
 .mission-detail{
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .child-div {

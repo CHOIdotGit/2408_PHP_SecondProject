@@ -14,10 +14,16 @@ class SavingSignUp extends Model
 
     protected $fillable = [
         'child_id'
-        ,'saving_id'
-        ,'start_at'
-        ,'end_at'
+        ,'saving_product_id'
+        ,'saving_sign_up_deposit_at'
+        ,'saving_sign_up_start_at'
+        ,'saving_sign_up_end_at'
+        ,'saving_sign_up_status'
     ];
+
+    public function children() {
+        return $this->belongsTo(Child::class, 'child_id', 'child_id');
+    }
 
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
