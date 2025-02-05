@@ -31,7 +31,6 @@ export default {
         },
         setMissionList(state, missionList) {
             state.missionList = missionList;
-            state.totalPages = missionList.last_page;
         },
         setControlFlg(state, flg) {
             state.controlFlg = flg;
@@ -115,12 +114,10 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        // missionList({context}, child_id) {
-        missionList({context}, {child_id, page}) {
-            // context.commit('setControlFlg', false);
+        missionList(context, child_id) {
+            context.commit('setControlFlg', false);
             
-            // const url = '/api/parent/mission/list/' + child_id;
-            const url = `/api/parent/mission/list/${child_id}?page=${page}`;
+            const url = '/api/parent/mission/list/' + child_id;
                         
             axios.get(url)
                 .then(response => { 

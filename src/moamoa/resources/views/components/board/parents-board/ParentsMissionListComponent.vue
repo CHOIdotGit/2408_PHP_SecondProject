@@ -52,7 +52,7 @@
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
-            <div class="scroll" ref="scrollContainer">
+            <div>
                 <div v-if="missionList && missionList.length" v-for="item in missionList" :key="item" class="mission-inserted-list">
                     <div class="mission-content">
                         <div class="chk-div">
@@ -68,11 +68,7 @@
                 <!-- <div v-else>검색 결과가 없습니다</div> -->
             </div>
             <!-- 버튼 페이지네이션 -->
-            <div class="pagination">
-                <button @click="prevPage" :disabled="page === 1">이전</button>
-                <span>{{ page }} / {{ totalPages }}</span>
-                <button @click="nextPage" :disabled="page === totalPages">다음</button>
-            </div>
+            
         </div>
     </div>
 
@@ -99,47 +95,6 @@ import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 const route = useRoute();
 const store = useStore();
-
-
-const page = ref(1); // 현재 페이지
-const scrollPosition = ref(0); // 스크롤 위치 저장
-
-// 스크롤 위치 저장
-const saveScrollPosition = () => {
-    scrollPosition.value = window.scrollY;
-};
-
-// 스크롤 위치 복원
-const restoreScrollPosition = () => {
-    setTimeout(() => {
-        window.scrollTo(0, scrollPosition.value);
-    }, 100);
-};
-
-// 미션 리스트 가져오기
-const fetchMissionList = () => {
-    store.dispatch("mission/missionList", { id: route.params.id, page: page.value }).then(() => {
-        restoreScrollPosition();
-    });
-};
-
-// 다음 페이지
-const nextPage = () => {
-    if (page.value < totalPages.value) {
-        saveScrollPosition();
-        page.value++;
-        fetchMissionList();
-    }
-};
-
-// 이전 페이지
-const prevPage = () => {
-    if (page.value > 1) {
-        saveScrollPosition();
-        page.value--;
-        fetchMissionList();
-    }
-};
 
 // 라우터에서 쿼리 파라미터 받기
 // const childId = router.query.child_id;
@@ -258,8 +213,7 @@ const missionList = computed(() => store.state.mission.missionList);
 
 // onMount(메뉴에서 선택된 자녀 id 받아와서 list 출력)
 onMounted(() => {
-    // store.dispatch('mission/missionList', route.params.id);
-    fetchMissionList();
+    store.dispatch('mission/missionList', route.params.id);
 });
 
 // 미션아이디 확인해서 상세 페이지 이동하기 위해서
