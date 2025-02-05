@@ -1,3 +1,6 @@
+<!-- !!!! 2차 때 자녀 헤더 !!!!-->
+<!-- 더이상 사용안 함 -->
+<!-- 공부용이니 지우지 마세요 -->
 <template>
     <div class="item" v-for="item in baseMenuInfo" :key="item">
         <router-link :to="item.path" class="link-deco"><p class="item-btn">{{ item.name }}</p></router-link>

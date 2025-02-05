@@ -1,3 +1,6 @@
+<!-- !!!! 2차 때 부모 헤더 !!!!-->
+<!-- 더이상 사용안 함 -->
+<!-- 공부용이니 지우지 마세요 -->
 <template>
     <div class="item" v-for="item in baseMenuInfo" :key="item">
         <div v-if="childNameList.length > 0">

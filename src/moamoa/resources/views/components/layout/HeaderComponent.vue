@@ -1,3 +1,6 @@
+<!-- 2차 프로젝트 일때 헤더  -->
+<!-- 더이상 작업하지 말것!! -->
+<!-- 공부용이니 지우지 마세요 -->
 <template>
     <div class="header">
         <div class="logo"></div>
