@@ -1,5 +1,5 @@
 <template>
-<div class="top-menu">
+<div class="top-menu" v-if="!isMobile">
     <!-- <img src="/img/logo.png" alt="" class="logo"> -->
 
     <div class="top-right-menu" >
@@ -68,7 +68,11 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 const store = useStore();
 
-
+// +==========================+
+// +    모바일 화면 전환       +
+// +==========================+
+// v-if="ismobile"적으면 모바일 화면으로 이동
+const isMobile = store.state.mobile.isMobile;
 /* 햄버거 모달 */
 const hamburgerModal = ref(false);
 

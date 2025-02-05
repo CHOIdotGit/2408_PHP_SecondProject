@@ -1,5 +1,5 @@
 <template>
-<div class="menu-left">
+<div class="menu-left" v-if="!isMobile">
     <div class="menu-container" v-show="slidMenu">
 
         <!-- 자녀가 있을 때  -->
@@ -89,6 +89,12 @@ import { useStore } from 'vuex';
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+
+// +==========================+
+// +    모바일 화면 전환       +
+// +==========================+
+// v-if="ismobile"적으면 모바일 화면으로 이동
+const isMobile = store.state.mobile.isMobile;
 
 // 좌측 메뉴
 const  slidMenu = ref(true);

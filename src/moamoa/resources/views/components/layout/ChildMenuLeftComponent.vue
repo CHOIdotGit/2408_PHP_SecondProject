@@ -1,6 +1,6 @@
 <template>
 <!-- 자녀가 로그인 했을 때 표시되는 왼쪽 메뉴 -->
-    <div class="menu-left child-theme">
+    <div class="menu-left child-theme" v-if="!isMobile">
         <div class="menu-container" v-show="slidMenu">
     
         <!-- 자녀 프로필 표시 영역  -->
@@ -63,6 +63,11 @@ import { useStore } from 'vuex';
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+// +==========================+
+// +    모바일 화면 전환       +
+// +==========================+
+// v-if="ismobile"적으면 모바일 화면으로 이동
+const isMobile = store.state.mobile.isMobile;
 
 // 좌측 메뉴 열고 닫기
 const  slidMenu = ref(true);
