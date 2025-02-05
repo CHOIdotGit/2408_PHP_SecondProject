@@ -1,4 +1,3 @@
-
 import { resolve } from 'chart.js/helpers';
 import axios from '../../axios';
 import router from '../../router';
@@ -23,6 +22,7 @@ export default {
         ,parentStats:[]
         ,doughnutData: [0]
         ,weeklyOutgoData: [0]
+        ,filter: []
 
     }),
     mutations: {
@@ -68,6 +68,9 @@ export default {
         },
         setWeeklyOutgoData(state, data) {
             state.weeklyOutgoData = data;
+        },
+        setFilterTransactionList(state, transantionList) {
+            state.filter = transantionList;
         },
     },
     actions: {
@@ -132,6 +135,21 @@ export default {
 
             });
         },
+    // 필터&검색기능
+    transactionSearch(context, searchData) {
+        const url = '/api/transaction/search';
+
+        axios.get(url, {
+            params:  searchData 
+        })
+        .then(response => {
+            context.commit('setTransactionList', response.data.filters.data);
+            context.commit('setFilterTransactionList', searchData);
+        })
+        .catch(error => {
+            console.log('검색안됨', error);
+        })
+    },
     },
 
     getters: {

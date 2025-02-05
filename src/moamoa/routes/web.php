@@ -134,8 +134,11 @@ Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 // ******************************
 // *         검색 관련           *
 // ******************************
+// 부모 미션 리스트 검색
 Route::get('/api/mission/search', [MissionController::class, 'search']);
 
+// 부모 지출 리스트 검색
+Route::get('/api/transaction/search', [TransactionController::class, 'search']);
 
 
 // ******************************

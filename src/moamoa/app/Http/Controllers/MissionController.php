@@ -246,10 +246,10 @@ class MissionController extends Controller
         $keyword = $request->keyword;
 
         $missions = Mission::where('child_id', $request->child_id);
-        if($category !== 'all') {
+        if($category !== '') {
             $missions->where('category', $category);
         }
-        if($status !== 'all') {
+        if($status !== '') {
             $missions->where('status', $status);
         }
         if($startDate) {

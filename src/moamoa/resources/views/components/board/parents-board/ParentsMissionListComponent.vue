@@ -18,7 +18,7 @@
                     <div class="search-filter">
                         <p>◎ 미션 종류 </p> 
                         <select name="mission-type" v-model="filters.category" >
-                            <option value="all" >전체</option>
+                            <option value="" >전체</option>
                             <option value="0">학습</option>
                             <option value="1">취미</option>
                             <option value="2" >집안일</option>
@@ -27,7 +27,7 @@
                         </select>
                         <p>◎ 진행 상태 </p> 
                         <select name="status" v-model="filters.status">
-                            <option value="all">전체</option>
+                            <option value="">전체</option>
                             <option value="0">미션진행</option>
                             <option value="1">미션대기</option>
                             <option value="2">미션완료</option>
