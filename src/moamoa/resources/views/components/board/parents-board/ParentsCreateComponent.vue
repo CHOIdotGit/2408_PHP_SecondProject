@@ -80,7 +80,8 @@ const checkedcategory = ref(true);
 //     checkedcategoryIndex.value = index;
 // }
         
-const today = ref(new Date().toISOString().slice(0, 10)); 
+const today = ref(new Date().toISOString().slice(0, 10));
+
 const nextDay = ref(new Date().toISOString().slice(0, 10)); 
 
 const missionCreate = reactive({

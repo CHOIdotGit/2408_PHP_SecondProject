@@ -1,4 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
+import { useStore } from "vuex";
+import axios from './axios';
 import NotFoundComponent from '../views/components/NotFoundComponent.vue';
 import ParentsMissionListComponent from '../views/components/board/parents-board/ParentsMissionListComponent.vue';
 import ParentsCalendarComponent from '../views/components/board/parents-board/ParentsCalendarComponent.vue';
@@ -18,7 +20,6 @@ import ChildSpendCreateComponent from '../views/components/board/children-board/
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
 import ParentsStatsComponent from '../views/components/board/parents-board/ParentsStatsComponent.vue';
-import { useStore } from "vuex";
 import SelectRegistComponent from '../views/components/auth/regist/SelectRegistComponent.vue';
 import ParentRegistComponent from '../views/components/auth/regist/ParentRegistComponent.vue';
 import ChildRegistComponent from '../views/components/auth/regist/ChildRegistComponent.vue';
@@ -32,12 +33,11 @@ import ParentPrivateWithdrawalComponent from '../views/components/auth/private/P
 import ChildPrivateWithdrawalComponent from '../views/components/auth/private/ChildPrivateWithdrawalComponent.vue';
 import FamilyPrivateChangePasswordComponent from '../views/components/auth/private/FamilyPrivateChangePasswordComponent.vue';
 import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
-import axios from './axios';
 import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
-import ParentsMoaBankComponent from '../views/components/board/parents-board/ParentsMoaBankComponent.vue';
-import ChildMoaBankComponent from '../views/components/board/children-board/ChildMoaBankComponent.vue';
-import ChildBankProductComponent from '../views/components/board/children-board/ChildBankProductComponent.vue';
-import ChildBankProductRegisterComponent from '../views/components/board/children-board/ChildBankProductRegisterComponent.vue';
+import ParentsMoaBankComponent from '../views/components/bank/parent-bank/ParentsMoaBankComponent.vue';
+import ChildBankProductComponent from '../views/components/bank/child-bank/ChildBankProductComponent.vue';
+import ChildBankProductRegisterComponent from '../views/components/bank/child-bank/ChildBankProductRegisterComponent.vue';
+
 
 
 const chkAuth = (to, from, next) => {
@@ -256,9 +256,7 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
-    //**************************************************** */
-    //**************************************************** */
-    // 자녀 페이지 모음
+    // 자녀 페이지 모음 ************************************************* */
     // 자녀 홈페이지
     {
         path: '/child/home',
