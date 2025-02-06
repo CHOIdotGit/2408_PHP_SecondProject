@@ -37,6 +37,7 @@ import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue'
 import ParentsMoaBankComponent from '../views/components/bank/parent-bank/ParentsMoaBankComponent.vue';
 import ChildBankProductComponent from '../views/components/bank/child-bank/ChildBankProductComponent.vue';
 import ChildBankProductRegisterComponent from '../views/components/bank/child-bank/ChildBankProductRegisterComponent.vue';
+import ChildMoaBankComponent from '../views/components/bank/child-bank/ChildMoaBankComponent.vue';
 
 
 
@@ -130,7 +131,7 @@ const routes = [
         component: CompleteRegistComponent,
         beforeEnter: chkAuth,
     },
-    // 부모 페이지 모음
+    // 부모 페이지 모음 *********************************** //
     // 홈페이지
     {
         path: '/parent/home',
@@ -226,7 +227,7 @@ const routes = [
     },
 
     // +==================================+
-    // +          부모 통장 페이지         +
+    // +          부모 은행 페이지         +
     // +==================================+
 
     // 부모 통장 페이지
@@ -236,12 +237,7 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
-    // 적금 상품 몰 페이지
-    {
-        path: '/moabank/product',
-        component: ChildBankProductComponent,
-        beforeEnter: chkAuth,
-    },
+
 
     // 부모 통장 상세 페이지
     {
@@ -249,12 +245,7 @@ const routes = [
         // component: ParentsBankBookComponent,
         // beforeEnter: chkAuth,
     },
-    // 적금 상품 가입 페이지
-    {
-        path: '/moabank/product/regist',
-        component: ChildBankProductRegisterComponent,
-        beforeEnter: chkAuth,
-    },
+
 
     // 자녀 페이지 모음 ************************************************* */
     // 자녀 홈페이지
@@ -349,17 +340,34 @@ const routes = [
     // +==================================+
     // +          자녀 지출 모음           +
     // +==================================+
-
     // 자녀 달력 페이지
     {
         path: '/child/calendar',
         component: ChildCalendarComponent,
         beforeEnter: chkAuth,
     },
-    // 자녀 통장 페이지
+
+    // +==================================+
+    // +          자녀 은행 페이지         +
+    // +==================================+
+    // 자녀 은행 페이지
     {
         path: '/child/moabank/',
         component: ChildMoaBankComponent,
+        beforeEnter: chkAuth,
+    },
+
+    // 적금 상품 몰 페이지
+    {
+        path: '/moabank/product',
+        component: ChildBankProductComponent,
+        beforeEnter: chkAuth,
+    },
+
+    // 적금 상품 가입 페이지
+    {
+        path: '/moabank/product/regist',
+        component: ChildBankProductRegisterComponent,
         beforeEnter: chkAuth,
     },
 
