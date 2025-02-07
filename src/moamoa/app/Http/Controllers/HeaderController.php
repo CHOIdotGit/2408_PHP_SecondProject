@@ -58,7 +58,7 @@ class HeaderController extends Controller
         //                         }
         //                     ])
         //                     ->get();
-        $bellContent = Mission::select('missions.title', 'missions.created_at', 'missions.child_id')
+        $bellContent = Mission::select('missions.mission_id','missions.title', 'missions.created_at', 'missions.child_id')
                                 ->where('missions.parent_id', $parent->parent_id)    
                                 ->where('missions.status', 0)
                                 ->where('missions.alarm', 0)
@@ -77,7 +77,7 @@ class HeaderController extends Controller
         return response()->json($responseData, 200);
     }
 
-    public function alarmCheck($mission_id) {
+    public function update($mission_id) {
         // ************************************************
         // 헤더 알람 : 체크누르면 alarm을 1로 변경
         // alarm = 0 일 때 체크 안 된 상태
@@ -85,7 +85,7 @@ class HeaderController extends Controller
         // ************************************************ 
         $parent = Auth::guard('parents')->user();
         $bellCheck = Mission::where('parent_id', $parent->parent_id)
-                            ->where('mission_id', $mission_id->mission_id)
+                            ->where('mission_id', $mission_id)
                             ->where('alarm', 0)
                             ->update(['alarm' => 1]);
 
@@ -95,6 +95,17 @@ class HeaderController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+    // public function update(Request $request) {
+    //     // ************************************************
+    //     // 헤더 알람 : 체크누르면 alarm을 1로 변경
+    //     // alarm = 0 일 때 체크 안 된 상태
+    //     // alarm = 1 일 때 체크 한 상태
+    //     // ************************************************ 
+    //     $parent = Auth::guard('parents')->user();
+    //     $updateAlarm = Mission::find($request->mission_id);
+    //     $updateAlarm->alarm = $request->alarm;
+
+    // }
 
     public function childInfo() {
         // ************************************************

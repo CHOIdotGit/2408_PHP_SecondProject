@@ -52,12 +52,11 @@ Route::prefix('/api/auth')->group(function () {
 // 부모 홈
 Route::get('/api/parent/home', [HomeController::class, 'index']);
 
-
 // 부모 미션 리스트
 Route::get('/api/parent/mission/list/{id}', [MissionController::class, 'index']);
 
 // 부모 미션 상세 페이지
-Route::get('/api/parent/mission/detail/{id}', [MissionController::class, 'show']);
+Route::get('/api/parent/mission/detail/{mission_id}', [MissionController::class, 'show']);
 Route::post('/api/parent/mission/approval', [MissionController::class, 'approvalMission']);
 
 // 부모 미션 작성 페이지
@@ -151,7 +150,7 @@ Route::get('/api/parent/header', [HeaderController::class, 'index']);
 Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 
 // 헤더 관련(미션/지출 등록/승인 알람 확인)
-Route::patch('/api/parent/header/bell/check/{mission_id}', [HeaderController::class, 'alarmCheck']);
+Route::patch('/api/parent/header/bell/check/{mission_id}', [HeaderController::class, 'update']);
 
 // 헤더 관련(자녀 로그인 시 자녀 프로필 출력)
 Route::get('/api/child/info', [HeaderController::class, 'childInfo']);

@@ -12,25 +12,28 @@
             <!-- 알람 아이콘 -->
             <div  class="icon-btn" @click="openBellModal">
                 <img src="/img/icon-bell-black.png" alt="" class="icon">
+                <!-- 알람 내용이 있을 경우 나타나는 빨간색 동그라미 -->
+                <img src="/img/icon-circle.png" alt="" class="icon-circle" v-if="bellContent.length > 0">
             </div>
             <!-- 알람 모달 메뉴  -->
             <div class="dropdown-bell" v-if="$store.state.auth.parentFlg" v-show="bellModal">
+                <img src="/img/alram-deco.png" alt="" class="alram-deco">
                 <div class="bell-title">
                     <!-- 알람 닫기 X 아이콘 -->
                     <img src="/img/icon-cross.png" alt="" class="cross" @click="closeBellModal">
                     <div>알림함</div>
                 </div>
                 <div class="bell-list">
-                    <router-link class="alram" v-for="item in bellContent" :key="item">
-                        <img :src="item.profile" alt="" class="alram-profile">
+                    <div class="alram" v-for="item in bellContent" :key="item">
+                        <img :src="item.child.profile" alt="" class="alram-profile">
                         <div  class="bell-content">
-                            <div>{{ item.child.name }} 님의 {{ item.title }} 미션이 등록되었어요!</div>
+                            <div @click="goMission(item.mission_id)">{{ item.child.name }} 님의 {{ item.title }} 미션이 등록되었어요!</div>
                             <p>{{ item.created_at }}</p>
                         </div>
-                        <!-- 체크 버튼 -->
-                        <img src="/img/icon-check.png" alt="" class="alram-check" @click="checkMission(mission_id)">
-                    </router-link>
-                    <div v-if="bellContent.length === 0">등록된 미션이 없습니다</div>
+                        <!-- 알람 체크 버튼 -->
+                        <img src="/img/icon-delete-black.png" alt="" class="alram-check" @click="checkMission(item.mission_id)">
+                    </div>
+                    <div v-if="bellContent.length === 0" class="not">등록된 미션이 없습니다</div>
                 </div>
             </div>
             <!-- 햄버거 아이콘 -->
@@ -65,14 +68,18 @@
 
 <script setup>
 import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 const store = useStore();
-
+const route = useRoute();
+const router = useRouter();
 // +==========================+
 // +    모바일 화면 전환       +
 // +==========================+
 // v-if="ismobile"적으면 모바일 화면으로 이동
 const isMobile = store.state.mobile.isMobile;
+
+
 /* 햄버거 모달 */
 const hamburgerModal = ref(false);
 
@@ -89,7 +96,9 @@ const closeHamburgerModal = () => {
 
 // *******벨 드랍 메뉴 *******
 const bellModal = ref(false);
-const bellContent = computed(() => store.state.header.bellContent);
+
+
+const bellContent = computed(() => store.state.header.bellContent); // 새로 등록될때마다 미션 보여줌
 const openBellModal = () => {
     console.log('열라라 참께');
     bellModal.value = !bellModal.value;
@@ -101,11 +110,18 @@ const closeBellModal = () => {
     bellModal.value = false;
 }
 
-// 알람 확인 체크
-const checkMission = (mission_id) => {
-    console.log('알람 확인');
-    store.dispatch('header/bellMenuCheck', mission_id);
+const goMission = (mission_id) => {
+    console.log('goMission mission_id : ', mission_id);
+    store.dispatch('mission/showMissionDetail', mission_id);
+    closeBellModal();
+}
 
+// 알람 확인 체크
+// const mission_id = computed(()=> store.state.header.bellCheckMenu);
+const checkMission = (mission_id) => {
+    console.log('알람 확인 체크 mission_id : ');
+    store.dispatch('header/bellMenuCheck', mission_id);
+    store.dispatch('header/bellContent');
 }
 
 
@@ -184,6 +200,20 @@ const checkMission = (mission_id) => {
     top: -30px;
 }
 
+.icon-circle {
+    position: absolute;
+    top: 23px;
+    right: 177px;
+    width: 10px;
+}
+
+.alram-deco {
+    width: 30px;
+    position: absolute;
+    top: -30px;
+    right: 160px;
+}
+
 /* **************햄버거 모달************* */
 .drop-bar {
     display: flex;
@@ -230,10 +260,11 @@ const checkMission = (mission_id) => {
     background-color: #FFFFFF;
     position: absolute;
     z-index: 1000;
-    top: 75px;
+    top: 91px;
     right: 15px;
     display: flex;
     flex-direction: column;
+    border-radius: 10px 10px 0px 0px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
 }
 
@@ -265,12 +296,13 @@ const checkMission = (mission_id) => {
 .bell-list {
     overflow: hidden;
     overflow-y: scroll;
-    min-height: 200px;
+    min-height: 180px;
 }
 
 
 .alram {
     display: flex;
+    align-items: center;
     text-decoration: none;
     color: #000;
     font-size: 1.0rem;
@@ -289,6 +321,7 @@ const checkMission = (mission_id) => {
     height: 40px;
     border-radius: 50px;
     border: 2px solid #A2CAAC;
+    margin-right: 8px;
 }
 
 
@@ -296,7 +329,7 @@ const checkMission = (mission_id) => {
     display: flex;
     justify-content: center;
     font-size: 0.9rem;
-    width: 195px;
+    width: 185px;
 }
 
 .bell-content >p {
@@ -312,11 +345,21 @@ const checkMission = (mission_id) => {
 
 
 .alram-check {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
     cursor: pointer;
+    background-image: url('/img/icon-delete-black.png');
 }
 
+.alram-check:hover {
+    background-image: url('/img/icon-delete-red.png');
+}
+
+/* 등록된 미션이 없을때 */
+.not {
+    text-align: center;
+    margin-top: 78px;
+}
 
 
 
