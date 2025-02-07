@@ -28,4 +28,12 @@ class SavingSignUp extends Model
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
     }
+
+    protected function SavingDetail() {
+        return $this->hasMany(SavingDetail::class, 'saving_sign_up_id');
+    }
+
+    protected function SavingProduct() {
+        return $this->hasMany(SavingProduct::class, 'saving_product_id');
+    }
 }

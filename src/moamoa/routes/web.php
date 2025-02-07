@@ -9,6 +9,7 @@ use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ModalController;
+use App\Http\Controllers\ParentSavingController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TransactionChildrenController;
 use App\Http\Controllers\TransactionController;
@@ -178,6 +179,15 @@ Route::get('/api/koreabank', [BankController::class, 'koreaBank']);
 
 // 적금 상품 가입
 Route::get('/api/moabank/product/{id}', [BankController::class, 'product']);
+
+// 적금 상품
+Route::get('/api/moabank/product', [BankController::class, 'savingList']);
+
+// ******************************
+// *      부모 은행 관련         *
+// ******************************
+// 부모 자녀가 가입한 적금 목록 받아오기
+Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

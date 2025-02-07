@@ -43,30 +43,15 @@
         <div class="savings-product">
             <div class="outline">
                 <h1>모아은행 적금 상품</h1>
-                <div class="div-products">
-                    <div class="products">
-                        <p class="product-title">14일 적금</p>
-                        <p class="rate-percent">이자율 : 2.1%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
+                <div class="div-products" >
+                    <div class="products" v-for="item in savingProduct" :key="item">
+                        <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                        <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
                     </div>
-                    <div class="products">
-                        <p class="product-title">21일 적금</p>
-                        <p class="rate-percent">이자율 : 3.4%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
-                    </div>
-                    <div class="products">
-                        <p class="product-title">35일 적금</p>
-                        <p class="rate-percent">이자율 : 4.8%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
-                    </div>
+                    <!-- 더보기 누르면 적금 상품 더보이게(페이지네이션 처리) -->
                     <div>
                         <p @click="openProducts" class="more">더보기</p>
-                    </div>
-                    <!-- 적금상품 더보여주기 영역 -->
-                    <div class="products" v-show="showProducts">
-                        <p class="product-title">49일 적금</p>
-                        <p class="rate-percent">이자율 : 5.0%</p>
-                        <p class="rate-percent">최소 납입 포인트 : 100moa</p>
                     </div>
                 </div>
             </div>
@@ -84,12 +69,17 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-
+// 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 onMounted(() => {
     store.dispatch('bank/koreaBank');
 });
 
+// 적금 상품 가져오기
+const savingProduct = computed(()=> store.state.bank.savingList);
+onMounted(()=> {
+    store.dispatch('bank/savingProductList');
+})
 
 
 </script>
@@ -98,7 +88,7 @@ onMounted(() => {
 <style scoped>
 
 .bankbook {
-    width: 1620px;
+    width: 1600px;
     display: flex;
     flex-direction: column;
     align-items: center;
