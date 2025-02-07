@@ -38,6 +38,7 @@ import ParentsMoaBankComponent from '../views/components/bank/parent-bank/Parent
 import ChildBankProductComponent from '../views/components/bank/child-bank/ChildBankProductComponent.vue';
 import ChildBankProductRegisterComponent from '../views/components/bank/child-bank/ChildBankProductRegisterComponent.vue';
 import ChildMoaBankComponent from '../views/components/bank/child-bank/ChildMoaBankComponent.vue';
+import ChildBankBookComponent from '../views/components/bank/child-bank/ChildBankBookComponent.vue';
 
 
 
@@ -187,7 +188,7 @@ const routes = [
     },
     // 부모 미션 상세 페이지
     {
-        path: '/parent/mission/detail/:id',
+        path: '/parent/mission/detail/:mission_id',
         component: ParentsDetailComponent,
         beforeEnter: chkAuth,
     },
@@ -368,6 +369,13 @@ const routes = [
     {
         path: '/moabank/product/regist',
         component: ChildBankProductRegisterComponent,
+        beforeEnter: chkAuth,
+    },
+    
+    // 자녀 통장 페이지
+    {
+        path: '/child/bankbook',
+        component: ChildBankBookComponent,
         beforeEnter: chkAuth,
     },
 

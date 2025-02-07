@@ -32,8 +32,8 @@
 <script setup>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
-import MenuLeftComponent from './layout/MenuLeftComponent.vue';
-import HeaderMenuComponent from './layout/HeaderMenuComponent.vue';
+import MenuLeftComponent from './layout-project-3/MenuLeftComponent.vue';
+import HeaderMenuComponent from './layout-project-3/HeaderMenuComponent.vue';
 
 
 const store = useStore();
