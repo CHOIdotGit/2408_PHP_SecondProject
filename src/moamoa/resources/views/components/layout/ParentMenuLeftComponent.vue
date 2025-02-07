@@ -1,7 +1,7 @@
 <template>
 <div class="menu-left" v-if="!isMobile">
     <div class="menu-container" v-show="slidMenu">
-
+        <img src="/img/logo4.png" class="logo" width="250px"  height="100px">
         <!-- 자녀가 있을 때  -->
         <div class="child-box" v-if="childNameList.length > 0" >
             <div class="child-profile">
@@ -351,6 +351,9 @@ button {
     background-color: #e9e9e9;
 }
 
+.logo {
+    margin-left: 30px;
+}
 
 /* 상단 메뉴(사용자매뉴얼, 알람, 부모 프로필) */
 </style>

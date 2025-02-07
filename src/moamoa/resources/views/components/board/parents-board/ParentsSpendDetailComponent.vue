@@ -1,15 +1,23 @@
 <template>
-    <div class="main-container">
+    <div v-if="isMobile">
+        dfdf
+    </div>
+    <div class="main-container" v-else>
         <div v-if="transactionDetail"  class="board-container">
+            <div class="route"> 홈   > 지출  >   상세 </div>
             <div class="content-list">
                 <div class="content" >
-                    <p class="title h-60">제목</p>
+                    <p class="title">제목</p>
                     <p class="ms-title h-60">{{ transactionDetail.title }}</p>
-                    <div class="date deco">
-                        <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>
-                    </div>
                 </div>
                 <div class="content">
+                    <p class="title">날짜</p>
+                    <div class="date-detail"></div>
+                    <div class="date deco">
+                        <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>   
+                    </div>
+                </div>
+                <div class="content-cate">
                     <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item" :class="{'checked-category-btn' : item.index === Number(category) }">
                         <img class="ms-category-img" :src="item.img">
@@ -43,6 +51,12 @@ onMounted(() => {
     store.dispatch('transaction/showTransactionDetail', store.state.transaction.transactionId);
 });
 
+// +==========================+
+// +    모바일 화면 전환       +
+// +==========================+
+// v-if="ismobile"적으면 모바일 화면으로 이동
+const isMobile = store.state.mobile.isMobile;
+
 // 뒤로가기
 const goBack = (child_id) => {
     store.dispatch('transaction/transactionList', child_id);
@@ -70,22 +84,12 @@ const categories = reactive([
     align-items: center;
 }
 
-/* 미션(지출) 날짜 영역 배경색 */
-.deco {
-    background-color: #A2CAAC;
-}
-
 /* 미션 금액 */
 .ms-amount {
     display: flex;
     align-items: center;
 }
 
-/* 미션(지출) 카테고리 */
-.category-btn {
-    width: 80px;
-    height: 80px;
-}
 
 /* 선택된 카테고리 색깔 */
 .checked-category-btn {
@@ -112,7 +116,7 @@ const categories = reactive([
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    margin-left: 130px;
+    margin-left: 330px;
     margin-right: 350px;
 }
 
@@ -180,7 +184,10 @@ const categories = reactive([
     padding: 3px;
 }
 
-
+.category-name {
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
 
 /* 버튼 */
 .modal-cancel {

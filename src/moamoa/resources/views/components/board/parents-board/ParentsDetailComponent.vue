@@ -1,17 +1,27 @@
 <template>
 <div class="main-container">
     <div class="board-container">
+        <div class="route"> 홈   > 미션  >   상세 </div>
         <div class="content-list">
             <div class="content" v-if="missionDetail">
                 <p class="title">제목</p>
                 <p class="ms-title">{{ missionDetail.title }}</p>
-                <div class="date deco">
-                    <span class="ms-date">{{ missionDetail.start_at }}</span>
-                    <span>⁓</span>
-                    <span class="ms-date">{{ missionDetail.end_at }}</span>
+            </div>
+            
+            <div class="content">
+                <p class="title">날짜</p>
+                <div class="date-detail">
+                    <div class="start-date">
+                        <p class="date-title">시작일</p>
+                        <span class="ms-date">{{ missionDetail.start_at }}</span>
+                    </div>
+                    <div class="end-date">
+                        <p class="date-title">종료일</p>
+                        <span class="ms-date">{{ missionDetail.end_at }}</span>
+                    </div>
                 </div>
             </div>
-            <div class="content">
+            <div class="content-cate">
                 <p class="title">종류</p>
                 <div class="category-btn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                     <img class="ms-category-img" :src="item.img" >
@@ -26,17 +36,15 @@
                 <p class="title">금액</p>
                 <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
             </div>
-            <div class="create-btn">
+            <div class="buttons">
                 <div class="bottom-btn left">
                     <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
-                    <!-- <div class="btn-flex"> -->
                 </div>
                 <div class="bottom-btn right">
-                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del">미션 삭제</button>
-                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up">미션 수정</button>
-                    <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-comfirm">미션 승인</button>
+                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del bottom-btn">미션 삭제</button>
+                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up bottom-btn">미션 수정</button>
+                    <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-confirm bottom-btn">미션 승인</button>
                 </div>
-                <!-- </div> -->
             </div>
         </div>
     </div>
@@ -129,24 +137,10 @@ const approvalMission = () => {
 @import url('../../../../css/category.css');
 
 /* 미션 제목 입력란 */
-.ms-title {
-    display: flex;
-    align-items: center;
-}
-
-/* 날짜 입력란 배경색 */
-.deco {
-    background-color: #A2CAAC;
-}
-
-/* 미션 금액 입력란 */
-.ms-amount {
-    display: flex;
-    align-items: center;
-}
 
 /* 미션(지출) 카테고리 */
 .category-btn {
+    margin-left: 30px;
     width: 80px;
     height: 80px;
 }
@@ -167,79 +161,62 @@ const approvalMission = () => {
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    /* margin-left: 130px;
-    margin-right: 350px; */
+    margin-left: 500px;
+    margin-right: 480px;
+    /* margin-right: 350px; */
 }
 
 /* 삭제버튼 */
 .ms-del {
     /* margin-left: 250px; */
-    color: #A2CAAC;
-    background-color: #FFFF;
+    color: #ffffff;
+    background-color: #A2CAAC;
+    font-size: 1.3rem;
+    border: 1px solid #A2CAAC;
+    width: 120px;
+    border-radius: 0px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.ms-confirm{
+    color: #ffffff;
+    background-color: #A2CAAC;
+    font-size: 1.3rem;
+    border: 1px solid #A2CAAC;
+    width: 120px;
+    border-radius: 0px;
+    cursor: pointer;
+}
+
+.ms-up {
+    color: #ffffff;
+    background-color: #A2CAAC;
     font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     padding: 5px;
     width: 120px;
     border-radius: 0px;
+    
+    margin-right: 20px;
     cursor: pointer;
 }
 
 .bottom-btn{
-    /* width: 60px; */
-    gap: 30px;
-    margin-top: 10px;
+    height: 50px;
+
+}
+
+.right {
     display: flex;
-
+    margin-left: 140px;
 }
 
-/* .right {
-    margin-right: 350px;
-}
-
-.left {
-    margin-left: 200px;
-} */
-
-/* 수정버튼 */
-.ms-up {
-    color: #FFFF;
-    background-color: #A2CAAC;
-    font-size: 1.3rem;
-    border: 1px solid #A2CAAC;
-    padding: 5px;
-    width: 120px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
-/* 승인버튼 */
-.ms-comfirm {
-    color: #FFFF;
-    background-color: #A2CAAC;
-    font-size: 1.2rem;
-    border: 1px solid #A2CAAC;
-    padding: 5px;
-    width: 120px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
-.btn-right {
+.buttons {
     display: flex;
+    width: 1000px;
+    margin-top: 20px;
 }
-
-.create-btn {
-    display: flex;
-    margin-top: 10px;
-    justify-content: space-between;
-    width: 1200px;
-}
-
-
-
-/* .btn-flex {
-    display: flex;
-} */
 
 /* ********************* */
 /* *******삭제 모달****** */
@@ -303,6 +280,10 @@ const approvalMission = () => {
     padding: 3px;
 }
 
+.category-name {
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
 
 
 /* 삭제 모달 버튼 */

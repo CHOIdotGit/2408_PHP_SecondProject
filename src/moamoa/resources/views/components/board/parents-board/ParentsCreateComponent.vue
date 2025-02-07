@@ -1,18 +1,26 @@
 <template>
     <div class="main-container">
         <div class="board-container">
+        <div class="route"> 홈   > 미션  >  작성 </div>
             <div class="content-list">
                 <div class="content">
                     <p class="title">제목</p>
                     <input v-model="missionCreate.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
-                    <div class="date deco">
-                        <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01"  >
-                        <span>⁓</span>
-                        <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01" >
-                        <!-- value="today" -->
+                </div>
+                <div class="content">
+                    <p class="title">날짜</p>
+                    <div class="date-detail">
+                        <div class="start-date">
+                            <p class="date-title">시작일</p>
+                            <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
+                        </div>
+                        <div class="end-date">
+                            <p class="date-title">종료일</p>
+                            <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01" >
+                        </div>
                     </div>
                 </div>
-                <div class="content" >
+                <div class="content-cate" >
                     <p class="title">종류</p>
                     <!-- 카테로리 v-for -->
                     <div class="category-btn" v-for="item in categories" :key="item">
@@ -22,9 +30,6 @@
                             <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
-                </div>
-                
-
                 </div>
                 <div class="content">
                     <p class="title">내용</p>
@@ -38,8 +43,10 @@
                     <button @click="getChildId(childId)" class="create-btn cancel">등록 취소</button>
                     <button @click="$store.dispatch('mission/createMission', missionCreate)" class="parent create-btn">미션 등록</button>
                 </div>
+                
             </div>
         </div>
+    </div>
     
 </template>
 
@@ -112,15 +119,30 @@ const getChildId = (child_id) => {
     background-color: #A2CAAC;
 }
 
+#ms-title {
+    width: 500px;
+}
+
+.deco{
+    border-color: #A2CAAC;
+    border-width: 3px;
+    border-style: solid;
+}
+
+
 /* 하단 버튼 영역 */
 .bottom-btn{
     display: flex;
-    justify-content: right;
-    gap: 30px;
-    margin: auto;
-    margin-top: 10px;
+    gap: 760px;
+    margin-top: 20px;
     margin-right: 150px;
+    margin-left: 500px;
 
+}
+
+.category-name {
+    margin-top: 10px;
+    font-size: 1.3rem;
 }
 
 /* 취소/미션등록 버튼 */
@@ -140,10 +162,7 @@ const getChildId = (child_id) => {
     border: 1px solid #ACACAC;
 }
 
-/* 입력란 테두리 */
-.deco {
-    border: 3px solid #A2CAAC;
-}
+
 
 /* 부모쪽 버튼 색깔 */
 .parent {

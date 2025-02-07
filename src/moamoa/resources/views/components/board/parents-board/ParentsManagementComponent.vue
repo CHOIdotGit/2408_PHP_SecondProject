@@ -50,12 +50,12 @@
             <div v-if="noChildFlg">
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
-            <div class="wave-wrapper">
+            <!-- <div class="wave-wrapper">
                 <div class="wave-container wave1"></div>
                 <div class="wave-container wave2"></div>
                 <div class="wave-container wave3"></div>
                 <div class="wave-container wave4"></div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>

@@ -1,13 +1,14 @@
 .category-btn {
     display: flex;
     flex-direction: column;
-    /* width: 80px;
-    height: 80px; */
     align-items: center;
     background-color: #c9cfca;
-    margin-right: 20px;
+    /* margin-right: 20px; */
     border-radius: 50px;
     font-size: 1.2rem;
+    margin-left: 30px;
+    width: 80px;
+    height: 80px;
 }
 
 .category-btn > input {
@@ -32,8 +33,6 @@
     border: none;
 }
 
+
+
 /* 카테고리 이름 */
-.category-name {
-    margin-top: 10px;
-    font-size: 1.2rem;
-}

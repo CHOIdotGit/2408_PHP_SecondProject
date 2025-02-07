@@ -1,6 +1,8 @@
 <template>
     <div  class="main-container">
         <div class="board-container">
+            
+            <div class="route"> 홈   > 미션  >  수정 </div>
             <div class="content-list">
                 <div class="content" >
                     <p class="title">제목</p>

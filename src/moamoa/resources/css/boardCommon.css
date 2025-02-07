@@ -7,43 +7,44 @@
 
 /* 전체 화면 영역 */
 .main-container {
-    margin-left: 50px;
-    display: flex;
+    /* margin-left: 200px; */
+    /* display: flex; */
     justify-content: center;
     align-items: center;
 }
 
 /* 게시판 틀 */
 .board-container {
-    width: 1500px;
+    /* width: 1500px; */
+    margin-left: 200px;
     margin-top: 20px;
-    height: 720px;
+    /* height: 720px; */
 }
 
 .content-list {
-    /* margin-top: 100px;
-    justify-content: center; */
     display: grid;
     margin-top: 50px;
     margin-left: 20px;
     justify-content: center;
+    width: 1000px;
 }
 
 .content {
     display: flex;
     padding: 20px;
-    margin: 0 300px;
+    margin: 0 500px;
     gap: 10px;
-    /* border-bottom: 2px solid #dfdfdf; */
+    line-height: 30px;
+    border-bottom: 2px solid #dfdfdf;
     width: 1000px;
 }
 
 /* 제목 */
 .title {
-    /* font-size: 2rem; */
-    /* border-right: 2px solid #dfdfdf; */
+    font-size: 1.8rem;
+    border-right: 2px solid #dfdfdf;
     padding: 10px;
-    /* width: 150px; */
+    width: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -51,11 +52,26 @@
 
 /* 미션(지출) 제목 입력란 */
 .ms-title {
-    /* width: 300px; */
+    display: flex;
+    align-items: center;
     outline: none;
     border-radius: 10px;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     padding-left: 5px;
+    margin-left: 30px;
+    outline: none;
+}
+
+
+.content-cate {
+    height: 150px;
+    display: flex;
+    padding: 20px;
+    margin: 0 500px;
+    gap: 10px;
+    line-height: 30px;
+    border-bottom: 2px solid #dfdfdf;
+    width: 1000px;
 }
 
 /* 미션(지출) 날짜 영역*/
@@ -64,6 +80,15 @@
     padding: 10px;
     display: flex;
     align-items: center;
+}
+
+.date-title {
+    font-size: 1.5rem;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 날짜 ~ */
@@ -77,8 +102,15 @@ span {
     outline: none;
     font-size: 1.5rem;
     text-align: center;
+    margin: auto;
+    margin-left: 30px;
 }
 
+.date-detail{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
 /* 미션(지출) 내용 입력란 */
 .ms-content {
     width: 500px;
@@ -88,15 +120,19 @@ span {
     outline: none;
     border-radius: 10px;
     font-size: 1.5rem;
+    margin-left: 30px;
 }
 
 /* 미션(지출) 금액 입력란 */
 .ms-amount {
+    display: flex;
+    align-items: center;
     width: 300px;
     outline: none;
     border-radius: 10px;
     font-size: 1.8rem;
     padding-left: 5px;
+    margin-left: 30px;
 }
 
 .ms-amount::-webkit-outer-spin-button,
