@@ -204,12 +204,10 @@ const approvalMission = () => {
 
 .bottom-btn{
     height: 50px;
-
 }
 
 .right {
     display: flex;
-    margin-left: 140px;
 }
 
 .buttons {
@@ -308,5 +306,6 @@ const approvalMission = () => {
     cursor: pointer;
     margin: 10px;
 }
+
 
 </style>

@@ -7,15 +7,22 @@
                 <div class="content" >
                     <p class="title">제목</p>
                     <input type="text" v-model="missionDetail.title" value="" class="ms-title deco" id="ms-title" maxlength="10" autofocus>
-                    
-                    <div class="date deco">
-                        <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01"  >
-                        <span>⁓</span>
+                </div>
+                <div class="content">
+                    <p class="title">날짜</p>        
+                    <div class="date-detail">
+                        <div class="start-date">
+                            <p class="date-title">시작일</p>
+                            <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01">
+                        </div>
+                        <div class="end-date">
+                            <p class="date-title">종료일</p>
                         <input type="date" v-model="missionDetail.end_at" class="ms-date" id="ms-date" min="2000-01-01" >
+                        </div>
                         <!-- value="today" -->
                     </div>
                 </div>
-                <div class="content">
+                <div class="content-cate">
                     <p class="title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
@@ -24,7 +31,6 @@
                             <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
-
                 </div>
                 <div class="content">
                     <p class="title">내용</p>
@@ -118,7 +124,14 @@ const getUpdateMission = () => {
     color: #FFFFFF;
 }
 
+.right{
+    display: flex;
+    margin-left: 70px;
+}
 
+.bottom-btn {
+    margin-right: 500px;
+}
 /* 취소/미션등록 버튼 */
 .create-btn {
     width: 120px;
@@ -130,6 +143,12 @@ const getUpdateMission = () => {
     cursor: pointer;
     color: #FFFFFF;
 }
+
+.category-name {
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
 /* 취소버튼 */
 .cancel {
     color: #ACACAC;
