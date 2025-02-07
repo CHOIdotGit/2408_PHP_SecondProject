@@ -1,0 +1,145 @@
+.c-title {
+    font-size: 1.5rem;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-btn {
+    width: 120px;
+    height: 50px;
+    font-size: 1.2rem;
+    border: none;
+    background-color:#5589e996 ;
+    margin-top: 30px;
+    cursor: pointer;
+    color: #FFFFFF;
+}
+
+.c-for-buttons {
+    display: flex;
+    gap: 30px;
+}
+
+
+.c-route {
+    margin-top: 20px;
+    font-size: 1.7rem;
+}
+
+.c-content {
+    display: flex;
+    padding: 20px;
+    margin: 0 300px;
+    gap: 10px;
+    line-height: 30px;
+    border-bottom: 2px solid #dfdfdf;
+    width: 1000px;
+}
+
+.c-content-list {
+    display: grid;
+    margin-top: 50px;
+    margin-left: 20px;
+    justify-content: center;
+    width: 1000px;
+}
+
+.board-container {
+    /* width: 1500px; */
+    margin-left: 200px;
+    margin-top: 20px;
+    /* height: 720px; */
+}
+
+.main-container {
+    /* margin-left: 200px; */
+    /* display: flex; */
+    justify-content: center;
+    align-items: center;
+}
+
+.c-ms-title {
+    display: flex;
+    align-items: center;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.5rem;
+    padding-left: 5px;
+    margin-left: 30px;
+    outline: none;
+}
+
+.c-ms-category-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: #c9cfca;
+    text-align: center;
+    cursor: pointer;
+}
+.c-list-title {
+    font-size: 1.8rem;
+    border-right: 2px solid #dfdfdf;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-date {
+    display: flex;
+    gap: 30px;
+}
+
+.c-date-title {
+    font-size: 1.5rem;
+    padding: 10px;
+    width: 150px;
+    display: flex;
+    /* align-items: center; */
+    /* justify-content: center; */
+    margin-left: 20px;
+}
+
+span {
+    padding: 5px;
+}
+
+.c-ms-date {
+    border: none;
+    outline: none;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: auto;
+}
+
+.c-date-detail{
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.c-ms-amount {
+    display: flex;
+    align-items: center;
+    width: 300px;
+    outline: none;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    padding-left: 5px;
+    margin-left: 30px;
+}
+
+.c-content-cate{
+    display: flex;
+    padding: 20px;
+    margin: 0 300px;
+    gap: 10px;
+    line-height: 30px;
+    border-bottom: 2px solid #dfdfdf;
+    width: 1000px;
+    height: 150px;
+}

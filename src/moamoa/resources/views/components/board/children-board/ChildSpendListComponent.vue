@@ -2,9 +2,9 @@
     <div class="container">
         <div class="list-container">
             <div class="route"> 홈  > 지출 </div>
-            <div class="for-buttons">
-                <button @click="delOpenModal" class="btn mission-delete">지출 삭제</button>
-                <button @click="goSpendCreate" class="btn mission-insert">지출 작성</button>
+            <div class="c-for-buttons">
+                <button @click="delOpenModal" class="c-btn c-mission-delete">지출 삭제</button>
+                <button @click="goSpendCreate" class="c-btn c-mission-insert">지출 작성</button>
             </div>
             <div class="search-menu">
                 <div class="search-option">
@@ -47,7 +47,7 @@
                         <div class="chk-div">
                             <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.transaction_id" name="checkbox">
                         </div>
-                        <p @click="goSpendDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p @click="goSpendDetail(item.transaction_id)" class="c-title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="category">{{ getCategoryText(item.category) }}</p>
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
                         <p class="transaction-date">{{ item.transaction_date }}</p>
@@ -177,14 +177,12 @@ const delCloseModal = () => { //모달창 닫기
 </script>
 
 <style scoped>
-@import url('../../../../css/list.css');
+@import url(../../../../css/childboardCommon.css);
 
 .container {
-    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-bottom: 40px; */
 }
 
 .list-container {
@@ -223,14 +221,6 @@ const delCloseModal = () => { //모달창 닫기
     text-align: center;
 }
 
-.title {
-    cursor: pointer;
-}
-
-.title:hover {
-    color: #5589e996;
-}
-
 .btn {
     width: 120px;
     height: 50px;
@@ -250,8 +240,6 @@ const delCloseModal = () => { //모달창 닫기
     margin: 15px;
 }
 
-
-
 .mission-inserted-list {
     height: 60px;
     display: grid;
@@ -260,7 +248,6 @@ const delCloseModal = () => { //모달창 닫기
     overflow-y: auto;
     overflow-x: hidden;
     height: 420px;
-    background-color: #F5F5F550;
 }
 
 .search-btn button{
@@ -282,6 +269,10 @@ const delCloseModal = () => { //모달창 닫기
     background-color: #214c9c96;
 }
 
+.c-mission-delete {
+    margin-left: 1130px;
+}
+
 .search-menu{
     width: 1400px;
     display: flex;
@@ -291,6 +282,9 @@ const delCloseModal = () => { //모달창 닫기
     gap: 30px;
 }
 
+.c-title:hover {
+    color: #5589e996;
+}
 
 /* ********************* */
 /* *******삭제 모달****** */
