@@ -90,20 +90,16 @@ const categories = reactive([
     align-items: center;
 }
 
-
+.create-btn {
+    width: 1000px;
+    margin-top: 20px;
+    margin-left: 170px;
+}
 /* 선택된 카테고리 색깔 */
 .checked-category-btn {
     background-color: #A2CAAC;
 }
 
-
-
-/* 버튼 영역 */
-.create-btn {
-    margin: 25px 0 0 170px;
-    display: flex;
-    align-items: center;
-}
 
 /* 취소 버튼 */
 .ms-cancel {
@@ -117,7 +113,6 @@ const categories = reactive([
     border-radius: 0px;
     cursor: pointer;
     margin-left: 330px;
-    margin-right: 350px;
 }
 
 

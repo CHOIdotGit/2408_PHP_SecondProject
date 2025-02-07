@@ -44,7 +44,7 @@
                 </div>
                 <div class="bottom-btn">
                     <button @click="$router.push(`/parent/mission/detail/${mission_id}`)" class="create-btn cancel">수정 취소</button>
-                    <button @click="getUpdateMission" class="create-btn">수정 완료</button>
+                    <button @click="getUpdateMission" class="create-btn confirm">수정 완료</button>
                 </div>
             </div>
         </div>
@@ -115,12 +115,9 @@ const getUpdateMission = () => {
 /* 하단 버튼 영역 */
 .bottom-btn{
     display: flex;
-    justify-content: right;
     gap: 30px;
-    margin: auto;
-    margin-top: 50px;
+    margin-top: 20px;
     cursor: pointer;
-    margin-right: 200px;
     color: #FFFFFF;
 }
 
@@ -134,14 +131,14 @@ const getUpdateMission = () => {
 }
 /* 취소/미션등록 버튼 */
 .create-btn {
-    width: 120px;
     height: 50px;
-    font-size: 1.5rem;
-    border: none;
-    background-color: #A2CAAC ;
-    margin-bottom: 30px;
+    color: #ffffff;
+    background-color: #A2CAAC;
+    font-size: 1.3rem;
+    border: 1px solid #A2CAAC;
+    width: 120px;
+    border-radius: 0px;
     cursor: pointer;
-    color: #FFFFFF;
 }
 
 .category-name {
@@ -154,6 +151,10 @@ const getUpdateMission = () => {
     color: #ACACAC;
     background-color: #FFFFFF;
     border: 1px solid #ACACAC;
+    margin-left: 500px;
+}
 
+.confirm {
+    margin-left: 730px;
 }
 </style>

@@ -206,6 +206,10 @@ const approvalMission = () => {
     height: 50px;
 }
 
+.ms-date{
+    margin-left: 25px;
+}
+
 .right {
     display: flex;
 }
@@ -267,7 +271,6 @@ const approvalMission = () => {
     font-size: 1.4rem;
     padding: 15px;
 }
-
 
 .modal-img{
     width: 100px;

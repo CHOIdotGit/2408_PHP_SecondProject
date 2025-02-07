@@ -1,39 +1,50 @@
 <template>
     <div class="main-container">
         <div class="board-container">
-            <div class="content-list">
-                <div class="content" v-if="missionDetail">
-                    <p class="title">제목</p>
+            <div class="c-route"> 홈  > 미션 > 상세</div>
+            <div class="c-content-list">
+                <div class="c-content" v-if="missionDetail">
+                    <p class="c-list-title">제목</p>
                     <p class="ms-title">{{ missionDetail.title }}</p>
-                    <div class="date deco">
-                        <span class="ms-date">{{ missionDetail.start_at }}</span>
-                        <span>⁓</span>
-                        <span class="ms-date">{{ missionDetail.end_at }}</span>
+                </div>
+                <div class="c-content">
+                    <p class="c-list-title">날짜</p>
+                    <div class="c-date-detail">
+                        <div class="c-date">
+                            <div class="c-start-date">
+                                <p class="c-date-title">시작일</p>
+                                <span class="c-ms-date">{{ missionDetail.start_at }}</span>
+                            </div>
+                            <div class="c-end-date">
+                                <p class="c-date-title">종료일</p>
+                                <span class="c-ms-date">{{ missionDetail.end_at }}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">종류</p>
+                <div class="c-content-cate">
+                    <p class="c-list-title">종류</p>
                     <div class="category-btn"  v-for="item in categories" :key="item" :class="{'categorybtn-green' : item.index === Number(category) }">
                         <img class="ms-category-img" :src="item.img" >
                         <p class="category-name">{{ item.name }}</p>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">내용</p>
+                <div class="c-content">
+                    <p class="c-list-title">내용</p>
                     <div class="ms-content">{{ missionDetail.content}}</div>
                 </div>
-                <div class="content">
-                    <p class="title">금액</p>
-                    <p class="ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
+                <div class="c-content">
+                    <p class="c-list-title">금액</p>
+                    <p class="c-ms-amount">{{ Number(missionDetail.amount).toLocaleString()}}원</p>
                 </div>
-                <div class="bottom-btn">
-                    <div class="bottom-btn left">
-                        <button @click="goBack(missionDetail.child_id)" class="create-btn ms-cancel">뒤로가기</button>
+                <div class="c-bottom-btn">
+                    <div class="c-left">
+                        <button @click="goBack(missionDetail.child_id)" class="c-back">뒤로가기</button>
                     </div>
-                    <div class="bottom-btn right">
-                        <button @click="delOpenModal('mission', mission_id)" class="create-btn ms-del">미션 삭제</button>
-                        <button class="create-btn ms-up">미션 완료</button>
-                        <button @click="goUpdate(missionDetail.mission_id)" class="create-btn ms-comfirm">미션 수정</button>
+                    <div class="c-right">
+                        <button @click="delOpenModal('mission', mission_id)" class="c-ms-del">미션 삭제</button>
+                        <button class="c-ms-complete">미션 완료</button>
+                        <button @click="goUpdate(missionDetail.mission_id)" class="c-ms-up">미션 수정</button>
                     </div>
                 </div>
             </div>
@@ -112,25 +123,9 @@ const delCloseModal = () => {
 </script>
 
 <style scoped>
-@import url('../../../../css/boardCommon.css');
-@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/childboardCommon.css');
 
-/* 미션(지출) 제목 입력란 */
-.ms-title {
-    display: flex;
-    align-items: center;
-}
-
-/* 날짜 입력란 배경색 */
-.deco {
-    background-color: #5589e996;
-}
-
-/* 미션 금액 입력란 */
-.ms-amount {
-    display: flex;
-    align-items: center;
-}
+/* 미션(지출) 제목 입력란 *
 
 /* 미션(지출) 종류 카테고리 */
 .category-btn {
@@ -143,67 +138,64 @@ const delCloseModal = () => {
     background-color: #5589e996;
 }
 
+.category-name {
+    margin-top: 20px;
+    font-size: 1.3rem;
+}
 
-.bottom-btn{
-    /* width: 1400px; */
-    gap: 30px;
+
+.c-ms-date{
+    margin-left: 25px;
+}
+
+
+.c-bottom-btn{
     display: flex;
-    margin-top: 10px;
-    justify-content: space-between;
+    margin-top: 20px;
+    button {
+        height: 50px;
+        width: 120px;
+    }
 }
 
-.right {
-    margin-right: 350px;
-}
-
-.left {
-    margin-left: 200px;
-}
-
-/* 버튼 종합 */
-.create-btn {
-    color: #FFFF;
-    background-color: #5589e996;
-    font-size: 1.5rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 120px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
-/* 삭제버튼 */
-.ms-del {
-    
-}
-
-/* 취소버튼 */
-.ms-cancel {
+.c-back {
+    margin-left: 300px;
     color: #ACACAC;
     background-color: #FFFFFF;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border: 1px solid #ACACAC;
     padding: 5px;
     width: 120px;
     height: 50px;
     border-radius: 0px;
     cursor: pointer;
-    margin-left: 130px;
-    margin-right: 350px;
 }
 
-/* 수정버튼 */
-.ms-up {
-    
-}
-
-/* 승인버튼 */
-.ms-comfirm {
-    
-}
-
-.btn-right {
+.c-right {
     display: flex;
+    gap: 30px;
+    
+}
+.c-ms-del {
+    margin-left: 460px;
+    background-color: #5589e996;
+    font-size: 1.3rem;
+    border: none;
+    color: white;
+}
+
+.c-ms-up {
+    background-color: #5589e996;
+    font-size: 1.3rem;
+    border: none;
+    color: white;
+}
+
+.c-ms-complete {
+    background-color: #5589e996;
+    font-size: 1.3rem;
+    border: none;
+    color: white;
 }
 
 /* ********************* */
