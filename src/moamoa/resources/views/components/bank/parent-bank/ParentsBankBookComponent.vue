@@ -1,188 +1,204 @@
 <template>
-<div class="bankbook-container">
-    <div class="bankbook">
-        <div class="bankbook-hearder">
-            <p class="moabank">모아은행</p>
+    <div class="bankbook-wrapper">
+        <div class="bankbook">
+            <!-- 상단 헤더 (은행명) -->
+            <div class="bankbook-header">
+                <p class="bank-name">모아은행</p>
+            </div>
+            <!-- 통장 정보 -->
             <div class="bankbook-info">
-                <div class="bankbook-info-detail">
-                    <p>적금 종류</p>
-                    <p>7일 적금</p>
-                    <p>납입 유형</p>
-                    <p>매일</p>
-                    <p>가입한 날</p>
-                    <p>2025년 01월 01일</p>
-                    <p>금리</p>
-                    <p>3.0 %</p>
+                <div class="info-detail">
+                    <div class="b-info">
+                        <p>적금 종류</p>
+                        <p>7일 적금</p>
+                    </div>
+                    <div class="b-info">
+                        <p class="margin-left">납입 유형</p>
+                        <p>매일</p>
+                    </div>
+                    <div class="b-info">
+                        <p>가입한 날</p>
+                        <p>2025년 01월 01일</p>
+                    </div>
+                        <div class="b-info">
+                        <p class="margin-left">금리</p>
+                        <p>3.0 %</p>
+                    </div>
                 </div>
                 <div class="bankbook-profile">
                     <img src="" alt="사진">
                     <div>김주연</div>
                 </div>
-
             </div>
-        </div>
-        <div class="bankbook-table">
-            <div class="bankbook-title">
-                <p class="title-payment-at">년 월 일</p>
-                <p class="title-withdrawal">출금 금액</p>
-                <p class="title-deposit">맡기신 금액</p>
-                <p class="title-left-moa">거래 후 잔액</p>
-                <p class="title-transaction-details">거래 내용</p>
-            </div>
-            <div class="bankbook-item">
-                <div class="bankbook-number">
-                    <p v-for="num in 23" class="num">{{ num }}</p>
+            <!-- 거래 내역 -->
+            <div class="bankbook-table">
+                <div class="bankbook-title">
+                    <p>년 월 일</p>
+                    <p>출금 금액</p>
+                    <p>맡기신 금액</p>
+                    <p>거래 후 잔액</p>
+                    <p>거래 내용</p>
                 </div>
-                <div class="bankbook-content">
-                    <p class="payment-at content-p">2025-01-01</p>
-                    <p class="withdrawal content-p">0</p>
-                    <p class="deposit content-p">100</p>
-                    <p class="left-moa content-p">100</p>
-                    <p class="transaction-details">적금 납입</p>
+                <div class="bankbook-item">
+                    <div class="bankbook-number">
+                        <p v-for="num in 20" :key="num" class="num">{{ num }}</p>
+                    </div>
+                    <div class="bankbook-transactions">
+                        <p>2025-01-01</p>
+                        <p>0</p>
+                        <p>100</p>
+                        <p>100</p>
+                        <p>적금 납입</p>
+                    </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-</div>
-
 </template>
-
+  
 <script setup>
-
 </script>
-
+  
 <style scoped>
-
-.bankbook-container {
+  /* 중앙 정렬 */
+  .bankbook-wrapper {
     display: flex;
     justify-content: center;
-}
-
-/* 통장 전체 */
-.bankbook {
-    background-color: #ffffff;
-    width: 900px;
+    align-items: center;
     height: 1000px;
-    border: 1px solid #000;
-    border-radius: 30px 30px 0px 0px;
-
-}
-
-/*  */
-.moabank {
-    font-size: 1.8rem;
-    text-align: center;
-    background-color: #a2caac;
-    border-radius: 30px 30px 0px 0px;
-    border-bottom: 1px solid #000;
-}
-
-/* 통장 정보 영역 */
-.bankbook-info {
-    display: flex;
-    height: 200px;
-    justify-content: center;
-    padding-top: 20px;
-}
-
-/* 통장 상세 정보 */
-.bankbook-info-detail {
-    display: grid;
-    grid-template-columns: repeat(4, 100px);
-    height: 100px;
-}
-
-/* 자녀 프로필 사진 $이름 */
-.bankbook-profile {
-    width: 100px;
-    height: 100px;
-    border: 1px solid #000;
-    background-color: #b3b3b3;
-}
-
-.bankbook-table {
+  }
+  
+  /* 통장 스타일 */
+  .bankbook {
+    width: 1000px;
+    height: 1000px;
+    background: linear-gradient(180deg, #f3f4f6, #ffffff);
+    border: 1px solid #aaa;
+    border-radius: 30px 30px 0 0;
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-/* 통장 내역 */
-.bankbook-title {
+    padding: 20px;
+  }
+  
+  .bankbook::before {
+    content: "";
+    position: absolute;
+    top: 66%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.1), transparent 50%, rgba(0, 0, 0, 0.1));
+    box-shadow: 0 -2px 2px rgba(0, 0, 0, 0.05), 0 2px 2px rgba(255, 255, 255, 0.3);
+    transform: translateY(-45%);
+  }
+  
+  /* 상단 헤더 */
+  .bankbook-header {
+    width: 100%;
+    height: 60px;
+    background-color: #e4eff4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* 통장 정보 */
+  .bankbook-info {
+    width: 100%;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .info-detail {
     display: grid;
-    width: 830px;
+    grid-template-columns: repeat(2, 350px);
+    gap: 25px;
+    font-size: 1.5rem;
+    text-align: center;
+    padding: 25px 0;
+    align-items: center;
+  }
+  
+  /* 거래 내역 테이블 */
+  .bankbook-table {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .bankbook-title {
+    width: 900px;
     height: 40px;
-    font-size: 1.3rem;
-    padding-top: 7px;
-    border-radius: 4px;
-    /* grid-template-columns: 130px 100px 100px 100px 200px; */
-    grid-template-columns: 170px 140px 140px 140px 240px;
+    display: grid;
+    grid-template-columns: 184px 154px 154px 154px 254px;
+    align-items: center;
     text-align: center;
     border: 1px solid #000;
-    background-color: #a2caac;
-}
-
-.bankbook-title>p:not(5) {
-    border-right: 1px solid #000;
-}
-.bankbook-item {
+    background-color: #c8e5f3;
+    font-size: 1.3rem;
+  }
+  
+  .bankbook-item {
     display: flex;
-    width: 830px;
-}
-
-/* 통장 내역 번호 */
-.bankbook-number {
+    width: 900px;
+  }
+  
+  .bankbook-number {
     width: 30px;
     text-align: center;
-    border-right: 1px solid #000;
-}
-
-.num {
+    border-right: 1px solid black;
+  }
+  
+  .num {
     padding: 5px;
-}
-
-.bankbook-number>p {
-    border-bottom: 1px solid #000;
-
-}
-
-/* 통장 내역 상세 */
-.bankbook-content {
-    width: 600px;
+  }
+  
+  .bankbook-number > p {
+    border-bottom: 1px solid black;
+  }
+  
+  .bankbook-transactions {
+    width: 870px;
     display: grid;
-    grid-template-columns: 140px 140px 140px 140px 240px;
+    grid-template-columns: 154px 154px 154px 154px 254px;
     text-align: center;
+  }
+  
+  .bankbook-transactions > p {
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+  }
+  
+  /* 정보 정렬 */
+  .b-info {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    gap: 45px;
+  }
+
+  /* 자녀 프로필 사진 $이름 */
+.bankbook-profile {
+    width: 150px;
+    height: 200px;
+    border: 1px solid #000;
+    background-color: #b3b3b3;
+    margin: 25px 0 25px 25px;
 }
 
-.bankbook-content>p {
-    border-right: 1px solid #000;
-    border-bottom: 1px solid #000;
-    
-}
-.content-p{
-    width: 140px;
-    padding-top: 5px;
+.margin-left {
+    margin-left: 40px;
 }
 
-.payment-at {
-
-}
-
-.withdrawal {
-
-}
-
-.deposit {
-
-}
-
-.left-moa {
-
-}
-
-.transaction-details {
-    padding-top: 5px;
-
-}
 </style>
+  

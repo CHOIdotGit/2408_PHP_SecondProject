@@ -40,6 +40,7 @@ import ChildBankProductRegisterComponent from '../views/components/bank/child-ba
 import ChildMoaBankComponent from '../views/components/bank/child-bank/ChildMoaBankComponent.vue';
 import ChildBankBookComponent from '../views/components/bank/child-bank/ChildBankBookComponent.vue';
 import ParentsBankBookComponent from '../views/components/bank/parent-bank/ParentsBankBookComponent.vue';
+import ParentsPointComponentCopy from '../views/components/bank/parent-bank/ParentsPointComponent.vue';
 
 
 
@@ -239,12 +240,17 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
-
-
-    // 부모 포인트 페이지
+    // 부모 자녀 적금 페이지
     {
         path: '/parent/bankbook/:child_id',
         component: ParentsBankBookComponent,
+        beforeEnter: chkAuth,
+    },
+
+    // 부모 자녀 포인트 페이지
+    {
+        path: '/parent/point/:child_id',
+        component: ParentsPointComponentCopy,
         beforeEnter: chkAuth,
     },
 

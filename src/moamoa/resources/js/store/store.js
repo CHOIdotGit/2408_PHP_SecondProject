@@ -9,6 +9,7 @@ import childTransaction from './modules/childTransaction';
 import mobile from './modules/mobile';
 import childPoint from './modules/childPoint';
 import bank from './modules/bank';
+import point from './modules/point';
 
 export default createStore({
     modules: {
@@ -21,6 +22,7 @@ export default createStore({
         childTransaction,
         mobile,
         childPoint,
+        point,
         bank,
     },
 });

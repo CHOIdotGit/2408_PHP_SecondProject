@@ -28,11 +28,11 @@ class PointSeeder extends Seeder
         // ];
         
         // Point::create($data);
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             foreach ($children as $child) {
                 $data = [
                     'child_id' => $child, // 각 child_id 값을 삽입
-                    'point' => 1000,
+                    'point' => 100,
                     'point_code' => $code[array_rand($code)], // 랜덤 point_code
                     'payment_at' => $faker->dateTimeBetween('-2 month', 'now')->format('Y-m-d'), // 랜덤 날짜
                 ];
