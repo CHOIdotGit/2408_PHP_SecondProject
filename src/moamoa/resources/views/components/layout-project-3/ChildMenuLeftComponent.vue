@@ -24,13 +24,13 @@
                 </router-link>
                 <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
                 <!-- <div class="menu-title" @click="$store.dispatch('childTransaction/transactionList')"> -->
-                <div class="menu-title" @click="router.push('/child/spend/list/')"> 
+                <div class="menu-title" @click="router.push('/child/spend/list')"> 
                     <img src="/img/icon-coin.png" alt="" class="menu-icon">
                     지출
                 </div>
                 <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
                 <!-- <div class="menu-title" @click="$store.dispatch('childMission/setChildMissionList')"> -->
-                <div class="menu-title" @click="router.push('/child/mission/list/')"> 
+                <div class="menu-title" @click="router.push('/child/mission/list')"> 
                     <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                     미션
                 </div>
@@ -47,7 +47,7 @@
                     상점
                 </div>
     
-                <button type="button" @click="$store.dispatch('auth/logout')" class="logout-btn">로그아웃</button>
+
             </div>
             <!-- 고객센터 -->
             <div class="cs">

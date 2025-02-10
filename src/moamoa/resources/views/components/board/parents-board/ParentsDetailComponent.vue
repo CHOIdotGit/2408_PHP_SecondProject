@@ -50,8 +50,26 @@
     </div>
 </div>
 <!-- ********삭제 모달********* -->
-<div class="delModal" v-if="delModal">
+<!-- 삭제 모달 모듈 작업 중 -->
+<!-- <div class="delModal" v-if="delModal">
     <ModalComponent :title="modalType" @click="delCloseModal" />
+</div> -->
+<!-- ************************* -->
+<!-- ********삭제 모달********* -->
+<!-- ************************* -->
+<div class="del-modal-black" v-show="delModal">
+    <div class="del-modal-white">
+        <div class="modal-content">
+            <img src="/img/icon-trash.png" class="modal-img" alt=".">
+            <p class="modal-name"></p>
+            <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
+            <div class="del-guide">해당 미션이 삭제됩니다.</div>
+        </div>
+        <div class="del-btn">
+            <button @click="delCloseModal" class="modal-cancel">취소</button>
+            <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
+        </div>
+    </div>
 </div>
 
     
@@ -61,7 +79,6 @@
 import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import ModalComponent from '../../modal/ModalComponent.vue';
 
 // *****미션 상세 정보******
 const store = useStore();
@@ -90,13 +107,12 @@ const categories = reactive([
 const delModal = ref(false);
 const modalType = ref(''); // 모달 타입 : transaction 인지 mission 인지
 // 해당 게시물 모달창 열기
-const delOpenModal = (type, mission_id) => { 
-    modalType.value = type;
+const delOpenModal = (mission_id) => {
     store.dispatch('mission/showMissionDetail', mission_id);
-    if(type === 'mission') {
-        console.log("이걸 확인하냐?",type);
-        store.dispatch('childMission/showMissionDetail', mission_id);
-    }
+    // if(type === 'mission') {
+    //     console.log("이걸 확인하냐?",type);
+    //     store.dispatch('mission/showMissionDetail', mission_id);
+    // }
     delModal.value = true;
 }
 

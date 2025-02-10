@@ -52,9 +52,29 @@
     </div>
 
 <!-- ********삭제 모달********* -->
-<div class="delModal child-theme" v-if="delModal">
+<!-- 삭제 모달 모듈 작업 중 -->
+<!-- <div class="delModal child-theme" v-if="delModal">
     <ModalComponent :type="modalType" @click="delCloseModal" />
+</div> -->
+
+<!-- ************************* -->
+<!-- ********삭제 모달********* -->
+<!-- ************************* -->
+<div class="del-modal-black" v-show="delModal">
+    <div class="del-modal-white">
+        <div class="modal-content">
+            <img src="/img/icon-trash.png" class="modal-img" alt=".">
+            <p class="modal-name"></p>
+            <p class="modal-ms-title">미션 : {{missionDetail.title}}</p>
+            <div class="del-guide">해당 미션이 삭제됩니다.</div>
+        </div>
+        <div class="del-btn">
+            <button @click="delCloseModal" class="modal-cancel">취소</button>
+            <button @click="deleteMission(missionDetail.mission_id)" class="modal-del">삭제</button>
+        </div>
+    </div>
 </div>
+
 
 </template>
 
@@ -182,6 +202,7 @@ const delCloseModal = () => {
     font-size: 1.3rem;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .c-ms-up {
@@ -189,6 +210,7 @@ const delCloseModal = () => {
     font-size: 1.3rem;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 .c-ms-complete {
@@ -196,6 +218,7 @@ const delCloseModal = () => {
     font-size: 1.3rem;
     border: none;
     color: white;
+    cursor: pointer;
 }
 
 /* ********************* */
