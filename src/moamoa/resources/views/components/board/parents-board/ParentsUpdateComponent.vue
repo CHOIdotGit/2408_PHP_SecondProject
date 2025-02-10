@@ -13,11 +13,11 @@
                     <div class="date-detail">
                         <div class="start-date">
                             <p class="date-title">시작일</p>
-                            <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01">
+                            <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01" style="margin-left: 15px;">
                         </div>
                         <div class="end-date">
                             <p class="date-title">종료일</p>
-                        <input type="date" v-model="missionDetail.end_at" class="ms-date" id="ms-date" min="2000-01-01" >
+                        <input type="date" v-model="missionDetail.end_at" class="ms-date" id="ms-date" min="2000-01-01" style="margin-left: 15px;">
                         </div>
                         <!-- value="today" -->
                     </div>
