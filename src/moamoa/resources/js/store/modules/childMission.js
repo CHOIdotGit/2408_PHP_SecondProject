@@ -19,6 +19,10 @@ export default {
         ,missionDetail: {}
         ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
         ,childHome: []
+        ,currentPage: 1
+        ,lastPage: 1
+        ,perPage: 10
+        ,total: 0
         
     }),
     mutations: {
@@ -65,6 +69,12 @@ export default {
         setUpdateMission(state, missionDetail) {
             state.missionDetail = missionDetail;
         },
+        setPagination(state, { current_page, last_page, per_page, total }) {
+            state.currentPage = current_page;
+            state.lastPage = last_page;
+            state.perPage = per_page;
+            state.total = total;
+        },
         
 
     },
@@ -92,29 +102,51 @@ export default {
         // ***************************
         // 자녀 미션 리스트 불러오기
         // ***************************
-        setChildMissionList(context, child_id) {
-            context.commit('setControlFlg', false);
+        // setChildMissionList(context, child_id) {
+        //     context.commit('setControlFlg', false);
             
-            // const url = '/api/child/mission/list/' + child_id;
-            const url = '/api/child/mission/list';
+        //     // const url = '/api/child/mission/list/' + child_id;
+        //     const url = '/api/child/mission/list';
 
-            console.log(url);
+        //     console.log(url);
                         
-            axios.get(url)
-                .then(response => {
-                    context.commit('setChildMissionList', response.data.childMissionList.data);
-                    console.log("자녀 미션 리스트 받아오기 : ", response.data.childMissionList.data);
+        //     axios.get(url)
+        //         .then(response => {
+        //             context.commit('setChildMissionList', response.data.childMissionList.data);
+        //             console.log("자녀 미션 리스트 받아오기 : ", response.data.childMissionList.data);
                     
-                    // 세션 스토리지에 자녀ID 세팅
-                    sessionStorage.setItem('child_id', child_id);
-                    context.commit('setChildId', child_id);
-                    router.push('/child/mission/list');
+        //             // 세션 스토리지에 자녀ID 세팅
+        //             sessionStorage.setItem('child_id', child_id);
+        //             context.commit('setChildId', child_id);
+        //             router.push('/child/mission/list');
                     
-                    // console.log('자녀 확인', context.state.childId);
-                })
-                .catch(error => {
-                    console.error('미션 정보 불러오기 오류', error);
-                });    
+        //             // console.log('자녀 확인', context.state.childId);
+        //         })
+        //         .catch(error => {
+        //             console.error('미션 정보 불러오기 오류', error);
+        //         });    
+        // },
+        async setChildMissionList(context, searchData) {
+            try {
+                const response = await axios.get(`/api/child/mission/list?page=${searchData.page}`);
+                
+                // missionList 데이터를 commit
+                context.commit('setChildMissionList', response.data.childMissionList.data);
+
+                // 세션 스토리지에 자녀ID 세팅
+                sessionStorage.setItem('child_id', searchData.child_id);
+                context.commit('setChildId', searchData.child_id);
+        
+                // pagination 정보를 개별적으로 commit
+                context.commit('setPagination', {
+                    current_page: response.data.childMissionList.current_page,
+                    last_page: response.data.childMissionList.last_page,
+                    per_page: response.data.childMissionList.per_page,
+                    total: response.data.childMissionList.total,
+                });
+            } catch (error) {
+              console.error('지출 정보 불러오기 오류', error);
+            }
         },
 
         // ***************************

@@ -73,6 +73,7 @@ const modules = [Navigation, Scrollbar];
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import router from '../../../../js/router';
 
 // 스와이퍼 인스턴스
 const swiper = ref(null);
@@ -107,12 +108,14 @@ const getTruncatedTitle =(title) => {
 // 미션 리스트로 이동
 const goMissionList = (child_id) => {
     store.dispatch('mission/missionList', child_id);
+    router.push('/parent/mission/list/' + child_id);
 };
 
 // 지출 리스트로 이동
 const goSpendList = (child_id) => {
     // 거래 정보를 가져오는 액션 호출
     store.dispatch('transaction/transactionList', child_id);
+    router.push('/parent/spend/list/' + child_id);
 };
 
 

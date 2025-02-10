@@ -9,7 +9,7 @@ export default {
         transactionList: []
         ,lastPageFlg: false
         ,controlFlg: true
-        // 미션 관련 -------------------------------------------------------------
+        // 지출 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,transactionId: sessionStorage.getItem('transactionId') ? sessionStorage.getItem('transactionId') :null
         ,transactionDetail: []
@@ -23,6 +23,10 @@ export default {
         ,doughnutData: [0]
         ,weeklyOutgoData: [0]
         ,filter: []
+        ,currentPage: 1
+        ,lastPage: 1
+        ,perPage: 10
+        ,total: 0
 
     }),
     mutations: {
@@ -33,7 +37,7 @@ export default {
             state.controlFlg = flg;
         },
         resetState(state) {
-            state.transactionList = []; // 미션 리스트 초기화
+            state.transactionList = []; // 지출 리스트 초기화
             state.childId = null; // 자녀 ID 초기화
         },
         setChildId(state, childId) {
@@ -72,30 +76,59 @@ export default {
         setFilterTransactionList(state, transantionList) {
             state.filter = transantionList;
         },
+        setPagination(state, { current_page, last_page, per_page, total }) {
+            state.currentPage = current_page;
+            state.lastPage = last_page;
+            state.perPage = per_page;
+            state.total = total;
+        },
     },
     actions: {
         /**
-         * 미션 리스트 획득
+         * 지출 리스트 획득
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        transactionList(context, child_id) {
-            // context.commit('setControlFlg', false);
+        // transactionList(context, child_id) {
+        //     // context.commit('setControlFlg', false);
             
-            const url = '/api/parent/spend/list/' + child_id;
+        //     const url = '/api/parent/spend/list/' + child_id;
             
-            axios.get(url)
-            .then(response => {
+        //     axios.get(url)
+        //     .then(response => {
+        //         context.commit('setTransactionList', response.data.transactionList.data);
+        //         // 세션 스토리지에 자녀ID 세팅
+        //         sessionStorage.setItem('child_id', child_id);
+        //         context.commit('setChildId', child_id);
+        //         router.push('/parent/spend/list/' + child_id);
+        //         // console.log(response.data.transactionList.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('지출 리스트 불러오기 오류', error);
+        //     });    
+        // },
+        // 부모 지출 리스트 페이지(페이지네이션 작업 by 최상민)
+        async transactionList(context, searchData) {
+            try {
+                const response = await axios.get(`/api/parent/spend/list/${searchData.child_id}?page=${searchData.page}`);
+                
+                // transactionList 데이터를 commit
                 context.commit('setTransactionList', response.data.transactionList.data);
+
                 // 세션 스토리지에 자녀ID 세팅
-                sessionStorage.setItem('child_id', child_id);
-                context.commit('setChildId', child_id);
-                router.push('/parent/spend/list/' + child_id);
-                // console.log(response.data.transactionList.data);
-            })
-            .catch(error => {
-                console.error('미션 리스트 불러오기 오류', error);
-            });    
+                sessionStorage.setItem('child_id', searchData.child_id);
+                context.commit('setChildId', searchData.child_id);
+        
+                // pagination 정보를 개별적으로 commit
+                context.commit('setPagination', {
+                    current_page: response.data.transactionList.current_page,
+                    last_page: response.data.transactionList.last_page,
+                    per_page: response.data.transactionList.per_page,
+                    total: response.data.transactionList.total,
+                });
+            } catch (error) {
+              console.error('지출 정보 불러오기 오류', error);
+            }
         },
 
         // 지출 상세 페이지

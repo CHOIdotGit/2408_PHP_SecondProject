@@ -18,6 +18,10 @@ export default {
         ,mostUsedCategory: ''
         ,totalAmount: 0
         ,totalExpenses: 0
+        ,currentPage: 1
+        ,lastPage: 1
+        ,perPage: 10
+        ,total: 0
     }),
     mutations: {
         setChildTransactionList(state, childTransactionList) {
@@ -56,6 +60,12 @@ export default {
         setTotalExpenses(state, totalExpenses) {
             state.totalExpenses = totalExpenses;
         },
+        setPagination(state, { current_page, last_page, per_page, total }) {
+            state.currentPage = current_page;
+            state.lastPage = last_page;
+            state.perPage = per_page;
+            state.total = total;
+        },
     },
     actions: {
 
@@ -81,21 +91,44 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        transactionList(context, child_id) {            
-            const url = '/api/child/spend/list';
+        // transactionList(context, child_id) {            
+        //     const url = '/api/child/spend/list';
             
-            axios.get(url)
-            .then(response => {
+        //     axios.get(url)
+        //     .then(response => {
+        //         context.commit('setChildTransactionList', response.data.childTransactionList.data);
+        //         // 세션 스토리지에 자녀ID 세팅
+        //         sessionStorage.setItem('child_id', child_id);
+        //         context.commit('setChildId', child_id);
+        //         router.push('/child/spend/list');
+        //     })
+        //     .catch(error => {
+        //         console.error('지출 리스트 불러오기 오류', error);
+        //     });    
+        // },
+        async transactionList(context, searchData) {
+            try {
+                const response = await axios.get(`/api/child/spend/list?page=${searchData.page}`);
+                
+                // transactionList 데이터를 commit
                 context.commit('setChildTransactionList', response.data.childTransactionList.data);
+
                 // 세션 스토리지에 자녀ID 세팅
-                sessionStorage.setItem('child_id', child_id);
-                context.commit('setChildId', child_id);
-                router.push('/child/spend/list');
-            })
-            .catch(error => {
-                console.error('지출 리스트 불러오기 오류', error);
-            });    
+                sessionStorage.setItem('child_id', searchData.child_id);
+                context.commit('setChildId', searchData.child_id);
+        
+                // pagination 정보를 개별적으로 commit
+                context.commit('setPagination', {
+                    current_page: response.data.childTransactionList.current_page,
+                    last_page: response.data.childTransactionList.last_page,
+                    per_page: response.data.childTransactionList.per_page,
+                    total: response.data.childTransactionList.total,
+                });
+            } catch (error) {
+              console.error('지출 정보 불러오기 오류', error);
+            }
         },
+
 
         // 자녀 지출 상세 페이지
         showTransactionDetail(context, transaction_id) {

@@ -28,9 +28,6 @@ class MissionController extends Controller
                                     ->latest()
                                     ->paginate(20);
         
-        
-
-        
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'

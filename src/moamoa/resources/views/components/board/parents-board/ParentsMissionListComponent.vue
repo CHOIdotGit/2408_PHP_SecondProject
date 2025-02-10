@@ -67,8 +67,47 @@
                 </div>
                 <!-- <div v-else>검색 결과가 없습니다</div> -->
             </div>
-            <!-- 버튼 페이지네이션 -->
-            
+            <!-- 페이지네이션 UI by 최상민 -->
+            <div class="pagination">
+                <!-- 이전 버튼 -->
+                <button 
+                    class="paginate-btn" 
+                    @click="goToPrevious" 
+                    :disabled="currentPage === 1">
+                    < 이전
+                </button>
+                <!-- 페이지 번호 출력 4가 현재 페이지일때 (예: 1 ... 3 4 5 6) -->
+                <span v-for="page in pageNumbers" :key="page" class="paginate-span">
+                    <!-- '...'인 경우 span 태그 사용 -->
+                    <!-- <button class="paginate-btn" @click="goToPage(page)" :disabled="page === currentPage || page === '...'">{{ page }}</button> -->
+                     <!-- 페이지 번호 버튼 -->
+                    <button 
+                        v-if="page !== '...'" 
+                        class="paginate-btn" 
+                        @click="goToPage(page)" 
+                        :disabled="page === currentPage"
+                        :class="{'no-pointer': page === currentPage}"
+                    >
+                        {{ page }}
+                    </button>
+
+                    <!-- '...' 버튼 스타일을 위해 별도의 클래스 적용 -->
+                    <button 
+                        v-else 
+                        class="dots" 
+                        disabled
+                    >
+                        {{ page }}
+                    </button>
+                </span>
+                <!-- 다음 버튼 -->
+                <button 
+                    class="paginate-btn" 
+                    @click="goToNext" 
+                    :disabled="currentPage === lastPage">
+                    다음 >
+                </button>
+            </div>
         </div>
     </div>
 
@@ -156,6 +195,63 @@ const checkAll = (e) => {
     }
 }
 
+// ********** 페이지네이션 **********
+const currentPage = computed(() => store.state.mission.currentPage);
+const lastPage = computed(() => store.state.mission.lastPage);
+
+// 페이지네이션을 위한 페이지 번호 배열 생성
+const pageNumbers = computed(() => {
+    const numbers = [];
+    const range = 1; // 현재 페이지 앞뒤로 표시할 페이지 수
+
+    // 첫 번째 페이지 추가
+    if (currentPage.value > range + 1) {
+        numbers.push(1);
+        numbers.push('...');  // 첫 번째 페이지 앞에 '...'
+    }
+
+    // 페이지 번호를 배열에 추가 (예: 1 ... 3 4 5 6)
+    for (let i = Math.max(currentPage.value - range, 1); i <= Math.min(currentPage.value + range, lastPage.value); i++) {
+        numbers.push(i);
+    }
+
+    // 마지막 페이지가 포함되지 않으면 추가
+    if (numbers[numbers.length - 1] !== lastPage.value) {
+        if (currentPage.value < lastPage.value - range - 1) {
+            numbers.push('...');  // 마지막 페이지 뒤에 '...'
+        }
+        numbers.push(lastPage.value);
+    }
+
+    // 마지막 페이지가 1이면 추가하지 않도록 설정
+    if (lastPage.value === 1) {
+        numbers.pop();
+    }
+    
+    return numbers;
+});
+
+// 페이지 이동 함수
+const goToPage = (page) => {
+    if (page >= 1 && page <= lastPage.value) {
+        store.dispatch('mission/missionList', { child_id: route.params.id, page });
+    }
+};
+
+// 이전 페이지로 이동하는 함수
+const goToPrevious = () => {
+    if (currentPage.value > 1) {
+        goToPage(currentPage.value - 1);
+    }
+};
+
+// 다음 페이지로 이동하는 함수
+const goToNext = () => {
+    if (currentPage.value < lastPage.value) {
+        goToPage(currentPage.value + 1);
+    }
+};
+
 // 체크박스 모두 선택
 // const checkboxItem = ref(false);
 // const checkAll = () => {
@@ -211,9 +307,10 @@ const getStatusClass = (status) => {
 // 미션 리스트 받아오기
 const missionList = computed(() => store.state.mission.missionList);
 
+
 // onMount(메뉴에서 선택된 자녀 id 받아와서 list 출력)
 onMounted(() => {
-    store.dispatch('mission/missionList', route.params.id);
+    store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
 });
 
 // 미션아이디 확인해서 상세 페이지 이동하기 위해서
@@ -546,5 +643,46 @@ const missionSearch = (childId) => {
     width: 100px;
     cursor: pointer;
     margin: 10px;
+}
+
+/* 페이지네이션 css */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.paginate-span {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.paginate-btn {
+    all: unset;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.paginate-btn:hover {
+    color: #A2CAAC;
+}
+
+.no-pointer {
+    cursor: default;
+    background-color: #a2caac;
+    border-radius: 50%;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+}
+
+.no-pointer:hover {
+    color: #000000;
+}
+
+.dots {
+    /* cursor: default; */
+    all: unset;
 }
 </style>
