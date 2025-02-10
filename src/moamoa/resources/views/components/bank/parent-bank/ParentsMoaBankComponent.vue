@@ -51,7 +51,7 @@
                     </div>
                     <!-- 더보기 누르면 적금 상품 더보이게(페이지네이션 처리) -->
                     <div>
-                        <p @click="openProducts" class="more">더보기</p>
+                        <p @click="addSavingPage" class="more">더보기</p>
                     </div>
                 </div>
             </div>
@@ -80,6 +80,14 @@ const savingProduct = computed(()=> store.state.bank.savingList);
 onMounted(()=> {
     store.dispatch('bank/savingProductList');
 })
+
+
+
+const addSavingPage = () => {
+    console.log('적금상품 더보기');
+    store.dispatch('bank/addsavingList');
+
+}
 
 
 </script>
