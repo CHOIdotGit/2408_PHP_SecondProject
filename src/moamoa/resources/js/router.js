@@ -234,7 +234,7 @@ const routes = [
 
     // 부모 통장 페이지
     {
-        path: '/parent/moabank',
+        path: '/parent/moabank/:child_id',
         component: ParentsMoaBankComponent,
         beforeEnter: chkAuth,
     },
@@ -377,7 +377,7 @@ const routes = [
     {
         path: '/child/bankbook',
         component: ChildBankBookComponent,
-        beforeEnter: chkAuth,
+        
     },
 
     // +==================================+

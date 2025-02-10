@@ -65,7 +65,7 @@
                 <img src="/img/icon-signal.png" alt="" class="menu-icon">
                 통계
             </div>
-            <div class="menu-title" @click="goBankbook">
+            <div class="menu-title" @click="goBankbook(selectedChildId.child_id)">
                 <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                 모아통장
             </div>
@@ -147,8 +147,8 @@ const goParentStatis = (child_id) => {
 }
 
 // 부모 통장 페이지
-const goBankbook = () => {
-    router.push('/parent/moabank/');
+const goBankbook = (child_id) => {
+    router.push('/parent/moabank/' + child_id);
 }
 // const goBankbook = (child_id) => {
 //     store.dispatch('bankbook/', child_id)

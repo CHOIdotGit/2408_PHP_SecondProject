@@ -1,30 +1,34 @@
 <template>
 <div class="main-container">
     <div class="board-container">
+        <div class="c-route"> 홈  > 지출 > 상세</div>
         <div class="content-list">
-            <div class="content" v-if="transactionDetail">
-                <p class="title">지출 제목</p>
+            <div class="c-content" v-if="transactionDetail">
+                <p class="c-list-title c-title">제목</p>
                 <span class="ms-title">{{ transactionDetail.title }}</span>
+            </div>
+            <div class="c-content">
+                <p class="c-list-title">날짜</p>
                 <div class="date deco">
                     <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
                 </div>
-            </div>
-            <div class="content">
-                <p class="title">지출 종류</p>
+            </div> 
+            <div class="c-content-cate">
+                <p class="title">종류</p>
                 <div class="category-btn" v-for="item in categories" :key="item">
-                    <img class="ms-category-img" :src=item.img :class="{'categorybtn-green' : item.index === Number(category) }">
+                    <img class="c-ms-category-img" :src=item.img :class="{'c-checked-category-btn' : item.index === Number(category) }">
                     <p class="category-name">{{ item.name }}</p>
                 </div>
             </div>
-            <div class="content">
-                <p class="title">사용 내역</p>
+            <div class="c-content">
+                <p class="c-list-title">사용 내역</p>
                 <div class="ms-content">{{ transactionDetail.memo }}</div>
             </div>
-            <div class="content">
-                <p class="title">지출 금액</p>
+            <div class="c-content">
+                <p class="c-list-title">금액</p>
                 <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
             </div>
-            <div class="bottom-btn">
+            <div class="c-bottom-btn">
                 <button @click="goBack" class="ms-cancel left">뒤로가기</button>
                 <button @click="delOpenModal(transactionDetail.transaction_id)" class="btn">지출 삭제</button>
                 <button @click="goUpdate(transactionDetail.transaction_id)" class="btn">지출 수정</button>
@@ -102,37 +106,13 @@ const delCloseModal = () => {
 </script>
 
 <style scoped>
-@import url('../../../../css/boardCommon.css');
-@import url('../../../../css/boardCommon.css');
-
-/* 미션(지출) 제목 입력란 */
-.ms-title {
-    display: flex;
-    align-items: center;
-}
-
-/* 날짜 입력란 배경색 */
-.deco {
-    background-color: #5589e996;
-}
-
-/* 미션 금액 입력란 */
-.ms-amount {
-    display: flex;
-    align-items: center;
-}
-
-/* 미션(지출) 종류 카테고리 */
-.category-btn {
-    width: 80px;
-    height: 80px;
-}
+@import url('../../../../css/childboardCommon.css');
+@import url('../../../../css/category.css');
 
 /* db에 저장된 카테고리 표시 */
-.categorybtn-green {
+.c-checked-category-btn {
     background-color: #5589e996;
 }
-
 
 /* 취소버튼 */
 .ms-cancel {
@@ -153,41 +133,17 @@ const delCloseModal = () => {
     color: #FFFFFF;
     background-color: #5589e996;
     font-size: 1.5rem;
-    border: 1px solid #5589e996;
+    border: none;
     padding: 5px;
     width: 120px;
     border-radius: 0px;
     cursor: pointer;
 }
 
-/* 삭제버튼 */
-.ms-del {
-    /* margin-left: 250px; */
-    color: #5589e996;
-    background-color: #FFFFFF;
-    font-size: 1.2rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 100px;
-    border-radius: 0px;
-    cursor: pointer;
-}
 
-/* 승인버튼 */
-.ms-comfirm {
-    color: #FFFF;
-    background-color: #5589e996;
-    font-size: 1.2rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 120px;
-    border-radius: 0px;
-    cursor: pointer;
-}
-
-.bottom-btn{
+.c-bottom-btn{
     gap: 30px;
-    margin-top: 30px;
+    margin-top: 20px;
     display: flex;
 }
 
@@ -195,21 +151,11 @@ const delCloseModal = () => {
     margin-right: 580px;
 }
 
-/* 수정버튼 */
-.ms-up {
-    color: #FFFF;
-    background-color: #5589e996;
-    font-size: 1.2rem;
-    border: 1px solid #5589e996;
-    padding: 5px;
-    width: 100px;
-    border-radius: 0px;
-    cursor: pointer;
+.category-name {
+    margin-top: 20px;
+    font-size: 1.3rem;
 }
 
-.btn-right {
-    display: flex;
-}
 
 /* ********************* */
 /* *******삭제 모달****** */

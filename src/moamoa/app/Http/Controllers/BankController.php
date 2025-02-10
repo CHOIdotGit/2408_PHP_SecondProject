@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SavingProduct;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class BankController extends Controller
 {
-    // 한국은행 기준 금리 오픈 api
+    // ******** 한국은행 기준 금리 오픈 api ********
     // api 서비스 명
     // 인증키 : env("BANK_KEY")
     // 요청유형(파일형식) : json
@@ -37,4 +39,21 @@ class BankController extends Controller
         ];
         return response()->json($responseData, 200);
     }
+
+    
+    // ******** 적금 상품 받아오기 ********
+    public function savingList() {
+        $savingList = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_amount', 'saving_product_interest_rate')
+                                    ->paginate(4);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '적금 상품 받아오기 성공'
+            ,'savingList' => $savingList->toArray()
+        ];
+        return response()->json($responseData, 200);
+    
+}
+
+
 }

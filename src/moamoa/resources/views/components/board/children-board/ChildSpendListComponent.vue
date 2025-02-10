@@ -2,9 +2,9 @@
     <div class="container">
         <div class="list-container">
             <div class="route"> 홈  > 지출 </div>
-            <div class="for-buttons">
-                <button @click="delOpenModal" class="btn mission-delete">지출 삭제</button>
-                <button @click="goSpendCreate" class="btn mission-insert">지출 작성</button>
+            <div class="c-for-buttons">
+                <button @click="delOpenModal" class="c-btn c-mission-delete">지출 삭제</button>
+                <button @click="goSpendCreate" class="c-btn c-mission-insert">지출 작성</button>
             </div>
             <div class="search-menu">
                 <div class="search-option">
@@ -276,14 +276,12 @@ const delCloseModal = () => { //모달창 닫기
 </script>
 
 <style scoped>
-@import url('../../../../css/list.css');
+@import url(../../../../css/childboardCommon.css);
 
 .container {
-    /* margin-left: 50px; */
     display: flex;
     justify-content: center;
     align-items: center;
-    /* padding-bottom: 40px; */
 }
 
 .list-container {
@@ -348,8 +346,6 @@ const delCloseModal = () => { //모달창 닫기
 #checkbox9 {
     margin: 15px;
 }
-
-
 
 .mission-inserted-list {
     height: 60px;

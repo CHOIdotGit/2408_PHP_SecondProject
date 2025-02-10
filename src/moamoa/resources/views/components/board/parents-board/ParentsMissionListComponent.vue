@@ -16,7 +16,7 @@
                         <input type="date" min="2000-01-01" v-model="filters.endDate">
                     </div>
                     <div class="search-filter">
-                        <p>◎ 미션 종류 </p> 
+                        <p>⦁ 미션 종류 </p> 
                         <select name="mission-type" v-model="filters.category" >
                             <option value="" >전체</option>
                             <option value="0">학습</option>
@@ -25,7 +25,7 @@
                             <option value="3">생활습관</option>
                             <option value="4">기타</option>
                         </select>
-                        <p>◎ 진행 상태 </p> 
+                        <p>⦁ 진행 상태 </p> 
                         <select name="status" v-model="filters.status">
                             <option value="">전체</option>
                             <option value="0">미션진행</option>
@@ -357,14 +357,6 @@ const missionSearch = (childId) => {
 };
 
 
-
-
-
-
-
-
-
-
 </script>
 
 <style scoped>
@@ -426,7 +418,7 @@ const missionSearch = (childId) => {
     font-size: 1.5rem;
     display: flex;
     align-items: center; /* 수직 정렬 */
-    gap: 10px;
+    gap: 30px;
     p {
         margin: 0; /* 기본 여백 제거 */
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */

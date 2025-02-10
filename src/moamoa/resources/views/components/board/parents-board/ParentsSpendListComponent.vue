@@ -255,6 +255,7 @@ const search = (childId) => {
     gap: 20px;  
 }
 
+
 .mission-title-bar {
     width: 1400px;
     display: grid;
