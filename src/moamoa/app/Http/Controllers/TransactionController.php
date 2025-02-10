@@ -37,7 +37,7 @@ class TransactionController extends Controller
         $responseData = [
             'success' => true
             ,'msg' => '지출 정보 획득 성공' 
-            ,'transactionList' => $transactionList->toArray()
+            ,'transactionList' => $transactionList
         ];
         return response()->json($responseData, 200);
     }

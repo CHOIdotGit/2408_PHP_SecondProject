@@ -24,11 +24,11 @@ class ChildMissionController extends Controller
                                     ->orderBy('missions.status')
                                     ->latest()
                                     ->paginate(20);
-                
+        
         $responseData = [
             'success' => true
             ,'msg' => '미션리스트 획득 성공'
-            ,'childMissionList' => $childMissionList->toArray()
+            ,'childMissionList' => $childMissionList
         ];
         return response()->json($responseData, 200);
     }

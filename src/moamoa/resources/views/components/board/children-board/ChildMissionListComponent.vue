@@ -3,6 +3,7 @@
         <div class="list-container">
             <div class="route"> 홈  > 미션 </div>
             <div class="for-buttons">
+                <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
                 <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
             </div>
             <div class="search-menu">
@@ -48,23 +49,60 @@
                 <p class="charge">금액</p>
                 <p class="due-date">기한</p>
             </div>
-            <div class="mission-inserted-list scroll">
-                <div v-for="item in missionList" :key="item" class="mission-content">
-                    <div class="chk-div">
-                        <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.mission_id" name="checkbox">
+            <div class="scroll">
+                <div v-for="item in missionList" :key="item" class="mission-inserted-list">
+                    <div class="mission-content">
+                        <div class="chk-div">
+                            <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.mission_id" name="checkbox">
+                        </div>
+                        <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
+                        <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
+                        <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p> 
+                        <p class="charge">{{ item.amount.toLocaleString() }}원</p>
+                        <p class="due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                     </div>
-                    <span @click="getMissionId(item.mission_id)" class="mission-title">{{ getTruncatedTitle(item.title) }}</span>
-                    <p class="state" :class="getStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
-                    <p class="mission-type-selected">{{ getCategoryText(item.category) }}</p> 
-                    <p class="charge">{{ item.amount.toLocaleString() }}원</p>
-                    <p class="due-date">{{ item.start_at }} ~ {{ item.end_at }}</p>
                 </div>
             </div>
-            <div class="for-buttons">
-                <!-- <button class="btn btn-bottom mission-go-back">뒤로가기</button> -->
-                <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
-            </div>
         </div>
+    </div>
+    <!-- 페이지네이션 UI by 최상민 -->
+    <div class="pagination">
+        <!-- 이전 버튼 -->
+        <button 
+            class="paginate-btn" 
+            @click="goToPrevious" 
+            :disabled="currentPage === 1">
+            < 이전
+        </button>
+        <!-- 페이지 번호 출력 4가 현재 페이지일때 (예: 1 ... 3 4 5 6) -->
+        <span v-for="page in pageNumbers" :key="page" class="paginate-span">
+            <!-- 페이지 번호 버튼 -->
+            <button 
+                v-if="page !== '...'" 
+                class="paginate-btn" 
+                @click="goToPage(page)" 
+                :disabled="page === currentPage"
+                :class="{'no-pointer': page === currentPage}"
+            >
+                {{ page }}
+            </button>
+
+            <!-- '...' 버튼 스타일을 위해 별도의 클래스 적용 -->
+            <button 
+                v-else 
+                class="dots" 
+                disabled
+            >
+                {{ page }}
+            </button>
+        </span>
+        <!-- 다음 버튼 -->
+        <button 
+            class="paginate-btn" 
+            @click="goToNext" 
+            :disabled="currentPage === lastPage">
+            다음 >
+        </button>
     </div>
     <!-- ************************* -->
     <!-- ********삭제 모달********* -->
@@ -97,7 +135,8 @@ const store = useStore();
 // });
 
 onMounted(() => {
-    store.dispatch('childMission/setChildMissionList');
+    // store.dispatch('childMission/setChildMissionList');
+    store.dispatch('childMission/setChildMissionList', {child_id: route.params.id, page: 1});
 });
 
 // 미션 리스트 가져오기
@@ -146,6 +185,63 @@ const getTruncatedTitle =(title) => {
   return title.length > maxLength 
     ? title.substring(0, maxLength) + '...' 
     : title;
+};
+
+// ********** 페이지네이션 **********
+const currentPage = computed(() => store.state.childMission.currentPage);
+const lastPage = computed(() => store.state.childMission.lastPage);
+
+// 페이지네이션을 위한 페이지 번호 배열 생성
+const pageNumbers = computed(() => {
+    const numbers = [];
+    const range = 1; // 현재 페이지 앞뒤로 표시할 페이지 수
+
+    // 첫 번째 페이지 추가
+    if (currentPage.value > range + 1) {
+        numbers.push(1);
+        numbers.push('...');  // 첫 번째 페이지 앞에 '...'
+    }
+
+    // 페이지 번호를 배열에 추가 (예: 1 ... 3 4 5 6)
+    for (let i = Math.max(currentPage.value - range, 1); i <= Math.min(currentPage.value + range, lastPage.value); i++) {
+        numbers.push(i);
+    }
+
+    // 마지막 페이지가 포함되지 않으면 추가
+    if (numbers[numbers.length - 1] !== lastPage.value) {
+        if (currentPage.value < lastPage.value - range - 1) {
+            numbers.push('...');  // 마지막 페이지 뒤에 '...'
+        }
+        numbers.push(lastPage.value);
+    }
+
+    // 마지막 페이지가 1이면 추가하지 않도록 설정
+    if (lastPage.value === 1) {
+        numbers.pop();
+    }
+    
+    return numbers;
+});
+
+// 페이지 이동 함수
+const goToPage = (page) => {
+    if (page >= 1 && page <= lastPage.value) {
+        store.dispatch('childMission/childMissionList', { child_id: route.params.id, page });
+    }
+};
+
+// 이전 페이지로 이동하는 함수
+const goToPrevious = () => {
+    if (currentPage.value > 1) {
+        goToPage(currentPage.value - 1);
+    }
+};
+
+// 다음 페이지로 이동하는 함수
+const goToNext = () => {
+    if (currentPage.value < lastPage.value) {
+        goToPage(currentPage.value + 1);
+    }
 };
 
 // ************** 체크 박스 ******************
@@ -232,17 +328,10 @@ const getChildId = () => {
     /* padding-bottom: 40px; */
 }
 
-.list-container {
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-
 .mission-title-bar {
+    width: 1400px;
     display: grid;
-    grid-template-columns: 40px 210px 100px 100px 150px 340px;
+    grid-template-columns: 40px 210px 100px 100px 150px 350px;
     height: 60px;
     gap: 75px;
     background-color: #d1d1d1;
@@ -251,28 +340,31 @@ const getChildId = () => {
     text-align: center;
 }
 
-.mission-title {
-    cursor: pointer;
-}
-
 .checkbox {
     margin: 15px;
     width: 16px;
     height: 16px;
 }
 
-.mission-title:hover {
-    color: #5589e996;
-}
-
 .mission-content {
     display: grid;
     grid-template-columns: 40px 210px 100px 100px 150px 340px;
+    width: 1400px;
+    min-height: 60px;
     gap: 75px;
     font-size: 1.3rem;
     align-items: center;
     text-align: center;
 }
+
+.mission-title {
+    cursor: pointer;
+}
+
+.mission-title:hover {
+    color: #5589e996;
+}
+
 .btn {
     width: 120px;
     height: 50px;
@@ -285,16 +377,11 @@ const getChildId = () => {
 }
 
 .btn-top {
-    margin-left: 1280px;
+    margin-left: 20px;
 }
 
 .btn-bottom {
-    margin-left: 1250px;
-}
-
-.for-buttons{
-    display: flex;
-    align-items: center;
+    margin-left: 1140px;
 }
 
 #checkbox9 {
@@ -334,27 +421,28 @@ const getChildId = () => {
 }
 
 .mission-inserted-list {
-    height: 800px;
+    /* height: 800px; */
+    height: 60px;
     display: grid;
-    width: 1400px;
+    /* width: 1400px; */
 }
 
 .scroll {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     gap: 20px;
-    height: 400px;
+    height: 400px; */
 }
 
 /* 스크롤바 커스텀 */
-.scroll::-webkit-scrollbar-thumb {
-    background: #1d54bb96; /* 스크롤바 막대 색상 */
+/*.scroll::-webkit-scrollbar-thumb {
+    background: #1d54bb96;  스크롤바 막대 색상 
     border-radius: 12px 12px 12px 12px;
 }
 
 .scroll::-webkit-scrollbar-button {
     display: none;
-}
+} */
 
 /* ********************* */
 /* *******삭제 모달****** */
@@ -407,15 +495,6 @@ const getChildId = () => {
     background-color: #214c9c96;
 }
 
-.search-menu{
-    width: 1400px;
-    display: flex;
-    flex-direction: row;
-    background-color: #b3c6e7;
-    height: 200px;
-    gap: 30px;
-}
-
 .modal-content {
     text-align: center;
     margin: 60px;
@@ -464,5 +543,46 @@ const getChildId = () => {
     width: 100px;
     cursor: pointer;
     margin: 10px;
+}
+
+/* 페이지네이션 css */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.paginate-span {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.paginate-btn {
+    all: unset;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.paginate-btn:hover {
+    color: #5589e996;
+}
+
+.no-pointer {
+    cursor: default;
+    background-color: #5589e996;
+    border-radius: 50%;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+}
+
+.no-pointer:hover {
+    color: #000000;
+}
+
+.dots {
+    /* cursor: default; */
+    all: unset;
 }
 </style>

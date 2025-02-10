@@ -47,7 +47,7 @@
                         <div class="chk-div">
                             <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.transaction_id" name="checkbox">
                         </div>
-                        <p @click="goSpendDetail(item.transaction_id)" class="title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p @click="goSpendDetail(item.transaction_id)" class="content-title">{{ getTruncatedTitle(item.title) }}</p> 
                         <p class="category">{{ getCategoryText(item.category) }}</p>
                         <p class="charge">{{ item.amount.toLocaleString() }}원</p>
                         <p class="transaction-date">{{ item.transaction_date }}</p>
@@ -56,6 +56,45 @@
             </div>
             
         </div>
+    </div>
+    <!-- 페이지네이션 UI by 최상민 -->
+    <div class="pagination">
+        <!-- 이전 버튼 -->
+        <button 
+            class="paginate-btn" 
+            @click="goToPrevious" 
+            :disabled="currentPage === 1">
+            < 이전
+        </button>
+        <!-- 페이지 번호 출력 4가 현재 페이지일때 (예: 1 ... 3 4 5 6) -->
+        <span v-for="page in pageNumbers" :key="page" class="paginate-span">
+            <!-- 페이지 번호 버튼 -->
+            <button 
+                v-if="page !== '...'" 
+                class="paginate-btn" 
+                @click="goToPage(page)" 
+                :disabled="page === currentPage"
+                :class="{'no-pointer': page === currentPage}"
+            >
+                {{ page }}
+            </button>
+
+            <!-- '...' 버튼 스타일을 위해 별도의 클래스 적용 -->
+            <button 
+                v-else 
+                class="dots" 
+                disabled
+            >
+                {{ page }}
+            </button>
+        </span>
+        <!-- 다음 버튼 -->
+        <button 
+            class="paginate-btn" 
+            @click="goToNext" 
+            :disabled="currentPage === lastPage">
+            다음 >
+        </button>
     </div>
     <!-- ************************* -->
     <!-- ********삭제 모달********* -->
@@ -78,13 +117,16 @@
 <script setup>
 
 import { computed, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
+const route = useRoute();
 
 // 마운트트
 onMounted(() => {
-    store.dispatch('childTransaction/transactionList');
+    // store.dispatch('childTransaction/transactionList');
+    store.dispatch('childTransaction/transactionList', {child_id: route.params.id, page: 1});
 });
 
 // 거래 리스트 가져오기
@@ -119,6 +161,63 @@ const goSpendDetail = (transaction_id) => {
 const goSpendCreate = () => {
     store.dispatch('childTransaction/goSpendCreate');
 }
+
+// ********** 페이지네이션 **********
+const currentPage = computed(() => store.state.childTransaction.currentPage);
+const lastPage = computed(() => store.state.childTransaction.lastPage);
+
+// 페이지네이션을 위한 페이지 번호 배열 생성
+const pageNumbers = computed(() => {
+    const numbers = [];
+    const range = 1; // 현재 페이지 앞뒤로 표시할 페이지 수
+
+    // 첫 번째 페이지 추가
+    if (currentPage.value > range + 1) {
+        numbers.push(1);
+        numbers.push('...');  // 첫 번째 페이지 앞에 '...'
+    }
+
+    // 페이지 번호를 배열에 추가 (예: 1 ... 3 4 5 6)
+    for (let i = Math.max(currentPage.value - range, 1); i <= Math.min(currentPage.value + range, lastPage.value); i++) {
+        numbers.push(i);
+    }
+
+    // 마지막 페이지가 포함되지 않으면 추가
+    if (numbers[numbers.length - 1] !== lastPage.value) {
+        if (currentPage.value < lastPage.value - range - 1) {
+            numbers.push('...');  // 마지막 페이지 뒤에 '...'
+        }
+        numbers.push(lastPage.value);
+    }
+
+    // 마지막 페이지가 1이면 추가하지 않도록 설정
+    if (lastPage.value === 1) {
+        numbers.pop();
+    }
+    
+    return numbers;
+});
+
+// 페이지 이동 함수
+const goToPage = (page) => {
+    if (page >= 1 && page <= lastPage.value) {
+        store.dispatch('childTransaction/transactionList', { child_id: route.params.id, page });
+    }
+};
+
+// 이전 페이지로 이동하는 함수
+const goToPrevious = () => {
+    if (currentPage.value > 1) {
+        goToPage(currentPage.value - 1);
+    }
+};
+
+// 다음 페이지로 이동하는 함수
+const goToNext = () => {
+    if (currentPage.value < lastPage.value) {
+        goToPage(currentPage.value + 1);
+    }
+};
 
 // ************** 체크 박스 ******************
 // 모든 체크박스가 선택되었는지 확인 (computed : 반응형 데이터로 다루기 위해)
@@ -188,7 +287,7 @@ const delCloseModal = () => { //모달창 닫기
 }
 
 .list-container {
-    background-color: white;
+    background-color: transparent;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -215,19 +314,19 @@ const delCloseModal = () => { //모달창 닫기
 .mission-content {
     display: grid;
     grid-template-columns:40px 450px 150px 150px 280px;
+    width: 1400px;
     min-height: 60px;
     gap: 75px;
     font-size: 1.3rem;
     align-items: center;
-    width: 1400px;
     text-align: center;
 }
 
-.title {
+.content-title {
     cursor: pointer;
 }
 
-.title:hover {
+.content-title:hover {
     color: #5589e996;
 }
 
@@ -256,12 +355,12 @@ const delCloseModal = () => { //모달창 닫기
     height: 60px;
     display: grid;
 }
-.scroll {
+/* .scroll {
     overflow-y: auto;
     overflow-x: hidden;
     height: 420px;
     background-color: #F5F5F550;
-}
+} */
 
 .search-btn button{
     width: 120px;
@@ -273,7 +372,7 @@ const delCloseModal = () => { //모달창 닫기
     background-color: #5589e996;
     font-size: 1.5rem;
     border: none;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 
 }
 
@@ -281,16 +380,6 @@ const delCloseModal = () => { //모달창 닫기
     color: #ffffff;
     background-color: #214c9c96;
 }
-
-.search-menu{
-    width: 1400px;
-    display: flex;
-    flex-direction: row;
-    background-color: #b3c6e7;
-    height: 200px;
-    gap: 30px;
-}
-
 
 /* ********************* */
 /* *******삭제 모달****** */
@@ -372,5 +461,46 @@ const delCloseModal = () => { //모달창 닫기
     width: 100px;
     cursor: pointer;
     margin: 10px;
+}
+
+/* 페이지네이션 css */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.paginate-span {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.paginate-btn {
+    all: unset;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+.paginate-btn:hover {
+    color: #5589e996;
+}
+
+.no-pointer {
+    cursor: default;
+    background-color: #5589e996;
+    border-radius: 50%;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+}
+
+.no-pointer:hover {
+    color: #000000;
+}
+
+.dots {
+    /* cursor: default; */
+    all: unset;
 }
 </style>

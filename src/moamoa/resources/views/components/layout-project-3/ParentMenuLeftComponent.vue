@@ -45,11 +45,15 @@
                     홈
                 </div>
             </router-link>
-            <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)">
+            <!-- <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)"> -->
+            <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
+            <div class="menu-title" @click="router.push('/parent/spend/list/' + selectedChildId.child_id)"> 
                 <img src="/img/icon-coin.png" alt="" class="menu-icon">
                 지출
             </div>
-            <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)">
+            <!-- <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)"> -->
+            <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
+            <div class="menu-title" @click="router.push('/parent/mission/list/' + selectedChildId.child_id)"> 
                 <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                 미션
             </div>

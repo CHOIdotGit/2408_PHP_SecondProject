@@ -20,6 +20,10 @@ export default {
         ,childHome: []
         ,totalPages: 1 // 총 페이지 수
         ,filter: []
+        ,currentPage: 1
+        ,lastPage: 1
+        ,perPage: 10
+        ,total: 0
         
     }),
     mutations: {
@@ -71,8 +75,13 @@ export default {
         },
         setFilterMissionList(state, missionList) {
             state.filter = missionList;
-        }
-
+        },
+        setPagination(state, { current_page, last_page, per_page, total }) {
+            state.currentPage = current_page;
+            state.lastPage = last_page;
+            state.perPage = per_page;
+            state.total = total;
+        },
 
     },
     actions: {
@@ -114,27 +123,60 @@ export default {
          * 
          * @param {*} context commit, state 포함되어있음
          */
-        missionList(context, child_id) {
-            context.commit('setControlFlg', false);
+        // missionList(context, searchData) {
+        // // missionList(context, { child_id, page = 1 }) {
+        //     context.commit('setControlFlg', false);
             
-            const url = '/api/parent/mission/list/' + child_id;
+        //     // const url = '/api/parent/mission/list/' + child_id;
+        //     const url = `/api/parent/mission/list/${searchData.child_id}?page=${searchData.page}`;
                         
-            axios.get(url)
-                .then(response => { 
-                    console.log(response.data.missionList.data);
-                    context.commit('setMissionList', response.data.missionList.data);
-                    // console.log('응답 데이터 확인', response.data.missionList.data);
+        //     axios.get(url)
+        //         .then(response => {
+        //             console.log(response.data.missionList.data);
+        //             context.commit('setMissionList', response.data.missionList.data);
+
+        //             // 페이지네이션 정보 저장
+        //             const pagination = {
+        //                 current_page: response.data.missionList.current_page,
+        //                 last_page: response.data.missionList.last_page,
+        //                 per_page: response.data.missionList.per_page,
+        //                 total: response.data.missionList.total,
+        //             };
+        //             context.commit('setPagination', pagination);
                     
-                    // 세션 스토리지에 자녀ID 세팅
-                    sessionStorage.setItem('child_id', child_id);
-                    context.commit('setChildId', child_id);
-                    router.push('/parent/mission/list/' + child_id);
+        //             // 세션 스토리지에 자녀ID 세팅
+        //             sessionStorage.setItem('child_id', child_id);
+        //             context.commit('setChildId', child_id);
                     
-                    // console.log('자녀 확인', context.state.childId);
-                })
-                .catch(error => {
-                    console.error('미션 정보 불러오기 오류', error);
-                });    
+        //             // console.log('자녀 확인', context.state.childId);
+        //         })
+        //         .catch(error => {
+        //             console.error('미션 정보 불러오기 오류', error);
+        //         });    
+        // },
+        
+        // 부모 미션 리스트 페이지(페이지네이션 작업 by 최상민)
+        async missionList(context, searchData) {
+            try {
+                const response = await axios.get(`/api/parent/mission/list/${searchData.child_id}?page=${searchData.page}`);
+                
+                // missionList 데이터를 commit
+                context.commit('setMissionList', response.data.missionList.data);
+               
+                // 세션 스토리지에 자녀ID 세팅
+                sessionStorage.setItem('child_id', searchData.child_id);
+                context.commit('setChildId', searchData.child_id);
+        
+                // pagination 정보를 개별적으로 commit
+                context.commit('setPagination', {
+                    current_page: response.data.missionList.current_page,
+                    last_page: response.data.missionList.last_page,
+                    per_page: response.data.missionList.per_page,
+                    total: response.data.missionList.total,
+                });
+            } catch (error) {
+              console.error('미션 정보 불러오기 오류', error);
+            }
         },
         // ***************************
         // 자녀 미션 리스트 페이지

@@ -18,14 +18,15 @@
     gap: 20px;
 }
 
-.route {
-    margin-top: 20px;
-    font-size: 1.7rem;
+.search-menu {
+    width: 1400px;
+    display: flex;
+    flex-direction: row;
+    background-color: #b3c6e7;
+    height: 200px;
+    gap: 30px;
 }
 
-.search-menu {
-    display: flex;
-}
 .search {
     font-size: 1.2rem;
     display: flex;

@@ -39,6 +39,7 @@ import ChildBankProductComponent from '../views/components/bank/child-bank/Child
 import ChildBankProductRegisterComponent from '../views/components/bank/child-bank/ChildBankProductRegisterComponent.vue';
 import ChildMoaBankComponent from '../views/components/bank/child-bank/ChildMoaBankComponent.vue';
 import ChildBankBookComponent from '../views/components/bank/child-bank/ChildBankBookComponent.vue';
+import ParentsBankBookComponent from '../views/components/bank/parent-bank/ParentsBankBookComponent.vue';
 
 
 
@@ -240,11 +241,11 @@ const routes = [
 
 
 
-    // 부모 통장 상세 페이지
+    // 부모 포인트 페이지
     {
-        // path: '/parent/bankbook/:child_id',
-        // component: ParentsBankBookComponent,
-        // beforeEnter: chkAuth,
+        path: '/parent/bankbook/:child_id',
+        component: ParentsBankBookComponent,
+        beforeEnter: chkAuth,
     },
 
 

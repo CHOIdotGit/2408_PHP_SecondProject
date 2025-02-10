@@ -9,6 +9,7 @@ use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\ModalController;
+use App\Http\Controllers\ParentPointController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\TransactionChildrenController;
 use App\Http\Controllers\TransactionController;
@@ -82,7 +83,10 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 Route::get('/api/parent/stats/{child_id}', [StatsController::class, 'index']);
 
 // 부모 포인트-은행 페이지
-Route::get('/api/parent/moabank{id}', [ChildPointController::class, 'index']);
+Route::get('/api/parent/moabank/{id}', [ChildPointController::class, 'index']);
+
+// 부모 포인트 페이지
+Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
 
 
 // ******************************
