@@ -51,7 +51,7 @@
                     </div>
                     <!-- 더보기 누르면 적금 상품 더보이게(페이지네이션 처리) -->
                     <div>
-                        <p @click="addSavingPage" class="more">더보기</p>
+                        <p @click="addSavingPage" class="more" >더보기</p>
                     </div>
                 </div>
             </div>
@@ -214,24 +214,31 @@ const addSavingPage = () => {
 
 }
 
+
 .div-products {
     display: flex;
-    flex-wrap: wrap;
+    min-width: 1400px;
+    overflow-x: auto;
+    overflow: hidden;
+    /* grid-template-columns: repeat(5, 1fr); */
     justify-content: center;
     align-items: center;
     margin-top: 50px;
     gap: 75px;
-
+    padding-bottom: 20px;
+    overflow-x: auto;
 }
 
 .products {
-    width: 200px;
+    min-width: 200px;
     height: 200px;
     padding-top: 20px;
     border: 1px solid #ddd;
     background-color: #fff;
-
+    
 }
+
+
 
 
 

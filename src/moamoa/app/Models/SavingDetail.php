@@ -24,7 +24,7 @@ class SavingDetail extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    protected function savingSignUp() {
+    public function saving_sign_ups() {
         return $this->belongsTo(SavingSignUp::class, 'saving_sign_up_id');
     }
 }

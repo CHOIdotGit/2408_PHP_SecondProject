@@ -86,7 +86,8 @@ const hamburgerModal = ref(false);
 // 모달 열기
 const openHamburgerModal = () => {
     console.log('햄버거 모달 열기');
-    hamburgerModal.value = true;
+    hamburgerModal.value = !hamburgerModal.value;
+    bellModal.value = false;
 }
 
 // 모달 닫기
@@ -102,6 +103,7 @@ const bellContent = computed(() => store.state.header.bellContent); // 새로 �
 const openBellModal = () => {
     console.log('열라라 참께');
     bellModal.value = !bellModal.value;
+    hamburgerModal.value = false;
     store.dispatch('header/bellContent');
     console.log('이거 닫겼나?');
 }
@@ -295,8 +297,10 @@ const checkMission = (mission_id) => {
 /* 알람 내역 리스트 */
 .bell-list {
     overflow: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
     min-height: 180px;
+    max-height: 449px;
+
 }
 
 

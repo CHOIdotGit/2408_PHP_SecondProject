@@ -29,11 +29,11 @@ class SavingSignUp extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    protected function SavingDetail() {
-        return $this->hasMany(SavingDetail::class, 'saving_sign_up_id');
+    public function saving_details() {
+        return $this->hasMany(SavingDetail::class, 'saving_detail_id');
     }
 
-    protected function SavingProduct() {
+    public function saving_products() {
         return $this->hasMany(SavingProduct::class, 'saving_product_id');
     }
 }

@@ -24,7 +24,7 @@ class SavingProduct extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    protected function SavingSignUp() {
-        return $this->belongsTo(SavingProduct::class, 'saving_product_id');
+    public function saving_sign_ups() {
+        return $this->belongsTo(SavingProduct::class, 'saving_sign_up_id');
     }
 }
