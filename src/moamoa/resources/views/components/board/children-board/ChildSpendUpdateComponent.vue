@@ -1,16 +1,23 @@
 <template>
     <div class="main-container">
         <div class="board-container">
+            <div class="c-route"> 홈  > 지출 > 수정</div>
             <div class="content-list">
-                <div class="content">
-                    <p class="title">제목</p>
+                <div class="c-content">
+                    <p class="c-list-title">제목</p>
                     <input type="text" class="ms-title deco" id="ms-title" maxlength="10" v-model="transactionDetail.title" autofocus>
-                    <div class="date deco">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" v-model="transactionDetail.transaction_date">
+                </div>
+                <div class="c-content">
+                    <p class="c-list-title">날짜</p>
+                    <div class="date">
+                        <div class="end-date">
+                            <p class="date-title">종료일</p>
+                            <input type="date" class="ms-date" id="ms-date" min="2000-01-01" v-model="transactionDetail.transaction_date">
+                        </div>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">종류</p>
+                <div class="c-content-cate">
+                    <p class="c-list-title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionDetail.category}, 'ms-category-btn']">
@@ -19,12 +26,12 @@
                         </label>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">사용 내역</p>
+                <div class="c-content">
+                    <p class="c-list-title">사용 내역</p>
                     <textarea v-model="transactionDetail.memo" class="ms-content deco" id="ms-content" placeholder="사용 내역을 입력하세요"></textarea>
                 </div>
-                <div class="content">
-                    <p class="title">금액(원)</p>
+                <div class="c-content">
+                    <p class="c-list-title">금액(원)</p>
                     <input v-model="transactionDetail.amount" type="number" class="ms-amount deco" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
@@ -72,7 +79,7 @@ const updateTransaction = () => {
 </script>
 
 <style scoped>
-@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/childboardCommon.css');
 @import url('../../../../css/category.css');
 
 /* 입력란 테두리 */
@@ -106,4 +113,11 @@ const updateTransaction = () => {
     margin-bottom: 30px;
     cursor: pointer;
 }
+
+
+.category-name {
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
 </style>

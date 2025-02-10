@@ -9,8 +9,8 @@
             </div>
             <div class="c-content">
                 <p class="c-list-title">날짜</p>
-                <div class="date deco">
-                    <span class="ms-date">{{ transactionDetail.transaction_date }}</span>
+                <div class="date">
+                    <span class="ms-date" >{{ transactionDetail.transaction_date }}</span>
                 </div>
             </div> 
             <div class="c-content-cate">
@@ -152,11 +152,13 @@ const delCloseModal = () => {
 }
 
 .category-name {
-    margin-top: 20px;
+    margin-top: 10px;
     font-size: 1.3rem;
 }
 
-
+.date {
+    margin-left: 15px;
+}
 /* ********************* */
 /* *******삭제 모달****** */
 /* ********************* */

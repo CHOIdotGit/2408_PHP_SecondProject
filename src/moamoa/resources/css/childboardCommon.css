@@ -114,6 +114,7 @@ span {
     font-size: 1.5rem;
     text-align: center;
     margin: auto;
+    gap: 30px;
 }
 
 .c-date-detail{

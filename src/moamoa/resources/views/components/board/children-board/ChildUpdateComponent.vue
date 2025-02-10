@@ -1,34 +1,43 @@
 <template>
     <div class="main-container">
         <div class="board-container">
+            <div class="c-route"> 홈  > 미션 > 수정</div>
             <div class="content-list">
-                <div class="content">
-                    <p class="title">제목</p>
+                <div class="c-content">
+                    <p class="c-list-title">제목</p>
                     <input v-model="missionDetail.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus>
-                    <div class="date deco">
-                        <input type="date" v-model="missionDetail.start_at" class="ms-date" id="ms-date" min="2000-01-01" >
-                        <span>⁓</span>
-                        <input type="date" v-model="missionDetail.end_at" class="ms-date" id="ms-date" min="2000-01-01" >
-                        <!-- value="today" -->
+                    
+                </div>
+                <div class="c-content">
+                    <p class="c-list-title">날짜</p>
+                    <div class="date">
+                        <div class="start-date">
+                            <p class="date-title">시작일</p>
+                            <input type="date" v-model="missionDetail.start_at" class="c-ms-date" id="ms-date" min="2000-01-01" >
+                        </div>
+                        <div class="end-date">
+                            <p class="date-title">종료일</p>
+                            <input type="date" v-model="missionDetail.end_at" class="c-ms-date" id="ms-date" min="2000-01-01" >
+                        </div>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">종류</p>
+                <div class="c-content-cate">
+                    <p class="c-list-title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="missionDetail.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === missionDetail.category}, 'ms-category-btn']">
                             <img class="ms-category-img" :src="item.img" >
-                            <p class="m-top">{{ item.name }}</p>
+                            <p class="category-name">{{ item.name }}</p>
                         </label>
                     </div>
 
                 </div>
-                <div class="content">
-                    <p class="title">내용</p>
+                <div class="c-content">
+                    <p class="c-list-title">내용</p>
                     <textarea v-model="missionDetail.content" class="ms-content deco" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
-                <div class="content">
-                    <p class="title">금액</p>
+                <div class="c-content">
+                    <p class="c-list-title">금액</p>
                     <input v-model="missionDetail.amount" type="number" class="ms-amount deco" id="ms-amount" required>
                 </div>
                 <div class="bottom-btn">
@@ -74,7 +83,7 @@ const getUpdateMission = () => {
 </script>
 
 <style scoped>
-@import url('../../../../css/boardCommon.css');
+@import url('../../../../css/childboardCommon.css');
 @import url('../../../../css/category.css');
 
 /* 입력란 테두리 */
@@ -109,5 +118,10 @@ const getUpdateMission = () => {
     background-color: #5589e996 ;
     margin-bottom: 30px;
     cursor: pointer;
+}
+
+.category-name {
+    margin-top: 20px;
+    font-size: 1.3rem;
 }
 </style>

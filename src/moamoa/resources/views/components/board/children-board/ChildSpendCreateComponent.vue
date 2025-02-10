@@ -1,16 +1,20 @@
 <template>
     <div class="main-container">
         <div class="board-container">
+            <div class="c-route"> 홈  > 지출 > 작성</div>
             <div class="content-list">
-                <div class="content">
-                    <p class="title">제목</p>
+                <div class="c-content">
+                    <p class="c-list-title">제목</p>
                     <input type="text" class="ms-title deco" id="ms-title" maxlength="10" required autofocus v-model="transactionCreate.title">
-                    <div class="date deco">
-                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" required v-model="transactionCreate.transaction_date">
-                    </div>
                 </div>
-                <div class="content">
-                    <p class="title">종류</p>
+                <div class="c-content">
+                    <p class="c-list-title">날짜</p>
+                    <div class="date">
+                        <input type="date" class="ms-date" id="ms-date" min="2000-01-01" required v-model="transactionCreate.transaction_date">
+                    </div>    
+                </div>
+                <div class="c-content-cate">
+                    <p class="c-list-title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="transactionCreate.category"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === transactionCreate.category}, 'ms-category-btn']">
@@ -19,17 +23,17 @@
                         </label>
                     </div>
                 </div>
-                <div class="content">
+                <div class="c-content">
                     <p class="title">사용 내역</p>
                     <textarea class="ms-content deco" id="ms-content" placeholder="사용 내역을 입력하세요" v-model="transactionCreate.memo"></textarea>
                 </div>
-                <div class="content">
+                <div class="c-content">
                     <p class="title">금액</p>
                     <input type="number" class="ms-amount deco" id="ms-amount" required v-model="transactionCreate.amount">
                 </div>
-                <div class="bottom-btn">
-                    <button @click="$router.replace('/child/spend/list')" class="create-btn">취소</button>
-                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="create-btn">작성</button>
+                <div class="c-bottom-btn">
+                    <button @click="$router.replace('/child/spend/list')" class="c-create-btn cancel">취소</button>
+                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">작성</button>
                 </div>
             </div>
         </div>
@@ -83,19 +87,15 @@ const transactionCreate = reactive({
 }
 
 
-.bottom-btn{
-    display: flex;
-    justify-content: right;
+.c-bottom-btn{
     gap: 30px;
-    margin: auto;
-    margin-top: 10px;
-    margin-right: 300px;
-
+    margin-top: 20px;
+    display: flex;
 }
 
 
 /* 취소/미션등록 버튼 */
-.create-btn {
+.c-create-btn {
     width: 120px;
     height: 50px;
     font-size: 1.5rem;
@@ -106,4 +106,7 @@ const transactionCreate = reactive({
     cursor: pointer;
 }
 
+.cancel {
+    margin-left: 1030px;
+}
 </style>

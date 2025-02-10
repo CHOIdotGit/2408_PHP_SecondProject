@@ -284,6 +284,9 @@ const delCloseModal = () => { //모달창 닫기
     align-items: center;
 }
 
+.c-mission-delete {
+    margin-left: 1130px;
+}
 .list-container {
     background-color: transparent;
     display: flex;

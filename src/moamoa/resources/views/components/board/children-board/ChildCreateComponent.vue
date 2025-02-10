@@ -1,19 +1,27 @@
 <template>
     <div class="main-container">
         <div class="board-container">
+            <div class="c-route"> 홈  > 미션 > 작성</div>
             <div class="content-list">
-                <div class="content">
-                    <p class="title">미션 제목</p>
+                <div class="c-content">
+                    <p class="c-list-title">제목</p>
                     <input v-model="missionCreate.title" type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
-                    <div class="date deco">
-                        <input v-model="missionCreate.start_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
-                        <span>⁓</span>
-                        <input v-model="missionCreate.end_at" type="date" class="ms-date" id="ms-date" min="2000-01-01">
-                        <!-- value="today" -->
-                    </div>
                 </div>
-                <div class="content">
-                    <p class="title">미션 종류</p>
+                    <div class="c-content">
+                        <p class="c-list-title">날짜</p>
+                        <div class="date-detail">
+                            <div class="start-date">
+                                <p class="date-title">시작일</p>
+                                <input v-model="missionCreate.start_at" type="date" class="c-ms-date" id="ms-date" min="2000-01-01">
+                            </div>
+                            <div class="end-date">
+                                <p class="date-title">종료일</p>
+                                <input v-model="missionCreate.end_at" type="date" class="c-ms-date" id="ms-date" min="2000-01-01">
+                            </div>
+                        </div>
+                </div>
+                <div class="c-content-cate">
+                    <p class="c-list-title">종류</p>
                     <div class="category-btn" v-for="item in categories" :key="item">
                         <input type="radio" name="category" :value="item.index" :id="'category-' + item.index" v-model="radioCategories"></input>
                         <label :for="'category-' + item.index" :class="[{'checked-category-btn': item.index === radioCategories}, 'ms-category-btn']">
@@ -22,16 +30,16 @@
                         </label>
                     </div>
                 </div>
-                <div class="content">
-                    <p class="title">미션 내용</p>
+                <div class="c-content">
+                    <p class="c-list-title">내용</p>
                     <textarea v-model="missionCreate.content" class="ms-content deco" id="ms-content" placeholder="미션 내용을 입력하세요"></textarea>
                 </div>
-                <div class="content">
-                    <p class="title">미션 금액</p>
+                <div class="c-content">
+                    <p class="c-list-title">금액</p>
                     <input v-model="missionCreate.amount" type="num" class="ms-amount deco" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
                 </div>
-                <div class="bottom-btn">
-                    <button @click="$router.replace('/child/mission/list')" class="create-btn">등록 취소</button>
+                <div class="c-bottom-btn">
+                    <button @click="$router.replace('/child/mission/list')" class="create-btn cancel">등록 취소</button>
                     <button @click="$store.dispatch('childMission/createMission', missionCreate)" class="create-btn">미션 등록</button>
                 </div>
             </div>
@@ -118,16 +126,6 @@ const missionCreate = reactive({
 /* ******************************** */
 
 
-.bottom-btn{
-    display: flex;
-    justify-content: right;
-    gap: 30px;
-    margin: auto;
-    margin-top: 10px;
-    margin-right: 200px;
-}
-
-
 /* 취소/미션등록 버튼 */
 .create-btn {
     width: 120px;
@@ -140,4 +138,26 @@ const missionCreate = reactive({
     color: #FFFFFF;
 }
 
+.c-bottom-btn{
+    gap: 30px;
+    margin-top: 20px;
+    display: flex;
+}
+
+.category-name {
+    margin-top: 10px;
+    font-size: 1.3rem;
+}
+
+.cancel {
+    margin-left: 1030px;
+}
+
+.c-ms-date {
+    margin-left: 15px;
+}
+
+.ms-category-btn {
+    margin-left: 27px;
+}
 </style>

@@ -1,78 +1,72 @@
-<template>
-    <div class="cal-container" v-if="calendarData">
-        <div class="nav-section">
-            <div class="select-kids">
-                <img class=selected-kid :src="calendarData.profile" alt="" width="120px" height="120px">
-                <div class="name-plate">
-                    <p class="name-plate-name"> {{ calendarData.name }}</p>
-                    <p class="name-plate-nickname">{{ calendarData.nick_name}}</p>
-                </div>    
-            </div>
-            
-            <div class="money-history" >
-                <div class="money-title">
-                    <ul>
-                        <li class="cost-title">교통비</li>
-                        <li class="cost-title">식비</li>
-                        <li class="cost-title">쇼핑</li>
-                        <li class="cost-title">기타</li>
-                        <li class="cost-title">미션</li>
-                        <li class="cost-title">총합</li>
-                    </ul>
+<template>   
+    <div class="cal-sec-container">
+        <div class="sec-container">
+            <div class="calendar">
+                <div class="sec-header">
+                <!-- 이전/다음 버튼 -->
+                    <pre class="left" @click="prevMonth">◀</pre>
+                        <div class="header-display">
+                            <!-- 현재 연월 표시 -->
+                            <p class="date-display">{{ formattedDate }}</p>
+                        </div>
+                    <pre class="right" @click="nextMonth">▶</pre>
                 </div>
-                <div class="money-cost">
-                    <ul>
-                        <li class="cost">{{ Number(sidebarData.traffic).toLocaleString() }} 원</li>
-                        <li class="cost">{{ Number(sidebarData.meal).toLocaleString() }} 원</li>
-                        <li class="cost">{{ Number(sidebarData.shopping).toLocaleString() }} 원</li>
-                        <li class="cost">{{ Number(sidebarData.etc).toLocaleString() }} 원</li>
-                        <li class="cost" >{{ Number(sidebarMission).toLocaleString() }} 원</li>
-                        <li class="cost" >{{ totalAmount.toLocaleString() }} 원</li>
-                    </ul>
+                <div class="week">
+                    <div style="color: red;">일</div>
+                    <div>월</div>
+                    <div>화</div>
+                    <div>수</div>
+                    <div>목</div>
+                    <div>금</div>
+                    <div style="color: blue;">토</div>
                 </div>
-            </div>
-            
-        </div>
-        <div class="cal-sec-container">
-            <div class="sec-container">
-                <div class="calendar">
-                    <div class="sec-header">
-                    <!-- 이전/다음 버튼 -->
-                        <pre class="left" @click="prevMonth">◀</pre>
-                            <div class="header-display">
-                                <!-- 현재 연월 표시 -->
-                                <p class="date-display">{{ formattedDate }}</p>
-                            </div>
-                        <pre class="right" @click="nextMonth">▶</pre>
-                    </div>
-                    <div class="week">
-                        <div style="color: red;">일</div>
-                        <div>월</div>
-                        <div>화</div>
-                        <div>수</div>
-                        <div>목</div>
-                        <div>금</div>
-                        <div style="color: blue;">토</div>
-                    </div>
-                    <div class="days">
-                        <!-- 시작 요일 빈 칸 -->
-                        <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
-                        <!-- 날짜 표시 -->
+                <div class="days">
+                    <!-- 시작 요일 빈 칸 -->
+                    <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
+                    <!-- 날짜 표시 -->
                         <div v-for="day in daysInMonth" :key="day" class="day" >
                             <p @click="openModal(day)" :class="{ 'circle-class': isToday(day) }">{{ day }}</p>
                             <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
                             <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
-                            
                             <!-- '2024-12-' + String(i).padStart(2,'0')); -->
                         </div>
                     </div>
                 </div>
+                <div class="money-summary">
+                    <p class="summary-title">항목별 합계</p>
+                    <div class="section-sum">
+                        <div class="money-history traffic">
+                            <p class="cost-title">교통비</p>
+                            <p class="cost">{{ Number(sidebarData.traffic).toLocaleString() }} 원</p>
+                        </div>
+                        <div class="money-history meal">
+                            <p class="cost-title">식비</p>
+                            <p class="cost">{{ Number(sidebarData.meal).toLocaleString() }} 원</p>
+                        </div>
+                        <div class="money-history shopping">    
+                            <p class="cost-title">쇼핑</p>
+                            <p class="cost">{{ Number(sidebarData.shopping).toLocaleString() }} 원</p>
+                        </div>
+                        <div class="money-history etc">    
+                            <p class="cost-title">기타</p>
+                            <p class="cost">{{ Number(sidebarData.etc).toLocaleString() }} 원</p>
+                        </div>
+                        <div class="money-history missions">    
+                            <p class="cost-title">미션</p>
+                            <p class="cost" >{{ Number(sidebarMission).toLocaleString() }} 원</p>
+                        </div>
+                    </div>
+                    <div class="money-history total">    
+                        <p class="cost-title">총합</p>
+                        <p class="cost" >{{ totalAmount.toLocaleString() }} 원</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div v-else>
-        <p>Loading...</p>
-    </div>
+                    
+
+
+    
 
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
@@ -271,65 +265,33 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     margin-top: 20px;
     margin-left: 50px;
 }
-.nav-section {
-    background-color: white;
-    height: 720px;
-}
-.selected-kid {
-    margin-left: 30px;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    /* width: 80px; */
-    border: 5px solid #5589e996; 
-    background-color: white;
-    border-radius: 50%;
-    padding: 3px;
-}
 
-
+.calendar {
+    width: 950px;
+    border-right: 4px solid #5589e996;
+}
 
 .money-history {
-    width: 400px;
-    height: 480px;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: 170px 200px;
-    font-size: 1.5rem;
-    line-height: 50px;
     background-color: #5589e996;
-}
-
-.cost-title {
-    height: 50px;
-    font-size: 1.5rem;
-    margin-left: 30px;
-    line-height: 50px;
-    margin-top: 20px;
-}
-
-.cost  {
-    list-style-type: none;
-    text-align: right;
-    /* padding-right: 50px; */
-    height: 50px;
-    font-size: 1.5rem;
-    margin-left: 30px;
-    line-height: 50px;
-    margin-top: 20px;
+    display: flex;
+    font-size: 1.2rem;
+    width: 250px;
+    height: 70px;
+    gap: 30px;
+    align-items: center;
 }
 
 .sec-container {
+    width: 1300px;
     height: 700px;
+    margin-left: 100px;
     justify-content: center;
     align-items: center;
-    /* background: ; */
+    display: flex;
+    gap: 50px;
 }
 .cal-sec-container {
-    width: 1290px;
     height: 720px;
-    background-color: white;
     padding: 0 1em;
 }
 .sec-header {
@@ -341,6 +303,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     justify-content: center;
     padding: 10px ;
 }
+
 .header-display {
     display: flex;
     justify-content: center;
@@ -354,19 +317,26 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding: 0 20px;
+    width: 910px;
     justify-content: space-between;
     align-items: center;
     /* padding-top: 15px; */
 }
 
+.summary-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: auto;
+}
+
 .week{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    width: 910px;
     padding: 0 20px;
     justify-content: space-between;
     align-items: center;
     div{
-        
         height: 55px;
         font-size: 2rem;
         text-align: center;
@@ -377,10 +347,8 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 .days div{
     text-align: center;
     font-size: 2rem;
-    width: 130px;
     opacity: 1;
     height: 90px;
-    margin-left: 20px;
     margin-top: 10px;
 }
 
@@ -400,38 +368,10 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     font-size: 0.9rem;
 }
 
-
-.select-kids {
+.money-summary {
     display: flex;
-    margin: 20px;
-}
-
-.name-plate {
-    display: flex;
+    gap: 20px;
     flex-direction: column;
-    width: 180px;
-    margin-left: 50px;
-    align-items: center;
-    /* justify-content: space-around; */
-}
-
-.name-plate-name {
-    margin-top: 30px;
-    font-size: 3rem;
-}
-
-.name-plate-nickname {
-    margin-top: 10px;
-    font-size: 2rem;
-}
-
-.money-title {
-    height: 500px;
-    height: 50px;
-    font-size: 1.5rem;
-    margin-left: 30px;
-    line-height: 50px;
-    margin-top: 20px;
 }
 
 .money-cost {
@@ -442,6 +382,13 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     line-height: 50px;
     margin-top: 20px;
 }
+
+.cost-title {
+    margin-left: 30px;
+    width: 65px;
+    font-size: 1.3rem;
+}
+
 .circle-class {
     width: 50px; 
     height: 50px;
@@ -487,6 +434,12 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     align-items: center;
     justify-content: center;
 
+}
+
+.cost {
+    justify-content: center;
+    align-items: end;
+    width: 100px;
 }
 
 .modal-name {
