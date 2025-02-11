@@ -1,5 +1,7 @@
 <template>
 <div class="stat-container"> 
+  <button @click="prevMonth"> ◀ </button>
+  <button @click="nextMonth"> ▶ </button>
     <div class="stat-section">
       <div class="each-part">
         <!-- 그래프 섹션 -->
@@ -52,16 +54,41 @@ import { useRoute } from 'vue-router';
 const store = useStore();
 const route = useRoute();
 
+
+const dateToday = ref(new Date());
+
+// 현재 연월 표시 (반응형 데이터)
+const formattedDate = computed(() =>
+    dateToday.value.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        timeZone: "Asia/Seoul",
+    })
+);
+
+// 이전 월로 이동
+async function prevMonth() {
+    const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
+    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
+    dateToday.value = currentDate;
+}
+
+// 다음 월로 이동
+async function nextMonth() {
+    const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
+    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
+    dateToday.value = currentDate;
+}
+
 const parentStatis = computed(() => store.state.transaction.parentStats);
 // const doughnutGraph = computed(() => store.state.transacion);
-
+const categoryMapping = [
+    '교통비',
+    '식비',
+    '쇼핑',
+    '기타',
+];
 const getCategoryText = (category) => {
-  const categoryMapping = {
-    0: '교통비',
-    1: '취미',
-    2: '쇼핑',
-    3: '기타',
-  };
   return categoryMapping[category] || '알 수 없음';
 };
 
@@ -158,16 +185,29 @@ onBeforeMount(() => {
 
 onMounted(async () => {
   await store.dispatch('transaction/parentStats', route.params.child_id);
-  doughnutChartData.datasets[0].data = doughnutData.value;
+  // doughnutChartData.datasets[0].data = doughnutData.value; // v3 del
+  setDoughuntDrawData(); // v3 add
   graphChartData.datasets[0].data = weeklyOutgoData.value;
   renderGraphChart();
   renderDoughnutChart();
 });
 
+// v3 add start
+const setDoughuntDrawData = () => {
+  doughnutChartData.datasets[0].data = store.getters['transaction/getDoughnutDataTotalAmount']; // v3 add
+  doughnutChartData.labels = categoryMapping.filter((val, key) => {
+    const labels = store.getters['transaction/getDoughnutDataLabels'];
+    return labels.some(labelCode => labelCode == key);      
+  });
+}
+// v3 add end
+
 watch(
   () => doughnutData.value
   , newQuestion => {
-    doughnutChartData.datasets[0].data = doughnutData.value;
+    // doughnutChartData.datasets[0].data = doughnutData.value; // v3 del
+
+    setDoughuntDrawData(); // v3 add
     renderDoughnutChart();
   }
 );
@@ -186,11 +226,10 @@ watch(
 <style scoped>
 
 .stat-container {
-  width: 1500px;
   height: 720px;
   margin-top: 20px;
   background-color: white;
-  margin-left: 240px;
+  margin-left: 100px;
   
 }
 

@@ -150,14 +150,14 @@ export default {
         parentStats(context, child_id) {
             return new Promise((resolve, reject) => {
                 const url = '/api/parent/stats/' + child_id ;
-                axios
-                    .get(url)
+                axios.get(url)
                     .then((response) => {
                         context.commit('setChildId', child_id);
                         context.commit('setParentStats', response.data.data);
-                        const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount);
+                        // const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount); // v3 del
                         const weeklyExpenseAmount = response.data.weeklyOutgoData.map(item => item.total);
-                        context.commit('setDoughnutData', eachCategoryTransaction);
+                        // context.commit('setDoughnutData', eachCategoryTransaction); // v3 del
+                        context.commit('setDoughnutData', response.data.eachCategoryTransaction); // v3 add
                         context.commit('setWeeklyOutgoData', weeklyExpenseAmount);
                         return resolve();
                     })
@@ -186,6 +186,11 @@ export default {
     },
 
     getters: {
-        
+        getDoughnutDataTotalAmount(state) {
+            return state.doughnutData.map(item => item.total_amount);
+        },
+        getDoughnutDataLabels(state) {
+            return state.doughnutData.map(item => item.category);
+        },
     },
 }

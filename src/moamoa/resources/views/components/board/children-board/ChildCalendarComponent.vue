@@ -37,19 +37,19 @@
                     <div class="section-sum">
                         <div class="money-history traffic">
                             <p class="cost-title">교통비</p>
-                            <p class="cost">{{ Number(sidebarData.traffic).toLocaleString() }} 원</p>
+                            <p class="cost">{{ Number(sidebarData?.traffic).toLocaleString() }} 원</p>
                         </div>
                         <div class="money-history meal">
                             <p class="cost-title">식비</p>
-                            <p class="cost">{{ Number(sidebarData.meal).toLocaleString() }} 원</p>
+                            <p class="cost">{{ Number(sidebarData?.meal).toLocaleString() }} 원</p>
                         </div>
                         <div class="money-history shopping">    
                             <p class="cost-title">쇼핑</p>
-                            <p class="cost">{{ Number(sidebarData.shopping).toLocaleString() }} 원</p>
+                            <p class="cost">{{ Number(sidebarData?.shopping).toLocaleString() }} 원</p>
                         </div>
                         <div class="money-history etc">    
                             <p class="cost-title">기타</p>
-                            <p class="cost">{{ Number(sidebarData.etc).toLocaleString() }} 원</p>
+                            <p class="cost">{{ Number(sidebarData?.etc).toLocaleString() }} 원</p>
                         </div>
                         <div class="money-history missions">    
                             <p class="cost-title">미션</p>
@@ -64,9 +64,6 @@
             </div>
         </div>
                     
-
-
-    
 
     <!-- ************************* -->
     <!-- ********상세 모달********* -->
@@ -112,10 +109,10 @@ const dailyOutgoData = computed(()=> store.state.calendar.calendarInfo.dailyOutg
 const totalAmount = computed(() => {
     return (
         (Number(sidebarMission.value) || 0) - (
-            (Number(sidebarData.value.traffic) || 0) +
-            (Number(sidebarData.value.meal) || 0) +
-            (Number(sidebarData.value.shopping) || 0) +
-            (Number(sidebarData.value.etc) || 0)
+            (Number(sidebarData.value?.traffic) || 0) +
+            (Number(sidebarData.value?.meal) || 0) +
+            (Number(sidebarData.value?.shopping) || 0) +
+            (Number(sidebarData.value?.etc) || 0)
         )
     );
 });
@@ -244,7 +241,7 @@ function getYearMonth(day) {
 
 // 일별 수입/지출 반환
 function getDailyIncomeExpense(day, data, incomFlg) {
-    const item = data.find(item => item.target_at === getYearMonth(day));
+    const item = data?.find(item => item.target_at === getYearMonth(day));
     // console.log('item', item);
     const symbol = incomFlg ? '+' : '-';
     if(item) {
