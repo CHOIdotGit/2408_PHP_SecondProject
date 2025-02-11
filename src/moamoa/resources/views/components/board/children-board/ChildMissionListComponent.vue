@@ -68,7 +68,7 @@
     <!-- 페이지네이션 UI by 최상민 -->
     <div class="pagination">
         <!-- 이전 버튼 -->
-        <button 
+        <button v-if="currentPage > 1"
             class="paginate-btn" 
             @click="goToPrevious" 
             :disabled="currentPage === 1">
@@ -97,7 +97,7 @@
             </button>
         </span>
         <!-- 다음 버튼 -->
-        <button 
+        <button v-if="currentPage < lastPage"
             class="paginate-btn" 
             @click="goToNext" 
             :disabled="currentPage === lastPage">

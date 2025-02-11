@@ -6,6 +6,8 @@ export default {
 
     state: ()=> ({
         childSavingList: []
+        // 세션 관련 -------------------------------------------------------------
+        ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
     }),
 
     mutations: {

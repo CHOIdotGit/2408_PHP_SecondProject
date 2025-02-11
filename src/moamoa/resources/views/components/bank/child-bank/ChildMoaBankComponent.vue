@@ -56,21 +56,21 @@ const store = useStore();
 // const childPoint = computed(() => store.state.childPoint.childPoint);
 const totalPoints = computed(() => store.state.childPoint.totalPoints);
 console.log('totalPoints 확인 : ', totalPoints)
+// 자녀 적금 상품 가져 오기
+const savingList = computed(()=> store.state.saving.childSavingList);
 
 // 자녀 포인트 받아오기
-onMounted(() => {
-    store.dispatch('childPoint/childPoint');
-});
-
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 onMounted(() => {
+    store.dispatch('childPoint/childPoint');
     store.dispatch('bank/koreaBank');
+    store.dispatch('saving/childSaving');
     store.dispatch('saving/childSaving');
 });
 
-// 자녀 적금 상품 가져 오기
-const savingList = computed(()=> store.state.saving.childSavingList);
+
+
 
 </script>
 

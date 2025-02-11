@@ -4,10 +4,14 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: ()=> ({
-        bankInterest : [], // 한국은행 금리
-        savingList: [], // 적금 상품 리스트
-        openModal: false, // 더보기 버튼 누르긴 모달 닫겨 있게
-        currentPage: 1, // 현재 페이지(1)
+        bankInterest : [] // 한국은행 금리
+        ,savingList: [] // 적금 상품 리스트
+        ,openModal: false // 더보기 버튼 누르긴 모달 닫겨 있게
+        ,currentPage: 1 // 현재 페이지(1)
+        ,productCount: 0 // 가입한 적금 상품 개수
+        ,point: 0 // 보유중인 모아 포인트
+        // 세션 관련 -------------------------------------------------------------
+        ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
 
     }),
     mutations: {
@@ -25,6 +29,15 @@ export default {
         },
         setModalFlg(state, openModal) {
             state.openModal = openModal
+        },
+        setProductCount(state, productCount) {
+            state.productCount = productCount;
+        },
+        setChildId(state, childId) {
+            state.childId = childId;
+        },
+        setPoint(state, point) {
+            state.point = point;
         },
     },
     actions: {
@@ -45,7 +58,8 @@ export default {
 
         // 적금상품
         savingProductList(context) {
-            const url = '/api/moabank/product?page=1';
+            // const url = '/api/moabank/product?page=1';
+            const url = '/api/moabank/product';
             console.log(url);
             axios.get(url)
             .then(response => {
@@ -72,7 +86,26 @@ export default {
             context.dispatch('savingProductList');
         },
 
+        // 가입한 적금 상품 개수
+        signProductCount(context, child_id) {
+            const url = '/api/parent/moabank/'+ child_id;
 
+            axios.get(url)
+                .then(response => {
+                    context.commit('setProductCount', response.data.productCount);
+                    context.commit('setPoint', response.data.point);
+                    console.log('상품 개수와 포인트 확인 : ', response.data);
+                    console.log('자녀 : ', child_id);
+
+                    // 세션 스토리지에 자녀ID 세팅
+                    sessionStorage.setItem('child_id', child_id);
+                    context.commit('setChildId', child_id);
+                })
+                .catch(error => {
+                    console.log('가입한 적금 상품 개수 불러오기 오류', error);
+                });
+            
+        }
     },
     getters: {
         getNextPage(state) {

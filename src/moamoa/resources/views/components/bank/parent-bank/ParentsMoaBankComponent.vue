@@ -14,18 +14,14 @@
         <div class="account">
             <!-- 가입 날짜로 정렬할 예정 -->
             <div class="div-box">
-                <p class="have-point">보유중인 모아 포인트</p>
-                <p class="have-moa">5,000 moa</p>
-                <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
+                <p @click="router.push('/parent/point/' + childId)" class="have-point go-point">보유중인 모아 포인트</p>
+                <!-- 온클릭으로 링크는 부모 포인트 페이지로 설정하기 -->
+                <p class="have-moa">{{ Number(point).toLocaleString() }}</p>
+                <!-- totalPoint 가져오면 -->
+                <p class="subscribe">현재 가입한 적금 상품 : {{ productCount }} 개</p>
+                <!-- 가입한 적금 상품 개수 쿼리문으로 가져오기 -->
             </div>
-            <div class="div-box">
-                <p class="have-point">모아 적금통장</p>
-                <p class="have-moa">14일 적금</p>
-                <div class="interest-rate">
-                    <p>이자율 : </p>
-                    <div>2.1%</div>
-                </div>
-            </div>
+            <!-- v-if -->
             <div class="div-box">
                 <p class="have-point">모아 적금통장</p>
                 <p class="have-moa">35일 적금</p>
@@ -34,67 +30,52 @@
                     <div>4.8%</div>
                 </div>
             </div>
+            <!-- v-else -->
             <div class="div-box">
                 <p class="have-point">모아 적금통장</p>
                 <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                 <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
             </div>
         </div>
-        <div class="savings-product">
-            <div class="outline">
-                <h1>모아은행 적금 상품</h1>
-                <div class="div-products" >
-                    <div class="products" v-for="item in savingProduct" :key="item">
-                        <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
-                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
-                        <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
-                    </div>
-                    <!-- 더보기 누르면 적금 상품 더보이게(페이지네이션 처리) -->
-                    <div>
-                        <p @click="addSavingPage" class="more" >더보기</p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
-
 </template>
 
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
-
+import router from '../../../../js/router';
 
 const store = useStore();
+const route = useRoute();
+
+const point = computed(() => store.state.bank.point);
+const productCount = computed(() => store.state.bank.productCount);
+const childId = computed(() => store.state.bank.childId);
 
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
-onMounted(() => {
-    store.dispatch('bank/koreaBank');
-});
-
 // 적금 상품 가져오기
 const savingProduct = computed(()=> store.state.bank.savingList);
-onMounted(()=> {
+onMounted(() => {
+    store.dispatch('bank/koreaBank');
     store.dispatch('bank/savingProductList');
-})
-
-
+});
 
 const addSavingPage = () => {
     console.log('적금상품 더보기');
     store.dispatch('bank/addsavingList');
-
 }
 
-
+// 가입한 적금 상품 개수 
+onBeforeMount(() => {
+    store.dispatch('bank/signProductCount', route.params.child_id);
+});
 </script>
 
 
 <style scoped>
-
 .bankbook {
     width: 1600px;
     display: flex;
@@ -166,6 +147,11 @@ const addSavingPage = () => {
     font-size: 2rem;
 }
 
+.go-point {
+    cursor: pointer;
+
+}
+
 .have-moa {
     margin-top: 60px;
     font-size: 1.5rem;
@@ -192,62 +178,6 @@ const addSavingPage = () => {
     margin-top: 50px;
     padding-left: 230px;
     font-size: 1.2rem;
-}
-
-/* 적금 상품들 */
-.savings-product {
-    margin: 50px 0 50px 75px;
-
-}
-
-.outline {
-    width: 1470px;
-    text-align: center;
-    /* 부모 색깔 */
-    background-color: #e8ecdc; 
-
-    /* 자녀 색깔 */
-    /* background-color: #e4eff4; */
-    border-radius: 10px;
-    height: 350px;
-    padding: 20px;
-
-}
-
-
-.div-products {
-    display: flex;
-    min-width: 1400px;
-    overflow-x: auto;
-    overflow: hidden;
-    /* grid-template-columns: repeat(5, 1fr); */
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    gap: 75px;
-    padding-bottom: 20px;
-    overflow-x: auto;
-}
-
-.products {
-    min-width: 200px;
-    height: 200px;
-    padding-top: 20px;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    
-}
-
-
-
-
-
-.product-title {
-    font-size: 1.5rem;
-}
-
-.rate-percent {
-    margin-top: 30px;
 }
 
 .more {

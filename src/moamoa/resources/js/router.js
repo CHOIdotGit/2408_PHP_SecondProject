@@ -40,6 +40,7 @@ import RegistFormComponent from '../views/components/auth/regist/RegistFormCompo
 import RegistAgreeComponent from '../views/components/auth/regist/RegistAgreeComponent.vue';
 import RegistSelectComponent from '../views/components/auth/regist/RegistSelectComponent.vue';
 import RegistCompleteComponent from '../views/components/auth/regist/RegistCompleteComponent.vue';
+import ChildBankProductDetailComponent from '../views/components/bank/child-bank/ChildBankProductDetailComponent.vue';
 
 const chkAuth = (to, from, next) => {
     
@@ -452,10 +453,17 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
-    // 적금 상품 몰 페이지
+    // 적금 상품 몰 상세 페이지
     {
         path: '/moabank/product',
         component: ChildBankProductComponent,
+        beforeEnter: chkAuth,
+    },
+
+    // 적금 상품 몰 상세 페이지
+    {
+        path: '/moabank/product/detail',
+        component: ChildBankProductDetailComponent,
         beforeEnter: chkAuth,
     },
 

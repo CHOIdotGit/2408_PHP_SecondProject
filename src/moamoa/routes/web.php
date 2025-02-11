@@ -89,8 +89,8 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 // 부모 통계 페이지
 Route::get('/api/parent/stats/{child_id}', [StatsController::class, 'index']);
 
-// 부모 포인트-은행 페이지
-Route::get('/api/parent/moabank/{id}', [ChildPointController::class, 'index']);
+// 부모 은행 페이지
+Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
 
 // 부모 자녀 적금 페이지
 // Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
@@ -198,7 +198,8 @@ Route::get('/api/koreabank', [BankController::class, 'koreaBank']);
 Route::get('/api/moabank/product/{id}', [BankController::class, 'product']);
 
 // 적금 상품
-Route::get('/api/moabank/product', [BankController::class, 'savingList']);
+Route::get('/api/moabank/product', [BankController::class, 'show']);
+// Route::get('/api/moabank/product', [BankController::class, 'savingList']);
 
 // ******************************
 // *      부모 은행 관련         *

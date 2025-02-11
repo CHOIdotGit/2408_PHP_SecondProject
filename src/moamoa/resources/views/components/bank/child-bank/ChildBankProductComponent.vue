@@ -1,58 +1,42 @@
 <template>
-<div class="bank-product-container">
-    <div>
-        <h1>적금 상품 가입</h1>
-        <div class="bank-product-box">
-            <div class="headline">
-                <h2>7일 적금</h2>
-                <p>7일 동안 매일 적금해보아요</p>
-            </div>
-            <hr>
-            <div class="bank-box">
-                <div class="box-item">
-                    <img src="/img/icon-moabank-graph.png" alt="">
-                    <div>
-                        <p class="box-item-title">기간</p>
-                        <p class="box-item-content">7일</p>
+    <div class="bank-product-container">
+        <!-- 컴포넌트 따로 만들기 -->
+        <div class="savings-product">
+            <div class="outline">
+                <h1>모아은행 적금 상품</h1>
+                <div>
+                    <div class="products" v-for="item in savingProduct" :key="item">
+                        <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                        <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
                     </div>
                 </div>
-                <div class="box-item">
-                    <img src="/img/icon-moabank-amount.png" alt="">
-                    <div>
-                        <p class="box-item-title">금액</p>
-                        <p class="box-item-content">100 ~ 1000모아</p>
-                    </div>
-                </div>
-                <div class="box-item">
-                    <img src="/img/icon-moabank-analytics.png" alt="">
-                    <div>
-                        <p class="box-item-title">금리</p>
-                        <p class="box-item-content">2.0%</p>
-                    </div>
-                </div>
-            </div>
-            <div class="bank-box-bottom">
-                <div class="box-btn">가입하기</div>
-                <p>※ 자세한 내용은 아래 상품안내를 참조하시기 바랍니다.</p>
-
             </div>
         </div>
     </div>
 
-    <div class="tap-menu">
-        <div class="tap-item">상품안내</div>
-        <div class="tap-item">금리 및 이율</div>
-        <div class="tap-item">유의사항</div>
-    </div>
-
-    <div>
-        <div></div>
-    </div>
-</div>
-
 </template>
 
 <script setup>
+
+import { computed, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+
+const store = useStore();
+const route = useRoute();
+
+// 적금 상품 가져오기
+const savingProduct = computed(()=> store.state.bank.savingList);
+onMounted(() => {
+    store.dispatch('bank/koreaBank');
+    store.dispatch('bank/savingProductList');
+});
+
+// const addSavingPage = () => {
+//     console.log('적금상품 더보기');
+//     store.dispatch('bank/addsavingList');
+// }
 
 </script>
 
@@ -158,5 +142,58 @@ img {
     line-height: 47px;
     
 }
+
+/* 적금 상품들 */
+.savings-product {
+    margin: 50px 0 50px 75px;
+
+}
+
+.outline {
+    width: 1470px;
+    text-align: center;
+    /* 부모 색깔 */
+    /* background-color: #e8ecdc;  */
+
+    /* 자녀 색깔 */
+    background-color: #e4eff4;
+    border-radius: 10px;
+    height: 750px;
+    padding: 20px;
+
+}
+
+
+.div-products {
+    display: flex;
+    min-width: 1400px;
+    overflow-x: auto;
+    overflow: hidden;
+    /* grid-template-columns: repeat(5, 1fr); */
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    gap: 75px;
+    padding-bottom: 20px;
+    /* overflow-x: auto; */
+}
+
+.products {
+    min-width: 200px;
+    height: 200px;
+    padding-top: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    
+}
+
+.product-title {
+    font-size: 1.5rem;
+}
+
+.rate-percent {
+    margin-top: 30px;
+}
+
 
 </style>

@@ -72,7 +72,7 @@
              
             <div class="pagination">
                 <!-- 이전 버튼 -->
-                <button 
+                <button v-if="currentPage > 1"
                     class="paginate-btn" 
                     @click="goToPrevious" 
                     :disabled="currentPage === 1">
@@ -103,7 +103,7 @@
                     </button>
                 </span>
                 <!-- 다음 버튼 -->
-                <button 
+                <button v-if="currentPage < lastPage"
                     class="paginate-btn" 
                     @click="goToNext" 
                     :disabled="currentPage === lastPage">
@@ -331,8 +331,9 @@ onMounted(() => {
   .bankbook-transactions > p {
     border-right: 1px solid black;
     border-bottom: 1px solid black;
-    height: 29px;
+    height: 28.9px;
     padding-top: 5px;
+    font-size: 1.2rem;
   }
   
   /* 정보 정렬 */
@@ -425,7 +426,6 @@ onMounted(() => {
 
 .main-content {
     width: 870px;
-    font-size: 1.1rem;
 }
 
 .testing {

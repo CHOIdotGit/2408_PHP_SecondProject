@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Point;
 use App\Models\SavingProduct;
+use App\Models\SavingSignUp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -44,7 +46,7 @@ class BankController extends Controller
     // ******** 적금 상품 받아오기 ********
     public function savingList() {
         $savingList = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_amount', 'saving_product_interest_rate')
-                                    ->paginate(4);
+                                    ->paginate(7);
 
         $responseData = [
             'success' => true
@@ -52,8 +54,43 @@ class BankController extends Controller
             ,'savingList' => $savingList->toArray()
         ];
         return response()->json($responseData, 200);
-    
-}
+    }
 
+    // 가입한 적금 상품 개수 확인
+    public function index($id) {
+        $productCount = SavingSignUp::where('child_id', $id)->count();
+
+        // $point = Point::where('child_id', $id)->where('point_code', '!=', 3)->sum('point');
+
+        // $signUpProduct = SavingSignUp::where('child_id', $id)
+        //                                 ->with('saving_products')
+        // SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_interest_rate')->get();
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '적금 상품 개수 확인 성공'    
+            ,'productCount' => $productCount
+            // ,'point' => $point
+            // ,'signUpProduct' => $signUpProduct
+        ];
+        return response()->json($responseData, 200);
+    }
+
+    public function saveBaseRateToDb() {
+        // 기준금리 가져오기
+        $baseRate = $this->koreaBank();  
+
+        // 기준금리가 유효하지 않으면 오류 처리
+        if (is_string($baseRate)) {
+            return response()->json(['error' => $baseRate], 400);
+        }
+
+        // 모든 금리 데이터를 한 번에 업데이트
+        SavingProduct::query()->update([
+            'rate' => $baseRate,
+        ]);
+
+        return response()->json(['success' => '모든 기준금리가 업데이트되었습니다.']);
+    }
 
 }

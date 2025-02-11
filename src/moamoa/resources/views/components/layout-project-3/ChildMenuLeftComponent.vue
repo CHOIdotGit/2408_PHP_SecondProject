@@ -38,10 +38,20 @@
                     <img src="/img/icon-calendar.png" alt="" class="menu-icon">
                     캘린더
                 </div>
-                <div class="menu-title" @click="goBankbook">
+                <!-- <div class="menu-title" @click="goBankbook">
                     <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
-                    모아통장
+                    모아은행
                 </div>
+                <div class="saving-product">ㄴ 적금 상품</div> -->
+                <div class="menu-title go-bank" @click="goBankbook">
+                        <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
+                        모아은행
+                    <span @click="toggleSavingProduct" class="arrow-icon">{{ isOpen ? '▲' : '▼' }}</span>
+                </div>
+
+                <!-- 적금 상품: isOpen이 true일 때만 보이도록 설정 -->
+                <div v-if="isOpen" @click="router.push('/moabank/product')" class="saving-product">ㄴ 적금 상품</div>
+
                 <!-- 4순위 : 상점 -->
                 <!-- <div class="menu-title">
                     <img src="/img/icon-shopping-cart.png" alt="" class="menu-icon">
@@ -89,6 +99,15 @@ onBeforeMount(async () => {
     await store.dispatch('header/childInfo');
 
 })
+
+
+// 적금 상품 표시 여부 (true: 보임, false: 숨김)
+const isOpen = ref(false);
+
+// 클릭 시 토글 (열기/닫기)
+const toggleSavingProduct = () => {
+    isOpen.value = !isOpen.value;
+};
 
 
 //  자녀 캘린더로 이동
@@ -240,12 +259,12 @@ button {
     font-size: 1.6rem;
     font-family: 'MangoDdobak-B';
     font-weight: 700;
-    cursor: pointer;
 }
 
 .menu-title {
     padding: 15px 20px 15px 20px;
     /* border: 1px solid; */
+    cursor: pointer;
 }
 
 .menu-title > img {
@@ -275,6 +294,27 @@ button {
     background-color: #e9e9e9;
 }
 
+.go-bank {
+    display: flex;
+    align-items: center;
+}
+
+.saving-product {
+    padding: 10px 0 10px 40px;
+    font-size: 1.5rem;
+}
+
+.saving-product:hover {
+    color: #ffffff;
+    background-color: #c3d8ff96;
+    cursor: pointer;
+}
+
+.arrow-icon {
+    margin-left: 50px;
+    width: 100px;
+    text-align: center;
+}
 
 /* 상단 메뉴(사용자매뉴얼, 알람, 부모 프로필) */
 </style>
