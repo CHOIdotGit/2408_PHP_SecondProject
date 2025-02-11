@@ -20,13 +20,8 @@ import ChildSpendCreateComponent from '../views/components/board/children-board/
 import ChildSpendDetailComponent from '../views/components/board/children-board/ChildSpendDetailComponent.vue';
 import ChildSpendUpdateComponent from '../views/components/board/children-board/ChildSpendUpdateComponent.vue';
 import ParentsStatsComponent from '../views/components/board/parents-board/ParentsStatsComponent.vue';
-import SelectRegistComponent from '../views/components/auth/regist/SelectRegistComponent.vue';
-import ParentRegistComponent from '../views/components/auth/regist/ParentRegistComponent.vue';
-import ChildRegistComponent from '../views/components/auth/regist/ChildRegistComponent.vue';
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
-import CompleteRegistComponent from '../views/components/auth/regist/CompleteRegistComponent.vue';
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
-import ParentCodeComponent from '../views/components/auth/regist/ParentCodeComponent.vue';
 import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
 import FamilyPrivateEditComponent from '../views/components/auth/private/FamilyPrivateEditComponent.vue';
 import ParentPrivateWithdrawalComponent from '../views/components/auth/private/ParentPrivateWithdrawalComponent.vue';
@@ -41,10 +36,13 @@ import ChildMoaBankComponent from '../views/components/bank/child-bank/ChildMoaB
 import ChildBankBookComponent from '../views/components/bank/child-bank/ChildBankBookComponent.vue';
 import ParentsBankBookComponent from '../views/components/bank/parent-bank/ParentsBankBookComponent.vue';
 import ParentsPointComponentCopy from '../views/components/bank/parent-bank/ParentsPointComponent.vue';
-
-
+import RegistFormComponent from '../views/components/auth/regist/RegistFormComponent.vue';
+import RegistAgreeComponent from '../views/components/auth/regist/RegistAgreeComponent.vue';
+import RegistSelectComponent from '../views/components/auth/regist/RegistSelectComponent.vue';
+import RegistCompleteComponent from '../views/components/auth/regist/RegistCompleteComponent.vue';
 
 const chkAuth = (to, from, next) => {
+    
     const store = useStore();
 
     // 로그인 상태 변수
@@ -104,36 +102,125 @@ const routes = [
         component: LoginComponent,
         beforeEnter: chkAuth,
     },
+    // 회원가입 그룹
+    {
+        path: '/regist',
+        children: [
+            // 사용자 계약 동의
+            {
+                path: 'agree',
+                component: RegistAgreeComponent,
+                beforeEnter: (to, from, next) => {
+                    // 초기 진입, 로그인 페이지, 회원 선택에서 뒤로올 경우
+                    if(from.path === '/' || from.path === '/login' || from.path === '/regist/select') {
+                        sessionStorage.setItem('registPage', 'agree');
+                        chkAuth(to, from, next);
+                    }else {
+                        next('/:catchAll(.*)');
+                    }
+                },
+            },
+            // 회원 유형 선택
+            {
+                path: 'select',
+                component: RegistSelectComponent,
+                beforeEnter: (to, from, next) => {
+                    const currentPage = sessionStorage.getItem('registPage');
+
+                    // agree 페이지에서 정상적으로 넘어온 경우
+                    if(from.path === '/regist/agree' || from.path === '/regist/parent' || from.path === '/regist/child') {
+                        sessionStorage.setItem('registPage', 'select');
+                        chkAuth(to, from, next);
+                    // 새로고침하거나 뒤로가기로 온 경우
+                    }else if(from.path === '/' && (currentPage === 'select' || currentPage === 'form')) {
+                        chkAuth(to, from, next);
+                    }
+                    // 아니면 404
+                    else {
+                        next('/:catchAll(.*)');
+                    }
+                },
+            },
+            // 회원가입 폼
+            {
+                path: ':type(parent|child)',
+                component: RegistFormComponent,
+                beforeEnter: (to, from, next) => {
+                    const currentPage = sessionStorage.getItem('registPage');
+
+                    // select 페이지에서 정상적으로 넘어온 경우
+                    if(from.path === '/regist/select') {
+                        sessionStorage.setItem('registPage', 'form');
+                        chkAuth(to, from, next);
+                    }
+                    // 새로고침할 경우
+                    else if(from.path === '/' && currentPage === 'form') {
+                        chkAuth(to, from, next);
+                    }
+                    // 아니면 404
+                    else {
+                        next('/:catchAll(.*)');
+                    }
+                },
+            },
+            // 가입완료
+            {
+                path: 'complete/:type(parent|child)',
+                component: RegistCompleteComponent,
+                beforeEnter: (to, from, next) => {
+                    const currentPage = sessionStorage.getItem('registPage');
+
+                    // 회원가입 폼에서 정상적으로 넘어온 경우
+                    if(from.path === '/regist/parent' || from.path === '/regist/child') {
+                        sessionStorage.setItem('registPage', 'complete');
+                        chkAuth(to, from, next);
+                    }
+                    // 새로고침의 경우
+                    else if(from.path === '/' && currentPage === 'complete') {
+                        chkAuth(to, from, next);
+                    }
+                    // 아니면 404
+                    else {
+                        next('/:catchAll(.*)');
+                    }
+                },
+            },
+        ] , 
+    },
+
+    // --------------------------- V001 del start -----------------------------
     // 회원가입 선택 페이지
-    {
-        path: '/regist/main',
-        component: SelectRegistComponent,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/regist/main',
+    //     component: SelectRegistComponent,
+    //     beforeEnter: chkAuth,
+    // },
     // 부모 회원가입 정보입력 페이지
-    {
-        path: '/regist/parent',
-        component: ParentRegistComponent,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/regist/parent',
+    //     component: ParentRegistComponent,
+    //     beforeEnter: chkAuth,
+    // },
     // 부모 코드뷰 페이지
-    {
-        path: '/regist/parent/code',
-        component: ParentCodeComponent,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/regist/parent/code',
+    //     component: ParentCodeComponent,
+    //     beforeEnter: chkAuth,
+    // },
     // 자녀 회원가입 정보입력 페이지
-    {
-        path: '/regist/child',
-        component: ChildRegistComponent,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/regist/child',
+    //     component: ChildRegistComponent,
+    //     beforeEnter: chkAuth,
+    // },
     // 회원가입 완료 페이지
-    {
-        path: '/regist/complete',
-        component: CompleteRegistComponent,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/regist/complete',
+    //     component: CompleteRegistComponent,
+    //     beforeEnter: chkAuth,
+    // },
+    // --------------------------- V001 del end -----------------------------
+
     // 부모 페이지 모음 *********************************** //
     // 홈페이지
     {
@@ -412,6 +499,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    // 회원가입 스토리지 체크
+    if(sessionStorage.getItem('registPage') && (from.path.startsWith('/regist/') && !to.path.startsWith('/regist/'))) {
+        // 해당 페이지에서 벗어났을 경우 스토리지 삭제
+        sessionStorage.removeItem('registPage');
+
+        // 추가 검사
+        if(sessionStorage.getItem('famCode')) {
+            sessionStorage.removeItem('famCode');
+        }
+    }
+
     next();
 });
 

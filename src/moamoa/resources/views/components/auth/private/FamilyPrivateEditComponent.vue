@@ -45,13 +45,13 @@
         </label>
         <input v-model="editInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
         
-        <label for="password_chk">
+        <label for="passwordChk">
           비밀번호 확인
-          <span v-if="errMsg.password_chk" class="err-msg">
-            {{ errMsg.password_chk }}
+          <span v-if="errMsg.passwordChk" class="err-msg">
+            {{ errMsg.passwordChk }}
           </span>
         </label>
-        <input v-model="editInfo.password_chk" :class="{ 'err-border' : errMsg.password_chk }" type="password" name="password_chk" id="password_chk" autocomplete="off" required>
+        <input v-model="editInfo.passwordChk" :class="{ 'err-border' : errMsg.passwordChk }" type="password" name="passwordChk" id="passwordChk" autocomplete="off" required>
         
         <label for="email">
           이메일
@@ -117,7 +117,7 @@ import { useStore } from 'vuex';
     name: '',
     account: '',
     password: '',
-    password_chk: '',
+    passwordChk: '',
     email: '',
     nick_name: null,
     tel: '',

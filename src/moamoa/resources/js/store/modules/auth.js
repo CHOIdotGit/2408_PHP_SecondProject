@@ -16,34 +16,51 @@ export default {
     authFlg: sessionStorage.getItem('authFlg') ? true : false, // 로그인 상태 체크
     parentFlg: sessionStorage.getItem('parentFlg') ? (sessionStorage.getItem('parentFlg') === 'true' ? true : false) : false, // 로그인 계정이 부모인지 체크
     childFlg: sessionStorage.getItem('childFlg') ? (sessionStorage.getItem('childFlg') === 'true' ? true : false) : false, // 로그인 계정이 자녀인지 체크
+    
     // 에러 메세지 관련 ---------------------------------------------------------------------------------------
     errMsg: {
       common: null,
       account: null,
       password: null,
-      password_chk: null,
+      passwordChk: null,
       name: null,
       nick_name: null,
       email: null,
       tel: null,
-      fam_code: null,
+      famCode: null,
       newPassword: null,
       newPasswordChk:null,
     },
+    
     // 모달 관련 ---------------------------------------------------------------------------------------------
     modalText: '',
     modalColor: false,
     modalFlg: false,
+
+    emailModalFlg: false,
+    matchingModalFlg: false,
+    
+    // 로그인 관련 -------------------------------------------------------------------------------------------
+    // loginInfo: {},
+    
     // 회원가입 관련 -----------------------------------------------------------------------------------------
+    preview: { // 프로필 사진 미리보기용 세팅
+      imgFlg: false, // 파일 여부
+      url: null, // src url
+    },
+    matchingInfo: {}, // 매칭 정보
+    
     registFlg: true, // 자녀 페이지 전환용 플래그
     registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입 폼 정보
     parentInfo: sessionStorage.getItem('parentInfo') ? JSON.parse(sessionStorage.getItem('parentInfo')) : {}, // 가입 부모 정보
     childInfo: {},
-    matchInfo: {}, // 매칭 정보
-    preview: { // 프로필 사진 미리보기용 세팅
-      imgFlg: false,
-      url: null,
-    },
+    matchInfo: {},
+
+    // 인증 관련 -----------------------------------------------------------------------------------------
+    isAccountPass: false, // 아이디 중복 검사용
+    isEmailPass: false, // 이메일 인증 검사용
+    mailCode: null, // 메일 전송용 코드
+    isMatchingPass: false, // 가족코드 인증 검사용
   }),
 
   mutations: {
@@ -57,6 +74,7 @@ export default {
     setChildFlg(state, childFlg) {
       state.childFlg = childFlg;
     },
+
     // 모달 관련 ------------------------------------------------------------------------------------------------
     setModalText(state, modalText) {
       state.modalText = modalText;
@@ -67,7 +85,25 @@ export default {
     setModalFlg(state, modalFlg) {
       state.modalFlg = modalFlg;
     },
+
+    setEmailModalFlg(state, emailModalFlg) {
+      state.emailModalFlg = emailModalFlg;
+    },
+    setMatchingModalFlg(state, matchingModalFlg) {
+      state.matchingModalFlg = matchingModalFlg;
+    },
+
     // 회원가입 관련 ---------------------------------------------------------------------------------------------
+    setPreviewFlg(state, flg) {
+      state.preview.imgFlg = flg;
+    },
+    setPreviewUrl(state, preview) {
+      state.preview.url = preview;
+    },
+    setMatchingInfo(state, matchingInfo) {
+      state.matchingInfo = matchingInfo;
+    },
+    
     setRegistInfo(state, registInfo) {
       state.registInfo = registInfo;
     },
@@ -77,18 +113,13 @@ export default {
     setParentInfo(state, parentInfo) {
       state.parentInfo = parentInfo;
     },
-    setPreviewFlg(state, flg) {
-      state.preview.imgFlg = flg;
-    },
-    setPreviewUrl(state, preview) {
-      state.preview.url = preview;
-    },
     setMatchInfo(state, matchInfo) {
       state.matchInfo = matchInfo;
     },
     setChildInfo(state, childInfo) {
       state.childInfo = childInfo;
     },
+
     // 예외 메세지 관련 ------------------------------------------------------------------------------------------
     setErrMsgCommon(state, errMsg) {
       state.errMsg.common = errMsg;
@@ -100,7 +131,7 @@ export default {
       state.errMsg.password = errMsg;
     },
     setErrMsgPasswordChk(state, errMsg) {
-      state.errMsg.password_chk = errMsg;
+      state.errMsg.passwordChk = errMsg;
     },
     setErrMsgName(state, errMsg) {
       state.errMsg.name = errMsg;
@@ -115,13 +146,27 @@ export default {
       state.errMsg.tel = errMsg;
     },
     setErrMsgFamCode(state, errMsg) {
-      state.errMsg.fam_code = errMsg;
+      state.errMsg.famCode = errMsg;
     },
     setErrMsgNewPassword(state, errMsg) {
       state.errMsg.newPassword = errMsg;
     },
     setErrMsgNewPasswordChk(state, errMsg) {
       state.errMsg.newPasswordChk = errMsg;
+    },
+
+    // 인증 관련 ---------------------------------------------------------------------------------------------
+    setIsAccountPass(state, isAccountPass) {
+      state.isAccountPass = isAccountPass;
+    },
+    setIsEmailPass(state, isEmailPass) {
+      state.isEmailPass = isEmailPass;
+    },
+    setMailCode(state, mailCode) {
+      state.mailCode = mailCode;
+    },
+    setIsMatchingPass(state, isMatchingPass) {
+      state.isMatchingPass = isMatchingPass;
     },
     
     // 초기화 관련 ------------------------------------------------------------------------------------------
@@ -149,7 +194,7 @@ export default {
         nick_name: null,
         email: null,
         tel: null,
-        fam_code: null,
+        famCode: null,
         newPassword: null,
         newPasswordChk:null,
       };
@@ -264,16 +309,147 @@ export default {
      */
     chkAccount(context, account) {
       if(account === undefined || account === '' || account === null) {
-        context.commit('setModalText', '아이디를 입력해주세요.');
-        context.commit('setModalColor', false);
+        // context.commit('setModalText', '아이디를 입력해주세요.');
+        // context.commit('setModalColor', false);
+
+        context.commit('setErrMsgAccount', '아이디를 입력해주세요.');
+
       }else {
         const url = '/api/auth/chkAccount/'+ account;
+
         axios.get(url)
         .then(res => {
-          context.commit('setModalText', res.data.msg);
-          context.commit('setModalColor', res.data.color ? true : false);
+          //   context.commit('setModalText', res.data.msg);
+          //   context.commit('setModalColor', res.data.color ? true : false);
+          
+          // if(!res.data.isPass) {
+          //   context.commit('setErrMsgAccount', res.data.msg);
+          // }else {
+          //   context.commit('setIsAccountPass', true);
+          // }
+          
+          // 통과 여부 검사
+          !res.data.isPass
+            ? context.commit('setErrMsgAccount', res.data.msg)
+            : context.commit('setIsAccountPass', true);
+
         });
       }
+    },
+
+    /**
+     * 이메일 인증 검사 처리
+     * 
+     * @param {*} context
+     * @param {*} email
+     */
+    chkEmail(context, email) {
+      if(email === undefined || email === '' || email === null) {
+        context.commit('setErrMsgEmail', '이메일을 입력해주세요.');
+      }else {
+        const url = '/api/auth/chkEmail/'+ email;
+
+        axios.get(url)
+        .then(res => {
+          // 통과 여부 검사
+          if(!res.data.isPass) {
+            context.commit('setErrMsgEmail', res.data.msg);
+          }else {
+            // 기존에 에러 메세지가 있다면 초기화
+            if(context.state.errMsg.email !== null) {
+              context.commit('setErrMsgEmail', null);
+            }
+
+            // 모달 활성화
+            context.commit('setEmailModalFlg', true);
+
+            // 해당 메일로 전송
+            context.dispatch('sendMail', email);
+
+          }
+        });
+      }
+    },
+
+    /**
+     * 메일 전송 처리
+     * 
+     * @param {*} context
+     * @param {*} email
+    */
+    sendMail(context, email) {
+      const url = '/api/auth/sendEmail';
+
+      axios.post(url, {email: email})
+      .then(res => {
+        // console.log(res.data);
+
+        // 코드 세팅
+        if(res.data.code) {
+          context.commit('setMailCode', res.data.code);
+        }
+      })
+      .catch(err => {
+        // console.error(err);
+        alert('메일 전송에 실패하였습니다. 다시 시도해 주세요');
+        context.commit('setEmailModalFlg', false);
+      });
+    },
+
+    /**
+     * 자녀 가족코드 처리
+     * 
+     * @param {*} context
+     * @param {*} famCode
+     */
+    chkFamCode(context, famCode) {
+      if(famCode === undefined || famCode === '' || famCode === null) {
+        context.commit('setErrMsgFamCode', '가족코드를 입력해주세요.');
+      }else {
+        const url = '/api/auth/chkFamCode/'+ famCode;
+
+        axios.get(url)
+        .then(res => {
+          // 통과 여부 검사
+          if(!res.data.isPass) {
+            context.commit('setErrMsgFamCode', res.data.msg);
+          }else {
+            // 기존에 에러 메세지가 있다면 초기화
+            if(context.state.errMsg.famCode !== null) {
+              context.commit('setErrMsgFamCode', null);
+            }
+
+            // 부모 매칭 수행
+            context.dispatch('matchingParent', famCode);
+
+            // 모달 활성화
+            setTimeout(() => {
+              context.commit('setMatchingModalFlg', true);
+            }, 500);
+          }
+        });
+      }
+    },
+
+    /**
+     * 부모정보 매칭
+     * 
+     * @param {*} context
+     * @param {*} famCode
+     */
+    matchingParent(context, famCode) {
+      const url = '/api/auth/matchingParent';
+
+      axios.post(url, {famCode: famCode})
+      .then(res => {
+        if(res.data.parent) {
+          // 매칭 정보 세팅
+          context.commit('setMatchingInfo', res.data.parent);
+        }
+      }).catch(err => {
+        alert('부모 매칭에 실패하였습니다. 다시 시도해 주세요');
+        context.commit('setMatchingModalFlg', false);
+      });
     },
 
     /**
@@ -306,13 +482,17 @@ export default {
       axios.post(url, data, config)
       .then(res => {
         
-        if(res.data.parent) {
-          sessionStorage.setItem('parentInfo', JSON.stringify(res.data.parent));
-          context.commit('setParentInfo', res.data.parent);
+        // if(res.data.parent) {
+        //   sessionStorage.setItem('parentInfo', JSON.stringify(res.data.parent));
+        //   context.commit('setParentInfo', res.data.parent);
+        // }
+
+        if(res.data.famCode) {
+          sessionStorage.setItem('famCode', res.data.famCode);
         }
 
-        // 회원가입 다음 페이지로 이동
-        router.replace(res.data.redirect_to);
+        // 회원가입 완료 페이지로 이동
+        router.replace('/regist/complete/'+ registInfo.userType);
       })
       .catch(err => {
         // 다시 시도할 경우를 대비해 메세지 초기화
@@ -327,11 +507,11 @@ export default {
           const errInfo = {
             account: 'setErrMsgAccount',
             password: 'setErrMsgPassword',
-            password_chk: 'setErrMsgPasswordChk',
+            passwordChk: 'setErrMsgPasswordChk',
             name: 'setErrMsgName',
             email: 'setErrMsgEmail',
-            nick_name: 'setErrMsgNickName',
             tel: 'setErrMsgTel',
+            // nick_name: 'setErrMsgNickName',
           };
 
           // 돌려서 있는것만 데이터 담음
@@ -383,12 +563,12 @@ export default {
           const errInfo = {
             account: 'setErrMsgAccount',
             password: 'setErrMsgPassword',
-            password_chk: 'setErrMsgPasswordChk',
+            passwordChk: 'setErrMsgPasswordChk',
             name: 'setErrMsgName',
             email: 'setErrMsgEmail',
             nick_name: 'setErrMsgNickName',
             tel: 'setErrMsgTel',
-            fam_code : 'setErrMsgFamCode',
+            famCode : 'setErrMsgFamCode',
           };
 
           // 돌려서 있는것만 데이터 담음
@@ -489,12 +669,12 @@ export default {
           const errInfo = {
             // account: 'setErrMsgAccount',
             password: 'setErrMsgPassword',
-            password_chk: 'setErrMsgPasswordChk',
+            passwordChk: 'setErrMsgPasswordChk',
             name: 'setErrMsgName',
             email: 'setErrMsgEmail',
             nick_name: 'setErrMsgNickName',
             tel: 'setErrMsgTel',
-            fam_code : 'setErrMsgFamCode',
+            famCode : 'setErrMsgFamCode',
           };
 
           // 돌려서 있는것만 데이터 담음
@@ -619,8 +799,8 @@ export default {
         const errData = err.response.data.error;
 
         // 유효성 검사 실패
-        if(err.response.status === 422 && errData.fam_code[0]) {
-          context.commit('setErrMsgFamCode', errData.fam_code[0]);
+        if(err.response.status === 422 && errData.famCode[0]) {
+          context.commit('setErrMsgFamCode', errData.famCode[0]);
         }
         // 공용 실패
         else if(err.response.status === 401) {

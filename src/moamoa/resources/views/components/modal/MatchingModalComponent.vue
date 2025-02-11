@@ -1,88 +1,92 @@
 <template>
-  <div v-show="modalFlg" class="modal-overlay">
-    <div class="modal-box">
-      <div class="data-info">
-        <div class="btn-group">
-          <span>
-            <div class="profile-info">
-              <div class="icon-img">
-                <!-- <img src="/img/profile-icon/icon-girl-5.png"> -->
-                <img :src="parent.profile">
-              </div>
-            </div>
-            <!-- <span class="color-green">OOO</span> 님이 맞습니까? -->
-            <span class="color-green">{{ parent.name }}</span> {{ props.message }}
-          </span>
+  <!-- 모달 뒷배경 DIV -->
+  <div v-show="matchingModalFlg" class="matching-modal-overlay">
+    <!-- 모달 박스 DIV -->
+    <div class="matching-modal-box">
+      <!-- 닫기 X 버튼 DIV -->
+      <div class="modal-btn-cancel">
+        <img @click="closeMatchingModal" src="/img/icon-close-black.webp">
+      </div>
+      
+      <!-- 모달 내용 DIV -->
+      <div class="matching-modal-main">
+        <!-- 부모 아이콘 DIV -->
+        <div class="matching-modal-icon">
+            <!-- <img src="/user-img/default9.webp"> -->
+            <img :src="parentInfo?.profile">
+        </div>
+        
+        <!-- 텍스트 표시 DIV -->
+        <div class="matching-modal-content">
+          <h3>
+            <span>{{ parentInfo?.name }}</span>
+            님의 자녀입니까?
+          </h3>
         </div>
 
-        <div class="btn-group">
-          <button @click="modalCancel" type="button">아닙니다</button>
-          <button @click="modalConfirm" type="button">맞습니다</button>
+        <!-- 버튼 그룹 DIV -->
+        <div class="matching-modal-btn">
+          <button @click="closeMatchingModal" type="button">
+            <img src="/img/icon-close-black.webp">
+            아닙니다
+          </button>
+          
+          <button @click="matchingBtn" type="button">
+            <img src="/img/icon-check-white.webp">
+            맞습니다
+          </button>
         </div>
+        
       </div>
     </div>
   </div>
 </template>
 
+
+
 <script setup>
-import { computed } from 'vue';
+import { computed, defineEmits } from 'vue';
 import { useStore } from 'vuex';
 
+  // 스토어 ---------------------------------------------------------------------------------------------
   const store = useStore();
 
-  // 매칭 부모 정보 --------------------------------------------------------------------------------------------
-  const parent = computed(() => store.state.auth.matchInfo);
-
-  // 모달 스위치 --------------------------------------------------------------------------------------------
-  const modalFlg = computed(() => store.state.auth.modalFlg);
-
-  const props = defineProps({
-    sendInfo: Object,
-    message: String,
-    action: String,
-  });
-
+  // 이벤트 정의
+  const emit = defineEmits(['matchingParentId']);
   
-  const modalCancel = () => {
-    store.commit('auth/setModalFlg', false);
-  };
+  // 부모 정보 ---------------------------------------------------------------------------------------------
+  const parentInfo = computed(() => store.state.auth.matchingInfo);
+  
+  // 모달 관련 ---------------------------------------------------------------------------------------------
+  
+  // 모달 스위치
+  const matchingModalFlg = computed(() => store.state.auth.matchingModalFlg);
 
-  // const emit = defineEmits(['confirm']);
-  const modalConfirm = () => {
-    // emit('confirm');
+  // 모달 닫기
+  const closeMatchingModal = () => {
+    store.commit('auth/setMatchingModalFlg', false);
+  }
 
-    props.sendInfo.parent_id = parent.value.parent_id;
+  // 매칭 완료 ---------------------------------------------------------------------------------------------
+  
+  // 맞습니다 버튼
+  const matchingBtn = () => {
+    emit('matchingParentId', parentInfo.value.parent_id);
+    store.commit('auth/setIsMatchingPass', true);
+    closeMatchingModal();
+  }
 
-    store.dispatch('auth/' + props.action, props.sendInfo);
-  };
+
 </script>
 
 <style scoped>
-
-  .color-green {
-    color:#008000;
-  }
-
-  /* 폼 기본 설정 */
-  input, button {
-    outline: none; /* 아웃라인 제거 */
-    border: none;
-    background-color: #E8E8E8;
-  }
-
-  /* 커서 손모양으로 변경 */
-  a, button {
+  /* 버튼 커서 손모양 */
+  button {
     cursor: pointer;
   }
 
-  /* 기본 버튼 호버 */
-  button:hover {
-    background-color: #737373;
-    color: #fff;
-  }
-
-  /* 전체 암색 음영 */
-  .modal-overlay {
+  /* 뒷배경 */
+  .matching-modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -96,70 +100,114 @@ import { useStore } from 'vuex';
   }
 
   /* 모달 박스 */
-  .modal-box {
+  .matching-modal-box {
     background-color: #fff;
-    width: 710px;
-    max-width: 38vw;
-    height: 500px;
-    flex-direction: column;
-    padding: 10px;
-    margin: 0 auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 500px;
+    height: 390px;
   }
 
-  /* 텍스트 문단 */
-  .data-info {
-    font-size: 3rem;
-    height: 100%;
-    text-align: center;
+  /* X버튼 */
+  .modal-btn-cancel {
+    position: relative;
+  }
+  /* X버튼 이미지 */
+  .modal-btn-cancel > img {
+    position: absolute;
+    left: 98.2%;
+    bottom: -8px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+  }
+
+  /* 모달 내용 */
+  .matching-modal-main {
     display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-content: center;
-    max-width: 80vw;
-  }
-
-  /* 아이콘 문단 */
-  .profile-info {
-    display: inline-block;
-    background-color: #8A9FF6;
-    border-radius: 50%;
-    width: 90px;
-    height: 90px;
-    margin-right: 10px;
-    vertical-align: bottom;
-  }
-
-  /* 아이콘 크기 */
-  .icon-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin: 5px auto;
-  }
-
-  /* 이미지 크기 */
-  .icon-img > img {
     width: 100%;
     height: 100%;
+    padding: 0 20px;
   }
 
-  .btn-group {
+  /* 부모 이미지 영역 */
+  .matching-modal-icon {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    margin: 35px 0 40px 0;
+    background-color: #EFF6FF;
+  }
+  /* 부모 이미지 설정 */
+  .matching-modal-icon > img {
+    width: 80%;
+    height: 80%;
   }
 
-  .btn-group button {
-    background-color: #E8E8E8;
-    padding: 15px 50px;
-    margin: 30px;
-    font-size: 2.3rem;
-    max-width: 40vw;
+  /* 텍스트 표시 영역 */
+  .matching-modal-content {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 45px;
+  }
+  /* 이름 색변경 */
+  .matching-modal-content span {
+    color: #00a500;
+    padding: 0;
+    margin: 0;
   }
 
-  .btn-group button:hover {
-    background-color: #737373;
+  /* 아래 버튼 영역 */
+  .matching-modal-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+  }
+  /* 버튼 크기 설정 */
+  .matching-modal-btn > button {
+    width: 50%;
+    font-size: 0.95rem;
+    padding: 17px 30px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* 완료 버튼 세팅 */
+  .matching-modal-btn > button:nth-child(2) {
+    background-color: #3B82F6;
     color: #fff;
   }
+  /* 완료 버튼 호버 */
+  .matching-modal-btn > button:nth-child(2):hover {
+    background-color: #2563EB;
+  }
+  /* 재전송 버튼 세팅 */
+  .matching-modal-btn > button:nth-child(2) {
+    margin-left: 15px;
+  }
+  /* X 이미지 설정 */
+  .matching-modal-btn > button:nth-child(1) > img {
+    width: 13px;
+    height: 13px;
+    padding: 0 2px 2px 0;
+    margin-right: 5px;
+  }
+  /* 체크 이미지 설정 */
+  .matching-modal-btn > button:nth-child(2) > img {
+    width: 17px;
+    height: 17px;
+    padding: 0 3px 3px 0;
+    margin-right: 4px;
+  }
+
+
+  
 </style>

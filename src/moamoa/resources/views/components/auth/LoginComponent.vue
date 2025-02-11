@@ -1,4 +1,5 @@
 <template>
+  <div class="temp-overlay">
     <!-- 중앙 박스 컨테이너 DIV -->
     <div class="container">
 
@@ -46,13 +47,14 @@
             <!-- 로그인, 회원가입 버튼 DIV -->
             <div class="data-button">
                 <button type="button" @click="$store.dispatch('auth/login', userInfo)">로그인</button> <br>
-                <router-link to="/regist/main">
+                <router-link to="/regist/agree">
                   <button type="button">회원가입</button>
                 </router-link>
             </div>
         </div>
 
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -117,6 +119,17 @@
   button:hover {
     background-color: #737373;
     color: #fff;
+  }
+
+  .temp-overlay {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('/img/background.png');
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 
   /* 컨테이너 */

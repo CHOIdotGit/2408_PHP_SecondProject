@@ -2,14 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthenticationRequest;
 use App\Http\Requests\AuthRequest;
-use App\Http\Requests\FamilyCodeRequest;
 use App\Http\Requests\PasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use App\Mail\SendEmail;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class AuthController extends Controller {
@@ -117,7 +121,7 @@ class AuthController extends Controller {
   }
 
   /**
-   * 회원가입 아이디 중복 체크
+   * 아이디 중복 체크
    * 
    * @param String $account
    * 
@@ -131,32 +135,162 @@ class AuthController extends Controller {
 
     // 영문 및 숫자로 이루어진 6~18글자가 아닌지
     elseif(!preg_match('/^[a-zA-Z][a-zA-Z0-9]{5,17}$/', $account)) {
-      return response()->json(['msg' => '　영문 및 숫자조합 6 ~ 18글자만　입력가능 합니다.']);
+      return response()->json(['msg' => '영문 및 숫자조합 6 ~ 18글자만 사용가능 합니다.']);
     }
 
     // 아이디 중복 체크
-    if($this->authRepository->findDuplicateAccount($account)) {
+    elseif($this->authRepository->findDuplicateAccount($account)) {
       // 중복된 아이디가 존재함
       return response()->json(['msg' => '동일한 아이디가 이미 존재합니다.']);
     }else {
       // 중복 아이디 없음
       return response()->json([
-        'color' => true // 초록색 글자 여부
-        ,'msg' => '사용가능한 아이디 입니다.'
+        'isPass' => true // 초록색 글자 여부
+        // ,'msg' => '사용가능한 아이디 입니다.'
       ]);
     }
   }
 
   /**
-   * 회원가입 정보 저장
+   * 이메일 중복 체크
    * 
-   * @param AuthRequest $request // 커스텀 유효성 검사 리퀘스트
+   * @param String $email
    * 
    * @return JSON $responseData
    */
-  public function storeUser(AuthRequest $request) {
-    if(empty($request->all()) || // 요청값이 아무것도 없거나
-      $request->missing(['account', 'password', 'password_chk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+  public function chkEmail($email) {
+    // 영문 및 숫자로 이루어져있고 @ 과 . 가 반드시 포함된 이메일
+    if(!preg_match('/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/', $email)) {
+      return response()->json(['msg' => '맞지 않는 이메일 형식 입니다']);
+    }
+
+    // 이메일 중복 체크
+    elseif($this->authRepository->findDuplicateEmail($email)) {
+      // 중복된 이메일 존재함
+      return response()->json(['msg' => '해당 메일로 가입한 계정이 이미 존재합니다.']);
+    }else {
+      // 중복 이메일 없음
+      return response()->json([
+        'isPass' => true // 초록색 글자 여부
+      ]);
+    }
+  }
+
+  /**
+   * 이메일 전송
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function sendEmail(Request $request) {
+    try {
+      // 숫자 랜덤 선택
+      $number = '0123456789';
+      $randomNumber = Arr::random(str_split($number), 3);
+      
+      // 대문자 랜덤 선택
+      $string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $randomString = Arr::random(str_split($string), 3);
+      
+      // 숫자와 대문자 배열을 합침
+      $mixed = array_merge($randomNumber, $randomString);
+      
+      // 배열을 섞음
+      shuffle($mixed);
+      
+      // 섞인 배열을 문자열로 변환
+      $randomCode = implode('', $mixed);
+
+      // 메일 전송 탬플릿
+      $template = view('email', [
+        'code' => $randomCode
+      ])->render();
+
+      // 이메일 전송
+      Mail::to($request->email)->send(new SendEmail($template));
+
+      return response()->json([
+        'success' => true,
+        'msg' => '이메일 전송 성공',
+        'code' => $randomCode
+      ], 200);
+
+    }catch (Throwable $th) {
+      // 오류 로그 기록
+      // Log::error('이메일 전송 실패: ' . $th->getMessage());
+
+      return response()->json([
+          'success' => false,
+          'error' => '이메일 전송 실패'
+      ], 500);
+    }
+  }
+
+  /**
+   * 가족코드 검사
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function chkFamCode($famCode) {
+    // 공백이나 특수문자가 들어가 있는지
+    if(preg_match('/[\s\W]/', $famCode)) { 
+      return response()->json(['msg' => '공백 혹은 특수문자가 포함되어 있습니다.']);
+    }
+
+    // 영문 및 숫자로 이루어진 6~18글자가 아닌지
+    elseif(!preg_match('/^[A-Z0-9]{8}$/', $famCode)) {
+      return response()->json(['msg' => '맞지 않는 가족코드 형식 입니다.']);
+    }
+
+    // 가족코드 존재 여부 검사
+    elseif(!$this->authRepository->findDuplicateFamilyCode($famCode)) {
+      // 존재하지 않는 가족코드
+      return response()->json(['msg' => '해당 가족코드는 존재하지 않습니다.']);
+    }else {
+      // 매칭됨
+      return response()->json([
+        'isPass' => true // 초록색 글자 여부
+      ]);
+    }
+  }
+
+  /**
+   * 부모 정보 매칭
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function matchingParent(Request $request) {
+    
+    $parent = $this->authRepository->findParentByFamilyCode($request->famCode);
+
+    return $parent 
+      ? response()->json([
+        'success' => true,
+        'msg' => '부모 매칭 성공',
+        'parent' => $parent
+      ], 200)
+      : response()->json([
+        'success' => false,
+        'error' => '부모 매칭 실패',
+      ])
+    ;
+  }
+
+  /**
+   * 회원가입 정보 저장
+   * 
+   * @param AuthenticationRequest $request // 커스텀 유효성 검사 리퀘스트
+   * 
+   * @return JSON $responseData
+   */
+  public function storeUser(AuthenticationRequest $request) {
+    if(empty($request->all()) // 요청값이 아무것도 없거나
+    || $request->missing(['account', 'password', 'passwordChk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
     ) { 
       return response()->json([
         'success' => false,
@@ -177,28 +311,28 @@ class AuthController extends Controller {
         ;
 
         // 사용자가 추가로 닉네임을 입력했다면 데이터 세팅
-        if($request->nick_name) {
-          $insertData['nick_name'] = $request->nick_name;
-        }
+        // if($request->nick_name) {
+        //   $insertData['nick_name'] = $request->nick_name;
+        // }
         
         // 부모ID가 들어왔다면 자녀
-        if($request->parent_id) {
+        if($request->parentId) {
+
           // 자녀 레코드 생성
           try {
-            $insertData['parent_id'] = $request->parent_id;
+            $insertData['parent_id'] = $request->parentId;
             $child = $this->authRepository->createChild($insertData);
-
-            // 생성한 레코드로 로그인
-            // Auth::guard('children')->login($child);
 
             // 리스폰스 데이터 작성
             $responseData = [
               'success' => true,
               'msg' => '자녀 회원작성 성공',
               // 'child' => $child,
-              'redirect_to' => '/regist/complete'
+              // 'redirect_to' => '/regist/complete'
             ];
+
             return response()->json($responseData, 200);
+
           }catch(Throwable $th) {
             return response()->json([
               'success' => false,
@@ -210,23 +344,23 @@ class AuthController extends Controller {
             // 부모 레코드 생성
             $parent = $this->authRepository->createParent($insertData);
 
-            // 생성한 레코드로 로그인
-            // Auth::guard('parents')->login($parent);
-
             // 코드뷰 페이지에서 필요한 정보만 세팅
-            $parentInfo = [
-              'name' => $parent->name,
-              'family_code' => $parent->family_code,
-            ];
+            // $parentInfo = [
+            //   'name' => $parent->name,
+            //   'famCode' => $parent->family_code,
+            // ];
 
             // 리스폰스 데이터 작성
             $responseData = [
               'success' => true,
               'msg' => '부모 회원작성 성공',
-              'parent' => $parentInfo,
-              'redirect_to' => '/regist/parent/code',
+              'famCode' => $parent->family_code,
+              // 'parent' => $parentInfo,
+              // 'redirect_to' => '/regist/parent/code',
             ];
+
             return response()->json($responseData, 200);
+
           }catch(Throwable $th) {
             return response()->json([
               'success' => false,
@@ -252,8 +386,8 @@ class AuthController extends Controller {
    */
   public function childRegistMatching(AuthRequest $request) {
     // 가족코드가 입력됫고 제대로 8글자가 왔다면
-    if($request->fam_code && (mb_strlen($request->fam_code) === 8)) {
-      $parent = $this->authRepository->findParentByFamilyCode($request->fam_code);
+    if($request->famCode && (mb_strlen($request->famCode) === 8)) {
+      $parent = $this->authRepository->findParentByFamilyCode($request->famCode);
 
       if($parent) {
         $responseData = [ 
@@ -268,7 +402,7 @@ class AuthController extends Controller {
 
     return response()->json([
       'success' => false,
-      'error' => [ 'fam_code' => ['0' => '존재하지 않는 코드입니다.']],
+      'error' => [ 'famCode' => ['0' => '존재하지 않는 코드입니다.']],
     ], 422);
   }
 
@@ -334,7 +468,7 @@ class AuthController extends Controller {
    */
   public function modifyUser(AuthRequest $request) {
     if(empty($request->all()) || // 요청값이 아무것도 없거나
-      $request->missing(['password', 'password_chk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+      $request->missing(['password', 'passwordChk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
     ) { 
       return response()->json([
         'success' => false,

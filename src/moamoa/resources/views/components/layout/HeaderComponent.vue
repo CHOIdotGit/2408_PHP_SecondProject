@@ -69,9 +69,9 @@
                         <router-link v-if="$store.state.auth.parentFlg" to="/parent/family/info" class="link-deco">
                             <p class="info-page">가족정보</p>
                         </router-link>
-                        <router-link v-if="$store.state.auth.childFlg" to="/child/private/rematching" class="link-deco">
+                        <!-- <router-link v-if="$store.state.auth.childFlg" to="/child/private/rematching" class="link-deco">
                             <p class="info-page">부모 재매칭</p>
-                        </router-link>
+                        </router-link> -->
                         <router-link :to="$store.state.auth.parentFlg ? '/parent/private/edit' : '/child/private/edit'" class="link-deco">
                             <p class="info-page">개인정보 수정</p>
                         </router-link>

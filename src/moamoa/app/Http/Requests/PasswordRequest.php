@@ -23,10 +23,10 @@ class PasswordRequest extends FormRequest {
 
     // 비밀번호 변경이 실행될 경우
     if($this->routeIs('auth.change.password')) {
-      $rules['newPassword'] = ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,30}$/', new NotSamePasswordRule]; // 영문 숫자 조합 6자리 이상
+      $rules['newPassword'] = ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/', new NotSamePasswordRule]; // 영문 숫자 조합 6자리 이상
       $rules['newPasswordChk'] = ['required', 'same:newPassword'];
     }
-    // /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/ // 영문 숫자 특수기호 조합 8자리 이상
+    // /^(?=(.*[a-zA-Z])(?=.*\d)|(?=.*[a-zA-Z])(?=.*[^\w\d])|(?=.*\d)(?=.*[^\w\d])).{6,18}$/ // 영문 숫자 특수기호 두종류 이상 6~18자리
     return $rules;
   }
 

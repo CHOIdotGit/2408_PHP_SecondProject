@@ -8,7 +8,16 @@ class AuthRepository extends Repositories {
     $parent = $this->parent->select('account')->where('account', $account)->first();
     $child = $this->child->select('account')->where('account', $account)->first();
 
-    // true : 중복 아이디 있음, false : 중복 없음
+    // true : 중복 있음, false : 중복 없음
+    return ($parent || $child) ? true : false;
+  }
+
+  // 이메일 중복 체크
+  public function findDuplicateEmail($email) {
+    $parent = $this->parent->select('email')->where('email', $email)->first();
+    $child = $this->child->select('email')->where('email', $email)->first();
+
+    // true : 중복 있음, false : 중복 없음
     return ($parent || $child) ? true : false;
   }
 

@@ -35,6 +35,11 @@ Route::get('/api/check-session', [AuthController::class, 'checkSession'])->name(
 
 Route::prefix('/api/auth')->group(function () {
     Route::get('/chkAccount/{account}', [AuthController::class, 'chkAccount'])->name('auth.chk.account');
+    Route::get('/chkEmail/{email}', [AuthController::class, 'chkEmail'])->name('auth.chk.email');
+    Route::post('/sendEmail', [AuthController::class, 'sendEmail'])->name('auth.send.email');
+    Route::get('/chkFamCode/{famCode}', [AuthController::class, 'chkFamCode'])->name('auth.chk.famCode');
+    Route::post('/matchingParent', [AuthController::class, 'matchingParent'])->name('auth.matching.parent');
+
     Route::post('/childRegistMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.regist.matching');
     Route::post('/storeUser', [AuthController::class, 'storeUser'])->name('auth.store.user');
     Route::post('/parentInfo', [AuthController::class, 'parentInfo'])->name('auth.parent.info');
