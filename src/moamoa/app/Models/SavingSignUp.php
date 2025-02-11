@@ -30,10 +30,10 @@ class SavingSignUp extends Model
     }
 
     public function saving_details() {
-        return $this->hasMany(SavingDetail::class, 'saving_detail_id');
+        return $this->hasMany(SavingDetail::class, 'saving_detail_id', 'saving_detail_id');
     }
 
     public function saving_products() {
-        return $this->hasMany(SavingProduct::class, 'saving_product_id');
+        return $this->hasMany(SavingProduct::class, 'saving_product_id', 'saving_product_id');
     }
 }

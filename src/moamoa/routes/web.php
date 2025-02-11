@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\ChildMissionController;
 use App\Http\Controllers\ChildPointController;
+use App\Http\Controllers\ChildSavingController;
 use App\Http\Controllers\HeaderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MissionController;
@@ -163,6 +164,9 @@ Route::get('/api/parent/header', [HeaderController::class, 'index']);
 // 헤더 관련(미션/지출 등록/승인 알람)
 Route::get('/api/parent/header/bell', [HeaderController::class, 'bellList']);
 
+// 헤더 관련(미션/지출 등록/승인 알람) --- to do : 나중에 부모랑 합치기
+Route::get('/api/child/header/bell', [HeaderController::class, 'childBellList']);
+
 // 헤더 관련(미션/지출 등록/승인 알람 확인)
 Route::patch('/api/parent/header/bell/check/{mission_id}', [HeaderController::class, 'update']);
 
@@ -201,6 +205,12 @@ Route::get('/api/moabank/product', [BankController::class, 'savingList']);
 // ******************************
 // 부모 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class, 'index']);
+
+// ******************************
+// *      자녀 은행 관련         *
+// ******************************
+// 자녀가 가입한 적금 목록 받아오기
+Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

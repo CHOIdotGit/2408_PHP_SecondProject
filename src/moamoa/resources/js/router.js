@@ -447,7 +447,7 @@ const routes = [
     // +==================================+
     // 자녀 은행 페이지
     {
-        path: '/child/moabank/',
+        path: '/child/moabank',
         component: ChildMoaBankComponent,
         beforeEnter: chkAuth,
     },

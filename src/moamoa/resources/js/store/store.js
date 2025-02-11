@@ -10,6 +10,7 @@ import mobile from './modules/mobile';
 import childPoint from './modules/childPoint';
 import bank from './modules/bank';
 import point from './modules/point';
+import saving from './modules/saving';
 
 export default createStore({
     modules: {
@@ -24,6 +25,7 @@ export default createStore({
         childPoint,
         point,
         bank,
+        saving,
     },
 });
 

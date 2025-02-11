@@ -2,7 +2,9 @@
     <div class="bankbook">
         <div class="explanation">
             <div class="kr-bank">
-                <h1>이달의 한국은행 기준 금리</h1> <h1 class="red">3%</h1>
+                <h1>이달의 한국은행 기준 금리</h1>
+                <!-- ### 한국은행 기준금리 api ### -->
+                <p class="red" v-if="koreaBankInterest">{{ Number(koreaBankInterest.interest).toFixed(1) }} %</p>
             </div>
             <p class="p-explanation m-t">기준금리는 한국은행이 발표하는 정책금리로, 금융기관 간 거래의 기준이 되는 금리입니다.</p>
             <p class="p-explanation">기준 금리는 30일 적금 상품에 적용되는 금리입니다.</p>
@@ -16,20 +18,12 @@
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
-            <div class="div-box">
+            <div class="div-box" v-for="item in savingList" :key="item" >
                 <p class="have-point">모아 적금통장</p>
-                <p class="have-moa">14일 적금</p>
+                <p class="have-moa">{{ item.saving_product_name }} 적금</p>
                 <div class="interest-rate">
                     <p>이자율 : </p>
-                    <div>2.1%</div>
-                </div>
-            </div>
-            <div class="div-box">
-                <p class="have-point">모아 적금통장</p>
-                <p class="have-moa">35일 적금</p>
-                <div class="interest-rate">
-                    <p>이자율 : </p>
-                    <div>4.8%</div>
+                    <div>{{ item.saving_product_interest_rate }}</div>
                 </div>
             </div>
             <div class="div-box">
@@ -38,33 +32,7 @@
                 <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
             </div>
         </div>
-        <div class="savings-product">
-            <div class="outline">
-                <h1>모아은행 적금 상품</h1>
-                <div class="div-products">
-                    <div class="products">
-                        <p class="product-title">14일 적금</p>
-                        <p class="rate-percent">이자율 : 2.1%</p>
-                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
-                    </div>
-                    <div class="products">
-                        <p class="product-title">21일 적금</p>
-                        <p class="rate-percent">이자율 : 3.4%</p>
-                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
-                    </div>
-                    <div class="products">
-                        <p class="product-title">35일 적금</p>
-                        <p class="rate-percent">이자율 : 4.8%</p>
-                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
-                    </div>
-                    <div class="products">
-                        <p class="product-title">49일 적금</p>
-                        <p class="rate-percent">이자율 : 6.7%</p>
-                        <p class="rate-percent">최소 납입 금액 : 100moa</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </template>
 
@@ -78,41 +46,60 @@ const store = useStore();
 const totalPoints = computed(() => store.state.childPoint.totalPoints);
 console.log('totalPoints 확인 : ', totalPoints)
 
-// onMount
+// 자녀 포인트 받아오기
 onMounted(() => {
     store.dispatch('childPoint/childPoint');
 });
+
+// 한국은행 기준금리 api 가져오기
+const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
+onMounted(() => {
+    store.dispatch('bank/koreaBank');
+});
+
+// 자녀 적금 상품 가져 오기
+const savingList = computed(()=> store.state.saving.childSavingList);
+
 </script>
 
 
 <style scoped>
 
 .bankbook {
-    width: 1620px;
+    width: 1600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* 설명 적는 div */
 .explanation {
-    width: 100%;
+    width: 85%;
     height: 350px;
     padding: 50px;
     padding-left: 75px;
-    background-color: lightgray;
+    background-color: #f8f8f8;
 }
 
 .kr-bank {
     display: flex;
-    flex-wrap: wrap;
-    gap: 100px;
+    border: 1px solid #e0e7ee;
+    border-radius: 10px;
+    width: 60%;
 }
 
 .red {
     color: red;
+    font-family: 'LAB디지털';
+    background-color: #fff;
+    font-size: 2rem;
+    width: 150px;
+    padding: 5px;
 }
 
 .p-explanation {
     margin-top: 20px;
-    font-size: 1.3rem;
+    font-size: 1rem;
 }
 
 .m-t{
@@ -140,7 +127,7 @@ onMounted(() => {
     height: 250px;
     margin-right: 50px;
     text-align: center;
-    background: wheat;
+    background: #c9e6d7;
     border-radius: 30px;
 }
 
