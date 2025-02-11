@@ -10,12 +10,12 @@
             <div @click="$store.dispatch('auth/logout')" class="menu-btn">로그아웃</div>
             <div class="menu-btn">이용자 매뉴얼</div>
             <!-- 알람 아이콘 -->
-            <div  class="icon-btn" @click="openBellModal">
+            <div  class="icon-btn" @click="openBellModal" v-if="$store.state.auth.parentFlg">
                 <img src="/img/icon-bell-black.png" alt="" class="icon">
                 <!-- 알람 내용이 있을 경우 나타나는 빨간색 동그라미 -->
                 <img src="/img/icon-circle.png" alt="" class="icon-circle" v-if="bellContent.length > 0">
             </div>
-            <!-- 알람 모달 메뉴  -->
+            <!-- 부모 알람 모달 메뉴  -->
             <div class="dropdown-bell" v-if="$store.state.auth.parentFlg" v-show="bellModal">
                 <img src="/img/alram-deco.png" alt="" class="alram-deco">
                 <div class="bell-title">
@@ -36,6 +36,33 @@
                     <div v-if="bellContent.length === 0" class="not">등록된 미션이 없습니다</div>
                 </div>
             </div>
+            <!-- 자녀 알람 모달 메뉴  -->
+            <!-- 알람 아이콘 -->
+            <div  class="icon-btn" @click="openChildBellModal" v-if="$store.state.auth.childFlg">
+                <img src="/img/icon-bell-black.png" alt="" class="icon">
+                <!-- 알람 내용이 있을 경우 나타나는 빨간색 동그라미 -->
+                <!-- <img src="/img/icon-circle.png" alt="" class="icon-circle"  v-if="childBellContent.length > 0"> -->
+            </div>
+            <!-- 자녀 알람 모달 내용 -->
+            <div class="dropdown-bell" v-if="$store.state.auth.childFlg" v-show="childBellModal">
+                <img src="/img/alram-deco.png" alt="" class="alram-deco">
+                <div class="bell-title">
+                    <!-- 알람 닫기 X 아이콘 -->
+                    <img src="/img/icon-cross.png" alt="" class="cross" @click="closeChildBellModal">
+                    <div>알림함</div>
+                </div>
+                <div class="bell-list">
+                    <div class="alram" v-for="child in childBellContent" :key="child">
+                        <div  class="bell-content">
+                            <div @click="goMission(child.mission_id)">{{ child.title }} 미션이 승인 되었어요!</div>
+                            <p>{{ child.created_at }}</p>
+                        </div>
+                        <!-- 알람 체크 버튼 -->
+                        <!-- <img src="/img/icon-delete-black.png" alt="" class="alram-check" @click="checkMission(item.mission_id)"> -->
+                    </div>
+                </div>
+            </div>
+
             <!-- 햄버거 아이콘 -->
             <div  class="icon-btn" @click="openHamburgerModal" >
                 <img src="/img/icon-hamburger-black.png" alt="" class="icon" >
@@ -98,7 +125,7 @@ const closeHamburgerModal = () => {
 // *******벨 드랍 메뉴 *******
 const bellModal = ref(false);
 
-
+// ******부모가 로그인했을 때 표시되는 자녀 미션*******
 const bellContent = computed(() => store.state.header.bellContent); // 새로 등록될때마다 미션 보여줌
 const openBellModal = () => {
     console.log('열라라 참께');
@@ -111,6 +138,25 @@ const openBellModal = () => {
 const closeBellModal = () => {
     bellModal.value = false;
 }
+
+// ******자녀가 로그인했을 때 표시되는 자녀 미션*******
+const childBellModal = ref(false); // 모달 닫기(기본)
+
+const childBellContent = computed(() => store.state.header.childBell);
+
+const openChildBellModal = () => {
+    console.log('자녀 알람 모달 열기');
+    childBellModal.value = !childBellModal.value;
+    hamburgerModal.value = false;
+    store.dispatch('header/childContent');
+    
+}
+
+const closeChildBellModal = () => {
+    childBellModal.value = false;
+}
+
+
 
 const goMission = (mission_id) => {
     console.log('goMission mission_id : ', mission_id);

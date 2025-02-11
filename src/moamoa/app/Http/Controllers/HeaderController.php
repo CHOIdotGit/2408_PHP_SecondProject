@@ -77,6 +77,30 @@ class HeaderController extends Controller
         return response()->json($responseData, 200);
     }
 
+    public function childBellList() {
+        // ************************************************
+        // 헤더 알람 : 부모가 미션을 승인하면 알람 목록에 출력
+        // status = 2 일때 미션 완료
+        // alarm = 0 일 때 체크 안 된 상태
+        // alarm = 1 일 때 체크 한 상태
+        // 추후 부모랑 합칠 것
+        // ************************************************ 
+        
+        // 자녀가 로그인 했을 떄
+        $child = Auth::guard('children')->user();
+        $childBellContent = Mission::select('missions.mission_id','missions.title', 'missions.created_at', 'missions.child_id')
+                                    ->where('missions.child_id', $child->child_id)   
+                                    ->where('missions.status', 2)
+                                    ->where('missions.alarm', 0)
+                                    ->orderBy('created_at', 'DESC')
+                                    ->get();
+        $responseData = [
+            'success' => true
+            ,'childBellContent' => $childBellContent
+        ];
+        return response()->json($responseData, 200);
+    }
+
     public function update($mission_id) {
         // ************************************************
         // 헤더 알람 : 체크누르면 alarm을 1로 변경

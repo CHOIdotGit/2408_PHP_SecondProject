@@ -7,6 +7,7 @@ export default {
     state: () => ({
         childNameList: [], // 자녀 이름 목록
         bellContent: [],
+        childBell: [], // 자녀 로그인 시 자녀 미션 완료 출력
         childInfo: [], // 로그인한 자녀 프로필 정보
         checkChildMissionAlarm: [],
     }),
@@ -24,6 +25,9 @@ export default {
             // Vuex 상태에서 업데이트된 미션을 제거
             state.bellContent = state.bellContent.filter(mission => mission.mission_id !== checkChildMissionAlarm.mission_id);
         },
+        setChildBell(state, childBell) {
+            state.childBell = childBell
+        },
     },
     actions: {
         // ***************************
@@ -37,6 +41,23 @@ export default {
             .then(response => {
                 context.commit('setBellContent', response.data.bellContent);
                 console.log('미션 데이터:', response.data.bellContent );
+            })
+            .catch(error => {
+                console.log('알람 불러오기 실패', error);
+            })
+        },
+
+        // ***************************
+        // 자녀 미션 완료 알람
+        // ***************************
+        childContent(context) {
+            const url = '/api/child/header/bell';
+            console.log(url);
+
+            axios.get(url)
+            .then(response => {
+                context.commit('setChildBell', response.data.childBellContent);
+                console.log('자녀 미션 승인된 데이터:', response.data.childBellContent );
             })
             .catch(error => {
                 console.log('알람 불러오기 실패', error);

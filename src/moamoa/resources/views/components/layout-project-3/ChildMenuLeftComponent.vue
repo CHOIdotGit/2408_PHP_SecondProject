@@ -42,10 +42,11 @@
                     <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                     모아통장
                 </div>
-                <div class="menu-title">
+                <!-- 4순위 : 상점 -->
+                <!-- <div class="menu-title">
                     <img src="/img/icon-shopping-cart.png" alt="" class="menu-icon">
                     상점
-                </div>
+                </div> -->
     
 
             </div>
@@ -94,6 +95,11 @@ onBeforeMount(async () => {
 const goChildCalendar = () => {
     store.dispatch('calendar/childCalendarInfo')
     router.push('/child/calendar');
+}
+
+// 자녀 은행으로 이동
+const goBankbook = () => {
+    router.push('/child/moabank');
 }
 
 

@@ -4,7 +4,7 @@ import router from '../../router';
 export default {
     namespaced: true,
     state: ()=> ({
-        bankInterest : [],
+        bankInterest : [], // 한국은행 금리
         savingList: [], // 적금 상품 리스트
         openModal: false, // 더보기 버튼 누르긴 모달 닫겨 있게
         currentPage: 1, // 현재 페이지(1)
@@ -71,6 +71,8 @@ export default {
             context.commit('setModalFlg', true);
             context.dispatch('savingProductList');
         },
+
+
     },
     getters: {
         getNextPage(state) {

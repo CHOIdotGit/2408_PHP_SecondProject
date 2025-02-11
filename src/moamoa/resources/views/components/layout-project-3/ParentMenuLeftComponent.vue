@@ -9,7 +9,7 @@
             </div>
             <div class="child-info">
                 <!-- todo nick name 나중에 수정 -->
-                <div class="child-nickname">{{childProfile.nick_name}}</div>
+                <!-- <div class="child-nickname">{{childProfile.nick_name}}</div> -->
                 <div class="child-name">{{ childProfile.name }}</div>
             </div>
 
@@ -112,6 +112,7 @@ const childNameList = computed(() => store.state.header.childNameList || []); //
 const childProfile = ref({}); // 선택된 자녀 정보
 
 
+
 watch(selectedChildId, (newId) => {
     console.log('선택된 자녀 정보', childProfile);
     if(selectedChildId) {
@@ -122,7 +123,7 @@ watch(selectedChildId, (newId) => {
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');
     childProfile.value = store.state.header.childNameList[0];
-
+    
     // TODO : 확인용 나중에 삭제 start ----------
     if(store.state.header.childNameList.length > 0) {
         console.log('등록된 자녀 확인하기');

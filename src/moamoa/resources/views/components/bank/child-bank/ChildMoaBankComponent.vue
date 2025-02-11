@@ -18,22 +18,33 @@
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
-            <div class="div-box" v-for="item in savingList" :key="item" >
-                <p class="have-point">모아 적금통장</p>
-                <p class="have-moa">{{ item.saving_product_name }} 적금</p>
-                <div class="interest-rate">
-                    <p>이자율 : </p>
-                    <div>{{ item.saving_product_interest_rate }}</div>
+            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail">
+                
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="have-moa">{{ item.saving_product_name }} 적금</p>
+                    <div class="div-box-item">
+                        <p >잔액</p>
+                        <div>{{ item.total }}moa</div>
+                    </div>
+                    <div class="div-box-item">
+                        <p>이자율 : </p>
+                        <div>{{ item.saving_product_interest_rate.toFixed(1) }} %</div>
+                    </div>
+                </div>
+                <div class="div-box" >
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
+                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
+                </div>
+                <div class="div-box" >
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
+                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
                 </div>
             </div>
-            <div class="div-box">
-                <p class="have-point">모아 적금통장</p>
-                <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
-                <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
-            </div>
         </div>
-
-    </div>
+    
+    
 </template>
 
 
@@ -55,6 +66,7 @@ onMounted(() => {
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 onMounted(() => {
     store.dispatch('bank/koreaBank');
+    store.dispatch('saving/childSaving');
 });
 
 // 자녀 적금 상품 가져 오기
@@ -153,15 +165,13 @@ const savingList = computed(()=> store.state.saving.childSavingList);
     font-weight: 600;
 }
 
-.interest-rate {
+.div-box-item {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
     gap: 10px;
-    margin-top: 50px;
-    padding-left: 230px;
-    font-size: 1.2rem;
+    padding-right: 50px;
+    font-size: 1.3rem;
 }
 
 /* 적금 상품들 */
