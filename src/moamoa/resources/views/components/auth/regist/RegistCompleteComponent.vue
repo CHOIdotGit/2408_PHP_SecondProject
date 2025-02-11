@@ -88,11 +88,27 @@ import { useStore } from 'vuex'
 
   // 복사 버튼 ---------------------------------------------------------------------------------------------
   const copyFamCode = () => {
-    navigator.clipboard.writeText(famCode).then(() => {
-      alert('가족코드가 복사되었습니다.');
-    }).catch(err => {
-      console.error('클립보드 복사 실패:', err);
-    });
+
+    // 새요소 생성
+    const textCode = document.createElement('textarea');
+
+    // 요소에 가족코드를 저장
+    textCode.value = famCode;
+
+    // 요소 삽입
+    document.body.appendChild(textCode);
+    
+    // 해당 요소 선택
+    textCode.select();
+
+    // 요소를 클립보드에 복사
+    document.execCommand('copy'); // 클립보드에 복사
+
+    // 요소 제거
+    document.body.removeChild(textCode);
+    
+    // 메세지로 알림
+    alert('가족코드가 복사되었습니다.');
   };
 
   // 뒤로가기 방지 ---------------------------------------------------------------------------------------------

@@ -24,7 +24,16 @@
         <!-- 인증코드 입력 DIV -->
         <div class="email-modal-code">
           <label for="mailCode">인증코드</label>
-          <input v-model="inputCode" type="text" name="mailCode" maxlength="6" id="mailCode" autocomplete="off" required>
+          <input 
+            v-model="inputCode" 
+            @input="inputCode = inputCode.toUpperCase()"
+            type="text" 
+            name="mailCode" 
+            maxlength="6" 
+            id="mailCode" 
+            autocomplete="off" 
+            required
+          >
           <span>{{ Math.floor(expiryTimer / 60) }}:{{ (expiryTimer % 60).toString().padStart(2, '0') }}</span>
         </div>
 
