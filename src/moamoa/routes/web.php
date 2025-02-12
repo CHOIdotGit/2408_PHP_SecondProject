@@ -190,6 +190,8 @@ Route::get('/api/moabank/product', [BankController::class, 'savingList']);
 // 적금 상품 상세
 Route::get('/api/moabank/product/detail/{id}', [BankController::class, 'product']);
 
+// 적금 가입 페이지
+Route::get('/api/moabank/product/regist/{id}', [BankController::class, 'product']);
 
 // ******************************
 // *      부모 은행 관련         *

@@ -12,7 +12,7 @@ export default {
         ,point: 0 // 보유중인 모아 포인트
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
-        ,productInfo: []
+        ,productInfo: {}
 
     }),
     mutations: {
@@ -109,14 +109,31 @@ export default {
         },
 
         // id로 받아온 적금 상품
-        selectedProduct(context, id) {
-            // const url = '/moabank/product/detail'+ saving_product_id;
-            const url = `/moabank/product/detail/${id}`;
+        selectedProduct(context, saving_product_id) {
+            const url = '/api/moabank/product/detail/'+ saving_product_id;
+            console.log(url);
 
             axios.get(url)
                 .then(response => {
-                    context.commit('setProductInfo', response.data.productInfo);
-                    console.log('setProductInfo 확인', response.data.productInfo);
+                    context.commit('setProductInfo', response.data.childProductInfo);
+                    console.log('setProductInfo 확인', response.data.childProductInfo);
+                    console.log(response.data);
+                }) 
+                .catch(error => {
+                    console.log('해당 적금 상품을 불러올 수 없습니다', error);
+                }) 
+        },
+        
+        // id로 받아온 적금 상품 가입 페이지
+        registrationProduct(context, saving_product_id) {
+            const url = '/api/moabank/product/regist/'+ saving_product_id;
+            console.log(url);
+
+            axios.get(url)
+                .then(response => {
+                    context.commit('setProductInfo', response.data.childProductInfo);
+                    console.log('setProductInfo 확인', response.data.childProductInfo);
+                    console.log(response.data);
                 }) 
                 .catch(error => {
                     console.log('해당 적금 상품을 불러올 수 없습니다', error);

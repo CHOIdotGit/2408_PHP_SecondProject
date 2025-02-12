@@ -8,6 +8,7 @@
                         <!-- <p>매일 적금</p> -->
                         <div class="products" v-for="item in savingProduct" :key="item">
                             <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                            {{ item.saving_product_id }}
                             <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
                             <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
                         </div>

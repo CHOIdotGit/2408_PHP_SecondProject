@@ -9,7 +9,7 @@
         <div class="bank-form-box">
             <div class="bank-form">
                 <p class="bank-form-title">상품명</p>
-                <p class="bank-form-content">7일 적금</p>
+                <p class="bank-form-content">{{ productInfo.saving_product_name }} 적금</p>
             </div>
             <div class="bank-form">
                 <p class="bank-form-title">예금주</p>
@@ -49,10 +49,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
 const days = ref("월", "화")
 
+// 적금 상품 가져오기
+const productInfo = computed(() => store.state.bank.productInfo);
+
+onMounted(() => {
+    const id = route.params.id;
+    console.log('상품 ID:', id);  // id가 제대로 전달되는지 확인
+    store.dispatch('bank/registrationProduct', id);
+});
 
 </script>
 

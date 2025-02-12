@@ -88,16 +88,32 @@ class BankController extends Controller
     
     public function product($id) {
         
-        $productInfo =  SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
+        $childProductInfo =  SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
                                         ->where('saving_product_id', $id)
-                                        ->get();
+                                        ->first();
+
+        // 자녀 본인 확인
+        $child = Auth::guard('children')->user();
         
+         // 기준금리 가져오기 (JSON을 배열로 변환)
+        $baseRateResponse = $this->koreaBank(); // JSON 응답 객체
+        $baseRate = json_decode($baseRateResponse->getContent(), true); // 배열 변환
+
+        // 기준금리 값 가져오기
+        $baseInterest = isset($baseRate['original']['interest']) ? (float)$baseRate['original']['interest'] : 0;
+
+        // 상품 ID에 따라 이자율 변경
+        if ($childProductInfo->saving_product_id == 1 || $childProductInfo->saving_product_id == 2) {
+            $childProductInfo->saving_product_interest_rate -= $baseInterest; // 기준금리 빼기
+        } elseif ($childProductInfo->saving_product_id >= 3 && $childProductInfo->saving_product_id <= 7) {
+            $childProductInfo->saving_product_interest_rate += $baseInterest; // 기준금리 더하기
+        }
 
         $responseData = [
             'success' => true
             ,'msg' => '가입한 적금 상품 상세 정보 불러오기 성공'    
-            ,'productInfo' => $productInfo
-            // ,'signUpProduct' => $signUpProduct
+            ,'childProductInfo' => $childProductInfo
+            ,'baseRate' => $baseRate
         ];
 
         return response()->json($responseData, 200);
