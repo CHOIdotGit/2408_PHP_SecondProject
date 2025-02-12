@@ -1,6 +1,7 @@
 <template>
     <!-- :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }" -->
-    <div class="container">
+
+    <div v-if="!isMobile" class="container">
     <!-- 상단 메뉴 -->
         <header>
             <!-- 좌측 고정 메뉴 -->
@@ -25,6 +26,20 @@
             </div>
         </footer> -->
     </div>
+    <div v-else class="app-container">
+
+        <!-- 상단 메뉴 -->
+        <!-- <header></header> -->
+        
+        <main class="app-layout">
+            <!-- 화면 -->
+            <router-view></router-view>
+        </main>
+
+        <!-- 하단 메뉴 -->
+        <!-- <footer></footer> -->
+
+    </div>
 </template>
 
 
@@ -42,6 +57,7 @@ const store = useStore();
 const isAuth = computed(() => store.state.auth.authFlg);
 const isParents = computed(() => store.state.auth.parentFlg);
 const isChilds = computed(() => store.state.auth.childFlg);
+const isMobile = store.state.mobile.isMobile;
 
 </script>
 
@@ -65,12 +81,26 @@ footer > p {
 }
 
 .layout {
+    /* width: 100%; */
     display: flex;
     flex-direction: column;
 }
 
 .top-header-menu {
     width: 1500px;
+}
+
+/* 앱 설정 ----------------------------------------------------------------------------------------------- */
+
+.app-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.app-layout {
+    width: 100%;
 }
 
 </style>
