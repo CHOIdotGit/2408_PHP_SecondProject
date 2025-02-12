@@ -1,5 +1,5 @@
 <template>
-    <div class="bankbook">
+    <div class="bank">
         <div class="explanation">
             <div class="kr-bank">
                 <h1>이달의 한국은행 기준 금리</h1>
@@ -18,9 +18,9 @@
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
-            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail(item.saving_sign_up_id)">
-                
+            <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
                     <p class="have-point">모아 적금통장</p>
+                    {{ savingList.length }}
                     <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
                     <div class="div-box-item">
                         <p >잔액</p>
@@ -31,16 +31,13 @@
                         <div>{{ item.saving_product_interest_rate.toFixed(1) }} %</div>
                     </div>
                 </div>
-                <div class="div-box" >
+                <!-- 빈 통장 슬롯 -->
+                <div class="div-box" @click="goSavingProduct" v-for="item in empty" :key="item" >
                     <p class="have-point">모아 적금통장</p>
                     <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                     <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
                 </div>
-                <div class="div-box" >
-                    <p class="have-point">모아 적금통장</p>
-                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
-                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
-                </div>
+
             </div>
         </div>
     
@@ -78,6 +75,17 @@ const goSavingDetail = (saving_sign_up_id) => {
     console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
+// 적금 상품 페이지로 이동
+const goSavingProduct = () => {
+    router.push('/moabank/product');
+}
+
+// 적금 통장 빈 공간
+const empty = computed(()=> {
+    const total = 3;
+    const aa = total - savingList.legnth;
+})
+
 
 
 </script>
@@ -85,7 +93,7 @@ const goSavingDetail = (saving_sign_up_id) => {
 
 <style scoped>
 
-.bankbook {
+.bank {
     width: 1600px;
     display: flex;
     flex-direction: column;

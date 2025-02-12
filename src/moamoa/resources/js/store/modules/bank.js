@@ -13,6 +13,8 @@ export default {
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,productInfo: {}
+        ,singleList: [] //매일 적금
+        ,weekList: [] // 매주 적금
 
     }),
     mutations: {
@@ -43,6 +45,12 @@ export default {
         setProductInfo(state, productInfo) {
             state.productInfo = productInfo;
         }
+        ,setSingleSaving(state, singleList) { // 매일 적금 상품
+            state.singleList = singleList;
+        }
+        ,setWeekSaving(state, weekList) { // 매주 적금 상품
+            state.weekList = weekList;
+        }
     },
     actions: {
         // 한국은행 기준금리 api
@@ -69,6 +77,8 @@ export default {
             .then(response => {
                 console.log('savingList', response.data.savingList.data);
                 context.commit('setSavingList', response.data.savingList.data);
+                context.commit('setSingleSaving', response.data.singleSavingList);
+                context.commit('setWeekSaving', response.data.weekSavingList);
             })
             .catch(error => {
                 console.log('적금상품 불러오기 실패', error);

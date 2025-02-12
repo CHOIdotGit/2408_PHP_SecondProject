@@ -1,5 +1,5 @@
 <template>
-    <div class="bankbook">
+    <div class="bank">
         <div class="explanation">
             <div class="kr-bank">
                 <h1>이달의 한국은행 기준 금리</h1>
@@ -76,7 +76,7 @@ onBeforeMount(() => {
 
 
 <style scoped>
-.bankbook {
+.bank {
     width: 1600px;
     display: flex;
     flex-direction: column;
@@ -133,6 +133,7 @@ onBeforeMount(() => {
     gap: 50px
 }
 
+
 .div-box {
     width: 500px;
     height: 250px;
@@ -140,6 +141,10 @@ onBeforeMount(() => {
     text-align: center;
     background: #c9e6d7;
     border-radius: 30px;
+}
+
+.div-box:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .have-point {

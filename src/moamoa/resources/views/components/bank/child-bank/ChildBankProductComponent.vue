@@ -1,28 +1,33 @@
 <template>
     <div class="bank-product-container">
         <div class="savings-product">
+            <!-- <div class="route"> 홈  > 모아은행 > 적금상품 </div> -->
+            <h1>모아은행 적금 상품</h1>
             <div class="outline">
-                <h1>모아은행 적금 상품</h1>
+                <!-- 매일 적금 -->
+                <div class="saving-product-name">매일 적금</div>
+                <div>매일 포인트를 저축해요</div>
                 <div class="div-products">
-                    <!-- <div v-if="" class="every-day-product"> -->
-                        <!-- <p>매일 적금</p> -->
-                        <div class="products" v-for="item in savingProduct" :key="item">
-                            <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
-                            {{ item.saving_product_id }}
-                            <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
-                            <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
-                        </div>
-                    <!-- </div> -->
-                    <!-- <div v-else class="every-weekend-product">
-                        <p>매주 적금</p>
-                        <div class="products" v-for="item in savingProduct" :key="item">
-                            <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
-                            <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
-                            <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
-                        </div>
-                    </div> -->
+                    <div class="products" v-for="item in single" :key="item" @click="router.push('/moabank/product/detail/'+ item.saving_product_id)">
+                        <p  class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                        <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
+                    </div>
                 </div>
             </div>
+            <div class="outline">
+                <!-- 매주 적금 -->
+                <div class="saving-product-name">매주 적금</div>
+                <div>일주일에 한번 포인트를 저축해요</div>
+                <div class="div-products">
+                    <div class="products" v-for="item in week" :key="item">
+                        <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                        <p class="rate-percent">최소 납입 금액 : {{ item.saving_product_amount }} moa</p>
+                    </div>
+                </div>
+            </div>    
+            
         </div>
     </div>
 
@@ -35,14 +40,20 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
-const route = useRoute();
 const router = useRouter();
 
 // 적금 상품 가져오기
 const savingProduct = computed(()=> store.state.bank.savingList);
+
+// 매일 적금
+const single =  computed(()=> store.state.bank.singleList);
+
+// 매주 적금
+const week = computed(()=> store.state.bank.weekList);
 onMounted(() => {
     store.dispatch('bank/koreaBank');
     store.dispatch('bank/savingProductList');
+    
 });
 
 // const addSavingPage = () => {
@@ -81,7 +92,7 @@ hr {
 .bank-product-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     min-height: 100vh;
 }
 
@@ -157,42 +168,53 @@ img {
 
 /* 적금 상품들 */
 .savings-product {
-    
-
+    margin-left: 100px;
 }
 
 .outline {
-    width: 1470px;
-    text-align: center;
+    width: 1200px;
     /* 부모 색깔 */
     /* background-color: #e8ecdc;  */
 
     /* 자녀 색깔 */
     background-color: #e4eff4;
     border-radius: 10px;
-    height: 750px;
+    height: 300px;
     padding: 20px;
+    margin-bottom: 30px;
 
 }
 
+/* 매일 적금/매주 적금 타이틀 크기 */
+.saving-product-name {
+    font-size: 1.7rem;
+    padding-bottom: 5px;
+}
 
+/* 적금 상품 */
 .div-products {
     display: flex;
+    gap: 20px;
+    margin-top: 10px;
 }
 
 .products {
     min-width: 200px;
     height: 200px;
-    padding-top: 20px;
+    padding: 20px;
     border: 1px solid #ddd;
     background-color: #fff;
-    
+    cursor: pointer;
+}
+
+.products:hover {
+    box-shadow: 0 1px 10px rgba(0,0,0,0.16), 0 1px 10px rgba(0,0,0,0.23)
 }
 
 .product-title {
     font-size: 1.5rem;
-    cursor: pointer;
 }
+
 
 .rate-percent {
     margin-top: 30px;

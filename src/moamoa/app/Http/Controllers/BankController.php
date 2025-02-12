@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Log;
 
 class BankController extends Controller
 {
+    // *******************************************
     // ******** 한국은행 기준 금리 오픈 api ********
+    // *******************************************
     // api 서비스 명
     // 인증키 : env("BANK_KEY")
     // 요청유형(파일형식) : json
@@ -23,6 +25,7 @@ class BankController extends Controller
     // 주기(M :월) 
     // 검색 시작 일자 : 2024년 12월 부터
     // 검색 종료 일자 
+    // ********************************************
     public function koreaBank() {
         $apiKey = env("BANK_KEY");
         $premonth = date("Ym", strtotime("-1 month"));
@@ -42,18 +45,44 @@ class BankController extends Controller
         return response()->json($responseData, 200);
     }
 
-    
-    // ******** 적금 상품 받아오기 ********
+    // ***************************************
+    // ******** 은행 적금 상품 받아오기 ********
+    // ***************************************
     public function savingList() {
+        
         $savingList = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
                                     ->paginate(7);
+
+        // 매일 넣는 적금
+        $singleSavingList = SavingProduct::select('saving_product_id'
+                                                ,'saving_product_name'
+                                                ,'saving_product_amount'
+                                                ,'saving_product_interest_rate'
+                                                ,'saving_product_type'
+                                                )
+                                            ->where('saving_product_type', '=', '0')
+                                            ->get();
+
+        // 매주 넣은 적금                                    
+        $weekSavingList = SavingProduct::select('saving_product_id'
+                                                ,'saving_product_name'
+                                                ,'saving_product_amount'
+                                                ,'saving_product_interest_rate'
+                                                ,'saving_product_type'
+                                                )
+                                            ->where('saving_product_type', '=', '1')
+                                            ->get();
 
         $responseData = [
             'success' => true
             ,'msg' => '적금 상품 받아오기 성공'
             ,'savingList' => $savingList->toArray()
+            ,'singleSavingList' => $singleSavingList
+            ,'weekSavingList' => $weekSavingList
         ];
+
         return response()->json($responseData, 200);
+    
     }
 
     // 가입한 적금 상품 개수와 포인트 확인 - 부모 페이지
