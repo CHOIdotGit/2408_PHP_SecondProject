@@ -27,18 +27,44 @@ class AuthenticationRequest extends FormRequest {
       $rules['account'][] = new ExistsFamilyRule;
     }
 
-    // 회원가입
-    elseif($this->routeIs('auth.store.user')) {
-      // 유니크 ID가 두 테이블(부모, 자녀)에 존재하는지 검사
-      $rules['account'][] = new UniqueFamilyRule;
+    // 회원가입 or 회원수정
+    elseif($this->routeIs('auth.store.user')
+        || $this->routeIs('auth.modify.user')
+    ) {
+
+      // 들어온게 회원가입이면
+      if($this->routeIs('auth.store.user')) {
+        $rules['account'][] = new UniqueFamilyRule;
+        $rules['password'][] = 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/';
+        $rules['passwordChk'] = ['required', 'same:password'];
+
+      // 회원수정 이라면
+      }elseif($this->routeIs('auth.modify.user')) {
+        $rules['account'] = ['nullable'];
+        $rules['password'][] = new CheckPasswordRule;
+
+        // 둘중 하나라도 입력되면 필수사항
+        if($this->filled('newPassword') || $this->filled('newPasswordChk')) {
+          $rules['newPassword'] = ['required', 'different:password', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/'];
+          $rules['newPasswordChk'] = ['required', 'same:newPassword'];
+        // 입력 안햇다면 통과
+        }else {
+          $rules['newPassword'] = ['nullable'];
+          $rules['newPasswordChk'] = ['nullable'];
+        }
+      }
 
       // 그외 필수 체크 정보들
-      $rules['password'][] = 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/';
-      $rules['passwordChk'] = ['required', 'same:password'];
       $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
       $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
       $rules['tel'] = ['required', 'regex:/^010\d{8,9}$/']; // 010 반드시 포함 뒤에 8 ~ 9자의 숫자  // 'regex:/^\d{10,11}$/' 10 ~ 11자의 숫자
       // $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/']; // 첫문자는 영문대소문자한글 그뒤는 숫자포함
+    }
+
+    // 본인 확인
+    elseif($this->routeIs('auth.ident.user')) {
+      $rules['account'] = ['nullable'];
+      $rules['password'][] = new CheckPasswordRule;
     }
 
     return $rules;
@@ -61,6 +87,11 @@ class AuthenticationRequest extends FormRequest {
       ,'tel.regex' => '번호 형식이 맞지 않습니다.'
       // ,'fam_code.required' => '가족코드를 입력해 주세요.'
       // ,'fam_code.regex' => '단어 형식이 맞지 않습니다.'
+      ,'newPassword.required' => '새 비밀번호를 입력해주세요.'
+      ,'newPassword.regex' => '새 비밀번호 형식이 맞지 않습니다.'
+      ,'newPassword.different' => '현재 비밀번호와 동일할 수 없습니다.'
+      ,'newPasswordChk.required' => '새 비밀번호 확인을 입력해주세요.'
+      ,'newPasswordChk.same' => '새 비밀번호와 서로 일치하지 않습니다.'
     ];
   }
 

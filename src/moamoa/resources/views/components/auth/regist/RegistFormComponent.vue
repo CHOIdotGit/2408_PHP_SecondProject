@@ -257,7 +257,11 @@ import { useRoute } from 'vue-router';
   // 파일 세팅 및 프리뷰 ---------------------------------------------------------------------------------------------
   
   // state 프로필 프리뷰 세팅값
-  const preview = computed(() => store.state.auth.preview);
+  // const preview = computed(() => store.state.auth.preview);
+  const preview = ref({
+    imgFlg: false,
+    url: null,
+  });
 
   const fileSetting = (e) => {
     const file = e.target.files[0];
@@ -269,8 +273,10 @@ import { useRoute } from 'vue-router';
       return;
     }else {
       registInfo.profile = e.target.files[0];
-      store.commit('auth/setPreviewUrl', URL.createObjectURL(registInfo.profile));
-      store.commit('auth/setPreviewFlg', true);
+      // store.commit('auth/setPreviewUrl', URL.createObjectURL(registInfo.profile));
+      // store.commit('auth/setPreviewFlg', true);
+      preview.value.url = URL.createObjectURL(registInfo.profile);
+      preview.value.imgFlg = true;
     }
   };
 
@@ -429,6 +435,11 @@ import { useRoute } from 'vue-router';
     if(chkVal.some(check => check.condition)) {
       return;
     }else {
+      // 에러 정보 리셋
+      if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+        store.commit('auth/resetErrMsg');
+      }
+      
       // 전부 통과됫다면 회원가입 실행
       store.dispatch('auth/storeUser', registInfo);
     }
@@ -454,21 +465,21 @@ import { useRoute } from 'vue-router';
   });
 
   // 새로고침 시 물어보는 이벤트
-  // onMounted(() => {
-  //   if(route.path === '/regist/parent' || route.path === '/regist/child') {
-  //     window.addEventListener('beforeunload', (e) => {
-  //       e.preventDefault();
-  //     });
-  //   }
-  // });
+  onMounted(() => {
+    window.addEventListener('beforeunload', (e) => {
+      if(route.path === '/regist/parent' || route.path === '/regist/child') {
+        e.preventDefault();
+      }
+    });
+  });
 
-  // onBeforeUnmount(() => {
-  //   if(route.path === '/regist/parent' || route.path === '/regist/child') {
-  //     window.removeEventListener('beforeunload', (e) => {
-  //       e.preventDefault();
-  //     });
-  //   }
-  // });
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', (e) => {
+      if(route.path === '/regist/parent' || route.path === '/regist/child') {
+        e.preventDefault();
+      }
+    });
+  });
 
 </script>
 

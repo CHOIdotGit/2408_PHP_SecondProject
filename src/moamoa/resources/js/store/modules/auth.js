@@ -24,7 +24,7 @@ export default {
       password: null,
       passwordChk: null,
       name: null,
-      nick_name: null,
+      // nick_name: null,
       email: null,
       tel: null,
       famCode: null,
@@ -44,11 +44,11 @@ export default {
     // loginInfo: {},
     
     // 회원가입 관련 -----------------------------------------------------------------------------------------
+    matchingInfo: {}, // 매칭 정보
     preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false, // 파일 여부
       url: null, // src url
     },
-    matchingInfo: {}, // 매칭 정보
     
     registFlg: true, // 자녀 페이지 전환용 플래그
     registInfo: sessionStorage.getItem('registInfo') ? JSON.parse(sessionStorage.getItem('registInfo')) : {}, // 가입 폼 정보
@@ -191,7 +191,7 @@ export default {
         password: null,
         passwordChk: null,
         name: null,
-        nick_name: null,
+        // nick_name: null,
         email: null,
         tel: null,
         famCode: null,
@@ -532,62 +532,7 @@ export default {
       });
     },
 
-    /**
-     * 자녀 회원가입 부모 매칭
-     * 
-     * @param {*} context 
-     * @param {*} registInfo 
-     */
-    childRegistMatching(context, registInfo) {
-      const url= '/api/auth/childRegistMatching';
-      const data = JSON.stringify(registInfo);
-  
-      axios.post(url, data)
-      .then(res => {
-        // 담겨온 부모 정보를 state에 세팅
-        context.commit('setMatchInfo', res.data.parent);
 
-        // 매칭 페이지로 전환
-        context.commit('setRegistFlg', false);
-
-      }).catch(err => {
-        // 다시 시도할 경우를 대비해 메세지 초기화
-        context.commit('resetErrMsg');
-
-        // 출력 메세지 변수 연결
-        const errData = err.response.data.error;
-
-        // 유효성 검사 실패
-        if(err.response.status === 422) { 
-          // 에러 정보값 세팅
-          const errInfo = {
-            account: 'setErrMsgAccount',
-            password: 'setErrMsgPassword',
-            passwordChk: 'setErrMsgPasswordChk',
-            name: 'setErrMsgName',
-            email: 'setErrMsgEmail',
-            nick_name: 'setErrMsgNickName',
-            tel: 'setErrMsgTel',
-            famCode : 'setErrMsgFamCode',
-          };
-
-          // 돌려서 있는것만 데이터 담음
-          Object.entries(errData).forEach(([key, val]) => {
-            if(val[0] && errInfo[key]) {
-              context.commit(errInfo[key], val[0]);
-            }
-          });
-        }
-        // 공용 실패
-        else if(err.response.status === 401) {
-          context.commit('setErrMsgCommon', errData);
-        }
-        // 그 이외 오류
-        else {
-          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
-        }
-      });
-    },
 
     /**
      * 부모 정보 호출
@@ -630,6 +575,40 @@ export default {
     },
 
     /**
+     * 본인 확인
+     * 
+     * @param {*} context
+     * @param {*} password
+     */
+    identUser(context, identInfo) {
+      const url = '/api/auth/identUser';
+
+      axios.post(url, {password: identInfo.password})
+      .then(res => {
+        router.push('/' + identInfo.userType + '/private/' + identInfo.identType);
+      })
+      .catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+        console.log(errData);
+
+        // 유효성 검사 실패
+        if(err.response.status === 422 && errData.password[0]) {
+          context.commit('setErrMsgPassword', errData.password[0]);
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+    },
+
+
+    /**
      * 회원정보 수정
      */
     modifyUser(context, editInfo) {
@@ -662,19 +641,18 @@ export default {
 
         // 출력 메세지 변수 연결
         const errData = err.response.data.error;
+        console.log(errData);
 
         // 유효성 검사 실패
         if(err.response.status === 422) { 
           // 에러 정보값 세팅
           const errInfo = {
-            // account: 'setErrMsgAccount',
             password: 'setErrMsgPassword',
-            passwordChk: 'setErrMsgPasswordChk',
+            newPassword: 'setErrMsgNewPassword',
+            newPasswordChk: 'setErrMsgNewPasswordChk',
             name: 'setErrMsgName',
             email: 'setErrMsgEmail',
-            nick_name: 'setErrMsgNickName',
             tel: 'setErrMsgTel',
-            famCode : 'setErrMsgFamCode',
           };
 
           // 돌려서 있는것만 데이터 담음

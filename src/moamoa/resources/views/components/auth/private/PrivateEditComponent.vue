@@ -65,7 +65,7 @@
         <div class="edit-item-content">
           <!-- 아이디 입력 DIV -->
           <div>
-            <p>user1234</p>
+            <p>{{ userInfo.account }}</p>
           </div>
 
           <!-- 현재 비밀번호 입력 DIV -->
@@ -78,9 +78,9 @@
 
           <!-- 새 비밀번호 확인 입력 DIV -->
           <div>
-            <input v-model="editInfo.passwordChk" :class="{ 'err-border' : errMsg.passwordChk }" type="password" name="passwordChk" id="passwordChk" autocomplete="off" required>
-            <p v-if="errMsg.passwordChk" class="err-msg">
-              {{ errMsg.passwordChk }}
+            <input v-model="editInfo.newPassword" :class="{ 'err-border' : errMsg.newPassword }" type="password" name="newPassword" id="newPassword" autocomplete="off">
+            <p v-if="errMsg.newPassword" class="err-msg">
+              {{ errMsg.newPassword }}
             </p>
             <p v-else class="ann-msg">
               영문 대소문자와 숫자, 특수문자 2종류 이상 조합 6~18자 사용 가능.
@@ -89,9 +89,9 @@
 
           <!-- 새 비밀번호 확인 입력 DIV -->
           <div>
-            <input v-model="editInfo.passwordChk" :class="{ 'err-border' : errMsg.passwordChk }" type="password" name="passwordChk" id="passwordChk" autocomplete="off" required>
-            <p v-if="errMsg.passwordChk" class="err-msg">
-              {{ errMsg.passwordChk }}
+            <input v-model="editInfo.newPasswordChk" :class="{ 'err-border' : errMsg.newPasswordChk }" type="password" name="newPasswordChk" id="newPasswordChk" autocomplete="off">
+            <p v-if="errMsg.newPasswordChk" class="err-msg">
+              {{ errMsg.newPasswordChk }}
             </p>
             <p v-else class="ann-msg">
               비밀번호를 변경하실 경우 새 비밀번호 확인을 입력해주세요.
@@ -110,7 +110,7 @@
           <div>
             <input 
               v-model="editInfo.email" 
-              :class="{ 'err-border' : errMsg.email, 'pass-border' : isEmailPass }"
+              :class="{ 'err-border' : errMsg.email }"
               @input="onlyEmail"
               type="email" 
               name="email" 
@@ -144,7 +144,7 @@
       </div>
 
       <div class="edit-footer">
-        <button @click="registBtn" type="button" class="btn-submit">
+        <button @click="editBtn" type="button" class="btn-submit">
           수정확인
         </button>
       </div>
@@ -154,10 +154,12 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive, ref, watch } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
   const store = useStore();
+  const route = useRoute();
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);
@@ -205,7 +207,44 @@ import { useStore } from 'vuex';
       preview.value = URL.createObjectURL(editInfo.profile);
     }
   };
-  
+
+  // 이메일은 @와 .하나씩 그리고 영문숫자만 입력가능 ---------------------------------------------------------------------------------------------
+  const onlyEmail = () => {
+    editInfo.email = editInfo.email
+      .replace(/@+/g, '@')   // `@`가 두 번 이상 입력되면 하나로 변경
+      .replace(/\.+/g, '.'); // `.`이 두 번 이상 입력되면 하나로 변경
+
+    // 영문 숫자 이외에는 입력되면 안됨
+    editInfo.email = editInfo.email.replace(/[^a-zA-Z0-9@.]/g, '');
+
+    // 입력한 이메일 내에 `@`와 `.`이 하나씩만 있는지 확인
+    if((editInfo.email.match(/@/g) || []).length > 1) {
+      // `@`가 두 번 이상이면 첫 번째만 남기고 나머지 제거
+      editInfo.email = editInfo.email.replace('@', '');  
+    }
+
+    // `.`이 두 번 이상이면 첫 번째만 남기고 나머지 제거
+    else if((editInfo.email.match(/\./g) || []).length > 1) {
+      editInfo.email = editInfo.email.replace('.', '');  
+    };
+  };
+
+  // 전화번호는 숫자만 입력가능 ---------------------------------------------------------------------------------------------
+  const onlyNumber = () => {
+    // 숫자이외는 모두 제거
+    editInfo.tel = editInfo.tel.replace(/\D/g, '');
+  }
+
+  // 회원수정 처리 ---------------------------------------------------------------------------------------------
+  const editBtn = () => {
+    // 에러 정보 리셋
+    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+      store.commit('auth/resetErrMsg');
+    }
+    
+    // 회원수정 액션 실행
+    store.dispatch('auth/modifyUser', editInfo);
+  };
 
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
@@ -217,6 +256,23 @@ import { useStore } from 'vuex';
 
     // 유저 정보 로드
     store.dispatch(store.state.auth.parentFlg ? 'auth/parentInfo' : 'auth/childInfo' );
+  });
+
+  // 새로고침 시 물어보는 이벤트
+  onMounted(() => {
+    window.addEventListener('beforeunload', (e) => {
+      if(route.path === '/parent/private/edit' || route.path === '/child/private/edit') {
+        e.preventDefault();
+      }
+    });
+  });
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('beforeunload', (e) => {
+      if(route.path === '/parent/private/edit' || route.path === '/child/private/edit') {
+        e.preventDefault();
+      }
+    });
   });
 
 </script>
@@ -383,11 +439,12 @@ import { useStore } from 'vuex';
   .edit-item-content > div:not(:first-child) {
     padding: 17px 0 0 10px;
   }
+  /* 아이디 내용 */
   .edit-item-content > div:first-child {
     display: flex;
     align-items: center;
-    font-size: 1.2rem;
-    padding-left: 10px;
+    font-size: 1.4rem;
+    padding-left: 12px;
     color: #5a5a5a;
   }
   /* 내용 안의 인풋들 */
@@ -399,27 +456,26 @@ import { useStore } from 'vuex';
 
   /* ------------------------------------------------------------------------ */
 
-    /* 아래 버튼 영역 */
-    .edit-footer {
-      display: flex;
-      justify-content: center;
-      align-items: center; 
-    }
-    
-    /* 수정확인 버튼 */
-    .btn-submit {
-      margin-top: 27.5px;
-      padding: 10px;
-      width: 100px;
-      border: none;
-      background-color: #3B82F6;
-      color: #fff;
-      font-size: 1.2rem;
-    }
-    /* 버튼 호버 */
-    .btn-submit:hover {
-      background-color: #2563EB;
-    }
+  /* 아래 버튼 영역 */
+  .edit-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+  }
+  /* 수정확인 버튼 */
+  .btn-submit {
+    margin-top: 27.5px;
+    padding: 10px;
+    width: 100px;
+    border: none;
+    background-color: #3B82F6;
+    color: #fff;
+    font-size: 1.2rem;
+  }
+  /* 버튼 호버 */
+  .btn-submit:hover {
+    background-color: #2563EB;
+  }
 
   /* ------------------------------------------------------------------------ */
 
@@ -461,6 +517,5 @@ import { useStore } from 'vuex';
     border: 2px solid rgba(0, 165, 0, 0.6);
     box-shadow: 0 0 2px #00a500;
   }
-
 
 </style>

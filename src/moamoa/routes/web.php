@@ -40,12 +40,12 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/sendEmail', [AuthController::class, 'sendEmail'])->name('auth.send.email');
     Route::get('/chkFamCode/{famCode}', [AuthController::class, 'chkFamCode'])->name('auth.chk.famCode');
     Route::post('/matchingParent', [AuthController::class, 'matchingParent'])->name('auth.matching.parent');
-
-    Route::post('/childRegistMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.regist.matching');
     Route::post('/storeUser', [AuthController::class, 'storeUser'])->name('auth.store.user');
     Route::post('/parentInfo', [AuthController::class, 'parentInfo'])->name('auth.parent.info');
     Route::post('/childInfo', [AuthController::class, 'childInfo'])->name('auth.child.info');
+    Route::post('/identUser', [AuthController::class, 'identUser'])->name('auth.ident.user');
     Route::post('/modifyUser', [AuthController::class, 'modifyUser'])->name('auth.modify.user');
+
     Route::post('/removeUser', [AuthController::class, 'removeUser'])->name('auth.remove.user');
     Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
     Route::post('/childManyInfo', [AuthController::class, 'childManyInfo'])->name('auth.child.many.info');

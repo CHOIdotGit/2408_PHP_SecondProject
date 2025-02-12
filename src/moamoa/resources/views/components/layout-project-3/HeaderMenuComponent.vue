@@ -72,15 +72,15 @@
                 <router-link v-if="$store.state.auth.parentFlg" to="/parent/family/info" class="link-deco">
                     <p class="info-page">가족정보</p>
                 </router-link>
-                <router-link v-if="$store.state.auth.childFlg" to="/child/private/rematching" class="link-deco">
+                <!-- <router-link v-if="$store.state.auth.childFlg" to="/child/private/rematching" class="link-deco">
                     <p class="info-page">부모 재매칭</p>
-                </router-link>
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/edit' : '/child/private/edit'" class="link-deco">
+                </router-link> -->
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
                     <p class="info-page">개인정보 수정</p>
                 </router-link>
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/password' : '/child/private/password'" class="link-deco">
+                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/password' : '/child/private/password'" class="link-deco">
                     <p class="info-page">비밀번호 변경</p>
-                </router-link>
+                </router-link> -->
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/withdrawal' : '/child/private/withdrawal'" class="link-deco">
                     <p class="info-page info-page-red">회원 탈퇴</p>
                 </router-link>

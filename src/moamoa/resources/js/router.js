@@ -43,6 +43,7 @@ import RegistCompleteComponent from '../views/components/auth/regist/RegistCompl
 import ChildBankProductDetailComponent from '../views/components/bank/child-bank/ChildBankProductDetailComponent.vue';
 import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
 import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
+import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
 
 const chkAuth = (to, from, next) => {
     
@@ -202,17 +203,27 @@ const routes = [
 
             // 본인 확인 페이지
             {
-                path: 'ident',
+                path: 'ident/:category(edit|wdrl)',
                 component: PrivateIdentComponent,
-                // beforeEnter: chkAuth,
+                beforeEnter: (to, from, next) => {
+                    chkAuth(to, from, next);
+                    // sessionStorage.setItem('privatePath', 'ident/' + to.path.split('/').pop());
+                },
             },
 
             // 개인정보 수정 페이지
             {
                 path: 'edit',
                 component: PrivateEditComponent,
-                // beforeEnter: chkAuth,
+                beforeEnter: chkAuth,
             },
+
+            // 회원탈퇴 페이지
+            {
+                path: 'wdrl',
+                component: PrivateWdrlComponent,
+                beforeEnter: chkAuth,
+            }
         ],
     },
 
@@ -535,7 +546,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
     // 회원가입 스토리지 체크
-    if(sessionStorage.getItem('registPage') && (from.path.startsWith('/regist/') && !to.path.startsWith('/regist/'))) {
+    if(sessionStorage.getItem('registPage') && !to.path.startsWith('/regist/')) {
         // 해당 페이지에서 벗어났을 경우 스토리지 삭제
         sessionStorage.removeItem('registPage');
 

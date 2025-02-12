@@ -240,7 +240,7 @@ class AuthController extends Controller {
       return response()->json(['msg' => '공백 혹은 특수문자가 포함되어 있습니다.']);
     }
 
-    // 영문 및 숫자로 이루어진 6~18글자가 아닌지
+    // 영문 및 숫자로 이루어진 8글자가 아닌지
     elseif(!preg_match('/^[A-Z0-9]{8}$/', $famCode)) {
       return response()->json(['msg' => '맞지 않는 가족코드 형식 입니다.']);
     }
@@ -265,20 +265,26 @@ class AuthController extends Controller {
    * @return JSON $responseData
    */
   public function matchingParent(Request $request) {
-    
-    $parent = $this->authRepository->findParentByFamilyCode($request->famCode);
 
-    return $parent 
-      ? response()->json([
-        'success' => true,
-        'msg' => '부모 매칭 성공',
-        'parent' => $parent
-      ], 200)
-      : response()->json([
-        'success' => false,
-        'error' => '부모 매칭 실패',
-      ])
-    ;
+    // 가족코드가 입력됫고 제대로 8글자가 왔다면
+    if($request->famCode && (mb_strlen($request->famCode) === 8)) {
+      $parent = $this->authRepository->findParentByFamilyCode($request->famCode);
+
+      if($parent) {
+        $responseData = [ 
+          'success' => true,
+          'msg' => '부모 매칭 성공',
+          'parent' => $parent,
+        ];
+
+        return response()->json($responseData, 200);
+      }
+    }
+
+    return response()->json([
+      'success' => false,
+      'error' => '부모 매칭 실패',
+    ], 500);
   }
 
   /**
@@ -378,35 +384,6 @@ class AuthController extends Controller {
   }
 
   /**
-   * 가족코드 부모 검사
-   * 
-   * @param Request $request
-   * 
-   * @return JSON $responseData
-   */
-  public function childRegistMatching(AuthRequest $request) {
-    // 가족코드가 입력됫고 제대로 8글자가 왔다면
-    if($request->famCode && (mb_strlen($request->famCode) === 8)) {
-      $parent = $this->authRepository->findParentByFamilyCode($request->famCode);
-
-      if($parent) {
-        $responseData = [ 
-          'success' => true,
-          'msg' => '부모 매칭 성공',
-          'parent' => $parent,
-        ];
-
-        return response()->json($responseData, 200);
-      }
-    }
-
-    return response()->json([
-      'success' => false,
-      'error' => [ 'famCode' => ['0' => '존재하지 않는 코드입니다.']],
-    ], 422);
-  }
-
-  /**
    * 부모 정보 조회
    * 
    * @return JSON $responseData
@@ -460,15 +437,47 @@ class AuthController extends Controller {
   }
 
   /**
-   * 회원 정보 수정
+   * 본인 확인 처리
    * 
-   * @param AuthRequest $request
+   * @param AuthenticationRequest $request
    * 
    * @return JSON $responseData
    */
-  public function modifyUser(AuthRequest $request) {
+  public function identUser(AuthenticationRequest $request) {
+    if(empty($request->all()) || $request->missing('password')) {
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      
+      // 비밀번호 확인 로직
+      $user = Auth::guard('parents')->user() ?? Auth::guard('children')->user();
+
+      if($user && Hash::check($request->password, $user->password)) {
+        return response()->json([
+          'success' => true,
+          'msg' => '비밀번호 확인 성공',
+        ], 200);
+      }else {
+        return response()->json([
+          'success' => false,
+          'error' =>  [ 'password' => ['0' => '비밀번호가 일치하지 않습니다.']],
+        ], 422);
+      }
+    }
+  }
+
+  /**
+   * 회원 정보 수정
+   * 
+   * @param AuthenticationRequest $request
+   * 
+   * @return JSON $responseData
+   */
+  public function modifyUser(AuthenticationRequest $request) {
     if(empty($request->all()) || // 요청값이 아무것도 없거나
-      $request->missing(['password', 'passwordChk', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+      $request->missing(['password', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
     ) { 
       return response()->json([
         'success' => false,
@@ -488,17 +497,23 @@ class AuthController extends Controller {
         // 업데이트 데이터 초기화
         $updateData = [];
   
-        // 루프를 돌려 값이 바뀐것만 세팅
+        // 필수 정보들을 루프를 돌려 값이 바뀐것만 세팅
         foreach(['name', 'email', 'tel'] as $field) {
           if($request->$field !== $user->$field) {
             $updateData[$field] = $request->$field;
           }
         }
+
+        // 비밀번호 변경이 들어왔으면
+        if($request->newPassword) {
+          // 새 비밀번호를 해시화
+          $updateData['password'] = Hash::make($request->newPassword);
+        }
   
         // 닉네임이 들어왔고 들어온 닉네임이 기존에 있는 닉네임과 같지 않다면 세팅
-        if($request->nick_name && $request->nick_name !== $user->nick_name) {
-          $updateData['nick_name'] = $request->nick_name;
-        }
+        // if($request->nick_name && $request->nick_name !== $user->nick_name) {
+        //   $updateData['nick_name'] = $request->nick_name;
+        // }
         
         // 이미지가 새로 들어왔다면
         if($request->profile) {

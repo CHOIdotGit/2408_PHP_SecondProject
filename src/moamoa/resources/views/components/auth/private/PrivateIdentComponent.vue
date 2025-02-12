@@ -4,6 +4,9 @@
     <div class="ident-main-box">
       <h2>본인확인</h2>
 
+      <p v-if="errMsg.common" class="err-msg">
+        {{ errMsg.common }}
+      </p>
       <div class="ident-main-content">
         <div class="ident-item-title">
           <div>
@@ -18,12 +21,14 @@
   
         <div class="ident-item-content">
           <div>
-            <p>user1234</p>
+            <p>{{ userInfo.account }}</p>
           </div>
 
           <div>
-            <input type="password" name="password" id="password" autocomplete="off" required>
-            <!-- <p class="ann-msg">권장 비밀번호</p> -->
+            <input v-model="identInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
+            <p v-if="errMsg.password" class="err-msg">
+              {{ errMsg.password }}
+            </p>
           </div>
         </div>
       </div>
@@ -34,7 +39,7 @@
         <p>* 회원님의 개인정보는 본인 동의 없이 절대 공개되지 않습니다.</p>
 
         <div class="ident-footer-btn">
-          <button type="button">확인</button>
+          <button @click="identBtn" type="button">확인</button>
         </div>
       </div>
     </div>
@@ -42,14 +47,42 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount } from 'vue';
-import { useStore } from 'vuex'
+import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
   const store = useStore();
+  const route = useRoute();
+
+  // 유저 정보 ---------------------------------------------------------------------------------------------
+  const userInfo = computed(() => store.state.auth.parentFlg ? store.state.auth.parentInfo : store.state.auth.childInfo);
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);
   
+  // 유형 정보 ---------------------------------------------------------------------------------------------
+  const identType = ref(route.path.split('/').pop()) ;
+  const userType = ref(route.path.split('/')[1]);
+
+  // 패스워드 정보 ---------------------------------------------------------------------------------------------
+  const identInfo = reactive({
+    password: '',
+    identType: identType,
+    userType: userType
+  });
+
+
+  // 본인 확인 처리 ---------------------------------------------------------------------------------------------
+  const identBtn = () => {
+    // 에러 정보 리셋
+    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+      store.commit('auth/resetErrMsg');
+    }
+
+    // 본인확인 실행
+    store.dispatch('auth/identUser', identInfo);
+  }
+
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
   onBeforeMount(() => {
@@ -57,6 +90,9 @@ import { useStore } from 'vuex'
     if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
+
+    // 유저 정보 로드
+    store.dispatch(store.state.auth.parentFlg ? 'auth/parentInfo' : 'auth/childInfo' );
   });
   
 </script>
@@ -105,6 +141,13 @@ import { useStore } from 'vuex'
   .ident-main-box > h2 {
     font-size: 2rem;
     margin-bottom: 30px;
+  }
+
+  .ident-main-box > p {
+    width: 100%;
+    text-align: left;
+    font-size: 0.8rem;
+    padding: 5px;
   }
 
   /* 입력 문단 셀나눔 */
