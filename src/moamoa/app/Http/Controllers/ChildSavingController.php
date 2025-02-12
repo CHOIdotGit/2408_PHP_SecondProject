@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SavingDetail;
+use App\Models\SavingProduct;
 use App\Models\SavingSignUp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,5 +56,36 @@ class ChildSavingController extends Controller
             // , 'childTest' => $childTest
         ];
         return response()->json($responseData, 200);
+    }
+
+    // 자녀 적금 통상 상세
+    public function show($id) {
+            // 로그인 유저가 자녀인지 확인
+            // $child = Auth::guard('children')->user();
+            $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
+                                            ,'saving_sign_ups.saving_sign_up_start_at'
+                                            ,'saving_sign_ups.saving_sign_up_satus'
+                                            ,'saving_sign_ups.created_at'
+                                            ,'saving_sign_ups.saving_sign_up_satus'
+                                            ,'saving_products.saving_product_name'
+                                            ,'saving_products.saving_product_interest_rate'
+                                            ,'saving_products.saving_product_type'
+                                            ,'saving_details.saving_detail_left'
+                                            ,'saving_details.saving_detail_income'
+                                            ,'saving_details.saving_detail_outcome'
+                                            ,'saving_details.created_at'
+                                            ,'saving_details.saving_detail_category'
+                                            )
+                                    ->join('saving_sign_ups.sign_up_id', '=', 'saving_details.saving_detail_id')
+                                    ->join('saving_sign_ups.product_id', '=', 'saving_products.saving_product_id')
+                                    ->whereNull('saving_sign_ups.deleted_at')
+                                    ->get();
+
+            $responseData = [
+                'success' => true
+                , 'msg' => '통장 내역 획득 성공'
+                ,'bankBook' => $bankBook
+            ];
+            return response()->json($responseData, 200);
     }
 }

@@ -478,7 +478,7 @@ const routes = [
     {
         path: '/child/bankbook',
         component: ChildBankBookComponent,
-        
+        beforeEnter: chkAuth,
     },
 
     // +==================================+

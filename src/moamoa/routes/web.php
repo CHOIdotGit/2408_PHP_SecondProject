@@ -213,6 +213,9 @@ Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class,
 // 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
 
+// 자녀 적금 통장 상세
+Route::get('/api/child/moabank/bankbook/{id}', [ChildSavingController::class, 'show']);
+
 // 이건 마지막 위치
 Route::get('/{any}', function () {
     return view('welcome');

@@ -18,7 +18,7 @@
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
-            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail">
+            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail(saving_sign_up_id)">
                 
                     <p class="have-point">모아 적금통장</p>
                     <p class="have-moa">{{ item.saving_product_name }} 적금</p>
