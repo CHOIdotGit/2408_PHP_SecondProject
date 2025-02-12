@@ -42,7 +42,8 @@
 </template>
 
 <script setup>
-  import { useStore } from 'vuex'
+import { computed, onBeforeMount } from 'vue';
+import { useStore } from 'vuex'
 
   const store = useStore();
 
