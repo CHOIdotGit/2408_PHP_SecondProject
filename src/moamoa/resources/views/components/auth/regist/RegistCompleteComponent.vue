@@ -75,10 +75,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import { useStore } from 'vuex'
 
-  const store = useStore()
-  const route = useRoute()
+  const route = useRoute();
 
   // 부모 or 자녀 ---------------------------------------------------------------------------------------------
   const userType = ref(route.path.split('/').pop());
@@ -151,7 +149,6 @@ import { useStore } from 'vuex'
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    margin-top: 50px;
     padding: 15px 20px;
   }
 

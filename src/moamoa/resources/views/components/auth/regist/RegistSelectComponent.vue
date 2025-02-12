@@ -74,10 +74,8 @@
   </div>
 </template>
 
-<script>
-  // import { useStore } from 'vuex';
-
-  // const store = useStore();
+<script setup>
+  //
 </script>
 
 <style scoped>
@@ -104,7 +102,6 @@
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    margin-top: 50px;
     padding: 15px 20px;
   }
 
