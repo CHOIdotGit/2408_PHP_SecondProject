@@ -134,8 +134,8 @@ export default {
                 context.commit('setChildMissionList', response.data.childMissionList.data);
 
                 // 세션 스토리지에 자녀ID 세팅
-                sessionStorage.setItem('child_id', searchData.child_id);
-                context.commit('setChildId', searchData.child_id);
+                // sessionStorage.setItem('child_id', searchData.child_id);
+                // context.commit('setChildId', searchData.child_id);
         
                 // pagination 정보를 개별적으로 commit
                 context.commit('setPagination', {

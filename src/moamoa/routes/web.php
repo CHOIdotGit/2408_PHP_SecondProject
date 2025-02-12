@@ -216,7 +216,7 @@ Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
 Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 
 // 자녀 적금 통장 상세
-Route::get('/api/child/moabank/bankbook/{id}', [ChildSavingController::class, 'show']);
+Route::get('/api/child/moabank/bankbook/{bankbook_id}', [ChildSavingController::class, 'show']);
 
 // 이건 마지막 위치
 Route::get('/{any}', function () {

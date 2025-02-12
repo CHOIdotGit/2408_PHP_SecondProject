@@ -5,15 +5,24 @@ export default {
     namespaced:true,
 
     state: ()=> ({
-        childSavingList: []
+        childSavingList: [] // 가입 통장 리스트
+        ,savingDetail: [] // 자녀 통장 내역
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
+        ,bankbookId: sessionStorage.getItem('bankbook_id') ? sessionStorage.getItem('bankbook_id') : null
+        
     }),
 
     mutations: {
         setChildSavingList(state, childSavingList) {
             state.childSavingList = childSavingList
-        }
+        },
+        setSavingDetail(state, savingDetail) {
+            state.savingDetail = savingDetail
+        },
+        setBankBookId(state, bankbookId) {
+            state.bankbookId = bankbookId
+        },
     },
 
     actions: {
@@ -29,7 +38,25 @@ export default {
                 .catch(error => {
                     console.error('자녀 적금 리스트 불러오기 실패', error);
                 })
+        },
+
+        // 자녀 통장 내역
+        childSavingDetail(context, bankbook_id) {
+            const url = '/api/child/moabank/bankbook/'+ bankbook_id;
+            console.log(url);
+
+            axios.get(url)
+                .then(response => {
+                    sessionStorage.setItem('bankbook_id', bankbook_id);
+                    context.commit('setBankBookId', bankbook_id);
+                    context.commit('setSavingDetail', response.data.bankBook);
+                    console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
+                })
+                .catch(error => {
+                    console.error('자녀 통장 내역 불러오기 실패', error);
+                });
         }
+
     },
 
     getters: {

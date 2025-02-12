@@ -503,7 +503,7 @@ const routes = [
     
     // 자녀 통장 페이지
     {
-        path: '/child/bankbook',
+        path: '/child/bankbook/:bankbook_id',
         component: ChildBankBookComponent,
         beforeEnter: chkAuth,
     },

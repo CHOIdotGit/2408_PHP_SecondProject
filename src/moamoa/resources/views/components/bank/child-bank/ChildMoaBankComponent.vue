@@ -18,10 +18,10 @@
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
-            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail(saving_sign_up_id)">
+            <div class="div-box" v-for="item in savingList" :key="item" @click="goSavingDetail(item.saving_sign_up_id)">
                 
                     <p class="have-point">모아 적금통장</p>
-                    <p class="have-moa">{{ item.saving_product_name }} 적금</p>
+                    <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
                     <div class="div-box-item">
                         <p >잔액</p>
                         <div>{{ item.total }}moa</div>
@@ -50,9 +50,11 @@
 
 <script setup>
 import { computed, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-const store = useStore();
 
+const store = useStore();
+const router = useRouter();
 // const childPoint = computed(() => store.state.childPoint.childPoint);
 const totalPoints = computed(() => store.state.childPoint.totalPoints);
 console.log('totalPoints 확인 : ', totalPoints)
@@ -66,9 +68,15 @@ onMounted(() => {
     store.dispatch('childPoint/childPoint');
     store.dispatch('bank/koreaBank');
     store.dispatch('saving/childSaving');
-    store.dispatch('saving/childSaving');
 });
 
+// 자녀 통장 페이지로 이동
+const goSavingDetail = (saving_sign_up_id) => {
+    const bankbook_id = saving_sign_up_id;
+    store.dispatch('saving/childSavingDetail', bankbook_id);
+    router.push('/child/bankbook/' + bankbook_id);
+    console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
+}
 
 
 
@@ -141,6 +149,11 @@ onMounted(() => {
     text-align: center;
     background: #c9e6d7;
     border-radius: 30px;
+    cursor: pointer;
+}
+
+.div-box:hover {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .have-point {
