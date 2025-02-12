@@ -10,7 +10,7 @@ export default {
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,bankbookId: sessionStorage.getItem('bankbook_id') ? sessionStorage.getItem('bankbook_id') : null
-        
+        ,savingInfo:[] // 자녀 통장 정보
     }),
 
     mutations: {
@@ -23,6 +23,9 @@ export default {
         setBankBookId(state, bankbookId) {
             state.bankbookId = bankbookId
         },
+        setSavingInfo(state, savingInfo) {
+            state.savingInfo = savingInfo
+        }
     },
 
     actions: {
@@ -50,6 +53,7 @@ export default {
                     sessionStorage.setItem('bankbook_id', bankbook_id);
                     context.commit('setBankBookId', bankbook_id);
                     context.commit('setSavingDetail', response.data.bankBook);
+                    context.commit('setSavingInfo', response.data.bankBookInfo);
                     console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
                 })
                 .catch(error => {

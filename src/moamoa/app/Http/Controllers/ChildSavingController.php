@@ -71,10 +71,6 @@ class ChildSavingController extends Controller
 
             // 자녀 적금 통장 내역
             $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
-                                            ,'saving_sign_ups.saving_sign_up_id'
-                                            ,'saving_sign_ups.saving_sign_up_start_at'
-                                            ,'saving_sign_ups.saving_sign_up_status'
-                                            ,'saving_sign_ups.created_at'
                                             ,'saving_products.saving_product_name'
                                             ,'saving_products.saving_product_interest_rate'
                                             ,'saving_products.saving_product_type'
@@ -91,13 +87,13 @@ class ChildSavingController extends Controller
                                     ->whereNull('saving_sign_ups.deleted_at')
                                     ->get();
             // 자녀가 가입한 통장 정보
-            // $bankBookInfo = SavingSignUp::select('saving_sign_ups.child_id'
-            //                                     ,'saving_sign_ups.saving_sign_up_start_at'
-            //                                     ,'saving_sign_ups.saving_sign_up_status'
-            //                                     ,'saving_sign_ups.created_at'
-            //                                     )
-            //                             ->where('child_id', $child->child_id)
-            //                             ->get();
+            $bankBookInfo = SavingSignUp::select('saving_sign_ups.child_id'
+                                                ,'saving_sign_ups.saving_sign_up_start_at'
+                                                ,'saving_sign_ups.saving_sign_up_status'
+                                                ,'saving_sign_ups.created_at'
+                                                )
+                                        ->where('child_id', $child->child_id)
+                                        ->get();
 
             // $bankBook = SavingDetail::select('saving_details.saving_detail_left'
             //                                 ,'saving_details.saving_detail_income'
@@ -112,7 +108,7 @@ class ChildSavingController extends Controller
                 'success' => true
                 , 'msg' => '통장 내역 획득 성공'
                 ,'bankBook' => $bankBook
-                // ,'bankBookInfo' => $bankBookInfo
+                ,'bankBookInfo' => $bankBookInfo
                 // ,'bankBook' => $bankBook
 
             ];

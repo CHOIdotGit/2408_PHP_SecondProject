@@ -6,11 +6,11 @@
             <p class="bank-name">모아은행</p>
         </div>
         <!-- 통장정보 -->
-        <div class="bankbook-info">
+        <div class="bankbook-info" v-if="savingDetail">
             <div class="info-detail">
                 <div class="b-info">
                     <p class="p-first">통장 종류</p>
-                    <p>모아 통장</p>
+                    <p>{{ savingDetail.saving_product_name }} 적금</p>
                 </div>
                 <div class="b-info">
                         <p class="margin-left p-first">나의 모아</p>
@@ -52,7 +52,7 @@
                         <p>{{ item.saving_detail_outcome }}</p>
                         <p>{{ item.saving_detail_income }}</p>
                         <p>{{ item.saving_detail_left }}</p>
-                        <p>{{ item.saving_detail_category }}</p>
+                        <p>{{ getCategoryText(item.saving_detail_category) }}</p>
                     </div>
                 </div>
 
@@ -85,6 +85,15 @@ const formatDate = (date) =>  {
     const day = new Date(date);
     return day.toISOString().split('T')[0];
 }
+
+// 카테고리 문자로 변환
+const getCategoryText = (saving_detail_category) => {
+    const categoryMapping = {
+        "0": '입금',
+        "1": '이자',
+    };
+    return categoryMapping[saving_detail_category]; // 기본값 없이 반환
+};
 
 
 </script>
