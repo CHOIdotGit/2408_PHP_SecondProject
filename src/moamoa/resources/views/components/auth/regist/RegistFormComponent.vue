@@ -13,6 +13,7 @@
         정보입력&nbsp;및&nbsp;본인확인
       </div>
 
+      <!-- 프로필 영역 DIV -->
       <div class="regist-main-profile">
         <label for="file">
           <div class="regist-profile-preview">
@@ -226,7 +227,7 @@
 <script setup>
 import EmailAuthModalComponent from '../../modal/EmailAuthModalComponent.vue';
 import MatchingModalComponent from '../../modal/MatchingModalComponent.vue';
-import { computed, onBeforeMount, reactive, ref } from 'vue';
+import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -453,9 +454,21 @@ import { useRoute } from 'vue-router';
   });
 
   // 새로고침 시 물어보는 이벤트
-  window.addEventListener('beforeunload', (e) => {
-    e.preventDefault();
-  });
+  // onMounted(() => {
+  //   if(route.path === '/regist/parent' || route.path === '/regist/child') {
+  //     window.addEventListener('beforeunload', (e) => {
+  //       e.preventDefault();
+  //     });
+  //   }
+  // });
+
+  // onBeforeUnmount(() => {
+  //   if(route.path === '/regist/parent' || route.path === '/regist/child') {
+  //     window.removeEventListener('beforeunload', (e) => {
+  //       e.preventDefault();
+  //     });
+  //   }
+  // });
 
 </script>
 
@@ -515,7 +528,6 @@ import { useRoute } from 'vue-router';
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    margin-top: 50px;
     padding: 15px 20px;
   }
 
@@ -549,6 +561,7 @@ import { useRoute } from 'vue-router';
     justify-content: center;
     align-items: center;
     margin-top: 10px;
+    background-color: #EFF6FF;
   }
 
   /* 이미지 채움 */
@@ -577,6 +590,8 @@ import { useRoute } from 'vue-router';
   .regist-main-profile + p {
     font-size: 0.8rem;
     font-weight: 500;
+    text-align: left;
+    width: 100%;
   }
 
   /* 안내사항 별 */
@@ -728,7 +743,7 @@ import { useRoute } from 'vue-router';
     color: #fff;
     font-size: 1.2rem;
   }
-
+  /* 버튼 호버 */
   .btn-submit:hover {
     background-color: #2563EB;
   }

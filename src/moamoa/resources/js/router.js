@@ -41,6 +41,8 @@ import RegistAgreeComponent from '../views/components/auth/regist/RegistAgreeCom
 import RegistSelectComponent from '../views/components/auth/regist/RegistSelectComponent.vue';
 import RegistCompleteComponent from '../views/components/auth/regist/RegistCompleteComponent.vue';
 import ChildBankProductDetailComponent from '../views/components/bank/child-bank/ChildBankProductDetailComponent.vue';
+import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
+import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
 
 const chkAuth = (to, from, next) => {
     
@@ -107,6 +109,7 @@ const routes = [
     {
         path: '/regist',
         children: [
+
             // 사용자 계약 동의
             {
                 path: 'agree',
@@ -121,6 +124,7 @@ const routes = [
                     }
                 },
             },
+
             // 회원 유형 선택
             {
                 path: 'select',
@@ -142,6 +146,7 @@ const routes = [
                     }
                 },
             },
+
             // 회원가입 폼
             {
                 path: ':type(parent|child)',
@@ -164,6 +169,7 @@ const routes = [
                     }
                 },
             },
+
             // 가입완료
             {
                 path: 'complete/:type(parent|child)',
@@ -186,7 +192,28 @@ const routes = [
                     }
                 },
             },
-        ] , 
+        ], 
+    },
+
+    // 공용 개인정보 그룹
+    {
+        path: '/:type(parent|child)/private',
+        children: [
+
+            // 본인 확인 페이지
+            {
+                path: 'ident',
+                component: PrivateIdentComponent,
+                // beforeEnter: chkAuth,
+            },
+
+            // 개인정보 수정 페이지
+            {
+                path: 'edit',
+                component: PrivateEditComponent,
+                // beforeEnter: chkAuth,
+            },
+        ],
     },
 
     // --------------------------- V001 del start -----------------------------
@@ -220,6 +247,18 @@ const routes = [
     //     component: CompleteRegistComponent,
     //     beforeEnter: chkAuth,
     // },
+    // 부모 회원 정보 수정 페이지
+    // {
+    //     path: '/parent/private/edit',
+    //     component: FamilyPrivateEditComponent,
+    //     beforeEnter: chkAuth,
+    // },
+    // 자녀 회원 수정 페이지
+    // {
+    //     path: '/child/private/edit',
+    //     component: FamilyPrivateEditComponent,
+    //     beforeEnter: chkAuth,
+    // },
     // --------------------------- V001 del end -----------------------------
 
     // 부모 페이지 모음 *********************************** //
@@ -233,12 +272,6 @@ const routes = [
     {
         path: '/parent/family/info',
         component: ParentPrivateFamCodeComponent,
-        beforeEnter: chkAuth,
-    },
-    // 부모 회원 정보 수정 페이지
-    {
-        path: '/parent/private/edit',
-        component: FamilyPrivateEditComponent,
         beforeEnter: chkAuth,
     },
     // 부모 회원 탈퇴 페이지
@@ -349,12 +382,6 @@ const routes = [
         path: '/child/home',
         // component: ChildCalendarComponent,
         component: ChildHomeComponent,
-        beforeEnter: chkAuth,
-    },
-    // 자녀 회원 수정 페이지
-    {
-        path: '/child/private/edit',
-        component: FamilyPrivateEditComponent,
         beforeEnter: chkAuth,
     },
     // 자녀 회원 탈퇴 페이지

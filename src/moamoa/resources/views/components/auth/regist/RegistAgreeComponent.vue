@@ -756,7 +756,6 @@ import { useRouter } from 'vue-router';
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    margin-top: 50px;
     padding: 15px 20px;
   }
 
