@@ -89,14 +89,6 @@ Route::get('/api/parent/spend/detail/{id}', [TransactionController::class, 'show
 // 부모 통계 페이지
 Route::get('/api/parent/stats/{child_id}', [StatsController::class, 'index']);
 
-// 부모 은행 페이지
-Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
-
-// 부모 자녀 적금 페이지
-// Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
-
-// 부모 자녀 포인트 페이지
-Route::get('/api/parent/point/{id}', [ParentPointController::class, 'index']);
 
 
 
@@ -142,8 +134,6 @@ Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenContro
 // 자녀 지출 수정 페이지
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
 
-// 자녀 포인트-은행 페이지
-Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 
 // ******************************
 // *         검색 관련           *
@@ -194,12 +184,12 @@ Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);
 // 한국은행 open api 
 Route::get('/api/koreabank', [BankController::class, 'koreaBank']);
 
-// 적금 상품 가입
-Route::get('/api/moabank/product/{id}', [BankController::class, 'product']);
+// 적금 상품 페이지
+Route::get('/api/moabank/product', [BankController::class, 'savingList']);
 
-// 적금 상품
-Route::get('/api/moabank/product', [BankController::class, 'show']);
-// Route::get('/api/moabank/product', [BankController::class, 'savingList']);
+// 적금 상품 상세
+Route::get('/api/moabank/product/detail/{id}', [BankController::class, 'product']);
+
 
 // ******************************
 // *      부모 은행 관련         *
@@ -207,11 +197,23 @@ Route::get('/api/moabank/product', [BankController::class, 'show']);
 // 부모 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class, 'index']);
 
+// 부모 은행 페이지
+Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
+
+// 부모 자녀 적금 페이지
+// Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
+
+// 부모 자녀 포인트 페이지
+Route::get('/api/parent/point/{id}', [ParentPointController::class, 'index']);
+
 // ******************************
 // *      자녀 은행 관련         *
 // ******************************
 // 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
+
+// 자녀 포인트-은행 페이지
+Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 
 // 자녀 적금 통장 상세
 Route::get('/api/child/moabank/bankbook/{id}', [ChildSavingController::class, 'show']);

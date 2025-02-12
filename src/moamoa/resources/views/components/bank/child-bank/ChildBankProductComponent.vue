@@ -1,15 +1,25 @@
 <template>
     <div class="bank-product-container">
-        <!-- 컴포넌트 따로 만들기 -->
         <div class="savings-product">
             <div class="outline">
                 <h1>모아은행 적금 상품</h1>
-                <div>
-                    <div class="products" v-for="item in savingProduct" :key="item">
-                        <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
-                        <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
-                        <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
-                    </div>
+                <div class="div-products">
+                    <!-- <div v-if="" class="every-day-product"> -->
+                        <!-- <p>매일 적금</p> -->
+                        <div class="products" v-for="item in savingProduct" :key="item">
+                            <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                            <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                            <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
+                        </div>
+                    <!-- </div> -->
+                    <!-- <div v-else class="every-weekend-product">
+                        <p>매주 적금</p>
+                        <div class="products" v-for="item in savingProduct" :key="item">
+                            <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                            <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
+                            <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
+                        </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -20,11 +30,12 @@
 <script setup>
 
 import { computed, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 
 // 적금 상품 가져오기
 const savingProduct = computed(()=> store.state.bank.savingList);
@@ -145,7 +156,7 @@ img {
 
 /* 적금 상품들 */
 .savings-product {
-    margin: 50px 0 50px 75px;
+    
 
 }
 
@@ -166,16 +177,6 @@ img {
 
 .div-products {
     display: flex;
-    min-width: 1400px;
-    overflow-x: auto;
-    overflow: hidden;
-    /* grid-template-columns: repeat(5, 1fr); */
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    gap: 75px;
-    padding-bottom: 20px;
-    /* overflow-x: auto; */
 }
 
 .products {
@@ -189,6 +190,7 @@ img {
 
 .product-title {
     font-size: 1.5rem;
+    cursor: pointer;
 }
 
 .rate-percent {

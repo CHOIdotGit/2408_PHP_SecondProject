@@ -33,6 +33,7 @@
                 </div>
             </div>
             <div class="bank-box-bottom">
+                <!-- <div @click="router.push('/moabank/product/regist/'+ saving_product_id)" class="box-btn">가입하기</div> -->
                 <div class="box-btn">가입하기</div>
                 <p>※ 자세한 내용은 아래 상품안내를 참조하시기 바랍니다.</p>
 
@@ -54,7 +55,21 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
+const store = useStore();
+const route = useRoute();
+const router = useRouter();
+
+// 적금 상품 가져오기
+const selectedProduct = computed(()=> store.state.bank.pointInfo);
+const savingProductId = computed(() => store.state.bank.pointInfo.saving_product_id);
+onMounted(() => {
+    store.dispatch('bank/koreaBank');
+    store.dispatch('bank/selectedProduct', { id: savingProductId });
+});
 </script>
 
 

@@ -462,14 +462,14 @@ const routes = [
 
     // 적금 상품 몰 상세 페이지
     {
-        path: '/moabank/product/detail',
+        path: '/moabank/product/detail/:id',
         component: ChildBankProductDetailComponent,
         beforeEnter: chkAuth,
     },
 
     // 적금 상품 가입 페이지
     {
-        path: '/moabank/product/regist',
+        path: '/moabank/product/regist/:id',
         component: ChildBankProductRegisterComponent,
         beforeEnter: chkAuth,
     },

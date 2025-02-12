@@ -12,6 +12,7 @@ export default {
         ,point: 0 // 보유중인 모아 포인트
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
+        ,productInfo: []
 
     }),
     mutations: {
@@ -39,6 +40,9 @@ export default {
         setPoint(state, point) {
             state.point = point;
         },
+        setProductInfo(state, productInfo) {
+            state.productInfo = productInfo;
+        }
     },
     actions: {
         // 한국은행 기준금리 api
@@ -63,7 +67,7 @@ export default {
             console.log(url);
             axios.get(url)
             .then(response => {
-                console.log(response.data.savingList.data);
+                console.log('savingList', response.data.savingList.data);
                 context.commit('setSavingList', response.data.savingList.data);
             })
             .catch(error => {
@@ -86,7 +90,7 @@ export default {
             context.dispatch('savingProductList');
         },
 
-        // 가입한 적금 상품 개수
+        // 가입한 적금 상품 개수와 포인트
         signProductCount(context, child_id) {
             const url = '/api/parent/moabank/'+ child_id;
 
@@ -97,14 +101,26 @@ export default {
                     console.log('상품 개수와 포인트 확인 : ', response.data);
                     console.log('자녀 : ', child_id);
 
-                    // 세션 스토리지에 자녀ID 세팅
-                    sessionStorage.setItem('child_id', child_id);
-                    context.commit('setChildId', child_id);
                 })
                 .catch(error => {
                     console.log('가입한 적금 상품 개수 불러오기 오류', error);
                 });
             
+        },
+
+        // id로 받아온 적금 상품
+        selectedProduct(context, id) {
+            // const url = '/moabank/product/detail'+ saving_product_id;
+            const url = `/moabank/product/detail/${id}`;
+
+            axios.get(url)
+                .then(response => {
+                    context.commit('setProductInfo', response.data.productInfo);
+                    console.log('setProductInfo 확인', response.data.productInfo);
+                }) 
+                .catch(error => {
+                    console.log('해당 적금 상품을 불러올 수 없습니다', error);
+                }) 
         }
     },
     getters: {

@@ -3,7 +3,7 @@
     여기는 모바일
 
 </div>
-<div class="container" v-else>
+<div class="div-container" v-else>
     <div class="list-container">
         <div class="route"> 홈  > 지출 </div>
         <div class="top-btn">
@@ -240,10 +240,10 @@ const search = (childId) => {
 <style scoped>
 @import url('../../../../css/list.css');
 
-.container {
+.div-container {
     /* margin-left: 50px; */
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     /* padding-bottom: 40px; */
 }

@@ -45,7 +45,7 @@ class BankController extends Controller
     
     // ******** 적금 상품 받아오기 ********
     public function savingList() {
-        $savingList = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_amount', 'saving_product_interest_rate')
+        $savingList = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
                                     ->paginate(7);
 
         $responseData = [
@@ -56,41 +56,59 @@ class BankController extends Controller
         return response()->json($responseData, 200);
     }
 
-    // 가입한 적금 상품 개수 확인
+    // 가입한 적금 상품 개수와 포인트 확인 - 부모 페이지
     public function index($id) {
         $productCount = SavingSignUp::where('child_id', $id)->count();
 
-        // $point = Point::where('child_id', $id)->where('point_code', '!=', 3)->sum('point');
+        $point = Point::where('child_id', $id)->where('point_code', '!=', 3)->sum('point');
 
         // $signUpProduct = SavingSignUp::where('child_id', $id)
         //                                 ->with('saving_products')
         // SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_interest_rate')->get();
 
+        // 가입한 적금 상품 상세 정보 불러오기
+        // $productInfo = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
+        $productInfo = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_product_id', 'saving_sign_ups.child_id', 'saving_products.saving_product_id'
+                                            , 'saving_products.saving_product_name', 'saving_products.saving_product_period', 'saving_products.saving_product_amount'
+                                            , 'saving_products.saving_product_interest_rate', 'saving_products.saving_product_type')
+                                    ->where('saving_sign_ups.child_id', $id)
+                                    ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+                                    ->get();
+
         $responseData = [
             'success' => true
-            ,'msg' => '적금 상품 개수 확인 성공'    
+            ,'msg' => '적금 상품 개수와 포인트, 가입한 적금 상품 상세 정보 불러오기 성공'    
             ,'productCount' => $productCount
-            // ,'point' => $point
-            // ,'signUpProduct' => $signUpProduct
+            ,'point' => $point
+            ,'productInfo' => $productInfo
         ];
         return response()->json($responseData, 200);
     }
 
-    public function saveBaseRateToDb() {
-        // 기준금리 가져오기
-        $baseRate = $this->koreaBank();  
+    
+    public function product($id) {
+        
+        $productInfo =  SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
+                                        ->where('saving_product_id', $id)
+                                        ->get();
+        
 
-        // 기준금리가 유효하지 않으면 오류 처리
-        if (is_string($baseRate)) {
-            return response()->json(['error' => $baseRate], 400);
-        }
+        $responseData = [
+            'success' => true
+            ,'msg' => '가입한 적금 상품 상세 정보 불러오기 성공'    
+            ,'productInfo' => $productInfo
+            // ,'signUpProduct' => $signUpProduct
+        ];
 
-        // 모든 금리 데이터를 한 번에 업데이트
-        SavingProduct::query()->update([
-            'rate' => $baseRate,
-        ]);
-
-        return response()->json(['success' => '모든 기준금리가 업데이트되었습니다.']);
+        return response()->json($responseData, 200);
     }
+
+    // public function () {
+    //     // 기준금리 가져오기
+    //     $baseRate = $this->koreaBank();  
+
+      
+
+    // }
 
 }

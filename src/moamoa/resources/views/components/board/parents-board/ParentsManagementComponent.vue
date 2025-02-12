@@ -135,7 +135,8 @@ onBeforeMount(async () => {
 
 /* 메인 화면 */
 .d-flex {
-    width: 1620px;
+    /* width: 1620px; */
+    width: 100%;
     height: 800px;
     display: flex;
     justify-content: center;

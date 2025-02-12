@@ -42,7 +42,7 @@
                     <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                     모아은행
                 </div>
-                <div class="saving-product">ㄴ 적금 상품</div> -->
+                멘토님 요청에 의한 페이지 분리 - 최상민 -->
                 <div class="menu-title go-bank" @click="goBankbook">
                         <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                         모아은행
@@ -219,6 +219,7 @@ button {
     background-color: #FFFFFF;
     border-radius: 50px;
     margin: 5px;
+    object-fit: cover;
 }
 
 .child-info {

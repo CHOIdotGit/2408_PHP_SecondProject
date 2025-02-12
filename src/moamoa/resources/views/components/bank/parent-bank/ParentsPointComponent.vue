@@ -54,11 +54,11 @@
                         <div class="main-content">
                             <div v-for="item in pointList" :key="item" class="bankbook-transactions"> 
                                 <p>{{ item.payment_at }}</p>
-                                <p v-if="item.point_code === '3'">{{ item.point }}</p>
+                                <p v-if="item.point_code === '3'" class="text-end">{{ item.point }}</p>
                                 <p v-else></p>
-                                <p v-if="['0', '1', '2', '4'].includes(item.point_code)">{{ item.point.toLocaleString() }}</p>
+                                <p v-if="['0', '1', '2', '4'].includes(item.point_code)" class="text-end">{{ item.point.toLocaleString() }}</p>
                                 <p v-else></p>
-                                <p>100
+                                <p class="text-end">100
                                     <!-- total -->
                                 </p>
                                 <p>{{ getCategoryText(item.point_code) }}</p>
@@ -249,7 +249,7 @@ onMounted(() => {
   /* 상단 헤더 */
   .bankbook-header {
     width: 100%;
-    height: 60px;
+    min-height: 60px;
     background-color: #e4eff4;
     display: flex;
     justify-content: center;
@@ -331,7 +331,7 @@ onMounted(() => {
   .bankbook-transactions > p {
     border-right: 1px solid black;
     border-bottom: 1px solid black;
-    height: 28.9px;
+    height: 29px;
     padding-top: 5px;
     font-size: 1.2rem;
   }
@@ -436,5 +436,9 @@ onMounted(() => {
 
 }
 
+.text-end {
+    text-align: end;
+    padding-right: 1px;
+}
 </style>
   

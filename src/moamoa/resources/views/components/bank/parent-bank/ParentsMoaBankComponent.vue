@@ -63,10 +63,10 @@ onMounted(() => {
     store.dispatch('bank/savingProductList');
 });
 
-const addSavingPage = () => {
-    console.log('적금상품 더보기');
-    store.dispatch('bank/addsavingList');
-}
+// const addSavingPage = () => {
+//     console.log('적금상품 더보기');
+//     store.dispatch('bank/addsavingList');
+// }
 
 // 가입한 적금 상품 개수 
 onBeforeMount(() => {
