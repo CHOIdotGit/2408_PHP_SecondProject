@@ -1,8 +1,13 @@
 <template>
   <!-- 배경 컨테이너 DIV -->
   <div class="ident-container">
+
+    <div v-if="identType === 'wdrl' && (userType === 'parent' && userInfo?.children?.length > 0)" class="empty-msg">
+      연결된 자녀들이 모두 회원 탈퇴를 진행해야 가능합니다.
+    </div>
+
     <!-- 메인 박스 DIV -->
-    <div class="ident-main-box">
+    <div v-else class="ident-main-box">
       <h2>본인확인</h2>
 
       <p v-if="errMsg.common" class="err-msg">
@@ -71,7 +76,7 @@ import { useRoute } from 'vue-router';
   const errMsg = computed(() => store.state.auth.errMsg);
   
   // 유형 정보 ---------------------------------------------------------------------------------------------
-  const identType = ref(route.path.split('/').pop()) ;
+  const identType = computed(() => route.path.split('/').pop());
   const userType = ref(route.path.split('/')[1]);
 
   // 패스워드 정보 ---------------------------------------------------------------------------------------------
@@ -149,7 +154,7 @@ import { useRoute } from 'vue-router';
 
   /* 본인확인 텍스트 */
   .ident-main-box > h2 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin-bottom: 30px;
   }
 
@@ -182,7 +187,7 @@ import { useRoute } from 'vue-router';
     justify-content: center;
     align-items: center;
     background-color: #F6F6F6;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   /* 입력 내용 부분 설정 */
@@ -190,13 +195,13 @@ import { useRoute } from 'vue-router';
     display: flex;
     flex-direction: column;
     justify-content: center;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
   .ident-item-content > div input {
     padding: 5px;
     margin-bottom: 5px;
-    width: 420px;
-    font-size: 1.2rem;
+    width: 440px;
+    font-size: 1.4rem;
     border: 1px solid #CCC;
   }
 
@@ -229,7 +234,7 @@ import { useRoute } from 'vue-router';
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   .ident-footer-btn > button:hover {
     background-color: #2563EB;
@@ -259,25 +264,16 @@ import { useRoute } from 'vue-router';
   input.pass-border:focus {
     border: none;
   }
-  
 
-
-  /* 문단들 간격설정 */
-  /* .ident-main-box > div {
+  .empty-msg {
+    width: 980px;
+    height: 860px;
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    width: 100%;
-    padding: 20px;
-  } */
-
-  /* 외곽선 설정 */
-  /* .ident-main-box > div:nth-child(2) {
-    border-top: 2.5px solid #cccccc;
+    align-items: center;
+    font-size: 1.8rem;
+    color: red;
+    padding-bottom: 90px;
   }
-  .ident-main-box > div:nth-child(3) {
-    border-top: 1.2px solid #ECECEC;
-    border-bottom: 1.2px solid #ECECEC;
-  } */
 
 </style>

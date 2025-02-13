@@ -41,7 +41,8 @@ class AuthenticationRequest extends FormRequest {
       // 회원수정 이라면
       }elseif($this->routeIs('auth.modify.user')) {
         $rules['account'] = ['nullable'];
-        $rules['password'][] = new CheckPasswordRule;
+        // $rules['password'][] = new CheckPasswordRule;
+        $rules['password'] = ['nullable'];
 
         // 둘중 하나라도 입력되면 필수사항
         if($this->filled('newPassword') || $this->filled('newPasswordChk')) {

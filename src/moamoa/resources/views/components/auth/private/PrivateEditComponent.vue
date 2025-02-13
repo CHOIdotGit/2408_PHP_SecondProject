@@ -35,10 +35,10 @@
             아이디
             <!-- <span>*</span> -->
           </label>
-          <label for="password">
+          <!-- <label for="password">
             현재 비밀번호
             <span>*</span>
-          </label>
+          </label> -->
           <label for="passwordChk">
             새 비밀번호
             <!-- <span>*</span> -->
@@ -69,12 +69,12 @@
           </div>
 
           <!-- 현재 비밀번호 입력 DIV -->
-          <div>
+          <!-- <div>
             <input v-model="editInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
             <p v-if="errMsg.password" class="err-msg">
               {{ errMsg.password }}
             </p>
-          </div>
+          </div> -->
 
           <!-- 새 비밀번호 확인 입력 DIV -->
           <div>
@@ -170,7 +170,7 @@ import { useRoute } from 'vue-router';
 
   // 수정 정보 ---------------------------------------------------------------------------------------------
   const editInfo = reactive({
-    password: '',
+    // password: '',
     newPassword: null,
     newPasswordChk: null,
     name: '',
@@ -383,7 +383,7 @@ import { useRoute } from 'vue-router';
 
     /* 필수입력 안내사항 */
     .edit-main-profile + p {
-      font-size: 0.8rem;
+      font-size: 0.95rem;
       font-weight: 500;
       text-align: left;
       width: 100%;
@@ -423,7 +423,7 @@ import { useRoute } from 'vue-router';
   /* 제목 내용 크기 조정 */
   .edit-item-title > label, .edit-item-content > div {
     width: 100%;
-    height: 68px;
+    height: 75px;
     border-top: 1.2px solid #ECECEC;
   }
   /* 제목 섹션 위치 조정 */
@@ -431,27 +431,27 @@ import { useRoute } from 'vue-router';
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     background-color: #F6F6F6;
   }
 
   /* 내용 섹션 위치 조정 */
   .edit-item-content > div:not(:first-child) {
-    padding: 17px 0 0 10px;
+    padding: 17px 0 0 14px;
   }
   /* 아이디 내용 */
   .edit-item-content > div:first-child {
     display: flex;
     align-items: center;
     font-size: 1.4rem;
-    padding-left: 12px;
+    padding-left: 16px;
     color: #5a5a5a;
   }
   /* 내용 안의 인풋들 */
   .edit-item-content > div input {
     padding: 5px;
-    font-size: 0.9rem;
-    width: 280px;
+    font-size: 1.2rem;
+    width: 330px;
   }
 
   /* ------------------------------------------------------------------------ */
@@ -471,7 +471,7 @@ import { useRoute } from 'vue-router';
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   /* 버튼 호버 */
   .btn-submit:hover {
@@ -482,7 +482,7 @@ import { useRoute } from 'vue-router';
 
   /* 안내사항 및 에러 메시지 */
   .ann-msg, .err-msg, .pass-msg {
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     padding-top: 3.5px;
   }
 

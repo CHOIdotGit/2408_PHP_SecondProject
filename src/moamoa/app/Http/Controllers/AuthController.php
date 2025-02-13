@@ -477,7 +477,7 @@ class AuthController extends Controller {
    */
   public function modifyUser(AuthenticationRequest $request) {
     if(empty($request->all()) || // 요청값이 아무것도 없거나
-      $request->missing(['password', 'name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+      $request->missing(['name', 'tel', 'email']) // 필수값중에 하나라도 없으면
     ) { 
       return response()->json([
         'success' => false,

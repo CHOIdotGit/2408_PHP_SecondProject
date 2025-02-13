@@ -641,13 +641,13 @@ export default {
 
         // 출력 메세지 변수 연결
         const errData = err.response.data.error;
-        console.log(errData);
+        // console.log(errData);
 
         // 유효성 검사 실패
         if(err.response.status === 422) { 
           // 에러 정보값 세팅
           const errInfo = {
-            password: 'setErrMsgPassword',
+            // password: 'setErrMsgPassword',
             newPassword: 'setErrMsgNewPassword',
             newPasswordChk: 'setErrMsgNewPasswordChk',
             name: 'setErrMsgName',

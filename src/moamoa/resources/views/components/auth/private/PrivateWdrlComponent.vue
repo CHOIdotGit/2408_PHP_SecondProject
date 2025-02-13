@@ -3,7 +3,7 @@
   <div class="wdrl-container">
 
     <div v-if="userType === 'parent' && userInfo?.children?.length > 0" class="empty-msg">
-      연결된 자녀들이 모두 탈퇴를 진행해야 가능합니다.
+      연결된 자녀들이 모두 회원 탈퇴를 진행해야 가능합니다.
     </div>
 
     <!-- 메인 박스 DIV -->
@@ -104,7 +104,7 @@
   const route = useRoute();
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
-  const errMsg = computed(() => store.state.auth.errMsg);
+  // const errMsg = computed(() => store.state.auth.errMsg);
 
   // 유저 정보 ---------------------------------------------------------------------------------------------
   const userInfo = computed(() => store.state.auth.parentFlg ? store.state.auth.parentInfo : store.state.auth.childInfo);
@@ -168,6 +168,7 @@
     align-items: center;
     font-size: 1.8rem;
     color: red;
+    padding-bottom: 90px;
   }
   
   /* -------------------------------------------------------------------- */
