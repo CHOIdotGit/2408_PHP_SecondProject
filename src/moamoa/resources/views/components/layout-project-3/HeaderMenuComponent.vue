@@ -84,6 +84,7 @@
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
                     <p class="info-page info-page-red">회원 탈퇴</p>
                 </router-link>
+
                         
             </div>
         </div>
@@ -180,6 +181,8 @@ const checkMission = (mission_id) => {
 .top-menu {
     display: flex;
     justify-content: flex-end;
+    /* width: 76vw; */
+    
     /* background-color: #eeeeee; */
     height: 80px;
     /* padding-left: 50px;
@@ -259,7 +262,7 @@ const checkMission = (mission_id) => {
     width: 30px;
     position: absolute;
     top: -30px;
-    right: 160px;
+    right: 118px;
 }
 
 /* **************햄버거 모달************* */
@@ -308,13 +311,26 @@ const checkMission = (mission_id) => {
     background-color: #FFFFFF;
     position: absolute;
     z-index: 1000;
-    top: 91px;
-    right: 15px;
+    top: 104px;
+    right: 53px;
     display: flex;
     flex-direction: column;
     border-radius: 10px 10px 0px 0px;
     box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 10px 0px, rgba(0, 0, 0, 0.1) 0px 0px 0px 1px;
 }
+
+/* 가장 작은 화면에서 최대 1000px까지 적용 */
+@media(max-width:1910px) {
+    /* 알람창 안보이게 */
+    .dropdown-bell {
+        display: none;
+    }
+    /* 햄버거 메뉴 안보이게 */
+    .dropdown {
+        display: none;
+    }
+}
+
 
 .bell-title {
     display: flex;

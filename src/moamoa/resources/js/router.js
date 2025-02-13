@@ -506,7 +506,7 @@ const routes = [
     {
         path: '/moabank/product/regist/:id',
         component: ChildBankProductRegisterComponent,
-        beforeEnter: chkAuth,
+        
     },
     
     // 자녀 통장 페이지

@@ -19,6 +19,7 @@ class SavingSignUp extends Model
         ,'saving_sign_up_start_at'
         ,'saving_sign_up_end_at'
         ,'saving_sign_up_status'
+        ,'saving_sign_up_amount'
     ];
 
     public function children() {

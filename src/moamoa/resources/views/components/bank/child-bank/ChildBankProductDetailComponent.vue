@@ -14,7 +14,7 @@
                     <img src="/img/icon-moabank-graph.png" alt="">
                     <div>
                         <p class="box-item-title">기간</p>
-                        <p class="box-item-content">7일</p>
+                        <p class="box-item-content">{{ productInfo.saving_product_period }}일</p>
                     </div>
                 </div>
                 <div class="box-item">

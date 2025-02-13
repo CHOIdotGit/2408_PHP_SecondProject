@@ -20,8 +20,8 @@
                 <div class="saving-product-name">매주 적금</div>
                 <div>일주일에 한번 포인트를 저축해요</div>
                 <div class="div-products">
-                    <div class="products" v-for="item in week" :key="item">
-                        <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                    <div class="products" v-for="item in week" :key="item" @click="router.push('/moabank/product/detail/'+ item.saving_product_id)">
+                        <p class="product-title">⭐{{ item.saving_product_name }} 적금</p>
                         <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
                         <p class="rate-percent">최소 납입 금액 : {{ item.saving_product_amount }} moa</p>
                     </div>
@@ -92,7 +92,7 @@ hr {
 .bank-product-container {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
     min-height: 100vh;
 }
 
@@ -168,7 +168,7 @@ img {
 
 /* 적금 상품들 */
 .savings-product {
-    margin-left: 100px;
+    /* margin-left: 100px; */
 }
 
 .outline {
@@ -178,8 +178,8 @@ img {
 
     /* 자녀 색깔 */
     background-color: #e4eff4;
-    border-radius: 10px;
-    height: 300px;
+    /* border-radius: 10px; */
+    height: 400px;
     padding: 20px;
     margin-bottom: 30px;
 
@@ -187,15 +187,15 @@ img {
 
 /* 매일 적금/매주 적금 타이틀 크기 */
 .saving-product-name {
-    font-size: 1.7rem;
-    padding-bottom: 5px;
+    font-size: 2.1rem;
+    padding-bottom: 14px;
 }
 
 /* 적금 상품 */
 .div-products {
     display: flex;
     gap: 20px;
-    margin-top: 10px;
+    margin-top: 60px;
 }
 
 .products {

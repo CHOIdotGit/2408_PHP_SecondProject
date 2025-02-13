@@ -2,18 +2,18 @@
 <!-- 자녀가 로그인 했을 때 표시되는 왼쪽 메뉴 -->
     <div class="menu-left child-theme" v-if="!isMobile">
         <div class="menu-container" v-show="slidMenu">
-    
-        <!-- 자녀 프로필 표시 영역  -->
-        <div class="child-box" >
-            <div class="child-profile">
-                <img :src="childInfo.profile || '/user-img/default.webp'">    
+            <img src="/img/logo4.png" class="logo" width="250px"  height="100px">
+            <!-- 자녀 프로필 표시 영역  -->
+            <div class="child-box" >
+                <div class="child-profile">
+                    <img :src="childInfo.profile || '/user-img/default.webp'">    
+                </div>
+                <div class="child-info">
+                    <!-- todo :  nick name 나중에 칭호로 수정 -->
+                    <div class="child-nickname">칭호</div>
+                    <div class="child-name">{{ childInfo.name }}</div>
+                </div>
             </div>
-            <div class="child-info">
-                <!-- todo :  nick name 나중에 칭호로 수정 -->
-                <div class="child-nickname">칭호</div>
-                <div class="child-name">{{ childInfo.name }}</div>
-            </div>
-        </div>
             <!-- 메뉴 -->
             <div class="menu-box">
                 <router-link to="/child/home" class="link-deco">
@@ -90,15 +90,14 @@ const closeMenubtn = () => {
     slidMenu.value = !slidMenu.value;
 }
 
+// ****로그인한 자녀 프로필 불러오기*****
 // const childInfo = computed(()=> store.state.header.setChildInfo[0]);////
 const childInfo = computed(()=> store.state.header.childInfo);
 
-
-// 로그인한 자녀 프로필 불러오기
 onBeforeMount(async () => {
     await store.dispatch('header/childInfo');
-
 })
+// *************************************
 
 
 // 적금 상품 표시 여부 (true: 보임, false: 숨김)
@@ -315,6 +314,10 @@ button {
     margin-left: 50px;
     width: 100px;
     text-align: center;
+}
+
+.logo {
+    margin-left: 30px;
 }
 
 /* 상단 메뉴(사용자매뉴얼, 알람, 부모 프로필) */

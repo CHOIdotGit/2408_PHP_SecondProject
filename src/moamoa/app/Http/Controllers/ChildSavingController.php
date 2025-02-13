@@ -114,4 +114,52 @@ class ChildSavingController extends Controller
             ];
             return response()->json($responseData, 200);
     }
+
+    // 적금 상품 가입하기
+    public function store(Request $request) {
+        $child = Auth::guard('children')->user();
+        $parent = $child->parent_id;
+        $today = date("Y-m-d");
+        // type = 0(매일) => deposit = 7
+        // type = 1(매주) => 0~6
+        // 적금 상품 확인
+        $savingInfo = SavingProduct::select('saving_product_id'
+                                        ,'saving_product_type'
+                                        ,'saving_product_interest_rate'
+                                        ,'saving_product_period')
+                                    ->where('saving_product_id', $request->product_id)
+                                    ->first();
+
+        $savingPeriod = intval($savingInfo->saving_product_period);
+        $endDate = date("Y-m-d", strtotime("+$savingPeriod days", strtotime($today)));
+
+        // 공통
+        $savingResit = [
+            'child_id' => $child->child_id
+            ,'saving_product_id' => $savingInfo->saving_product_id
+            ,'saving_sign_up_amount' => $request->saving_sign_up_amount
+            ,'saving_sign_up_status' => "0"
+            ,'saving_sign_up_start_at'=>$today
+            ,'saving_sign_up_end_at' =>$endDate
+        ];
+
+        // 매일 적금일 경우
+        if($savingInfo->saving_product_type === "0") {
+            $savingResit['saving_sign_up_deposit_at'] = "7";
+        }
+
+        // 매주 적금일 경우
+        else if($savingInfo->saving_product_type === "1") {
+            $savingResit['saving_sign_up_deposit_at'] = $request->saving_sign_up_deposit_at;
+        }
+        $regist = SavingSignUp::create($savingResit);
+        $responseData = [
+            'success' => true
+            ,'msg' => '미션 등록 성공'
+            ,'regist' => $regist->toArray()
+        ];
+        return response()->json($responseData, 200);
+
+        
+    }
 }

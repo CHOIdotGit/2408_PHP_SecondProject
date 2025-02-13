@@ -104,6 +104,8 @@ class BankController extends Controller
                                     ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
                                     ->get();
 
+
+        
         $responseData = [
             'success' => true
             ,'msg' => '적금 상품 개수와 포인트, 가입한 적금 상품 상세 정보 불러오기 성공'    
