@@ -8,8 +8,8 @@
                 <div class="saving-product-name">매일 적금</div>
                 <div>매일 포인트를 저축해요</div>
                 <div class="div-products">
-                    <div class="products" v-for="item in single" :key="item" @click="router.push('/moabank/product/detail/'+ item.saving_product_id)">
-                        <p  class="product-title">⭐{{ item.saving_product_name }} 적금</p>
+                    <div class="products" v-for="item in single" :key="item">
+                        <p @click="router.push('/moabank/product/detail/'+ item.saving_product_id)" class="product-title">⭐{{ item.saving_product_name }} 적금</p>
                         <p class="rate-percent">이자율 : {{ item.saving_product_interest_rate}} %</p>
                         <p class="rate-percent">최소 납입 포인트 : {{ item.saving_product_amount }} moa</p>
                     </div>
@@ -51,7 +51,7 @@ const single =  computed(()=> store.state.bank.singleList);
 // 매주 적금
 const week = computed(()=> store.state.bank.weekList);
 onMounted(() => {
-    store.dispatch('bank/koreaBank');
+    // store.dispatch('bank/koreaBank');
     store.dispatch('bank/savingProductList');
     
 });

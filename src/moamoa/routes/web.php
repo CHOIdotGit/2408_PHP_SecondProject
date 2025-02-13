@@ -222,6 +222,9 @@ Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
 // 자녀 적금 통장 상세
 Route::get('/api/child/moabank/bankbook/{bankbook_id}', [ChildSavingController::class, 'show']);
 
+// 자녀 적금 이자율 계산
+Route::get('/api/child/moabank/interest/rate/{productId}', [BankController::class, 'calculateFinalAmount']);
+
 // 자녀 적금 가입하기
 Route::post('/api/child/moabank/saving/create/{product_id}', [ChildSavingController::class, 'store']);
 

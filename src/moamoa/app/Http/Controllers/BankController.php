@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Point;
+use App\Models\SavingDetail;
 use App\Models\SavingProduct;
 use App\Models\SavingSignUp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -122,40 +124,137 @@ class BankController extends Controller
         $childProductInfo =  SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
                                         ->where('saving_product_id', $id)
                                         ->first();
-
-        // 자녀 본인 확인
-        $child = Auth::guard('children')->user();
         
-         // 기준금리 가져오기 (JSON을 배열로 변환)
+        // 기준금리 가져오기 (JSON을 배열로 변환)
         $baseRateResponse = $this->koreaBank(); // JSON 응답 객체
         $baseRate = json_decode($baseRateResponse->getContent(), true); // 배열 변환
 
-        // 기준금리 값 가져오기
-        $baseInterest = isset($baseRate['original']['interest']) ? (float)$baseRate['original']['interest'] : 0;
+        // 기준금리 값 가져오기 (올바른 키 사용)
+        $baseInterest = isset($baseRate['interest']) ? (float)$baseRate['interest'] : 0;
 
-        // 상품 ID에 따라 이자율 변경
-        if ($childProductInfo->saving_product_id == 1 || $childProductInfo->saving_product_id == 2) {
-            $childProductInfo->saving_product_interest_rate -= $baseInterest; // 기준금리 빼기
-        } elseif ($childProductInfo->saving_product_id >= 3 && $childProductInfo->saving_product_id <= 7) {
-            $childProductInfo->saving_product_interest_rate += $baseInterest; // 기준금리 더하기
+        // saving_product_type에 따라 계산된 이자율 값을 구함
+        if ($childProductInfo->saving_product_type == 0) {
+            // type 0 : 기준 금리에서 상품 이자율을 뺀 값
+            $computedInterestRate = $baseInterest - $childProductInfo->saving_product_interest_rate;
+        } elseif ($childProductInfo->saving_product_type == 1) {
+            // type 1 : 기준 금리에 상품 이자율을 더한 값
+            $computedInterestRate = $baseInterest + $childProductInfo->saving_product_interest_rate;
+        } else {
+            // 그 외의 경우 원래 값을 사용하거나 기본값 지정
+            $computedInterestRate = $childProductInfo->saving_product_interest_rate;
         }
 
         $responseData = [
             'success' => true
             ,'msg' => '가입한 적금 상품 상세 정보 불러오기 성공'    
             ,'childProductInfo' => $childProductInfo
+            ,'computedInterestRate' => $computedInterestRate // 계산된 이자율 값
             ,'baseRate' => $baseRate
         ];
 
         return response()->json($responseData, 200);
     }
 
-    // public function () {
-    //     // 기준금리 가져오기
-    //     $baseRate = $this->koreaBank();  
+    // 이자율 계산하는 함수
+    public function calculateFinalAmount($productId) {
+       
+        // // 1. 상품 정보 조회
+        // $product = SavingProduct::find($productId);
 
-      
+        // if (!$product) {
+        //     return response()->json(['success' => false, 'msg' => 'Product not found'], 404);
+        // }
 
-    // }
+        // // 2. 상품 정보에서 이자율 가져오기
+        // $interestRate = SavingProduct::select('saving_product_id', 'saving_product_interest_rate')
+        //                                 ->where('saving_product_id', $productId)
+        //                                 ->first();
 
+        // // 3. saving_sign_up_end_at이 오늘과 같은지 확인
+        // $signUp = SavingSignUp::where('saving_product_id', $productId)->first();
+
+        // // dd([
+        // //     'productId' => $productId,
+        // //     'signUp' => $signUp,
+        // //     'signUp_end_at' => $signUp ? $signUp->saving_sign_up_end_at : '가입 내역 없음',
+        // //     'today' => now()->toDateString(),
+        // //     'comparison' => $signUp ? ($signUp->saving_sign_up_end_at > now()->toDateString()) : '가입 내역 없음'
+        // // ]);
+
+        // // if (!$signUp || $signUp->saving_sign_up_end_at !== now()->toDateString()) {
+        // if (!$signUp || $signUp->saving_sign_up_end_at >= now()->toDateString()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'msg' => '이자 계산을 진행할 수 없습니다.'
+        //     ], 400);
+        // }
+
+        // // 4. 납입 내역 가져오기
+        // $savingDetails = SavingDetail::where('saving_sign_up_id', $signUp->saving_sign_up_id)
+        //     ->where('saving_detail_category', '0') // 적금만 계산
+        //     ->orderBy('created_at', 'asc')
+        //     ->get();
+
+        // // 5. 이자 계산
+        // $total = 0;
+        // foreach ($savingDetails as $item) {
+        //     $total = floor(($total + $item->saving_detail_income) * (1 + $interestRate->saving_product_interest_rate / 100 ));
+        // }
+
+        // return response()->json([
+        //     'success' => true
+        //     ,'msg' => '계산된 최종 금액 반환'
+        //     ,'final_total' => $total
+        //     ,'signUp' => $signUp
+        //     // ,'signUp' => $signUp->saving_sign_up_id
+        // ], 200);
+        // 1. 상품 정보 조회
+        $product = SavingProduct::find($productId);
+
+        if (!$product) {
+            return response()->json(['success' => false, 'msg' => 'Product not found'], 404);
+        }
+
+        // 2. 상품 정보에서 이자율 가져오기
+        $interestRate = SavingProduct::select('saving_product_id', 'saving_product_interest_rate')
+                                        ->where('saving_product_id', $productId)
+                                        ->first();
+
+        // 3. 상품에 가입된 내역들 가져오기 (saving_sign_up_id 기준)
+        $signUps = SavingSignUp::where('saving_product_id', $productId)->get();
+
+        if ($signUps->isEmpty()) {
+            return response()->json(['success' => false, 'msg' => 'No sign-up records found for this product'], 404);
+        }
+
+        // 4. 각 가입 내역에 대해 최종 금액 계산
+        $results = [];
+        foreach ($signUps as $signUp) {
+            // 가입 내역에 대한 납입 내역 가져오기
+            $savingDetails = SavingDetail::where('saving_sign_up_id', $signUp->saving_sign_up_id)
+                                        ->where('saving_detail_category', '0') // 적금만 계산
+                                        ->orderBy('created_at', 'asc')
+                                        ->get();
+
+            // 5. 이자 계산
+            $total = 0;
+            foreach ($savingDetails as $item) {
+                $total = floor(($total + $item->saving_detail_income) * (1 + $interestRate->saving_product_interest_rate / 100));
+            }
+
+            // 결과 배열에 각 상품별 최종 금액 추가
+            $results[] = [
+                'saving_sign_up_id' => $signUp->saving_sign_up_id,
+                'final_total' => $total,
+                // 'interestRate' => $interestRate->saving_product_interest_rate
+            ];
+        }
+
+        // 6. 결과 반환
+        return response()->json([
+            'success' => true,
+            'msg' => '계산된 최종 금액 반환',
+            'results' => $results
+        ], 200);
+    }
 }

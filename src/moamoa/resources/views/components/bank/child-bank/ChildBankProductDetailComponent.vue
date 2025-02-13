@@ -28,7 +28,7 @@
                     <img src="/img/icon-moabank-analytics.png" alt="">
                     <div>
                         <p class="box-item-title">금리</p>
-                        <p class="box-item-content">{{ productInfo.saving_product_interest_rate }}%</p>
+                        <p class="box-item-content">{{ interestRate }}%</p>
                     </div>
                 </div>
             </div>
@@ -65,6 +65,7 @@ const router = useRouter();
 
 // 적금 상품 가져오기
 const productInfo = computed(() => store.state.bank.productInfo);
+const interestRate = computed(() => store.state.bank.computedInterestRate)
 
 onMounted(() => {
     const id = route.params.id;

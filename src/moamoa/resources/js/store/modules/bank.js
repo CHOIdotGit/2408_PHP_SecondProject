@@ -15,6 +15,7 @@ export default {
         ,productInfo: {}
         ,singleList: [] //매일 적금
         ,weekList: [] // 매주 적금
+        ,computedInterestRate: 0
 
     }),
     mutations: {
@@ -50,6 +51,9 @@ export default {
         }
         ,setWeekSaving(state, weekList) { // 매주 적금 상품
             state.weekList = weekList;
+        }
+        ,setComputedInterestRate(state, computedInterestRate) { // 매주 적금 상품
+            state.computedInterestRate = computedInterestRate;
         }
     },
     actions: {
@@ -126,6 +130,8 @@ export default {
             axios.get(url)
                 .then(response => {
                     context.commit('setProductInfo', response.data.childProductInfo);
+                    context.commit('setComputedInterestRate', response.data.computedInterestRate);
+                    console.log('setComputedInterestRate 확인', response.data.computedInterestRate);
                     console.log('setProductInfo 확인', response.data.childProductInfo);
                     console.log(response.data);
                 }) 
