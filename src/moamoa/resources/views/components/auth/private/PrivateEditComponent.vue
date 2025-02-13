@@ -466,7 +466,8 @@ import { useRoute } from 'vue-router';
   .btn-submit {
     margin-top: 27.5px;
     padding: 10px;
-    width: 100px;
+    width: 120px;
+    height: 50px;
     border: none;
     background-color: #3B82F6;
     color: #fff;

@@ -43,7 +43,7 @@ import RegistCompleteComponent from '../views/components/auth/regist/RegistCompl
 import ChildBankProductDetailComponent from '../views/components/bank/child-bank/ChildBankProductDetailComponent.vue';
 import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
 import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
-// import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
+import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
 
 const chkAuth = (to, from, next) => {
     
@@ -205,10 +205,7 @@ const routes = [
             {
                 path: 'ident/:category(edit|wdrl)',
                 component: PrivateIdentComponent,
-                beforeEnter: (to, from, next) => {
-                    chkAuth(to, from, next);
-                    // sessionStorage.setItem('privatePath', 'ident/' + to.path.split('/').pop());
-                },
+                beforeEnter: chkAuth,
             },
 
             // 개인정보 수정 페이지
@@ -219,11 +216,11 @@ const routes = [
             },
 
             // 회원탈퇴 페이지
-            // {
-            //     path: 'wdrl',
-            //     component: PrivateWdrlComponent,
-            //     beforeEnter: chkAuth,
-            // }
+            {
+                path: 'wdrl',
+                component: PrivateWdrlComponent,
+                beforeEnter: chkAuth,
+            }
         ],
     },
 

@@ -1,6 +1,7 @@
 <template>
   <!-- 배경 컨테이너 DIV -->
   <div class="ident-container">
+    <!-- 메인 박스 DIV -->
     <div class="ident-main-box">
       <h2>본인확인</h2>
 
@@ -25,7 +26,16 @@
           </div>
 
           <div>
-            <input v-model="identInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
+            <input 
+              v-model="identInfo.password" 
+              :class="{ 'err-border' : errMsg.password }" 
+              @keyup.enter="identBtn"
+              type="password" 
+              name="password" 
+              id="password" 
+              autocomplete="off" 
+              required
+            >
             <p v-if="errMsg.password" class="err-msg">
               {{ errMsg.password }}
             </p>
@@ -215,10 +225,11 @@ import { useRoute } from 'vue-router';
   .ident-footer-btn > button {
     padding: 10px;
     width: 120px;
+    height: 50px;
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   .ident-footer-btn > button:hover {
     background-color: #2563EB;

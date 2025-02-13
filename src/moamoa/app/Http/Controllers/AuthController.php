@@ -111,8 +111,8 @@ class AuthController extends Controller {
    * @return Boolean $result
    */
   public function checkSession() {
-    $parent = Auth::guard('parents')->check();
-    $child = Auth::guard('children')->check();
+    $parent = Auth::guard('parents')->user();
+    $child = Auth::guard('children')->user();
 
     return response()->json([
       // 인증 사용자의 세션이 남아있으면 true, 없을경우 false
@@ -558,44 +558,37 @@ class AuthController extends Controller {
    * 
    * @return JSON $responseData
    */
-  public function removeUser(PasswordRequest $request) {
-    if(empty($request->all()) || $request->missing(['password'])) { 
+  public function removeUser() {
+    try {
+      // 로그인한 유저 정보를 세팅
+      if(Auth::guard('parents')->check()) {
+        $user = Auth::guard('parents')->user();
+        $colName = 'parent_id';
+      }else {
+        $user = Auth::guard('children')->user();
+        $colName = 'child_id';
+      }
+      
+      $userInfo = [
+        'column_name' => $colName,
+        'column_id' => $user->$colName
+      ];
+
+      // 회원 탈퇴 실행
+      $this->authRepository->removeUser($userInfo);
+
+      $responseData = [
+        'success' => true,
+        'msg' => '회원 탈퇴 성공'
+      ];
+
+      return response()->json($responseData, 200);
+
+    }catch(Throwable $th) {
       return response()->json([
         'success' => false,
-        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
-      ], 401);
-    }else {
-      try {
-        // 로그인한 유저 정보를 세팅
-        if(Auth::guard('parents')->check()) {
-          $user = Auth::guard('parents')->user();
-          $colName = 'parent_id';
-        }else {
-          $user = Auth::guard('children')->user();
-          $colName = 'child_id';
-        }
-        
-        $userInfo = [
-          'column_name' => $colName,
-          'column_id' => $user->$colName
-        ];
-
-        // 회원 탈퇴 실행
-        $this->authRepository->removeUser($userInfo);
-
-        $responseData = [
-          'success' => true,
-          'msg' => '회원 탈퇴 성공'
-        ];
-
-        return response()->json($responseData, 200);
-
-      }catch(Throwable $th) {
-        return response()->json([
-          'success' => false,
-          'error' => '회원 탈퇴 실패: ' . $th->getMessage(),
-        ], 500);
-      }
+        'error' => '회원 탈퇴 실패: ' . $th->getMessage(),
+      ], 500);
     }
   }
 

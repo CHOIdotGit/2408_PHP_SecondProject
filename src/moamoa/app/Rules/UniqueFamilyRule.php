@@ -25,10 +25,10 @@ class UniqueFamilyRule implements Rule {
    */
   public function passes($attribute, $value) {
     // 부모 테이블에서 'account' 값이 존재하는지 확인
-    $parents = ParentModel::select('account')->where('account', $value)->exists();
+    $parents = ParentModel::withTrashed()->select('account')->where('account', $value)->exists();
     
     // 자녀 테이블에서 'account' 값이 존재하는지 확인
-    $children = Child::select('account')->where('account', $value)->exists();
+    $children = Child::withTrashed()->select('account')->where('account', $value)->exists();
 
     // 두 테이블 중에 하나라도 존재하면 유효성 검사 실패
     return !($parents || $children);

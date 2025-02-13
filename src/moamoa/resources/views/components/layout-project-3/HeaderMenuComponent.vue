@@ -81,7 +81,7 @@
                 <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/password' : '/child/private/password'" class="link-deco">
                     <p class="info-page">비밀번호 변경</p>
                 </router-link> -->
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/withdrawal' : '/child/private/withdrawal'" class="link-deco">
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
                     <p class="info-page info-page-red">회원 탈퇴</p>
                 </router-link>
                         

@@ -680,18 +680,20 @@ export default {
      * @param {*} context 
      * @param {*} removeInfo 
      */
-    removeUser(context, removeInfo) {
+    removeUser(context) {
       const url = '/api/auth/removeUser';
-      const data = { password: removeInfo };
+      // const data = { password: removeInfo };
 
-      axios.post(url, data)
+      axios.post(url)
       .then(res => {
         // console.log(res.data);
         alert('회원 탈퇴 신청이 완료되었습니다. 로그인 페이지로 이동합니다.');
         context.dispatch('logout'); // 로그아웃 실행
-      }).catch(err => {
+      })
+      .catch(err => {
         // 출력 메세지 변수 연결
         const errData = err.response.data.error;
+        console.log(errData);
 
         // 유효성 검사 실패
         if(err.response.status === 422 && errData.password[0]) { 
