@@ -31,6 +31,43 @@ class TransactionChildrenController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // ************************************************
+    // ********************필터 검색 *******************
+    // ************************************************
+    public function search(Request $request) {
+        // 자녀 확인
+        $child = Auth::guard('children')->user();
+
+        $category = $request->category;
+        $date = $request->transaction_date;
+        $keyword = $request->keyword;
+        Log::debug('request', $request->all());
+        $filters = Transaction::with('child')
+        ->where([
+            ['transactions.child_id', $child->child_id]
+            ,['transactions.transaction_code', '1']
+        ])
+        ->when($category !== '', function($query) use ($category) {
+            return $query->where('transactions.category', $category);
+        })
+        ->when($date, function($query) use ($date) {
+            return $query->whereDate('transactions.transaction_date', '=', $date);
+        })
+        ->when($keyword !== '', function($query) use ($keyword) {
+            return $query->where('transactions.title', 'like', '%' . $keyword . '%');
+        })
+        ->orderBy('transactions.transaction_date' ,'DESC')
+        ->paginate(20);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '필터 성공'
+            ,'filters' => $filters
+        ];
+        
+        return response()->json($responseData, 200);
+}
+
     // 자녀 지출 상세 페이지
     public function show($transaction_id) {
         $transactionDetail = Transaction::find($transaction_id);

@@ -32,7 +32,17 @@
                     </div>
                 </div>
                 <!-- 빈 통장 슬롯 -->
-                <div class="div-box" @click="goSavingProduct" v-for="item in empty" :key="item" >
+                <!-- <div class="div-box" @click="goSavingProduct" v-for="item in empty" :key="item" >
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
+                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
+                </div> -->
+                <div class="div-box" @click="goSavingProduct"  >
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
+                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
+                </div>
+                <div class="div-box" @click="goSavingProduct"  >
                     <p class="have-point">모아 적금통장</p>
                     <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                     <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>

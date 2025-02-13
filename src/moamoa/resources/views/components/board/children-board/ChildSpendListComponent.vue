@@ -9,27 +9,26 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p> 등록 일자</p> 
-                        <input type="date" min="2000-01-01" >
-                        <p>~</p>
-                        <input type="date" min="2000-01-01" >
+                        <p> 지출 일자</p> 
+                        <input type="date" min="2000-01-01" v-model="filters.date">
+
                     </div>
                     <div class="search-filter">
-                        <p> 종류 </p> 
-                        <select name="mission-type">
-                            <option value="woori">전체</option>
-                            <option value="all">쇼핑</option>
-                            <option value="shinhan">교통비</option>
-                            <option value="kb" >식비</option>
-                            <option value="hana">기타</option>
+                        <p>지출 종류 </p> 
+                        <select name="spend-type" v-model="filters.category">
+                            <option value="">전체</option>
+                            <option value="0">교통비</option>
+                            <option value="1">식비</option>
+                            <option value="2" >쇼핑</option>
+                            <option value="3">기타</option>
                         </select>
                     </div>
                     <div class="search">
-                        <input type="search" placeholder="검색어를 입력해주세요">
+                        <input type="search" v-model="filters.keyword" placeholder="검색어를 입력해주세요">
                     </div>
                 </div>
                 <div class="search-btn">
-                    <button>검색</button>
+                    <button @click="search">검색</button>
                 </div>
             </div>
             <div class="mission-title">
@@ -47,9 +46,9 @@
                         <div class="chk-div">
                             <input v-model="checkboxItem" type="checkbox" id="checkbox" class="checkbox" :value="item.transaction_id" name="checkbox">
                         </div>
-                        <p @click="goSpendDetail(item.transaction_id)" class="content-title">{{ getTruncatedTitle(item.title) }}</p> 
+                        <p @click="goSpendDetail(item.transaction_id)" class="content-title">{{ item.title }}</p> 
                         <p class="category">{{ getCategoryText(item.category) }}</p>
-                        <p class="charge">{{ item.amount.toLocaleString() }}원</p>
+                        <p class="charge">{{ Number(item.amount).toLocaleString() }}원</p>
                         <p class="transaction-date">{{ item.transaction_date }}</p>
                     </div>
                 </div>
@@ -145,11 +144,11 @@ const getCategoryText = (category) => {
 // 특정 글자 길이 이후 '...'으로 표기
 const maxLength = 20;
 
-const getTruncatedTitle =(title) => {
-  return title.length > maxLength 
-    ? title.substring(0, maxLength) + '...' 
-    : title;
-};
+// const getTruncatedTitle =(title) => {
+//   return title.length > maxLength 
+//     ? title.substring(0, maxLength) + '...' 
+//     : title;
+// };
 
 // 거래 아이디 확인 후 상세 페이지 이동
 const goSpendDetail = (transaction_id) => {
@@ -272,6 +271,24 @@ const delOpenModal = () => { //모달창 열기
 const delCloseModal = () => { //모달창 닫기
     delModal.value = false;
 }
+
+// +=================+
+// +    검색 필터     +
+// +=================+
+// 기본값
+const filters = ref({
+    category: "",
+    date: "",
+    keyword: "",
+});
+
+
+
+
+const search = () => {
+    console.log(filters.value.date);
+    store.dispatch('childTransaction/transactionSearch', filters.value);
+};
 
 </script>
 

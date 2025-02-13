@@ -22,6 +22,7 @@ export default {
         ,lastPage: 1
         ,perPage: 10
         ,total: 0
+        ,filter: []
     }),
     mutations: {
         setChildTransactionList(state, childTransactionList) {
@@ -65,6 +66,9 @@ export default {
             state.lastPage = last_page;
             state.perPage = per_page;
             state.total = total;
+        },
+        setFilterTransactionList(state, childTransactionList) {
+            state.filter = childTransactionList;
         },
     },
     actions: {
@@ -280,6 +284,25 @@ export default {
                 console.log('지출 수정 에러', error);
             })
         },
+        // ***********************
+        // 필터&검색기능
+        // ***********************
+        transactionSearch(context, searchData) {
+        const url = '/api/child/transaction/search';
+
+        axios.get(url, {
+            params:  searchData 
+        })
+        .then(response => {
+            context.commit('setChildTransactionList', response.data.filters);
+            context.commit('setFilterTransactionList', searchData);
+            console.log('setFilterTransactionList', searchData);
+            console.log('검색된 내용', response.data.filters);
+        })
+        .catch(error => {
+            console.log('검색안됨', error);
+        })
+    },
     },
     getters: {
 
