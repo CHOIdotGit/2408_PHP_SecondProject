@@ -17,6 +17,7 @@ export default {
         ,mostSpendAmount: 0
         ,transactions_max_category: ''
         ,totalAmount: 0
+        ,parentStatsInfo: {}
         ,totalExpenses: 0
         ,categoryData: []
         ,parentStats:[]
@@ -67,7 +68,13 @@ export default {
         setParentStats(state, data) {
             state.parentStats = data;
         },
-        setDoughnutData(state, data) {
+        setChildStats(state, data) {
+            state.childstats = data;
+        },
+        setParentStatsInfo(state, objDate) {
+            state.parentStatsInfo = data;
+        }
+        ,setDoughnutData(state, data) {
             state.doughnutData = data;
         },
         setWeeklyOutgoData(state, data) {
@@ -107,6 +114,7 @@ export default {
         //         console.error('지출 리스트 불러오기 오류', error);
         //     });    
         // },
+
         // 부모 지출 리스트 페이지(페이지네이션 작업 by 최상민)
         async transactionList(context, searchData) {
             try {
@@ -147,12 +155,12 @@ export default {
         },
 
         // 부모 통계 불러오기
-        parentStats(context, child_id) {
+        parentStats(context, objDate) {
             return new Promise((resolve, reject) => {
-                const url = '/api/parent/stats/' + child_id ;
+                const url = '/api/parent/stats/' + objDate.child_id + '?year=' + objDate.date.getFullYear() + '&month=' + (objDate.date.getMonth() + 1);
                 axios.get(url)
                     .then((response) => {
-                        context.commit('setChildId', child_id);
+                        context.commit('setChildId', objDate.child_id);
                         context.commit('setParentStats', response.data.data);
                         // const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount); // v3 del
                         const weeklyExpenseAmount = response.data.weeklyOutgoData.map(item => item.total);
@@ -168,21 +176,37 @@ export default {
 
             });
         },
-    // 필터&검색기능
-    transactionSearch(context, searchData) {
-        const url = '/api/transaction/search';
 
-        axios.get(url, {
-            params:  searchData 
-        })
-        .then(response => {
-            context.commit('setTransactionList', response.data.filters.data);
-            context.commit('setFilterTransactionList', searchData);
-        })
-        .catch(error => {
-            console.log('검색안됨', error);
-        })
-    },
+        childStats(context){
+            return new Promise((resolve, reject) => {
+                const url = '/api/child/home';
+                axios.get(url)
+                    .then((response) => {
+                        
+                        return resolve();
+                    })
+                    .catch((error) => {
+                        console.error('자녀 통계 데이터 불러오기 실패:', error.response?.data?.message || error.message);
+                        return reject();
+                    });
+
+            });
+        },
+        // 필터&검색기능
+        transactionSearch(context, searchData) {
+            const url = '/api/transaction/search';
+
+            axios.get(url, {
+                params:  searchData 
+            })
+            .then(response => {
+                context.commit('setTransactionList', response.data.filters.data);
+                context.commit('setFilterTransactionList', searchData);
+            })
+            .catch(error => {
+                console.log('검색안됨', error);
+            })
+        },
     },
 
     getters: {

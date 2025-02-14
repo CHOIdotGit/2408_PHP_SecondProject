@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\Transaction;
+use App\Repositories\StatsRepository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\Log;
 
 class StatsController extends Controller
 {
+    protected $statsRepository;
+
+    public function __construct(StatsRepository $statsRepository) {
+        $this->statsRepository = $statsRepository;
+    }
+
     public function index(Request $request, $child_id)
     
     {
@@ -68,20 +75,21 @@ class StatsController extends Controller
                                 }], 'amount')
                                 ->where('parent_id', $parent->parent_id)
                                 ->where('child_id', $child_id)
-                                ->first();;
+                                ->first();
         
         //  카테고리별 지출 구하기**
-        $eachCategoryTransaction = Transaction::select(
-            'category',
-            DB::raw('SUM(amount) as total_amount')
-        )
-        ->where('parent_id', $parent->parent_id)
-        ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
-        ->where('child_id', $child_id)
-        // ->where('transaction_code', 1)
-        ->groupBy('category')
-        ->orderBy('category')
-        ->get();
+        // $eachCategoryTransaction = Transaction::select(
+        //     'category',
+        //     DB::raw('SUM(amount) as total_amount')
+        // )
+        // ->where('parent_id', $parent->parent_id)
+        // ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
+        // ->where('child_id', $child_id)
+        // // ->where('transaction_code', 1)
+        // ->groupBy('category')
+        // ->orderBy('category')
+        // ->get();
+        $eachCategoryTransaction = $this->statsRepository->eachCategoryStats($startOfMonth, $endOfMonth, $child_id);
 
         // 주간별 지출
         $weeklyOutgoData = DB::select('CALL get_weekly_transaction_report(?, ?, ?)', [$startOfMonth, $endOfMonth, $child_id]);
@@ -89,10 +97,10 @@ class StatsController extends Controller
 
         // 통계 
         $data = [
-            'transactions_max_amount' => (int)$transactionAmount,
-            'transactions_max_category' => $mostUsedCategory->category,
-            'missions_sum_amount' => (int)$totalExpenses->missions_sum_amount,
-            'totalExpenses' => (int)$totalAmountChild
+            'transactions_max_amount' => empty($transactionAmount) ? 0 :(int)$transactionAmount,
+            'transactions_max_category' => empty($mostUsedCategory) ? '' : $mostUsedCategory->category,
+            'missions_sum_amount' => empty($totalExpenses) ? 0 :(int)$totalExpenses->missions_sum_amount,
+            'totalExpenses' => empty($totalAmountChild) ? 0 :(int)$totalAmountChild
         ];
 
         $responseData = [

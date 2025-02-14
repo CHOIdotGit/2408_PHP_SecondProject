@@ -1,7 +1,10 @@
 <template>
 <div class="stat-container"> 
-  <button @click="prevMonth"> ◀ </button>
-  <button @click="nextMonth"> ▶ </button>
+  <div class="date-menu">
+    <button @click="prevMonth">◀</button>
+    <p class="date-display">{{ formattedDate }}</p>
+    <button @click="nextMonth">▶</button>
+  </div>
     <div class="stat-section">
       <div class="each-part">
         <!-- 그래프 섹션 -->
@@ -15,6 +18,9 @@
             <canvas ref="doughnutCanvas"></canvas>
           </div>
         </div>
+        <!-- <div class="graph-section" v-show="doughnutData?.length < 1">
+          지출 없음
+        </div> -->
 
         <!-- 통계 정보 섹션 -->
         <div>
@@ -69,14 +75,14 @@ const formattedDate = computed(() =>
 // 이전 월로 이동
 async function prevMonth() {
     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
+    await store.dispatch("transaction/parentStats",  {date:dateToday.value, child_id:route.params.child_id});
     dateToday.value = currentDate;
 }
 
 // 다음 월로 이동
 async function nextMonth() {
     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-    await store.dispatch("calendar/childCalendarInfo", dateToday.value);
+    await store.dispatch("transaction/parentStats",  {date:dateToday.value, child_id:route.params.child_id});
     dateToday.value = currentDate;
 }
 
@@ -92,7 +98,7 @@ const getCategoryText = (category) => {
   return categoryMapping[category] || '알 수 없음';
 };
 
-// ✅ **막대 그래프 설정**
+// --------------- ✅ **막대 그래프 설정** start ---------------
 const graphCanvas = ref(null);
 let graphChartInstance = null;
 const weeklyOutgoData = computed(() => store.state.transaction.weeklyOutgoData)
@@ -138,6 +144,17 @@ const renderGraphChart = () => {
   }
 };
 
+watch(
+  () => weeklyOutgoData.value
+  , newQuestion => {
+    weekly.value = weeklyOutgoData.value.map((val, key) => ++key + '주차');
+    graphChartData.labels = weekly.value;
+    graphChartData.datasets[0].data = weeklyOutgoData.value;
+    renderGraphChart();
+  }
+);
+// --------------- ✅ **막대 그래프 설정** end ---------------
+
 // ✅ **도넛 그래프 설정**
 const doughnutCanvas = ref(null);
 let doughnutChartInstance = null;
@@ -179,12 +196,19 @@ const renderDoughnutChart = () => {
   }
 };
 
-// ✅ **마운트 시 그래프 렌더링**
-onBeforeMount(() => {
-});
+watch(
+  () => doughnutData.value
+  , newQuestion => {
+    // doughnutChartData.datasets[0].data = doughnutData.value; // v3 del
 
+    setDoughuntDrawData(); // v3 add
+    renderDoughnutChart();
+  }
+);
+
+// ✅ **마운트 시 그래프 렌더링**
 onMounted(async () => {
-  await store.dispatch('transaction/parentStats', route.params.child_id);
+  await store.dispatch('transaction/parentStats', {date:dateToday.value, child_id:route.params.child_id});
   // doughnutChartData.datasets[0].data = doughnutData.value; // v3 del
   setDoughuntDrawData(); // v3 add
   graphChartData.datasets[0].data = weeklyOutgoData.value;
@@ -201,29 +225,11 @@ const setDoughuntDrawData = () => {
   });
 }
 // v3 add end
-
-watch(
-  () => doughnutData.value
-  , newQuestion => {
-    // doughnutChartData.datasets[0].data = doughnutData.value; // v3 del
-
-    setDoughuntDrawData(); // v3 add
-    renderDoughnutChart();
-  }
-);
-watch(
-  () => weeklyOutgoData.value
-  , newQuestion => {
-    weekly.value = weeklyOutgoData.value.map((val, key) => ++key + '주차');
-    graphChartData.labels = weekly.value;
-    graphChartData.datasets[0].data = weeklyOutgoData.value;
-    renderGraphChart();
-  }
-);
 </script>
 
 
 <style scoped>
+
 
 .stat-container {
   height: 720px;
@@ -246,10 +252,10 @@ watch(
 }
 
 .graph-section {
-  height: 500px;
+  height: 550px;
   background-color: #a2caac;
   display: grid;
-  grid-template-columns: 800px 600px;
+  grid-template-columns: 900px 500px;
   margin-top: 20px;
   /* margin-top: 40px; */
 }
@@ -263,8 +269,9 @@ watch(
   p {
       margin-top: 15px;
       font-size: 1.4rem;
-      /* text-indent: 30px; */
+      text-indent: 30px;
       line-height: 30px;
+      
   }
 }
 
@@ -280,11 +287,23 @@ watch(
   }
 }
 
-
-.graph, .doughnut {
-  width: 100%;
-  height: 90%;
-  /* margin: auto; */
+.date-menu {
+  display: flex;
+  margin-left: 50px;
+  justify-content: space-around;
+  font-size: 3rem;
+  align-items: center;
+  button {
+    color: #a2caac;
+    font-size: 3rem;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    
+  }
+}
+.canvas {
+  margin-top: 20px;
 }
 
 

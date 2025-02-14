@@ -82,6 +82,7 @@ export default {
                 });
             });
         },
+
         
         // 교통비 식비 쇼핑 기타 각각내역
         fetchSidebarData({ commit }, {year, month}) {
