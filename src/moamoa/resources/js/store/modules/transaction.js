@@ -192,6 +192,10 @@ export default {
 
             });
         },
+        
+        // // 필터&검색기능
+        // transactionSearch(context, searchData) {
+        //     const url = '/api/transaction/search';
         // 필터&검색기능
         transactionSearch(context, searchData) {
             const url = '/api/transaction/search';
@@ -207,6 +211,17 @@ export default {
                 console.log('검색안됨', error);
             })
         },
+            // axios.get(url, {
+            //     params:  searchData 
+            // })
+            // .then(response => {
+            //     context.commit('setTransactionList', response.data.filters.data);
+            //     context.commit('setFilterTransactionList', searchData);
+            // })
+            // .catch(error => {
+            //     console.log('검색안됨', error);
+            // })
+        // },
     },
 
     getters: {

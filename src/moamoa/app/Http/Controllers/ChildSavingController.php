@@ -163,8 +163,28 @@ class ChildSavingController extends Controller
         ];
 
         return response()->json($responseData, 200);
+    }
 
-
+    // 자녀 만기된 적금 가져오기
+    public function expiredSaving() {
         
+        $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
+        $today = now()->toDateString(); // 오늘 날짜 가져오기
+
+        $expiredSavings = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status')
+                                        ->where('saving_sign_ups.child_id', $child)
+                                        ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
+                                        ->with(['saving_products' => function($query) {
+                                            $query->select('saving_product_id', 'saving_product_name'); // saving_sign_up_id도 포함해야 관계가 제대로 연결됨
+                                        }])
+                                        ->paginate(20);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '만기된 적금 가져오기 성공'    
+            ,'expiredSavings' => $expiredSavings
+        ];
+
+        return response()->json($responseData, 200);
     }
 }

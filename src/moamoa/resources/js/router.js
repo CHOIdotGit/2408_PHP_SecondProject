@@ -38,6 +38,7 @@ import ChildBankProductDetailComponent from '../views/components/bank/child-bank
 import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
 import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
 import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
+import ChildExpiredSavingComponentCopy from '../views/components/bank/child-bank/ChildExpiredSavingComponent copy.vue';
 import PrivateInfoComponent from '../views/components/auth/private/PrivateInfoComponent.vue';
 import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
 
@@ -421,7 +422,7 @@ const routes = [
         beforeEnter: chkAuth,
     },
 
-    // 적금 상품 몰 상세 페이지
+    // 적금 상품 몰 페이지
     {
         path: '/moabank/product',
         component: ChildBankProductComponent,
@@ -446,6 +447,20 @@ const routes = [
     {
         path: '/child/bankbook/:bankbook_id',
         component: ChildBankBookComponent,
+        beforeEnter: chkAuth,
+    },
+    
+    // 자녀 만기된 적금 리스트 페이지
+    {
+        path: '/child/expired/saving',
+        component: ChildExpiredSavingComponentCopy,
+        beforeEnter: chkAuth,
+    },
+    
+    // 자녀 만기된 적금 상세 페이지
+    {
+        path: '/child/expired/saving/:expired_id',
+        component: ChildExpiredSavingComponentCopy,
         beforeEnter: chkAuth,
     },
 

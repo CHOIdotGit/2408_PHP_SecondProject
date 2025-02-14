@@ -221,11 +221,17 @@ Route::get('/api/parent/point/{id}', [ParentPointController::class, 'index']);
 // 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
 
-// 자녀 포인트-은행 페이지
+// 자녀 은행 페이지
 Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
+
+// 자녀 포인트 페이지
+Route::get('/api/child/point', [ParentPointController::class, 'index']);
 
 // 자녀 적금 통장 상세
 Route::get('/api/child/moabank/bankbook/{bankbook_id}', [ChildSavingController::class, 'show']);
+
+// 자녀 만기 적금 리스트 페이지
+Route::get('/api/child/expired/saving', [ChildSavingController::class, 'expiredSaving']);
 
 // 자녀 적금 이자율 계산
 Route::get('/api/child/moabank/interest/rate/{productId}', [BankController::class, 'calculateFinalAmount']);

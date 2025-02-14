@@ -159,56 +159,6 @@ class BankController extends Controller
     public function calculateFinalAmount($productId) {
        
         // // 1. 상품 정보 조회
-        // $product = SavingProduct::find($productId);
-
-        // if (!$product) {
-        //     return response()->json(['success' => false, 'msg' => 'Product not found'], 404);
-        // }
-
-        // // 2. 상품 정보에서 이자율 가져오기
-        // $interestRate = SavingProduct::select('saving_product_id', 'saving_product_interest_rate')
-        //                                 ->where('saving_product_id', $productId)
-        //                                 ->first();
-
-        // // 3. saving_sign_up_end_at이 오늘과 같은지 확인
-        // $signUp = SavingSignUp::where('saving_product_id', $productId)->first();
-
-        // // dd([
-        // //     'productId' => $productId,
-        // //     'signUp' => $signUp,
-        // //     'signUp_end_at' => $signUp ? $signUp->saving_sign_up_end_at : '가입 내역 없음',
-        // //     'today' => now()->toDateString(),
-        // //     'comparison' => $signUp ? ($signUp->saving_sign_up_end_at > now()->toDateString()) : '가입 내역 없음'
-        // // ]);
-
-        // // if (!$signUp || $signUp->saving_sign_up_end_at !== now()->toDateString()) {
-        // if (!$signUp || $signUp->saving_sign_up_end_at >= now()->toDateString()) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'msg' => '이자 계산을 진행할 수 없습니다.'
-        //     ], 400);
-        // }
-
-        // // 4. 납입 내역 가져오기
-        // $savingDetails = SavingDetail::where('saving_sign_up_id', $signUp->saving_sign_up_id)
-        //     ->where('saving_detail_category', '0') // 적금만 계산
-        //     ->orderBy('created_at', 'asc')
-        //     ->get();
-
-        // // 5. 이자 계산
-        // $total = 0;
-        // foreach ($savingDetails as $item) {
-        //     $total = floor(($total + $item->saving_detail_income) * (1 + $interestRate->saving_product_interest_rate / 100 ));
-        // }
-
-        // return response()->json([
-        //     'success' => true
-        //     ,'msg' => '계산된 최종 금액 반환'
-        //     ,'final_total' => $total
-        //     ,'signUp' => $signUp
-        //     // ,'signUp' => $signUp->saving_sign_up_id
-        // ], 200);
-        // 1. 상품 정보 조회
         $product = SavingProduct::find($productId);
 
         if (!$product) {

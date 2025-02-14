@@ -13,7 +13,7 @@
         </div>
         <div class="account">
             <!-- 가입 날짜로 정렬할 예정 -->
-            <div class="div-box">
+            <div class="div-box" @click="goPointList()">
                 <p class="have-point">보유중인 모아 포인트</p>
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
@@ -83,6 +83,14 @@ const goSavingDetail = (saving_sign_up_id) => {
     store.dispatch('saving/childSavingDetail', bankbook_id);
     router.push('/child/bankbook/' + bankbook_id);
     console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
+}
+
+// 자녀 포인트 페이지로 이동
+const goPointList = (saving_sign_up_id) => {
+    // const bankbook_id = saving_sign_up_id;
+    // store.dispatch('saving/childSavingDetail', bankbook_id);
+    // router.push('/child/bankbook/' + bankbook_id);
+    // console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
 // 적금 상품 페이지로 이동

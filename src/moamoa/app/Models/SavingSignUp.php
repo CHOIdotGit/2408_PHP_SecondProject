@@ -35,6 +35,7 @@ class SavingSignUp extends Model
     }
 
     public function saving_products() {
-        return $this->hasMany(SavingProduct::class, 'saving_product_id', 'saving_product_id');
+        // return $this->hasMany(SavingProduct::class, 'saving_product_id', 'saving_product_id');
+        return $this->hasMany(SavingProduct::class, 'saving_product_id');
     }
 }

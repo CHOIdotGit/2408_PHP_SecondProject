@@ -80,26 +80,26 @@ const doughnutChartData = {
 };
 
 const renderDoughnutChart = () => {
-  if (doughnutChartInstance) doughnutChartInstance.destroy();
+    if (doughnutChartInstance) doughnutChartInstance.destroy();
 
-  if (doughnutCanvas.value) {
-    doughnutChartInstance = new Chart(doughnutCanvas.value, {
-      type: 'doughnut',
-      data: doughnutChartData,
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: '지출 비율 도넛 그래프',
-          },
-        },
-      },
-    });
-  }
+    if (doughnutCanvas.value) {
+        doughnutChartInstance = new Chart(doughnutCanvas.value, {
+            type: 'doughnut',
+            data: doughnutChartData,
+            options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                position: 'top',
+                },
+                title: {
+                display: true,
+                text: '지출 비율 도넛 그래프',
+                },
+            },
+            },
+        });
+    }
 };
 
 

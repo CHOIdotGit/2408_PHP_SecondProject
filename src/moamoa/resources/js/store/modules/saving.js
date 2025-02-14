@@ -10,7 +10,13 @@ export default {
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,bankbookId: sessionStorage.getItem('bankbook_id') ? sessionStorage.getItem('bankbook_id') : null
-        ,savingInfo:[] // 자녀 통장 정보
+        ,savingInfo: [] // 자녀 통장 정보
+        ,expiredSavings: [] // 자녀 만기 적금 리스트
+        // 페이지네이션
+        ,currentPage: 1
+        ,lastPage: 1
+        ,perPage: 10
+        ,total: 0
     }),
 
     mutations: {
@@ -25,7 +31,17 @@ export default {
         },
         setSavingInfo(state, savingInfo) {
             state.savingInfo = savingInfo
-        }
+        },
+        setExpiredSavings(state, expiredSavings) {
+            state.expiredSavings = expiredSavings
+        },
+        setPagination(state, { current_page, last_page, per_page, total }) {
+            state.currentPage = current_page;
+            state.lastPage = last_page;
+            state.perPage = per_page;
+            state.total = total;
+        },
+
     },
 
     actions: {
@@ -59,6 +75,40 @@ export default {
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);
                 });
+        },
+
+        // 자녀 만기 적금 리스트
+        // childExpiredSavings (context) {
+        //     const url = '/api/child/expired/saving';
+
+        //     axios.get(url)
+        //         .then(response => {
+        //             context.commit('setExpiredSavings', response.data.expiredSavings.data);
+        //             context.commit('setPagination', {
+        //                 current_page: response.data.expiredSavings.current_page,
+        //                 last_page: response.data.expiredSavings.last_page,
+        //                 per_page: response.data.expiredSavings.per_page,
+        //                 total: response.data.expiredSavings.total,
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error('자녀 만기 적금 리스트 불러오기 실패', error)
+        //         });
+        // },
+        async childExpiredSavings(context, searchData) {
+            try {
+                const response = await axios.get(`/api/child/expired/saving?page=${searchData.page}`);
+                
+                context.commit('setExpiredSavings', response.data.expiredSavings.data);
+                context.commit('setPagination', {
+                    current_page: response.data.expiredSavings.current_page,
+                    last_page: response.data.expiredSavings.last_page,
+                    per_page: response.data.expiredSavings.per_page,
+                    total: response.data.expiredSavings.total,
+                });
+            } catch (error) {
+                console.error('자녀 만기 적금 리스트 불러오기 실패', error);
+            }
         },
 
         // 적금 가입하기

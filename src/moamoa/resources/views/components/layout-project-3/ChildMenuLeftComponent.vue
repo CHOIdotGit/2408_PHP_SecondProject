@@ -43,14 +43,17 @@
                     모아은행
                 </div>
                 멘토님 요청에 의한 페이지 분리 - 최상민 -->
-                <div class="menu-title go-bank" @click="goBankbook">
+                <div class="menu-title go-bank">
                         <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
-                        모아은행
+                        <p @click="goBankbook">모아은행</p>
                     <span @click="toggleSavingProduct" class="arrow-icon">{{ isOpen ? '▲' : '▼' }}</span>
                 </div>
 
                 <!-- 적금 상품: isOpen이 true일 때만 보이도록 설정 -->
                 <div v-if="isOpen" @click="router.push('/moabank/product')" class="saving-product">ㄴ 적금 상품</div>
+                
+                <!-- 적금 상품: isOpen이 true일 때만 보이도록 설정 -->
+                <div v-if="isOpen" @click="router.push('/child/expired/saving')" class="saving-product">ㄴ 만기된 적금</div>
 
                 <!-- 4순위 : 상점 -->
                 <!-- <div class="menu-title">
