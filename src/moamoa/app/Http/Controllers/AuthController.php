@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthenticationRequest;
-use App\Http\Requests\AuthRequest;
-use App\Http\Requests\PasswordRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +19,11 @@ class AuthController extends Controller {
   /**
    * 로그인 처리
    * 
-   * @param AuthRequest $request // 커스텀 유효성 검사 리퀘스트
+   * @param AuthenticationRequest $request // 커스텀 유효성 검사 리퀘스트
    * 
    * @return JSON $responseData
    */
-  public function login(AuthRequest $request) {
+  public function login(AuthenticationRequest $request) {
     // 입력값이 둘중 하나라도 없을경우 예외 반환
     if($request->missing(['account', 'password'])) {
       return response()->json([
@@ -52,6 +50,11 @@ class AuthController extends Controller {
       }else {
   
         if($parent) { // 부모면 부모로그인
+          // 이미 로그인된 자녀가 있다면 로그아웃
+          // if(Auth::guard('children')->check()) {
+          //   $this->logout();
+          // }
+
           Auth::guard('parents')->login($parent);
     
           $responseData = [
@@ -61,6 +64,11 @@ class AuthController extends Controller {
             ,'redirect_to' => 'parent/home'
           ];
         }else { //아니면 자녀 로그인
+          // 이미 로그인된 부모가 있다면 로그아웃
+          // if(Auth::guard('parents')->check()) {
+          //   $this->logout();
+          // }
+
           Auth::guard('children')->login($child);
     
           $responseData = [
@@ -111,12 +119,14 @@ class AuthController extends Controller {
    * @return Boolean $result
    */
   public function checkSession() {
-    $parent = Auth::guard('parents')->user();
-    $child = Auth::guard('children')->user();
+    $parent = Auth::guard('parents')->user() ? true : false;
+    $child = Auth::guard('children')->user() ? true : false;
 
     return response()->json([
       // 인증 사용자의 세션이 남아있으면 true, 없을경우 false
-      'isExpired' => ($parent || $child)
+      'isSession' => ($parent || $child)
+      ,'isParent' => $parent
+      ,'isChild' => $child
     ], 200);
   }
 
@@ -418,25 +428,6 @@ class AuthController extends Controller {
   }
 
   /**
-   * 자녀 연결 레코드 조회
-   * 
-   * @param Request $request
-   * 
-   * @return JSON $responseData
-   */
-  public function childManyInfo() {
-    $child = Auth::guard('children')->user();
-
-    // 자녀 레코드 + 연결된 미션,지출 레코드
-    $childInfo = $this->authRepository->childInfoWithMissionsAndTransactions($child->child_id);
-
-    return response()->json([
-      'success' => true,
-      'child' => $childInfo,
-    ]);
-  }
-
-  /**
    * 본인 확인 처리
    * 
    * @param AuthenticationRequest $request
@@ -592,105 +583,159 @@ class AuthController extends Controller {
     }
   }
 
-  /**
-   * 회원 비밀번호 변경 처리
-   * 
-   * @param PasswordRequest $request
-   * 
-   * @return JSON $responseData
-   */
-  public function changePassword(PasswordRequest $request) {
-    if(empty($request->all()) || $request->missing(['password', 'newPassword', 'newPasswordChk'])) { 
-      return response()->json([
-        'success' => false,
-        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
-      ], 401);
-    }else {
-      try {
-        // 로그인한 유저 정보를 세팅
-        if(Auth::guard('parents')->check()) {
-          $user = Auth::guard('parents')->user();
-          $colName = 'parent_id';
-        }else {
-          $user = Auth::guard('children')->user();
-          $colName = 'child_id';
-        }
+
+  
+  // --------------------------- V001 del start -----------------------------
+  // 
+  // /**
+  //  * 회원 비밀번호 변경 처리
+  //  * 
+  //  * @param PasswordRequest $request
+  //  * 
+  //  * @return JSON $responseData
+  //  */
+  // public function changePassword(PasswordRequest $request) {
+  //   if(empty($request->all()) || $request->missing(['password', 'newPassword', 'newPasswordChk'])) { 
+  //     return response()->json([
+  //       'success' => false,
+  //       'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+  //     ], 401);
+  //   }else {
+  //     try {
+  //       // 로그인한 유저 정보를 세팅
+  //       if(Auth::guard('parents')->check()) {
+  //         $user = Auth::guard('parents')->user();
+  //         $colName = 'parent_id';
+  //       }else {
+  //         $user = Auth::guard('children')->user();
+  //         $colName = 'child_id';
+  //       }
         
-        $userInfo = [
-          'column_name' => $colName,
-          'column_id' => $user->$colName
-        ];
+  //       $userInfo = [
+  //         'column_name' => $colName,
+  //         'column_id' => $user->$colName
+  //       ];
 
-        $updateData = [
-          'password' => Hash::make($request->newPassword)
-        ];
+  //       $updateData = [
+  //         'password' => Hash::make($request->newPassword)
+  //       ];
 
-        // 비밀번호 업데이트 실행
-        $this->authRepository->updateUser($userInfo, $updateData);
+  //       // 비밀번호 업데이트 실행
+  //       $this->authRepository->updateUser($userInfo, $updateData);
 
-        $responseData = [
-          'success' => true,
-          'msg' => '비밀번호 변경 성공'
-        ];
+  //       $responseData = [
+  //         'success' => true,
+  //         'msg' => '비밀번호 변경 성공'
+  //       ];
 
-        return response()->json($responseData, 200);
+  //       return response()->json($responseData, 200);
         
-      }catch(Throwable $th) {
-        return response()->json([
-          'success' => false,
-          'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
-        ], 500);
-      }
-    }
-  }
+  //     }catch(Throwable $th) {
+  //       return response()->json([
+  //         'success' => false,
+  //         'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
+  //       ], 500);
+  //     }
+  //   }
+  // }
+  // 
+  // /**
+  //  * 자녀 연결 레코드 조회
+  //  * 
+  //  * @param Request $request
+  //  * 
+  //  * @return JSON $responseData
+  //  */
+  // public function childManyInfo() {
+  //   $child = Auth::guard('children')->user();
 
-  /**
-   * 자녀 부모ID 갱신 처리
-   */
-  public function modifyReMatching(Request $request) {
-    if(empty($request->all()) || $request->missing(['parent_id'])) {
-      return response()->json([
-        'success' => false,
-        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
-      ], 401);
-    }else {
-      try {
-        // 로그인한 유저 정보를 세팅
-        if(!Auth::guard('children')->check()) {
-          return response()->json([
-            'success' => false,
-            'error' => '잘못된 접근이 감지되었습니다.',
-          ], 401);
-        }else {
-          $user = Auth::guard('children')->user();
-          $colName = 'child_id';
-        }
+  //   // 자녀 레코드 + 연결된 미션,지출 레코드
+  //   $childInfo = $this->authRepository->childInfoWithMissionsAndTransactions($child->child_id);
+
+  //   return response()->json([
+  //     'success' => true,
+  //     'child' => $childInfo,
+  //   ]);
+  // }
+  // 
+  // /**
+  //  * 가족코드 부모 검사
+  //  * 
+  //  * @param Request $request
+  //  * 
+  //  * @return JSON $responseData
+  //  */
+  // public function childRegistMatching(AuthRequest $request) {
+  //   // 가족코드가 입력됫고 제대로 8글자가 왔다면
+  //   if($request->fam_code && (mb_strlen($request->fam_code) === 8)) {
+  //     $parent = $this->authRepository->findParentByFamilyCode($request->fam_code);
+  // 
+  //     if($parent) {
+  //       $responseData = [ 
+  //         'success' => true,
+  //         'msg' => '부모 매칭 성공',
+  //         'parent' => $parent,
+  //       ];
+  // 
+  //       return response()->json($responseData, 200);
+  //     }
+  //   }
+  //   return response()->json([
+  //     'success' => false,
+  //     'error' => [ 'fam_code' => ['0' => '존재하지 않는 코드입니다.']],
+  //   ], 422);
+  // }
+  //
+  // /**
+  //  * 자녀 부모ID 갱신 처리
+  //  */
+  // public function modifyReMatching(Request $request) {
+  //   if(empty($request->all()) || $request->missing(['parent_id'])) {
+  //     return response()->json([
+  //       'success' => false,
+  //       'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+  //     ], 401);
+  //   }else {
+  //     try {
+  //       // 로그인한 유저 정보를 세팅
+  //       if(!Auth::guard('children')->check()) {
+  //         return response()->json([
+  //           'success' => false,
+  //           'error' => '잘못된 접근이 감지되었습니다.',
+  //         ], 401);
+  //       }else {
+  //         $user = Auth::guard('children')->user();
+  //         $colName = 'child_id';
+  //       }
         
-        $userInfo = [
-          'column_name' => $colName,
-          'column_id' => $user->$colName
-        ];
+  //       $userInfo = [
+  //         'column_name' => $colName,
+  //         'column_id' => $user->$colName
+  //       ];
 
-        $updateData = [
-          'parent_id' => $request->parent_id
-        ];
+  //       $updateData = [
+  //         'parent_id' => $request->parent_id
+  //       ];
 
-        // 부모 변경 실행
-        $this->authRepository->updateUser($userInfo, $updateData);
+  //       // 부모 변경 실행
+  //       $this->authRepository->updateUser($userInfo, $updateData);
 
-        $responseData = [
-          'success' => true,
-          'msg' => '부모 변경 성공'
-        ];
+  //       $responseData = [
+  //         'success' => true,
+  //         'msg' => '부모 변경 성공'
+  //       ];
 
-        return response()->json($responseData, 200);
+  //       return response()->json($responseData, 200);
 
-      }catch(Throwable $th) {
-        return response()->json([
-          'success' => false,
-          'error' => '부모 변경 실패: ' . $th->getMessage(),
-        ], 500);
-      }
-    }
-  }
+  //     }catch(Throwable $th) {
+  //       return response()->json([
+  //         'success' => false,
+  //         'error' => '부모 변경 실패: ' . $th->getMessage(),
+  //       ], 500);
+  //     }
+  //   }
+  // }
+  // 
+  // --------------------------- V001 del end -----------------------------
+
 }

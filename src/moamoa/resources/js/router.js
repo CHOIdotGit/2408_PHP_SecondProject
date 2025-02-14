@@ -22,12 +22,6 @@ import ChildSpendUpdateComponent from '../views/components/board/children-board/
 import ParentsStatsComponent from '../views/components/board/parents-board/ParentsStatsComponent.vue';
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
-import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
-import FamilyPrivateEditComponent from '../views/components/auth/private/FamilyPrivateEditComponent.vue';
-import ParentPrivateWithdrawalComponent from '../views/components/auth/private/ParentPrivateWithdrawalComponent.vue';
-import ChildPrivateWithdrawalComponent from '../views/components/auth/private/ChildPrivateWithdrawalComponent.vue';
-import FamilyPrivateChangePasswordComponent from '../views/components/auth/private/FamilyPrivateChangePasswordComponent.vue';
-import ChildPrivateMatchingComponent from '../views/components/auth/private/ChildPrivateMatchingComponent.vue';
 import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
 import ParentsMoaBankComponent from '../views/components/bank/parent-bank/ParentsMoaBankComponent.vue';
 import ChildBankProductComponent from '../views/components/bank/child-bank/ChildBankProductComponent.vue';
@@ -44,6 +38,9 @@ import ChildBankProductDetailComponent from '../views/components/bank/child-bank
 import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
 import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
 import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
+import PrivateInfoComponent from '../views/components/auth/private/PrivateInfoComponent.vue';
+import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
+
 
 const chkAuth = (to, from, next) => {
     
@@ -54,19 +51,18 @@ const chkAuth = (to, from, next) => {
     const parentFlg = store.state.auth.parentFlg;
     const childFlg = store.state.auth.childFlg;
 
-    // 로그인 상태일 때만 세션 체크 실행
-    if(authFlg) {
-        // 세션 상태 체크
-        axios.get('/api/check-session')
-        .then(res => {
-            // 세션이 만료되었으면 로그아웃 처리
-            if(!res.data.isExpired) {
-                store.dispatch('auth/logout');
-                next('/login');
-                return;
-            }
-        });
-    }
+    // 세션 상태 체크
+    axios.get('/api/check-session')
+    .then(res => {
+        // 세션이 만료되었으면 로그아웃 처리
+        if(authFlg && !res.data.isSession) {
+            store.dispatch('auth/logout');
+        }
+        // 비로그인 상태인데 세션정보가 있으면 재로그인 처리
+        else if(!authFlg && res.data.isSession) {
+            store.dispatch('auth/redirectLogin', res.data.isParent ? 'parent' : 'child');
+        }
+    });
 
     // 비인증용 경로 변수
     const notAuthPath = (to.path === '/' || to.path === '/login' || to.path.startsWith('/regist/'));
@@ -97,8 +93,12 @@ const routes = [
     // 기본 페이지 -> 로그인 페이지
     {
         path: '/',
-        redirect: '/login',
-        beforeEnter: chkAuth,
+        component: { render: () => null },
+        beforeEnter: (to, from, next) => {
+            chkAuth(to, from, (redirectPath) => {
+                next(redirectPath || '/login');
+            });
+        },
     },
     // 로그인 페이지
     {
@@ -118,8 +118,8 @@ const routes = [
                 beforeEnter: (to, from, next) => {
                     // 초기 진입, 로그인 페이지, 회원 선택에서 뒤로올 경우
                     if(from.path === '/' || from.path === '/login' || from.path === '/regist/select') {
-                        sessionStorage.setItem('registPage', 'agree');
                         chkAuth(to, from, next);
+                        sessionStorage.setItem('registPage', 'agree');
                     }else {
                         next('/:catchAll(.*)');
                     }
@@ -135,8 +135,8 @@ const routes = [
 
                     // agree 페이지에서 정상적으로 넘어온 경우
                     if(from.path === '/regist/agree' || from.path === '/regist/parent' || from.path === '/regist/child') {
-                        sessionStorage.setItem('registPage', 'select');
                         chkAuth(to, from, next);
+                        sessionStorage.setItem('registPage', 'select');
                     // 새로고침하거나 뒤로가기로 온 경우
                     }else if(from.path === '/' && (currentPage === 'select' || currentPage === 'form')) {
                         chkAuth(to, from, next);
@@ -157,8 +157,8 @@ const routes = [
 
                     // select 페이지에서 정상적으로 넘어온 경우
                     if(from.path === '/regist/select') {
-                        sessionStorage.setItem('registPage', 'form');
                         chkAuth(to, from, next);
+                        sessionStorage.setItem('registPage', 'form');
                     }
                     // 새로고침할 경우
                     else if(from.path === '/' && currentPage === 'form') {
@@ -180,8 +180,8 @@ const routes = [
 
                     // 회원가입 폼에서 정상적으로 넘어온 경우
                     if(from.path === '/regist/parent' || from.path === '/regist/child') {
-                        sessionStorage.setItem('registPage', 'complete');
                         chkAuth(to, from, next);
+                        sessionStorage.setItem('registPage', 'complete');
                     }
                     // 새로고침의 경우
                     else if(from.path === '/' && currentPage === 'complete') {
@@ -201,97 +201,48 @@ const routes = [
         path: '/:type(parent|child)/private',
         children: [
 
-            // 본인 확인 페이지
+            // 본인확인
             {
                 path: 'ident/:category(edit|wdrl)',
                 component: PrivateIdentComponent,
                 beforeEnter: chkAuth,
             },
 
-            // 개인정보 수정 페이지
+            // 회원수정
             {
                 path: 'edit',
                 component: PrivateEditComponent,
                 beforeEnter: chkAuth,
             },
 
-            // 회원탈퇴 페이지
+            // 회원탈퇴
             {
                 path: 'wdrl',
                 component: PrivateWdrlComponent,
+                beforeEnter: chkAuth,
+            },
+
+            // 가족정보
+            {
+                path: 'info',
+                component: PrivateInfoComponent,
                 beforeEnter: chkAuth,
             }
         ],
     },
 
-    // --------------------------- V001 del start -----------------------------
-    // 회원가입 선택 페이지
-    // {
-    //     path: '/regist/main',
-    //     component: SelectRegistComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 부모 회원가입 정보입력 페이지
-    // {
-    //     path: '/regist/parent',
-    //     component: ParentRegistComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 부모 코드뷰 페이지
-    // {
-    //     path: '/regist/parent/code',
-    //     component: ParentCodeComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 자녀 회원가입 정보입력 페이지
-    // {
-    //     path: '/regist/child',
-    //     component: ChildRegistComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 회원가입 완료 페이지
-    // {
-    //     path: '/regist/complete',
-    //     component: CompleteRegistComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 부모 회원 정보 수정 페이지
-    // {
-    //     path: '/parent/private/edit',
-    //     component: FamilyPrivateEditComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // 자녀 회원 수정 페이지
-    // {
-    //     path: '/child/private/edit',
-    //     component: FamilyPrivateEditComponent,
-    //     beforeEnter: chkAuth,
-    // },
-    // --------------------------- V001 del end -----------------------------
-
-    // 부모 페이지 모음 *********************************** //
-    // 홈페이지
-    {
-        path: '/parent/home',
-        component: ParentsManagementComponent,
-        beforeEnter: chkAuth,
-    },
     // 부모 가족 정보 페이지
     {
         path: '/parent/family/info',
         component: ParentPrivateFamCodeComponent,
         beforeEnter: chkAuth,
     },
-    // 부모 회원 탈퇴 페이지
+
+    // 부모 페이지 모음 *********************************** //
+    // 홈페이지
     {
-        path: '/parent/private/withdrawal',
-        component: ParentPrivateWithdrawalComponent,
-        beforeEnter: chkAuth,
-    },
-    // 부모 회원 비밀번호 변경 페이지
-    {
-        path: '/parent/private/password',
-        component: FamilyPrivateChangePasswordComponent,
+        path: '/parent/home',
+        component: ParentsManagementComponent,
         beforeEnter: chkAuth,
     },
 
@@ -390,24 +341,6 @@ const routes = [
         path: '/child/home',
         // component: ChildCalendarComponent,
         component: ChildHomeComponent,
-        beforeEnter: chkAuth,
-    },
-    // 자녀 회원 탈퇴 페이지
-    {
-        path: '/child/private/withdrawal',
-        component: ChildPrivateWithdrawalComponent,
-        beforeEnter: chkAuth,
-    },
-    // 자녀 회원 비밀번호 변경 페이지
-    {
-        path: '/child/private/password',
-        component: FamilyPrivateChangePasswordComponent,
-        beforeEnter: chkAuth,
-    },
-    // 자녀 부모 재매칭 페이지
-    {
-        path: '/child/private/rematching',
-        component: ChildPrivateMatchingComponent,
         beforeEnter: chkAuth,
     },
     // +==================================+

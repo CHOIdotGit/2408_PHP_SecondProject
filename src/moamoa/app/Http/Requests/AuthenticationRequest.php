@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\CheckPasswordRule;
 use App\Rules\ExistsFamilyRule;
-use App\Rules\NotSameFamilyCodeRule;
+use App\Rules\NotSamePasswordRule;
 use App\Rules\UniqueFamilyRule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -34,6 +34,7 @@ class AuthenticationRequest extends FormRequest {
 
       // 들어온게 회원가입이면
       if($this->routeIs('auth.store.user')) {
+        // 일치하는 아이디 검사 (삭제 레코드 포함)
         $rules['account'][] = new UniqueFamilyRule;
         $rules['password'][] = 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/';
         $rules['passwordChk'] = ['required', 'same:password'];
@@ -46,7 +47,7 @@ class AuthenticationRequest extends FormRequest {
 
         // 둘중 하나라도 입력되면 필수사항
         if($this->filled('newPassword') || $this->filled('newPasswordChk')) {
-          $rules['newPassword'] = ['required', 'different:password', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/'];
+          $rules['newPassword'] = ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/', new NotSamePasswordRule];
           $rules['newPasswordChk'] = ['required', 'same:newPassword'];
         // 입력 안햇다면 통과
         }else {
@@ -65,6 +66,7 @@ class AuthenticationRequest extends FormRequest {
     // 본인 확인
     elseif($this->routeIs('auth.ident.user')) {
       $rules['account'] = ['nullable'];
+      // 비밀번호 체크
       $rules['password'][] = new CheckPasswordRule;
     }
 
@@ -81,18 +83,19 @@ class AuthenticationRequest extends FormRequest {
       ,'passwordChk.same' => '비밀번호가 서로 일치하지 않습니다.'
       ,'name.required' => '이름을 입력해 주세요.'
       ,'name.regex' => '이름 형식이 맞지 않습니다.'
-      // ,'nick_name.regex' => '단어 형식이 맞지 않습니다.'
       ,'email.required' => '이메일을 입력해 주세요.'
       ,'email.regex' => '이메일 형식이 맞지 않습니다.'
       ,'tel.required' => '전화번호를 입력해 주세요.'
       ,'tel.regex' => '번호 형식이 맞지 않습니다.'
-      // ,'fam_code.required' => '가족코드를 입력해 주세요.'
-      // ,'fam_code.regex' => '단어 형식이 맞지 않습니다.'
       ,'newPassword.required' => '새 비밀번호를 입력해주세요.'
       ,'newPassword.regex' => '새 비밀번호 형식이 맞지 않습니다.'
       ,'newPassword.different' => '현재 비밀번호와 동일할 수 없습니다.'
       ,'newPasswordChk.required' => '새 비밀번호 확인을 입력해주세요.'
       ,'newPasswordChk.same' => '새 비밀번호와 서로 일치하지 않습니다.'
+
+      // ,'nick_name.regex' => '단어 형식이 맞지 않습니다.'
+      // ,'fam_code.required' => '가족코드를 입력해 주세요.'
+      // ,'fam_code.regex' => '단어 형식이 맞지 않습니다.'
     ];
   }
 

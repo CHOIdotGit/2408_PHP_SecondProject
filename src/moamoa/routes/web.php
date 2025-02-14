@@ -47,10 +47,12 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/modifyUser', [AuthController::class, 'modifyUser'])->name('auth.modify.user');
     Route::post('/removeUser', [AuthController::class, 'removeUser'])->name('auth.remove.user');
     
-    Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
-    Route::post('/childManyInfo', [AuthController::class, 'childManyInfo'])->name('auth.child.many.info');
-    Route::post('/childReMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.matching');
-    Route::post('/modifyReMatching', [AuthController::class, 'modifyReMatching'])->name('auth.modify.re.matching');
+    // --------------------------- V001 del start -----------------------------
+    // Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
+    // Route::post('/childManyInfo', [AuthController::class, 'childManyInfo'])->name('auth.child.many.info');
+    // Route::post('/childReMatching', [AuthController::class, 'childRegistMatching'])->name('auth.child.matching');
+    // Route::post('/modifyReMatching', [AuthController::class, 'modifyReMatching'])->name('auth.modify.re.matching');
+    // --------------------------- V001 del end -------------------------------
 });
 // 
 
