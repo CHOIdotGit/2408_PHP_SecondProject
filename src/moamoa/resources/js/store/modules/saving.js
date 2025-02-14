@@ -59,6 +59,38 @@ export default {
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);
                 });
+        },
+
+        // 적금 가입하기
+        createSaving(context, data) {
+            const url = '/api/child/moabank/saving/create/' + data.product_id;
+            console.log(url);
+
+            const formData = new FormData();
+            formData.append('child_id', data.child_id);
+            formData.append('saving_product_id', data.saving_product_id);
+            formData.append('saving_sign_up_deposit_at', data.saving_sign_up_deposit_at);
+            formData.append('saving_sign_up_amount', data.saving_sign_up_amount);
+            formData.append('saving_sign_up_start_at', data.saving_sign_up_end_at);
+            formData.append('saving_sign_up_status', data.saving_sign_up_status);
+
+            axios.post(url, formData)
+                .then(response => {
+                    const newSaving = response.data.savingDetail;
+                    console.log('적금 가입', newSaving);
+
+                    context.commit('setBankBookId', newSaving.bankbook_id);
+                    console.log('새로운 통장 아이디 생성 : ', setBankBookId);
+
+                    context.commit('setSavingDetail', newSaving);
+                    alert('적금 가입이 완료 되었습니다.');
+                })
+                .catch(error => {
+                    console.error('적금 가입 실패', error);
+                })
+                .finally(()=> {
+                    context.commit('set')
+                })
         }
 
     },

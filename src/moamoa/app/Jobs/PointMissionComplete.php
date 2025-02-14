@@ -2,34 +2,20 @@
 
 namespace App\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use App\Models\Mission;
+use App\Models\Point;
 
-class PointMissionComplete implements ShouldQueue
-{
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+class PointMissionComplete extends MyJob {
+    
+// * 완료 미션 20개마다 포인트 지급 
+// * 지급 포인트 50
+// * 완료 미션 상태 (status = 2)
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function process()
     {
-        //
-    }
+    
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        //
+
+        
     }
 }

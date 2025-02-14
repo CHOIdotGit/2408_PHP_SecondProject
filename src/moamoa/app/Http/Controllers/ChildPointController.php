@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ChildPointController extends Controller
 {
+    // ***********************************
     public function index() {
         // 로그인 유저가 자녀인지 확인
         $child = Auth::guard('children')->user();

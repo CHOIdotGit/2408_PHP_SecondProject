@@ -162,9 +162,6 @@ class ChildSavingController extends Controller
             ,'regist' => $regist->toArray()
         ];
 
-        // 자동이체로 통장에 찍히는거 처리
-        AutoSavingRecord::dispatch();
-
         return response()->json($responseData, 200);
 
 
