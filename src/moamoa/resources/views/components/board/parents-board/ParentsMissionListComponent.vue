@@ -10,7 +10,7 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p> 등록 일자</p> 
+                        <p> 미션 일자</p> 
                         <input type="date" min="2000-01-01" v-model="filters.startDate">
                         <p>~</p>
                         <input type="date" min="2000-01-01" v-model="filters.endDate">

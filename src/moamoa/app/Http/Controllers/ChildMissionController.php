@@ -34,6 +34,46 @@ class ChildMissionController extends Controller
     }
 
     // ************************************************
+    // ********************필터 검색 *******************
+    // ************************************************
+    public function search(Request $request) {
+        // 자녀 확인
+        $child = Auth::guard('children')->user();
+
+        $category = $request->category;
+        $startDate = $request->start_at;
+        $endDate = $request->end_at;
+        $keyword = $request->keyword;
+        Log::debug('request', $request->all());
+        $filters = Mission::with('child')
+        ->where([
+            ['missions.child_id', $child->child_id]
+        ])
+        ->when($category !== '', function($query) use ($category) {
+            return $query->where('missions.category', $category);
+        })
+        ->when($startDate, function($query) use ($startDate) {
+            return $query->whereDate('missions.start_at', '=', $startDate);
+        })
+        ->when($endDate, function($query) use ($endDate) {
+            return $query->whereDate('missions.end_at', '=', $endDate);
+        })
+        ->when($keyword !== '', function($query) use ($keyword) {
+            return $query->where('missions.title', 'like', '%' . $keyword . '%');
+        })
+        ->orderBy('missions.end_at' ,'ASC')
+        ->paginate(20);
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '필터 성공'
+            ,'filters' => $filters
+        ];
+        
+        return response()->json($responseData, 200);
+}
+
+    // ************************************************
     // **********자녀 미션 상세 페이지 불러오기**********
     // ************************************************
     public function show($mission_id) {

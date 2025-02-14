@@ -9,34 +9,36 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p> 등록 일자</p> 
-                        <input type="date" min="2000-01-01" >
+                        <p> 미션 일자 </p> 
+                        <input type="date" min="2000-01-01" v-model="filters.startDate">
                         <p>~</p>
-                        <input type="date" min="2000-01-01" >
+                        <input type="date" min="2000-01-01" v-model="filters.endDate">
                     </div>
                     <div class="search-filter">
-                        <p> 종류 </p> 
-                        <select name="mission-type">
-                            <option value="all">전체</option>
-                            <option value="shinhan">집안일</option>
-                            <option value="hana">기타</option>
-                            <option value="kb" >생활습관</option>
-                            <option value="woori">취미</option>
+                        <p>⦁ 미션 종류 </p> 
+                        <select name="mission-type" v-model="filters.category" >
+                            <option value="" >전체</option>
+                            <option value="0">학습</option>
+                            <option value="1">취미</option>
+                            <option value="2" >집안일</option>
+                            <option value="3">생활습관</option>
+                            <option value="4">기타</option>
                         </select>
-                        <select name="status">
-                            <option value="all">전체</option>
-                            <option value="waiting">대기중</option>
-                            <option value="ongoing">진행중</option>
-                            <option value="complete">완료</option>
-                            <option value="cancel" >취소</option>
+                        <p>⦁ 진행 상태 </p> 
+                        <select name="status" v-model="filters.status">
+                            <option value="">전체</option>
+                            <option value="0">미션진행</option>
+                            <option value="1">미션대기</option>
+                            <option value="2">미션완료</option>
+                            <option value="3">취소</option>
                         </select>
                     </div>
                     <div class="search">
-                        <input type="search" placeholder="검색어를 입력해주세요">
+                        <input type="search" v-model="filters.keyword" placeholder="검색어를 입력해주세요">
                     </div>
                 </div>
                 <div class="search-btn">
-                    <button>검색</button>
+                    <button @click="missionSearch">검색</button>
                 </div>
             </div>
             <div class="mission-title-bar">
@@ -316,6 +318,25 @@ const getMissionId = (mission_id) => {
 const getChildId = () => {
     store.dispatch('childMission/goCreateMission');
 }
+
+
+// +=================+
+// +    검색 필터     +
+// +=================+
+// 기본값
+const filters = ref({
+    category: "all",
+    status: "all",
+    startDate: "",
+    endDate: "",
+    keyword: "",
+});
+
+
+const missionSearch = () => {
+    store.dispatch('childMission/missionSearch', filters.value);
+};
+
 
 </script>
 

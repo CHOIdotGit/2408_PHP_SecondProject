@@ -19,7 +19,7 @@ export default {
         ,missionId: sessionStorage.getItem('missionId') ? sessionStorage.getItem('missionId') :null
         ,childHome: []
         ,totalPages: 1 // 총 페이지 수
-        ,filter: []
+        ,filter: [] //검색 필터
         ,currentPage: 1
         ,lastPage: 1
         ,perPage: 10

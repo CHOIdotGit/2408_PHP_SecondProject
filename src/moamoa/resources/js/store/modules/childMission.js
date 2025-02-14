@@ -23,6 +23,7 @@ export default {
         ,lastPage: 1
         ,perPage: 10
         ,total: 0
+        ,filter: [] //검색필터
         
     }),
     mutations: {
@@ -75,7 +76,9 @@ export default {
             state.perPage = per_page;
             state.total = total;
         },
-        
+        setFilterMissionList(state, childMissionList) {
+            state.filter = childMissionList;
+        },
 
     },
     actions: {
@@ -334,7 +337,24 @@ export default {
                 console.log('미션 수정 에러', error);
             })
         },
-
+        // ********************
+        // 필터&검색기능
+        // ********************
+        missionSearch(context, searchData) {
+            const url = '/api/child/mission/search';
+    
+            axios.get(url, {
+                params:  searchData 
+            })
+            .then(response => {
+                context.commit('setchildMissionList', response.data.missions.data);
+                context.commit('setFilterMissionList', searchData);
+            })
+            .catch(error => {
+                console.log('검색안됨', error);
+            })
+    
+        },
     },
 
     getters: {

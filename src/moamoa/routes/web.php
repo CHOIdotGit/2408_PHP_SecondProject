@@ -147,6 +147,9 @@ Route::get('/api/transaction/search', [TransactionController::class, 'search']);
 // 자녀 지출 리스트 검색
 Route::get('/api/child/transaction/search', [TransactionChildrenController::class, 'search']);
 
+// 자녀 미션 리스트 검색
+Route::get('/api/child/mission/search', [ChildMissionController::class, 'search']);
+
 // ******************************
 // *         헤더 관련           *
 // ******************************

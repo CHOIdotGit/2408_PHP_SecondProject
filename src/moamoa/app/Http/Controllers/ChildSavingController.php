@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AutoSavingRecord;
 use App\Models\SavingDetail;
 use App\Models\SavingProduct;
 use App\Models\SavingSignUp;
@@ -115,7 +116,9 @@ class ChildSavingController extends Controller
             return response()->json($responseData, 200);
     }
 
+    // ***************************
     // 적금 상품 가입하기
+    // ***************************
     public function store(Request $request) {
         $child = Auth::guard('children')->user();
         $parent = $child->parent_id;
@@ -158,7 +161,12 @@ class ChildSavingController extends Controller
             ,'msg' => '미션 등록 성공'
             ,'regist' => $regist->toArray()
         ];
+
+        // 자동이체로 통장에 찍히는거 처리
+        AutoSavingRecord::dispatch();
+
         return response()->json($responseData, 200);
+
 
         
     }

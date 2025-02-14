@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('saving_sign_ups', function (Blueprint $table) {
-            $table->dropColumn('saving_product_amount');
+        Schema::table('children', function (Blueprint $table) {
+            $table->date('login_at')->nullable()->comment('로그인일자 확인해서 포인트 지급');
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('saving_sign_ups', function (Blueprint $table) {
-            //
+        Schema::table('children', function (Blueprint $table) {
+            $table->dropColumn('login_at')->nullable()->comment('로그인일자 확인해서 포인트 지급');
         });
     }
 };
