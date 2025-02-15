@@ -131,7 +131,7 @@ const endDay = ref(new Date().toISOString().slice(0, 10));
 const regist = reactive({
     amount: ''
     ,child_id: route.params.child_id
-    ,saving_product_id: route.params.prdoct_id
+    ,saving_product_id: route.params.product_id
     ,saving_sign_up_status: productInfo.value.saving_product_type
     ,saving_sign_up_start_day: today
     ,saving_sign_up_end_day: endDay

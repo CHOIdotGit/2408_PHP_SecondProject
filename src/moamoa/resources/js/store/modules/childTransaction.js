@@ -22,7 +22,7 @@ export default {
         ,lastPage: 1
         ,perPage: 10
         ,total: 0
-        ,filter: []
+        ,filter: [] // 필터 검색
     }),
     mutations: {
         setChildTransactionList(state, childTransactionList) {
@@ -294,10 +294,10 @@ export default {
             params:  searchData 
         })
         .then(response => {
-            context.commit('setChildTransactionList', response.data.filters);
+            context.commit('setChildTransactionList', response.data.filters.data);
             context.commit('setFilterTransactionList', searchData);
-            console.log('setFilterTransactionList', searchData);
-            console.log('검색된 내용', response.data.filters);
+            // console.log('setFilterTransactionList', searchData);
+            // console.log('검색된 내용', response.data.filters);
         })
         .catch(error => {
             console.log('검색안됨', error);

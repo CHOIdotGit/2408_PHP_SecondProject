@@ -23,7 +23,7 @@ export default {
         ,parentStats:[]
         ,doughnutData: [0]
         ,weeklyOutgoData: [0]
-        ,filter: []
+        ,filter: [] // 필터검색
         ,currentPage: 1
         ,lastPage: 1
         ,perPage: 10
@@ -192,11 +192,12 @@ export default {
 
             });
         },
-        
+        //************************************** */
         // // 필터&검색기능
         // transactionSearch(context, searchData) {
         //     const url = '/api/transaction/search';
         // 필터&검색기능
+        // ***************************************
         transactionSearch(context, searchData) {
             const url = '/api/transaction/search';
 

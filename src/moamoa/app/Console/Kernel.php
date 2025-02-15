@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\AutoLoginCheck;
 use App\Jobs\AutoSavingRecord;
 use App\Models\Mission;
 use Illuminate\Console\Scheduling\Schedule;
@@ -28,13 +29,21 @@ class Kernel extends ConsoleKernel
             Log::debug('testest');
                 })->dailyAt('17:00'); //매일 17시에 실행
         // })->everyMinute();
+
+
         // 매일 자정에 물리삭제 검사 실행
         $schedule->command('records:delete-old')->dailyAt('00:00'); // 매일 자정
         // ->monthlyOn(1, '00:00'); // 매달 1일 자정
 
+        // 자동 이체 처리
         $schedule->call(function() {
             new AutoSavingRecord();
         })->daily();
+
+        //로그인하면 하루 한번 포인트 지급
+        $schedule->call(function() {
+            new AutoLoginCheck();
+        })->everyMinute();
     }
 
     /**

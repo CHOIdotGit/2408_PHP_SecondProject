@@ -9,7 +9,7 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p> 미션 일자 </p> 
+                        <p>⦁ 미션 일자 </p> 
                         <input type="date" min="2000-01-01" v-model="filters.startDate">
                         <p>~</p>
                         <input type="date" min="2000-01-01" v-model="filters.endDate">
@@ -27,9 +27,9 @@
                         <p>⦁ 진행 상태 </p> 
                         <select name="status" v-model="filters.status">
                             <option value="">전체</option>
-                            <option value="0">미션진행</option>
-                            <option value="1">미션대기</option>
-                            <option value="2">미션완료</option>
+                            <option value="0">미션 진행</option>
+                            <option value="1">미션 대기</option>
+                            <option value="2">미션 완료</option>
                             <option value="3">취소</option>
                         </select>
                     </div>
@@ -149,10 +149,10 @@ const maxLength = 12;
 
 const getStatusText = (status) => {
     const statusMapping = {
-        0: '진행중',
-        1: '대기중',
-        2: '완료',
-        3: '취소',
+        0: '미션 진행',
+        1: '미션 대기',
+        2: '미션 완료',
+        3: '미션 취소',
     };
     return statusMapping[status]; // 기본값 없이 반환
 };
@@ -324,11 +324,14 @@ const getChildId = () => {
 // +    검색 필터     +
 // +=================+
 // 기본값
+const today = ref(new Date().toISOString().slice(0, 10));
+const nextDay = ref(new Date().toISOString().slice(0, 10));
+
 const filters = ref({
-    category: "all",
-    status: "all",
-    startDate: "",
-    endDate: "",
+    category: "",
+    status: "",
+    startDate: today,
+    endDate: nextDay,
     keyword: "",
 });
 
@@ -376,6 +379,12 @@ const missionSearch = () => {
     font-size: 1.3rem;
     align-items: center;
     text-align: center;
+}
+
+/* 금액 : 오른쪽 정렬 */
+.mission-content>.charge {
+    text-align: end;
+    padding-right: 30px;
 }
 
 .mission-title {

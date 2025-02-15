@@ -48,11 +48,9 @@
                 </div>
                 <div class="bankbook-item">
                     <div class="testing">
-                        <div class="bankbook-number">
-                            <p v-for="num in 20" :key="num" class="num">{{ num }}</p>
-                        </div>
                         <div class="main-content">
-                            <div v-for="item in pointList" :key="item" class="bankbook-transactions"> 
+                            <div v-for="(item, index) in pointList" :key="item" class="bankbook-transactions"> 
+                                <p>{{ index + 1 }}</p>
                                 <p>{{ item.payment_at }}</p>
                                 <p v-if="item.point_code === '3'" class="text-end">{{ item.point }}</p>
                                 <p v-else></p>

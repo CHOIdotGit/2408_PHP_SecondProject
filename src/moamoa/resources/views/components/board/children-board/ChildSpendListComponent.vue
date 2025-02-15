@@ -9,12 +9,12 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p> 지출 일자</p> 
+                        <p>⦁ 지출 일자</p> 
                         <input type="date" min="2000-01-01" v-model="filters.date">
 
                     </div>
                     <div class="search-filter">
-                        <p>지출 종류 </p> 
+                        <p>⦁ 지출 종류 </p> 
                         <select name="spend-type" v-model="filters.category">
                             <option value="">전체</option>
                             <option value="0">교통비</option>
@@ -38,7 +38,7 @@
                 <p class="mission-type">제목</p>
                 <span class="status">종류</span>
                 <p class="charge">금액</p>
-                <p class="due-date">소비일자</p>
+                <p class="due-date">지출 일자</p>
             </div>
             <div class="scroll">
                 <div v-for="item in transactionList" :key="item" class="mission-inserted-list">
@@ -276,9 +276,12 @@ const delCloseModal = () => { //모달창 닫기
 // +    검색 필터     +
 // +=================+
 // 기본값
+const today = ref(new Date().toISOString().slice(0, 10));
+
+console.log('날짜타입', typeof(today));
 const filters = ref({
     category: "",
-    date: "",
+    date: today,
     keyword: "",
 });
 
@@ -338,6 +341,12 @@ const search = () => {
     font-size: 1.3rem;
     align-items: center;
     text-align: center;
+}
+
+/* 금액 : 오른쪽 정렬 */
+.mission-content>.charge {
+    text-align: end;
+    padding-right: 30px;
 }
 
 .content-title {

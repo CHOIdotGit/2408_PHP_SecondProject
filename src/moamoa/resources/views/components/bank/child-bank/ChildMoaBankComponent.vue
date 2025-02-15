@@ -19,18 +19,18 @@
                 <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
             </div>
             <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
-                    <p class="have-point">모아 적금통장</p>
-                    {{ savingList.length }}
-                    <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
-                    <div class="div-box-item">
-                        <p >잔액</p>
-                        <div>{{ item.total }}moa</div>
-                    </div>
-                    <div class="div-box-item">
-                        <p>이자율 : </p>
-                        <div>{{ item.saving_product_interest_rate.toFixed(1) }} %</div>
-                    </div>
+                <p class="have-point">모아 적금통장</p>
+                {{ savingList.length }}
+                <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
+                <div class="div-box-item">
+                    <p >잔액</p>
+                    <div>{{ item.total }}moa</div>
                 </div>
+                <div class="div-box-item">
+                    <p>이자율 : </p>
+                    <div>{{ item.saving_product_interest_rate.toFixed(1) }} %</div>
+                </div>
+            </div>
                 <!-- 빈 통장 슬롯 -->
                 <!-- <div class="div-box" @click="goSavingProduct" v-for="item in empty" :key="item" >
                     <p class="have-point">모아 적금통장</p>

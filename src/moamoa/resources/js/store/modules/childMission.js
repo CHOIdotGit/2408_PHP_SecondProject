@@ -347,7 +347,7 @@ export default {
                 params:  searchData 
             })
             .then(response => {
-                context.commit('setchildMissionList', response.data.missions.data);
+                context.commit('setChildMissionList', response.data.filters.data);
                 context.commit('setFilterMissionList', searchData);
             })
             .catch(error => {
