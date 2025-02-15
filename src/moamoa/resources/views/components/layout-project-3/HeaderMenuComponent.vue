@@ -69,7 +69,7 @@
             </div>
             <!-- 햄버거 모달 메뉴 -->
             <div class="dropdown" v-show="hamburgerModal" >
-                <router-link v-if="$store.state.auth.parentFlg" to="/parent/family/info" class="link-deco">
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="link-deco">
                     <p class="info-page">가족정보</p>
                 </router-link>
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">

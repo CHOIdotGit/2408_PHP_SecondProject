@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Builder; 
 
 class Child extends Authenticatable {
     use HasFactory, Notifiable, SoftDeletes;
@@ -23,6 +24,7 @@ class Child extends Authenticatable {
         ,'email'
         ,'tel'
         ,'profile'
+        ,'app_state'
     ];
     
     protected $hidden = [
@@ -51,5 +53,11 @@ class Child extends Authenticatable {
     
     protected function serializeDate(\DateTimeInterface $date) {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    protected static function booted(){
+        static::addGlobalScope('app_state', function (Builder $builder) {
+            $builder->where('app_state', 1);
+        });
     }
 }

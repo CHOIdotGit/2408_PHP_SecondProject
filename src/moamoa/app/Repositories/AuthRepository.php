@@ -46,16 +46,18 @@ class AuthRepository extends Repositories {
 
   // 부모 정보와 연결 자녀들 정보 획득
   public function parentInfoWithChildren($parent_id) {
-    return $this->parent->where('parent_id', $parent_id)->with('children')->first();
+    return $this->parent->where('parent_id', $parent_id)
+      ->with(['children' => fn($q) => $q->withoutGlobalScope('app_state')])
+      ->first();
   }
 
   // 자녀 정보 획득
   public function childInfoWithParent($child_id) {
-    return $this->child->where('child_id', $child_id)->with('parent')->first();
+    return $this->child->withoutGlobalScope('app_state')->where('child_id', $child_id)->with('parent')->first();
   }
 
   // 자녀 연결 정보 획득
-  public function childInfoWithMissionsAndTransactions($child_id) {
-    return $this->child->where('child_id', $child_id)->with(['missions', 'transactions'])->first();
-  }
+  // public function childInfoWithMissionsAndTransactions($child_id) {
+  //   return $this->child->where('child_id', $child_id)->with(['missions', 'transactions'])->first();
+  // }
 }

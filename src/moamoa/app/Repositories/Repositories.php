@@ -36,7 +36,6 @@ class Repositories extends BaseRepository {
 
   // 부모 레코드 생성
   public function createParent($insertData) {
-    
     try {
       DB::beginTransaction();
 
@@ -79,7 +78,6 @@ class Repositories extends BaseRepository {
 
   // 자녀 레코드 생성
   public function createChild($insertData) {
-    
     try {
       DB::beginTransaction();
 
@@ -103,7 +101,7 @@ class Repositories extends BaseRepository {
       $modify = $userInfo['column_name'] === 'parent_id' ? $this->parent : $this->child;
       
       // 들어온 정보로 업데이트
-      $modify->where($userInfo['column_name'], $userInfo['column_id'])
+      $modify->withoutGlobalScope('app_state')->where($userInfo['column_name'], $userInfo['column_val'])
         ->update($updateData);
 
       DB::commit();
@@ -122,12 +120,32 @@ class Repositories extends BaseRepository {
       // 부모인지 자녀인지 체크
       $modify = $userInfo['column_name'] === 'parent_id' ? $this->parent : $this->child;
       
-      // 들어온 정보를 삭제
-      $modify->where($userInfo['column_name'], $userInfo['column_id'])
+      // 들어온 정보를 물리 삭제
+      $modify->where($userInfo['column_name'], $userInfo['column_val'])
         ->delete();
 
       DB::commit();
       
+    }catch(Throwable $th) {
+      DB::rollBack();
+      throw $th;
+    }
+  }
+
+  // 자녀 정보 물리 삭제
+  public function deleteUser($userInfo) {
+    try {
+      DB::beginTransaction();
+
+      // 부모인지 자녀인지 체크
+      $modify = $userInfo['column_name'] === 'parent_id' ? $this->parent : $this->child;
+      
+      // 들어온 정보를 삭제
+      $modify->where($userInfo['column_name'], $userInfo['column_val'])
+        ->forceDelete();
+
+      DB::commit();
+        
     }catch(Throwable $th) {
       DB::rollBack();
       throw $th;

@@ -232,9 +232,13 @@ import { useRoute } from 'vue-router';
   }
 
   /* 복사 아이콘 크기 조절 */
-  .regist-complete-code > button, .regist-complete-code > button > img {
+  .regist-complete-code > button {
     width: 20px;
     height: 20px;
+  }
+  .regist-complete-code > button > img {
+    width: 100%;
+    height: 100%;
   }
 
   /* 복사 버튼 설정 */

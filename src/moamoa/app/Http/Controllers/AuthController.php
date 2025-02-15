@@ -522,7 +522,7 @@ class AuthController extends Controller {
         if(!empty($updateData)) {
           $userInfo = [
             'column_name' => $colName,
-            'column_id' => $user->$colName
+            'column_val' => $user->$colName
           ];
 
           $this->authRepository->updateUser($userInfo, $updateData);
@@ -562,7 +562,7 @@ class AuthController extends Controller {
       
       $userInfo = [
         'column_name' => $colName,
-        'column_id' => $user->$colName
+        'column_val' => $user->$colName
       ];
 
       // 회원 탈퇴 실행
@@ -583,6 +583,53 @@ class AuthController extends Controller {
     }
   }
 
+  /**
+   * 자녀 승인 처리
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function applyChild(Request $request) {
+
+    $updateData = [
+      'app_state' => 1
+    ];
+
+    $userInfo = [
+      'column_name' => 'child_id',
+      'column_val' => $request->childId
+    ];
+
+    $this->authRepository->updateUser($userInfo, $updateData);
+
+    return response()->json([
+      'success' => true,
+      'msg' => '자녀 승인 성공',
+    ], 200);
+  }
+
+  /**
+   * 미승인 자녀 물리 삭제 처리
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function deleteChild(Request $request) {
+
+    $userInfo = [
+      'column_name' => 'child_id',
+      'column_val' => $request->childId
+    ];
+
+    $this->authRepository->deleteUser($userInfo);
+
+    return response()->json([
+      'success' => true,
+      'msg' => '미승인 자녀 물리 삭제 성공',
+    ], 200);
+  }
 
   
   // --------------------------- V001 del start -----------------------------
@@ -613,7 +660,7 @@ class AuthController extends Controller {
         
   //       $userInfo = [
   //         'column_name' => $colName,
-  //         'column_id' => $user->$colName
+  //         'column_val' => $user->$colName
   //       ];
 
   //       $updateData = [
@@ -710,7 +757,7 @@ class AuthController extends Controller {
         
   //       $userInfo = [
   //         'column_name' => $colName,
-  //         'column_id' => $user->$colName
+  //         'column_val' => $user->$colName
   //       ];
 
   //       $updateData = [

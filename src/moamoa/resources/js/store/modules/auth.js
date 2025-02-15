@@ -8,6 +8,7 @@
  */
 import axios from "../../axios"
 import router from "../../router";
+import chkAuth from '../../chkAuth';
 
 export default {
   namespaced: true,
@@ -37,14 +38,16 @@ export default {
     // 모달 관련 ---------------------------------------------------------------------------------------------
     emailModalFlg: false,
     matchingModalFlg: false,
+
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     matchingInfo: {}, // 매칭 정보
+    parentInfo: {}, // 부모 정보
+    childInfo: {}, // 자녀 정보
+
     preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false, // 파일 여부
       url: null, // src url
     },
-    parentInfo: {},
-    childInfo: {},
 
     // 인증 관련 -----------------------------------------------------------------------------------------
     isAccountPass: false, // 아이디 중복 검사용
@@ -84,12 +87,6 @@ export default {
     },
 
     // 회원가입 관련 ---------------------------------------------------------------------------------------------
-    setPreviewFlg(state, flg) {
-      state.preview.imgFlg = flg;
-    },
-    setPreviewUrl(state, preview) {
-      state.preview.url = preview;
-    },
     setMatchingInfo(state, matchingInfo) {
       state.matchingInfo = matchingInfo;
     },
@@ -98,6 +95,13 @@ export default {
     },
     setChildInfo(state, childInfo) {
       state.childInfo = childInfo;
+    },
+
+    setPreviewFlg(state, flg) {
+      state.preview.imgFlg = flg;
+    },
+    setPreviewUrl(state, preview) {
+      state.preview.url = preview;
     },
 
     // 예외 메세지 관련 ------------------------------------------------------------------------------------------
@@ -560,6 +564,7 @@ export default {
      */
     parentInfo(context) {
       const url = '/api/auth/parentInfo';
+
       axios.post(url)
       .then(res => {
         context.commit('setParentInfo', res.data.parent);
@@ -573,6 +578,7 @@ export default {
      */
     childInfo(context) {
       const url = '/api/auth/childInfo';
+
       axios.post(url)
       .then(res => {
         context.commit('setChildInfo', res.data.child);
@@ -713,8 +719,39 @@ export default {
         }
       });
     },
-    
 
+    /**
+     * 부모의 자녀 승인 처리
+     * 
+     * @param {*} context
+     * @param {*} childId
+     */
+    applyChild(context, childId) {
+      const url = '/api/auth/applyChild';
+
+      axios.post(url, {childId: childId})
+      .then(res => {
+        alert('해당 자녀의 승인이 완료되었습니다.');
+      });
+    },
+
+    /**
+     * 부모의 자녀 승인 취소
+     * 물리 삭제
+     * 
+     * @param {*} context
+     * @param {*} childId
+     */
+    deleteChild(context, childId) {
+      const url = '/api/auth/deleteChild';
+
+      axios.post(url, {childId: childId})
+      .then(res => {
+        alert('해당 자녀의 취소가 완료되었습니다.');
+      });
+    }
+
+    
 
     // --------------------------- V001 del start -----------------------------
     // /**
