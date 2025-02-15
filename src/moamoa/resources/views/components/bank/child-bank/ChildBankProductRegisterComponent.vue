@@ -22,7 +22,10 @@
             </div>
             <div class="bank-form">
                 <p class="bank-form-title">납입 금액</p>
-                <input type="num" maxlength="4" > 모아
+                <div class="bank-form-content">
+                    <input type="num" class="amountInput" maxlength="4" v-model="regist.amount"> 모아
+                </div>
+                <p class="guide">*최소 100 ~ 최대 1000 금액을 입력할 수 있습니다</p>
             </div>
             <div class="bank-form">
                 <p class="bank-form-title">납입 유형</p>
@@ -30,30 +33,18 @@
             </div>
             <div class="bank-form">
                 <p class="bank-form-title">납입 날짜</p>
-                <!-- <div class="selectDay" v-for="item in 7" :key="item">
-                    <input type="radio" name="day">
-                    <label :for="'day' + item.days">
-                        <p>{{ days }}</p>
-                    </label>
-                </div> -->
-                <!-- <div class="selectDay" v-for="item in days" :key="item">
-                    <input type="radio" name="days" :value="item.days" :id="'day-' + item.days" ></input>
-                    <label :for="'day-' + item.days" >
-                        <p class="day-name">{{ item.days }}</p>
-                    </label>
-                </div> -->
-                <div class="selectdays" v-for="item in days" :key="item" v-if="productInfo.saving_product_type === '0'">
-                    <input type="radio" :value="item.days"  name="days" :id="'day-'+item.days" class="days-btn" disabled >
-                    <label :for="'day-' + item" >
-                        <p>{{ item }}</p>
-                    </label>
+
+                <!-- 매일 적금일때 ---- 비활성화 -->
+                <!-- 매주 적금일때 ---- 활성화 -->
+                <div class="selectdays">
+                    <div class="dayOption" v-for="item in days" :key="item" >
+                        <input type="radio" :value="item"  name="days" :id="'day-'+item" class="days-btn"  :disabled="isDisabled(item)" v-model="selectdays" >
+                        <label :for="'day-' + item" >
+                            <p>{{ dayMatching(item) }}</p>
+                        </label>
+                    </div>
                 </div>
-                <div class="selectdays" v-for="item in days" :key="item" v-if="productInfo.saving_product_type === '1'">
-                    <input type="radio" :value="item.days"  name="days" :id="'day-'+item.days" class="days-btn" >
-                    <label :for="'day-' + item" >
-                        <p>{{ item }}</p>
-                    </label>
-                </div>
+                
 
             </div>
         </div>
@@ -61,7 +52,7 @@
     </div>
     <div class="bank-box-bottom">
         <div class="box-btn cancel">돌아가기</div>
-        <div class="box-btn">가입하기</div>
+        <div class="box-btn" @click="goBank">가입하기</div>
     </div>
 
 
@@ -70,14 +61,14 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
-const days = ref(["일","월", "화", "수", "목", "금", "토"]);
+
 
 // 적금 상품 가져오기
 const productInfo = computed(() => store.state.bank.productInfo);
@@ -103,6 +94,54 @@ const getTypeText = (saving_product_type) => {
     return typeMapping[saving_product_type]; // 기본값 없이 반환
 };
 
+// 요일 선택하기
+const days = ref(["0", "1", "2", "3", "4", "5", "6", "7"]);
+
+//요일 매칭
+const dayMatching = (item) => {
+    const dayLabel = {
+        "0": "일",
+        "1": "월",
+        "2": "화",
+        "3": "수",
+        "4": "목",
+        "5": "금",
+        "6": "토",
+        "7": "매일"
+    }
+    return dayLabel[item];
+}
+
+const selectdays = ref("7"); // 기본값 : 매일 선택
+console.log('선택된 날짜 :', selectdays.value);
+
+const isDisabled = (item) => {
+    if(productInfo.value.saving_product_type === "0") {
+        return item.days !== "7";
+    }
+    else {
+        return item.days === "7";
+
+    }
+};
+
+// 적금 가입하기
+const today = ref(new Date().toISOString().slice(0, 10));
+const endDay = ref(new Date().toISOString().slice(0, 10)); 
+const regist = reactive({
+    amount: ''
+    ,child_id: route.params.child_id
+    ,saving_product_id: route.params.prdoct_id
+    ,saving_sign_up_status: productInfo.value.saving_product_type
+    ,saving_sign_up_start_day: today
+    ,saving_sign_up_end_day: endDay
+    ,saving_sign_up_deposit_at: selectdays.value
+})
+
+const goBank = () =>{
+    store.dispatch('saving/createSaving', regist);
+}
+
 </script>
 
 <style scoped>
@@ -123,6 +162,7 @@ h1 {
 
 }
 
+/* *적금 상품 가입 입력 란 start************************ */
 .bank-form-box {
     border-top: 3px solid #e0e7ee;
     border-bottom: 3px solid #e0e7ee;
@@ -150,15 +190,36 @@ h1 {
     line-height: 77px;
     font-size: 1.4rem;
     padding-left: 20px;
+    
 }
 
-.input[type="num"] {
-    width: 100px;
+.amountInput {
+    height: 50px;
+    border: #dbdbdb 1px solid;
+    width: 180px;
+    text-align: end;
+}
+
+.amountInput:focus {
     outline: none;
-    border: none;
+    border: #5589e996 2px solid;
+}
+
+.guide {
+    font-size: 0.8rem;
+    color: #7d7d7d;
+    line-height: 125px;
 }
 
 /* 날짜 선택 버튼 */
+.selectdays {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-left: 20px;
+    text-align: center;
+}
+
 .days-btn {
     font-size: 1.2rem;
     background-color: #c9c9c9;
@@ -167,7 +228,7 @@ h1 {
 .days-btn>input {
     display: hidden;
 }
-
+/* ************************************end */
 
 /* 가입,취소 버튼 */
 .bank-box-bottom {

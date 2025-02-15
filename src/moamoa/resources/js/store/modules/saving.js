@@ -113,7 +113,7 @@ export default {
 
         // 적금 가입하기
         createSaving(context, data) {
-            const url = '/api/child/moabank/saving/create/' + data.product_id;
+            const url = '/api/moabank/product/regist/' + data.product_id;
             console.log(url);
 
             const formData = new FormData();
@@ -134,13 +134,12 @@ export default {
 
                     context.commit('setSavingDetail', newSaving);
                     alert('적금 가입이 완료 되었습니다.');
+                    router.replace('/child/bankbook/' + newSaving.bankbook_id);
                 })
                 .catch(error => {
                     console.error('적금 가입 실패', error);
                 })
-                .finally(()=> {
-                    context.commit('set')
-                })
+
         }
 
     },
