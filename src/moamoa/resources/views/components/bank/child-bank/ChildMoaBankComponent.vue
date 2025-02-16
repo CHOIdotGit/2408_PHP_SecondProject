@@ -2,7 +2,7 @@
     <div class="bank">
         <div class="explanation">
             <div class="kr-bank">
-                <h1>이달의 한국은행 기준 금리</h1>
+                <div class="kr-bank-headline">이달의 한국은행 기준 금리</div>
                 <!-- ### 한국은행 기준금리 api ### -->
                 <p class="red" v-if="koreaBankInterest">{{ Number(koreaBankInterest.interest).toFixed(1) }} %</p>
             </div>
@@ -129,18 +129,22 @@ const empty = computed(()=> {
 
 .kr-bank {
     display: flex;
-    border: 1px solid #e0e7ee;
     border-radius: 10px;
     width: 60%;
+}
+
+.kr-bank-headline {
+    font-size: 2.3rem;
+    padding: 5px;
+    margin-right: 20px;
+    font-weight: 700
 }
 
 .red {
     color: red;
     font-family: 'LAB디지털';
-    background-color: #fff;
     font-size: 2rem;
     width: 150px;
-    padding: 5px;
 }
 
 .p-explanation {

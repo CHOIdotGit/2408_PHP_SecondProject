@@ -1,13 +1,104 @@
 <template>
 <!-- 적금 가입하는 페이지 -->
 <div class="bank-product-register-container">
-    <div>
+    
         <h1>적금 상품 가입</h1>
         <div class="headline">
+            <p>개인 약관 동의</p>
+            <p>정보 입력</p>
+        </div>
+        <!-- 약관 동의 -->
+        <div class="bank-form-box" v-show="lawInfo">
+            <div class="bank-form">
+                <p class="bank-form-title">가입 대상</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">모아에 가입한 자녀 사용자 (1인 최대 3 적금 통장)</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">가입 기간</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">{{ productInfo.saving_product_period }} 일</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">최소 가입(납입) 금액</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">100 모아</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">최대 가입(납입) 금액</p>
+                <p class="bank-form-content">1000 모아</p>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">납입 방법</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">모아에서 받은 포인트를 통해서만 납입 가능 </p>
+                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
+                    <p class="bank-form-content">모아 포인트가 납입 포인트에 미달할 시 자동 </p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">납입 방법</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">모아에서 받은 포인트를 통해서만 납입 가능 </p>
+                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
+                    <p class="bank-form-content">포인트의 잔액 부족 시 미납 처리, 추후 납입 불가능</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">금리</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">한국은행 기준금리를 기준으로 모아은행에서 제시하는 변동이율 적용</p>
+                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
+                    <p class="bank-form-content">포인트의 잔액 부족 시 미납 처리, 추후 납입 불가능</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">만기 시 자동해지</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">만기일에 자동으로 해지되어</p>
+                    <p class="bank-form-content">모아 은행 포인트 잔액에 자동으로 추가</p>
+
+                </div>
+            </div>
+            <div class="bank-form">
+                <p class="bank-form-title">이자 계산법</p>
+                <div class="box-flex">
+                    <p class="bank-form-content">모아 은행은 한국 시중 은행의 이율계산법을 기반으로 합니다</p>
+                    <p class="bank-form-content">모아 은행 포인트 잔액에 자동으로 추가</p>
+
+                </div>
+            </div>
+
+            <!-- 적금 가입 동의하기 버튼 -->
+            <div class="bank-box-bottom">
+                <div>모아은행 적금 상품에 동의하십니까</div>
+                <div>
+                    <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
+                    <label for="agree-no">아니요, 동의하지 않습니다.</label>
+                    
+                    <input type="radio" id="agree-yes" value="yes" name="agree" checked v-model="agreement">
+                    <label for="agree-yes">네, 동의합니다</label>
+                </div>
+
+                <div>
+                    <div class="box-btn cancel">돌아가기</div>
+                    <div class="box-btn" @click="goResigt">가입하기</div>
+                </div>
+            </div>
 
         </div>
-        <p>정보 입력</p>
-        <div class="bank-form-box">
+
+        <!-- 정보 입력란  -->
+        <div class="bank-form-box" v-show="bankBoxInput">
             <div class="bank-form">
                 <p class="bank-form-title">상품명</p>
                 <p class="bank-form-content">{{ productInfo.saving_product_name }} 적금</p>
@@ -44,16 +135,15 @@
                         </label>
                     </div>
                 </div>
-                
-
+            </div>
+            <!-- 적금 가입하기 버튼 -->
+            <div class="bank-box-bottom">
+                <div class="box-btn cancel">돌아가기</div>
+                <div class="box-btn" @click="goBank">가입하기</div>
             </div>
         </div>
 
-    </div>
-    <div class="bank-box-bottom">
-        <div class="box-btn cancel">돌아가기</div>
-        <div class="box-btn" @click="goBank">가입하기</div>
-    </div>
+    
 
 
 </div>
@@ -68,6 +158,17 @@ import { useStore } from 'vuex';
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+
+const agreement = ref("");
+const lawInfo = ref(true);
+const bankBoxInput = ref(false);
+const goResigt = () => {
+    if(agreement.value === 'yes') {
+        bankBoxInput.value = true;
+        console.log('동의함', agreement.value);
+        lawInfo.value = false;
+    }
+}
 
 
 // 적금 상품 가져오기
@@ -170,27 +271,35 @@ h1 {
 
 .bank-form {
     display: flex;
-    
+    align-items: center;
     border-bottom: 1px solid #e0e7ee;
-    width: 700px;
-    height: 80px;
+    /* width: 700px;
+    height: 80px; */
     /* padding: 10px; */
     /* gap: 50px; */
 }
 
 .bank-form-title {
-    line-height: 77px;
-    width: 180px;
-    font-size: 1.8rem;
+    /* line-height: 77px; */
+    width: 250px;
+    height: 100px;
+    font-size: 1.4rem;
     background: #f6f6f6;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bank-form-content {
-    line-height: 77px;
-    font-size: 1.4rem;
+    /* line-height: 77px; */
+    font-size: 1.2rem;
     padding-left: 20px;
-    
+}
+
+.box-flex {
+    display: flex;
+    flex-direction: column;
 }
 
 .amountInput {
@@ -233,6 +342,7 @@ h1 {
 /* 가입,취소 버튼 */
 .bank-box-bottom {
     display: flex;
+    flex-direction: column;
     margin-top: 20px;
     /* align-items: flex-end; */
     gap: 20px;
