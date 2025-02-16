@@ -28,7 +28,7 @@ class ExistsFamilyRule implements Rule {
     $parents = ParentModel::select('account')->where('account', $value)->exists();
 
     // 자녀 테이블에서 'account' 값이 존재하는지 확인
-    $children = Child::select('account')->where('account', $value)->exists();
+    $children = Child::withoutGlobalScope('app_state')->select('account')->where('account', $value)->exists();
     
     // 두 테이블 중에 하나라도 존재하면 통과
     return $parents || $children;

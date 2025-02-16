@@ -142,11 +142,12 @@ import { useStore } from 'vuex';
     height: 110px;
     margin: 35px 0 40px 0;
     background-color: #EFF6FF;
+    overflow: hidden;
   }
   /* 부모 이미지 설정 */
   .matching-modal-icon > img {
-    width: 80%;
-    height: 80%;
+    width: 100%;
+    height: 100%;
   }
 
   /* 텍스트 표시 영역 */

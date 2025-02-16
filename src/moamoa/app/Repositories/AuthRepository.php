@@ -44,6 +44,11 @@ class AuthRepository extends Repositories {
     return $this->child->where('account', $account)->first();
   }
 
+  // 미승인된 자녀 정보 획득
+  public function findNotApplyChildByAccount($account) {
+    return $this->child->withoutGlobalScope('app_state')->where(['account' => $account, 'app_state' => 0])->first();
+  }
+
   // 부모 정보와 연결 자녀들 정보 획득
   public function parentInfoWithChildren($parent_id) {
     return $this->parent->where('parent_id', $parent_id)
@@ -54,6 +59,26 @@ class AuthRepository extends Repositories {
   // 자녀 정보 획득
   public function childInfoWithParent($child_id) {
     return $this->child->withoutGlobalScope('app_state')->where('child_id', $child_id)->with('parent')->first();
+  }
+
+  // 찾기 정보 획득
+  public function findUser($findInfo) {
+    if($findInfo->findType === 'pwd') {
+      $parent = $this->parent->where('account', $findInfo->account);
+      $child = $this->child->where('account', $findInfo->account);
+    }else {
+      $parent = $this->parent;
+      $child = $this->child;
+    }
+
+    return $parent->where(['name' => $findInfo->name, 'email' => $findInfo->email])->first() 
+        ?? $child->where(['name' => $findInfo->name, 'email' => $findInfo->email])->first();
+  }
+
+  public function findUserById($userInfo) {
+    $user = $userInfo->userType === 'parent' ? $this->parent : $this->child;
+    $columnName = $userInfo->userType.'_id';
+    return $user->where($columnName, $userInfo->userId)->first();
   }
 
   // 자녀 연결 정보 획득

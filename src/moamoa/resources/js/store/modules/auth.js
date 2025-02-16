@@ -8,7 +8,6 @@
  */
 import axios from "../../axios"
 import router from "../../router";
-import chkAuth from '../../chkAuth';
 
 export default {
   namespaced: true,
@@ -43,6 +42,7 @@ export default {
     matchingInfo: {}, // 매칭 정보
     parentInfo: {}, // 부모 정보
     childInfo: {}, // 자녀 정보
+    userInfo: {},
 
     preview: { // 프로필 사진 미리보기용 세팅
       imgFlg: false, // 파일 여부
@@ -95,6 +95,9 @@ export default {
     },
     setChildInfo(state, childInfo) {
       state.childInfo = childInfo;
+    },
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
     },
 
     setPreviewFlg(state, flg) {
@@ -749,10 +752,108 @@ export default {
       .then(res => {
         alert('해당 자녀의 취소가 완료되었습니다.');
       });
+    },
+
+    /**
+     * 아이디 비밀번호 찾기
+     * 
+     * @param {*} context
+     * @param {*} findInfo
+     */
+    findUser(context, findInfo) {
+      const url = '/api/auth/findUser';
+      const data = JSON.stringify(findInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        if(res.data.user) {
+
+          // 유저 정보 세팅
+          sessionStorage.setItem('userType', res.data.user.family_code ? 'parent' : 'child');
+          sessionStorage.setItem('userId', res.data.user.family_code ? res.data.user.parent_id : res.data.user.child_id);
+
+          // 모달 활성화
+          context.commit('setEmailModalFlg', true);
+
+          // 해당 메일로 전송
+          context.dispatch('sendMail', res.data.user.email);
+        }
+
+      }).catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+
+        if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      })
+    },
+
+    /**
+     * 유저 정보 조회
+     * 
+     * @param {*} context
+     * @param {*} userInfo
+     */
+    userInfo(context, userInfo) {
+      const url = '/api/auth/userInfo';
+      const data = JSON.stringify(userInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        // 유저 정보 세팅
+        context.commit('setUserInfo', res.data.user);
+      });
+    },
+
+    /**
+     * 비밀번호 재발급
+     * 
+     * @param {*} context
+     * @param {*} pwdInfo
+     */
+    resetPassword(context, pwdInfo) {
+      const url = '/api/auth/resetPassword';
+      const data = JSON.stringify(pwdInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        router.replace('/find/complete/pwd');
+      }).catch(err => {
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+        // console.log(errData);
+
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          // 에러 정보값 세팅
+          const errInfo = {
+            newPassword: 'setErrMsgNewPassword',
+            newPasswordChk: 'setErrMsgNewPasswordChk',
+          };
+
+          // 돌려서 있는것만 데이터 담음
+          Object.entries(errData).forEach(([key, val]) => {
+            if(val[0] && errInfo[key]) {
+              context.commit(errInfo[key], val[0]);
+            }
+          });
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
     }
-
     
-
     // --------------------------- V001 del start -----------------------------
     // /**
     //  * 로그인 자녀에 연결된 미션과 지출 정보 로드

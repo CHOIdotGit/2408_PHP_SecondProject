@@ -37,10 +37,20 @@ class AuthController extends Controller {
       // 각 테이블에 정보 조회
       $parent = $this->authRepository->findParentByAccount($loginInfo['account']);
       $child = $this->authRepository->findChildByAccount($loginInfo['account']);
+      $notApplyChild = $this->authRepository->findNotApplyChildByAccount($loginInfo['account']);
   
+
+      // 미승인된 계정
+      if($notApplyChild) {
+        return response()->json([
+          'success' => false
+          ,'error' => '해당 계정은 미승인된 계정입니다. 보호자의 승인을 받아주세요.'
+        ], 401);
+      }
+
       // 부모 혹은 자식 둘다 맞는게 없을경우
-      if(!($parent && Hash::check($loginInfo['password'], $parent->password))
-      && !($child && Hash::check($loginInfo['password'], $child->password))
+      elseif(!($parent && Hash::check($loginInfo['password'], $parent->password))
+          && !($child  && Hash::check($loginInfo['password'], $child->password))
       ) {
         // 둘중 일치하는게 없다는 에러 메세지를 반환
         return response()->json([
@@ -49,12 +59,8 @@ class AuthController extends Controller {
         ], 401);
       }else {
   
-        if($parent) { // 부모면 부모로그인
-          // 이미 로그인된 자녀가 있다면 로그아웃
-          // if(Auth::guard('children')->check()) {
-          //   $this->logout();
-          // }
-
+        if($parent) { 
+          // 부모면 부모로그인
           Auth::guard('parents')->login($parent);
     
           $responseData = [
@@ -63,12 +69,8 @@ class AuthController extends Controller {
             ,'user' => $parent
             ,'redirect_to' => 'parent/home'
           ];
-        }else { //아니면 자녀 로그인
-          // 이미 로그인된 부모가 있다면 로그아웃
-          // if(Auth::guard('parents')->check()) {
-          //   $this->logout();
-          // }
-
+        }else { 
+          //아니면 자녀 로그인
           Auth::guard('children')->login($child);
     
           $responseData = [
@@ -631,6 +633,82 @@ class AuthController extends Controller {
     ], 200);
   }
 
+  /**
+   * 아이디 비밀번호 찾기 처리
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function findUser(Request $request) {
+    $userInfo = $this->authRepository->findUser($request);
+
+    if(empty($userInfo)) {
+      return response()->json([
+        'success' => false,
+        'error' => '일치하는 계정의 정보가 없습니다.',
+      ], 401);
+    }
+
+    return response()->json([
+      'success' => true,
+      'msg' => '찾기 성공',
+      'user' => $userInfo
+    ]);
+  }
+
+  /**
+   * 회원 정보 세팅
+   * 
+   * @param Request $request
+   * 
+   * @return JSON $responseData
+   */
+  public function userInfo(Request $request) {
+    $userInfo = $this->authRepository->findUserById($request);
+
+    return response()->json([
+      'success' => true,
+      'msg' => '찾기 성공',
+      'user' => $userInfo
+    ]);
+  }
+
+  /**
+   * 비밀번호 재발급 처리
+   * 
+   * @param AuthenticationRequest $request
+   * 
+   * @return JSON $responseData
+   */
+  public function resetPassword(AuthenticationRequest $request) {
+    try {
+      $userInfo = [
+        'column_name' => $request->userType.'_id',
+        'column_val' => $request->userId
+      ];
+
+      $updateData = [
+        'password' => Hash::make($request->newPassword)
+      ];
+
+      // 비밀번호 업데이트 실행
+      $this->authRepository->updateUser($userInfo, $updateData);
+
+      $responseData = [
+        'success' => true,
+        'msg' => '비밀번호 변경 성공'
+      ];
+
+      return response()->json($responseData, 200);
+
+    }catch(Throwable $th) {
+      return response()->json([
+        'success' => false,
+        'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
+      ], 500);
+    }
+  }
   
   // --------------------------- V001 del start -----------------------------
   // 

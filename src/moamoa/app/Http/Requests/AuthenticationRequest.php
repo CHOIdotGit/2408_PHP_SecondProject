@@ -70,6 +70,14 @@ class AuthenticationRequest extends FormRequest {
       $rules['password'][] = new CheckPasswordRule;
     }
 
+    // 비밀번호 재발급
+    elseif($this->routeIs('auth.reset.password')) {
+      $rules['account'] = ['nullable'];
+      $rules['password'] = ['nullable'];
+      $rules['newPassword'] = ['required', 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/'];
+      $rules['newPasswordChk'] = ['required', 'same:newPassword'];
+    }
+
     return $rules;
   }
 

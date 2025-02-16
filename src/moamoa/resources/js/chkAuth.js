@@ -2,7 +2,7 @@ import { useStore } from "vuex";
 import axios from './axios';
 
 const chkAuth = (to, from, next) => {
-    
+  
   const store = useStore();
 
   // 로그인 상태 변수
@@ -25,7 +25,7 @@ const chkAuth = (to, from, next) => {
   });
 
   // 비인증용 경로 변수
-  const notAuthPath = (to.path === '/' || to.path === '/login' || to.path.startsWith('/regist/'));
+  const notAuthPath = (to.path === '/' || to.path === '/login' || to.path.startsWith('/regist/') || to.path.startsWith('/find/'));
 
   // 부모 URL 목록
   const parentPath = to.path.startsWith('/parent/');
@@ -38,14 +38,14 @@ const chkAuth = (to, from, next) => {
   if((authFlg && notAuthPath) 
   || (authFlg && ((parentFlg && childPath) || (childFlg && parentPath)))
   ) { 
-      // 부모면 부모 메인, 자녀면 자녀 메인 페이지로 이동
-      parentFlg ? next('/parent/home') : next('/child/home');
+    // 부모면 부모 메인, 자녀면 자녀 메인 페이지로 이동
+    parentFlg ? next('/parent/home') : next('/child/home');
   }else if(!authFlg && !notAuthPath) { // 비인증 유저가 인증 페이지에 접근했는가?
-      // 로그인 페이지로 이동
-      next('/login');
+    // 로그인 페이지로 이동
+    next('/login');
   }else { 
-      // 그 이외는 통과
-      next();
+    // 그 이외는 통과
+    next();
   }
 };
 

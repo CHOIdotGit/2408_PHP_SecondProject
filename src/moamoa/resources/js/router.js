@@ -39,8 +39,10 @@ import PrivateEditComponent from '../views/components/auth/private/PrivateEditCo
 import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
 import ChildExpiredSavingComponentCopy from '../views/components/bank/child-bank/ChildExpiredSavingComponent copy.vue';
 import PrivateInfoComponent from '../views/components/auth/private/PrivateInfoComponent.vue';
-import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
 import ChildPointComponent from '../views/components/bank/child-bank/ChildPointComponent.vue';
+import FindFormComponent from '../views/components/auth/find/FindFormComponent.vue';
+import FindCompleteComponent from '../views/components/auth/find/FindCompleteComponent.vue';
+import FindPasswordComponent from '../views/components/auth/find/FindPasswordComponent.vue';
 
 
 
@@ -65,7 +67,6 @@ const routes = [
     {
         path: '/regist',
         children: [
-
             // 사용자 계약 동의
             {
                 path: 'agree',
@@ -151,11 +152,37 @@ const routes = [
         ], 
     },
 
+    // 공용 찾기 그룹
+    {
+        path:'/find',
+        children: [
+            // 아이디 비밀번호 찾기
+            {
+                path: ':type(id|pwd)',
+                component: FindFormComponent,
+                beforeEnter: chkAuth,
+            },
+
+            // 비밀번호 재발급
+            {
+                path: 'reset/pwd',
+                component: FindPasswordComponent,
+                beforeEnter: chkAuth,
+            },
+
+            // 아이디 비밀번호 완료
+            {
+                path: 'complete/:type(id|pwd)',
+                component: FindCompleteComponent,
+                beforeEnter: chkAuth,
+            },
+        ],
+    },
+
     // 공용 개인정보 그룹
     {
         path: '/:type(parent|child)/private',
         children: [
-
             // 본인확인
             {
                 path: 'ident/:category(edit|wdrl)',
@@ -184,13 +211,6 @@ const routes = [
                 beforeEnter: chkAuth,
             }
         ],
-    },
-
-    // 부모 가족 정보 페이지
-    {
-        path: '/parent/family/info',
-        component: ParentPrivateFamCodeComponent,
-        beforeEnter: chkAuth,
     },
 
     // 부모 페이지 모음 *********************************** //
@@ -426,7 +446,6 @@ const routes = [
         component: LoginTestComponent,
     },
 
-
     // +==================================+
     // +          페이지 못찾음            +
     // +==================================+
@@ -434,7 +453,6 @@ const routes = [
         path: '/:catchAll(.*)',
         component: NotFoundComponent,
     }
-
 
 ];
 
@@ -453,6 +471,10 @@ router.beforeEach((to, from, next) => {
         if(sessionStorage.getItem('famCode')) {
             sessionStorage.removeItem('famCode');
         }
+    }
+    else if((sessionStorage.getItem('userId') || sessionStorage.getItem('userType')) && !to.path.startsWith('/find/')) {
+        sessionStorage.removeItem('userId');
+        sessionStorage.removeItem('userType');
     }
 
     next();

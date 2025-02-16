@@ -93,8 +93,8 @@ import { useStore } from 'vuex';
     // 발급된 코드와 입력한 코드를 비교
     if(inputCode.value === issCode.value) {
       // 맞으면 모달닫고 통과 처리
-      store.commit('auth/setEmailModalFlg', false);
       store.commit('auth/setIsEmailPass', true);
+      store.commit('auth/setEmailModalFlg', false);
     }else {
       // 아니면 알림 메세지
       alert('인증 코드가 일치하지 않습니다.');

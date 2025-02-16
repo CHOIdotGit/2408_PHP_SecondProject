@@ -48,6 +48,9 @@ Route::prefix('/api/auth')->group(function () {
     Route::post('/removeUser', [AuthController::class, 'removeUser'])->name('auth.remove.user');
     Route::post('/applyChild', [AuthController::class, 'applyChild'])->name('auth.apply.child');
     Route::post('/deleteChild', [AuthController::class, 'deleteChild'])->name('auth.delete.child');
+    Route::post('/findUser', [AuthController::class, 'findUser'])->name('auth.find.user');
+    Route::post('/userInfo', [AuthController::class, 'userInfo'])->name('auth.user.info');
+    Route::post('/resetPassword', [AuthController::class, 'resetPassword'])->name('auth.reset.password');
     
     // --------------------------- V001 del start -----------------------------
     // Route::post('/changePassword', [AuthController::class, 'changePassword'])->name('auth.change.password');
