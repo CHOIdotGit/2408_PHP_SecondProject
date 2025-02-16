@@ -35,7 +35,7 @@
 
 <script setup>
 
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -50,7 +50,7 @@ const single =  computed(()=> store.state.bank.singleList);
 
 // 매주 적금
 const week = computed(()=> store.state.bank.weekList);
-onMounted(() => {
+onBeforeMount(() => {
     // store.dispatch('bank/koreaBank');
     store.dispatch('bank/savingProductList');
     

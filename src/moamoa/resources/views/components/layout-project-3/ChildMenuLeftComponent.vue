@@ -9,8 +9,6 @@
                     <img :src="childInfo.profile || '/user-img/default.webp'">    
                 </div>
                 <div class="child-info">
-                    <!-- todo :  nick name 나중에 칭호로 수정 -->
-                    <div class="child-nickname">칭호</div>
                     <div class="child-name">{{ childInfo.name }}</div>
                 </div>
             </div>
@@ -38,21 +36,12 @@
                     <img src="/img/icon-calendar.png" alt="" class="menu-icon">
                     캘린더
                 </div>
-                <!-- <div class="menu-title" @click="goBankbook">
-                    <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
-                    모아은행
-                </div>
-                멘토님 요청에 의한 페이지 분리 - 최상민 -->
                 <div class="menu-title go-bank">
                         <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
-                        <p @click="goBankbook">모아은행</p>
+                        <p @click="goBankbook" class="moabank-p">모아은행</p>
                     <span @click="toggleSavingProduct" class="arrow-icon">{{ isOpen ? '▲' : '▼' }}</span>
                 </div>
-
-                <!-- 적금 상품: isOpen이 true일 때만 보이도록 설정 -->
                 <div v-if="isOpen" @click="router.push('/moabank/product')" class="saving-product">ㄴ 적금 상품</div>
-                
-                <!-- 적금 상품: isOpen이 true일 때만 보이도록 설정 -->
                 <div v-if="isOpen" @click="router.push('/child/expired/saving')" class="saving-product">ㄴ 만기된 적금</div>
 
                 <!-- 4순위 : 상점 -->
@@ -283,6 +272,11 @@ button {
     width: 15px;
 }
 
+.moabank-p {
+    padding-left: 8px;
+
+}
+
 .test {
     display: flex;
     gap: 5px;
@@ -314,7 +308,7 @@ button {
 }
 
 .arrow-icon {
-    margin-left: 50px;
+    margin-left: 40px;
     width: 100px;
     text-align: center;
 }

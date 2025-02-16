@@ -78,22 +78,6 @@ export default {
         },
 
         // 자녀 만기 적금 리스트
-        // childExpiredSavings (context) {
-        //     const url = '/api/child/expired/saving';
-
-        //     axios.get(url)
-        //         .then(response => {
-        //             context.commit('setExpiredSavings', response.data.expiredSavings.data);
-        //             context.commit('setPagination', {
-        //                 current_page: response.data.expiredSavings.current_page,
-        //                 last_page: response.data.expiredSavings.last_page,
-        //                 per_page: response.data.expiredSavings.per_page,
-        //                 total: response.data.expiredSavings.total,
-        //             });
-        //         })
-        //         .catch(error => {
-        //             console.error('자녀 만기 적금 리스트 불러오기 실패', error)
-        //         });
         // },
         async childExpiredSavings(context, searchData) {
             try {

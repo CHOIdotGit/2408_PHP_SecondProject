@@ -2,21 +2,35 @@
 <div class="menu-left" v-if="!isMobile">
     <div class="menu-container" v-show="slidMenu">
         <img src="/img/logo4.png" class="logo" width="250px"  height="100px">
-        <!-- 자녀가 있을 때  -->
-        <div class="child-box" v-if="childNameList.length > 0" >
+        <!-- 자녀가 있을 때 - 최상민 수정함함 -->
+        <!-- <div class="child-box" v-if="childNameList.length > 0" >
             <div class="child-profile">
                 <img :src="childProfile.profile || '/profile/default5.webp'" alt="">    
             </div>
-            <div class="child-info">
-                <!-- todo nick name 나중에 수정 -->
-                <!-- <div class="child-nickname">{{childProfile.nick_name}}</div> -->
-                <div class="child-name">{{ childProfile.name }}</div>
-            </div>
+            <div class="child-info"> -->
+                <!-- <div class="child-name">{{ childProfile.name }}</div>
+            </div> -->
 
             <!-- 자녀 프로필 선택 메뉴 -->
-            <select name="childName" id="child" v-if="childNameList.length > 0" v-model="selectedChildId">
+            <!-- <select name="childName" id="child" v-if="childNameList.length > 0" v-model="selectedChildId">
                 <option value="0" disabled>자녀 선택</option>
                 <option v-for="child in childNameList" :key="child" :value="child">
+                    {{ child.name }}
+                </option>
+            </select>
+        </div> -->
+        <div class="child-box" v-if="childNameList.length > 0">
+            <div class="child-profile">
+                <img :src="displayProfile.profile || '/profile/default5.webp'">
+            </div>
+            <div class="child-info">
+                <div class="child-name">{{ displayProfile.name }}</div>
+            </div>
+            <!-- 자녀 프로필 선택 메뉴 -->
+            <select name="childName" id="child" v-model="selectedChild">
+                <!-- 기본값: 부모 정보 -->
+                <option :value="null">(나)</option>
+                <option v-for="child in childNameList" :key="child.id" :value="child">
                     {{ child.name }}
                 </option>
             </select>
@@ -25,10 +39,11 @@
         <!-- 자녀가 없을 때  -->
         <div class="child-box" v-else>
             <div class="child-profile">
-                <img src="/profile/default5.webp" alt="">    
+                <img :src="displayProfile.profile || '/profile/default5.webp'">    
             </div>
             <div class="child-info">
-                <div class="child-name">자녀를 등록하세요 </div>
+                <div class="child-name">{{ displayProfile.name }}</div>
+                <div class="child-name">자녀를 등록하세요</div>
             </div>
 
             <!-- 자녀 프로필 선택 메뉴 -->
@@ -107,18 +122,23 @@ const closeMenubtn = () => {
 }
 
 // 자녀 프로필 메뉴
-const selectedChildId = ref(0); // 셀렉트 박스가 처음에 "0=자녀선택" 표시
+// const selectedChildId = ref(0); // 셀렉트 박스가 처음에 "0=자녀선택" 표시
+const selectedChild = ref(null);
 const childNameList = computed(() => store.state.header.childNameList || []); //등록된 자녀 수 확인
 const childProfile = ref({}); // 선택된 자녀 정보
+const myName = computed(() => store.state.header.myName);
 
+// watch(selectedChildId, (newId) => {
+// watch(selectedChild, (newId) => {
+//     console.log('선택된 자녀 정보', childProfile);
+//     if(selectedChildId) {
+//         childProfile.value = newId;
+//     }
+// })
 
-
-watch(selectedChildId, (newId) => {
-    console.log('선택된 자녀 정보', childProfile);
-    if(selectedChildId) {
-        childProfile.value = newId;
-    }
-})
+const displayProfile = computed(() => {
+    return selectedChild.value ? selectedChild.value : myName.value;
+});
 
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');

@@ -15,6 +15,7 @@ export default {
         ,lastPage: 1
         ,perPage: 10
         ,total: 0
+        ,childPoint: 0
         
     }),
     mutations: {
@@ -38,6 +39,9 @@ export default {
             state.lastPage = last_page;
             state.perPage = per_page;
             state.total = total;
+        },
+        setChildPoint(state, childPoint) {
+            state.childPoint = childPoint;
         },
         
     },
@@ -65,6 +69,39 @@ export default {
             } catch (error) {
               console.error('지출 정보 불러오기 오류', error);
             }
+        },
+
+        // 자녀의 포인트 페이지
+        async childPrintPointList(context, searchData) {
+            try {
+                const response = await axios.get(`/api/child/point/?page=${searchData.page}`);
+                
+                // pointList 데이터를 commit
+                context.commit('setPointList', response.data.pointList.data);
+        
+                context.commit('setTotalPoint', response.data.childTotalPoint);
+                // pagination 정보를 개별적으로 commit
+                context.commit('setPagination', {
+                    current_page: response.data.pointList.current_page,
+                    last_page: response.data.pointList.last_page,
+                    per_page: response.data.pointList.per_page,
+                    total: response.data.pointList.total,
+                });
+            } catch (error) {
+              console.error('지출 정보 불러오기 오류', error);
+            }
+        },
+
+        // 자녀 모아 은행 페이지
+        childPoint(context) {
+            const url = '/api/child/moabank';
+            axios.get(url)
+            .then(response => {
+                context.commit('setTotalPoint', response.data.totalPoint);
+            })
+            .catch(error => {
+                console.error('자녀 포인트 합계 불러오기 실패', error);
+            })
         },
     },
     getters: {

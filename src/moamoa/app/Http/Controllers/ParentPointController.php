@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ParentPointController extends Controller
 {
-    public function index($id) {
-        // 로그인 유저가 부모인지 확인
-        // $parent = Auth::guard('parents')->user();
+    // 부모 포인트 페이지지
+    public function parent($id) {
 
         $childPointList = Point::select('points.child_id', 'points.point', 'points.point_code', 'points.payment_at')                            
                                     ->where('points.child_id', $id)

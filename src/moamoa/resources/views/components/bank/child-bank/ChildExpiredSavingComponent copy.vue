@@ -8,9 +8,9 @@
                 <div class="cancellation-date">해지일</div>
             </div>
             <div v-for="item in expiredSavingList" :key="item" class="expired-saving-list">
-                <div v-for="saving in item.saving_products" :key="saving" class="expired-saving-name">{{ saving.saving_product_name }}</div>
-                <div class="saving-status">{{ item.saving_sign_up_status }}</div>
-                <div class="cancellation-date">해지일</div>
+                <div v-for="saving in item.saving_products" :key="saving" class="expired-saving-name">{{ saving.saving_product_name }} 적금</div>
+                <div class="saving-status">{{ getStatusText(item.saving_sign_up_status) }}</div>
+                <div class="cancellation-date">{{ item.saving_sign_up_end_at }}</div>
             </div>
             <!-- 페이지네이션 UI by 최상민 -->
             <div class="pagination">
@@ -57,7 +57,7 @@
 
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -69,6 +69,16 @@ const page = 1; // 기본 값 설정
 
 // 만기된 적금 정보 가져오기
 const expiredSavingList = computed(() =>store.state.saving.expiredSavings);
+
+// 카테고리를 문자열로 변환하는 함수
+const getStatusText = (saving_sign_up_status) => {
+    const statusMapping = {
+        0: '진행중',
+        1: '중도 해지',
+        2: '만기 해지',
+    };
+    return statusMapping[saving_sign_up_status]; // 기본값 없이 반환
+};
 
 // ********** 페이지네이션 **********
 const currentPage = computed(() => store.state.saving.currentPage);
@@ -127,7 +137,7 @@ const goToNext = () => {
     }
 };
 
-onMounted(() => {
+onBeforeMount(() => {
     store.dispatch('saving/childExpiredSavings', { child_id: route.params.child_id, page });
 })
 
@@ -167,6 +177,15 @@ onMounted(() => {
 
 .cancellation-date {
     width: 250px;
+}
+
+.expired-saving-list {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 10px;
+    height: 30px;
 }
 
 /* 페이지네이션 css */

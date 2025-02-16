@@ -49,16 +49,18 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="(item, index) in pointList" :key="item" class="bankbook-transactions"> 
+                            <div v-for="(item, index) in pointListWithTotal" :key="item.id || index" class="bankbook-transactions">
+                                <!-- 번호 -->
                                 <p>{{ index + 1 }}</p>
+                                <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
-                                <p v-if="item.point_code === '3'" class="text-end">{{ item.point }}</p>
-                                <p v-else></p>
-                                <p v-if="['0', '1', '2', '4'].includes(item.point_code)" class="text-end">{{ item.point.toLocaleString() }}</p>
-                                <p v-else></p>
-                                <p class="text-end">100
-                                    <!-- total -->
-                                </p>
+                                <!-- 출금: point_code가 '3'인 경우에만 표시 -->
+                                <p class="text-end">{{ item.point_code === '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <!-- 입금: point_code가 '3'이 아닐 때 표시 -->
+                                <p class="text-end">{{ item.point_code !== '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <!-- 거래 후 잔액 -->
+                                <p class="text-end">{{ Number(item.cumulativeTotal).toLocaleString() }}</p>
+                                <!-- 카테고리 -->
                                 <p>{{ getCategoryText(item.point_code) }}</p>
                             </div>
                         </div>
@@ -201,6 +203,22 @@ const goToNext = () => {
     }
 };
 
+// 각 항목에 누적 잔액(거래 후 잔액)을 추가하는 computed property
+const pointListWithTotal = computed(() => {
+    let balance = 0;
+    return pointList.value.map(item => {
+        // 만약 point_code가 '3'이면 출금, 아니면 입금으로 간주
+        const withdrawal = (item.point_code === '3') ? Number(item.point) : 0;
+        const deposit = (item.point_code !== '3') ? Number(item.point) : 0;
+        balance += (deposit - withdrawal);
+        return {
+        ...item,
+        cumulativeTotal: balance, // 누적 잔액(거래 후 잔액)
+        deposit,                  // 입금 값 (필요시)
+        withdrawal                // 출금 값 (필요시)
+        };
+    });
+});
 
 onMounted(() => {
     store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});

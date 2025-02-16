@@ -13,10 +13,10 @@
         </div>
         <div class="account">
             <!-- 가입 날짜로 정렬할 예정 -->
-            <div class="div-box" @click="goPointList()">
+            <div class="div-box" @click="goPointList">
                 <p class="have-point">보유중인 모아 포인트</p>
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
-                <p class="subscribe">현재 가입한 적금 상품 : 2개</p>
+                <p class="subscribe">현재 가입한 적금 상품 : {{ emptySlots }}개</p>
             </div>
             <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
                 <p class="have-point">모아 적금통장</p>
@@ -32,50 +32,52 @@
                 </div>
             </div>
                 <!-- 빈 통장 슬롯 -->
-                <!-- <div class="div-box" @click="goSavingProduct" v-for="item in empty" :key="item" >
+                <!-- <div class="div-box" @click="goSavingProduct"  >
                     <p class="have-point">모아 적금통장</p>
                     <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                     <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
-                </div> -->
-                <div class="div-box" @click="goSavingProduct"  >
-                    <p class="have-point">모아 적금통장</p>
-                    <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
-                    <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
-                </div>
-                <div class="div-box" @click="goSavingProduct"  >
+                        </div> -->
+                <div class="div-box" v-for="n in emptySlots" :key="'empty-' + n" @click="goSavingProduct">
                     <p class="have-point">모아 적금통장</p>
                     <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                     <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p>
                 </div>
-
             </div>
         </div>
-    
-    
 </template>
 
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { computed, ref, onMounted, onBeforeMount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 // const childPoint = computed(() => store.state.childPoint.childPoint);
-const totalPoints = computed(() => store.state.childPoint.totalPoints);
+const totalPoints = computed(() => store.state.point.totalPoint);
 console.log('totalPoints 확인 : ', totalPoints)
+
 // 자녀 적금 상품 가져 오기
-const savingList = computed(()=> store.state.saving.childSavingList);
+// const savingList = computed(()=> store.state.saving.childSavingList);
+const savingList = computed(() => {
+    const today = new Date();
+    return store.state.saving.childSavingList.filter(item => {
+        // item.saving_sign_up_end_at이 오늘 날짜 이후(또는 오늘과 같음)일 때만 포함
+        return new Date(item.saving_sign_up_end_at) >= today;
+    });
+});
+
+// 빈 슬롯 개수 계산
+const emptySlots = computed(() => {
+    return Math.max(3 - savingList.value.length, 0);
+});
 
 // 자녀 포인트 받아오기
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
-onMounted(() => {
-    store.dispatch('childPoint/childPoint');
-    store.dispatch('bank/koreaBank');
-    store.dispatch('saving/childSaving');
-});
+
 
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
@@ -86,11 +88,9 @@ const goSavingDetail = (saving_sign_up_id) => {
 }
 
 // 자녀 포인트 페이지로 이동
-const goPointList = (saving_sign_up_id) => {
-    // const bankbook_id = saving_sign_up_id;
-    // store.dispatch('saving/childSavingDetail', bankbook_id);
-    // router.push('/child/bankbook/' + bankbook_id);
-    // console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
+const goPointList = () => {
+    store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
+    router.push('/child/point');
 }
 
 // 적금 상품 페이지로 이동
@@ -104,6 +104,13 @@ const empty = computed(()=> {
     const aa = total - savingList.legnth;
 })
 
+// 마운트
+onBeforeMount(() => {
+    // 한국은행 API
+    store.dispatch('bank/koreaBank');
+    store.dispatch('point/childPoint');
+    store.dispatch('saving/childSaving');
+});
 
 
 </script>
@@ -129,8 +136,10 @@ const empty = computed(()=> {
 
 .kr-bank {
     display: flex;
+    justify-content: space-between;
+    border: 1px solid #e0e7ee;
     border-radius: 10px;
-    width: 60%;
+    width: 550px;
 }
 
 .kr-bank-headline {
@@ -145,6 +154,8 @@ const empty = computed(()=> {
     font-family: 'LAB디지털';
     font-size: 2rem;
     width: 150px;
+    padding: 5px;
+    text-align: center;
 }
 
 .p-explanation {

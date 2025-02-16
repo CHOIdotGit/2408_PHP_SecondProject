@@ -10,6 +10,7 @@ export default {
         childBell: [], // 자녀 로그인 시 자녀 미션 완료 출력
         childInfo: [], // 로그인한 자녀 프로필 정보
         checkChildMissionAlarm: [],
+        myName: {},
     }),
     mutations: {
         setChildNameList(state, childNameList) {
@@ -27,6 +28,9 @@ export default {
         },
         setChildBell(state, childBell) {
             state.childBell = childBell
+        },
+        setMyName(state, myName) {
+            state.myName = myName
         },
     },
     actions: {
@@ -83,7 +87,7 @@ export default {
         },
 
         // ***************************
-        // 헤더 자녀 이름 출력
+        // 헤더 자녀 이름과 본인 이름름 출력
         // ***************************
         childNameList(context) {
             return new Promise((resolve, reject) => {
@@ -93,12 +97,13 @@ export default {
     
                     console.log(response.data.childNameList);
                     context.commit('setChildNameList', response.data.childNameList);
+                    context.commit('setMyName', response.data.myName);
                     
                     return resolve();
                 })
                 .catch(error => {
                     console.error('자녀 이름 불러오기 실패', error);
-                    return resolve();
+                    reject(error); // 여기서 반드시 reject 호출 - 최상민
                 });
             });
         },

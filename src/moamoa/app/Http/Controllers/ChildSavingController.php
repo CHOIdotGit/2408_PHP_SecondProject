@@ -36,9 +36,11 @@ class ChildSavingController extends Controller
         // 조인문으로 자녀 id, 적금 상품 이름, 이자율, 잔액 합계 불러오기
         $childSavingList = SavingSignUp::select('saving_sign_ups.child_id',
                                                 'saving_sign_ups.saving_sign_up_id',
+                                                'saving_sign_ups.created_at',
+                                                'saving_sign_ups.saving_sign_up_start_at',
+                                                'saving_sign_ups.saving_sign_up_end_at',
                                                 'saving_products.saving_product_name',
                                                 'saving_products.saving_product_interest_rate',
-                                                'saving_sign_ups.created_at',
                                                 DB::raw('(
                                                     SELECT SUM(saving_details.saving_detail_left)
                                                     FROM saving_details

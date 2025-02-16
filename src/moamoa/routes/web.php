@@ -215,7 +215,7 @@ Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
 // Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
 
 // 부모 자녀 포인트 페이지
-Route::get('/api/parent/point/{id}', [ParentPointController::class, 'index']);
+Route::get('/api/parent/point/{id}', [ParentPointController::class, 'parent']);
 
 // ******************************
 // *      자녀 은행 관련         *
@@ -224,10 +224,10 @@ Route::get('/api/parent/point/{id}', [ParentPointController::class, 'index']);
 Route::get('/api/child/saving/list', [ChildSavingController::class, 'index']);
 
 // 자녀 은행 페이지
-Route::get('/api/child/moabank', [ChildPointController::class, 'index']);
+Route::get('/api/child/moabank', [ChildPointController::class, 'total']);
 
 // 자녀 포인트 페이지
-Route::get('/api/child/point', [ParentPointController::class, 'index']);
+Route::get('/api/child/point', [ChildPointController::class, 'child']);
 
 // 자녀 적금 통장 상세
 Route::get('/api/child/moabank/bankbook/{bankbook_id}', [ChildSavingController::class, 'show']);

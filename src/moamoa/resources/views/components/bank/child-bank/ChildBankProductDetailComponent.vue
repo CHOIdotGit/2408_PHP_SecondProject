@@ -28,7 +28,8 @@
                     <img src="/img/icon-moabank-analytics.png" alt="">
                     <div>
                         <p class="box-item-title">금리</p>
-                        <p class="box-item-content">{{ interestRate }}%</p>
+                        <!-- <p class="box-item-content">{{ interestRate }}%</p> -->
+                        <p class="box-item-content">{{ productInfo.saving_product_interest_rate }}%</p>
                     </div>
                 </div>
             </div>
@@ -55,7 +56,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -67,7 +68,7 @@ const router = useRouter();
 const productInfo = computed(() => store.state.bank.productInfo);
 const interestRate = computed(() => store.state.bank.computedInterestRate)
 
-onMounted(() => {
+onBeforeMount(() => {
     const id = route.params.id;
     console.log('상품 ID:', id);  // id가 제대로 전달되는지 확인
     store.dispatch('bank/selectedProduct', id);

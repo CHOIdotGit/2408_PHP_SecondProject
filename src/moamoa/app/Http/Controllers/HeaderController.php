@@ -23,6 +23,8 @@ class HeaderController extends Controller
                                 ->orderBy('created_at')
                                 ->get();
 
+        $myName = ParentModel::select('parent_id', 'name', 'profile')->where('parent_id', $parent->parent_id)->first();
+
         // 자녀 없을 때 - 유효성 검사
         if($childNameList -> isEmpty()) {
             $responseData = [
@@ -37,6 +39,7 @@ class HeaderController extends Controller
             'success' => true
             ,'msg' => '자녀 이름 목록 출력'
             ,'childNameList' => $childNameList
+            ,'myName' => $myName
         ];
         return response()->json($responseData, 200);
                                 

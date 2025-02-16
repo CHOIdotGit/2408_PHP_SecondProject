@@ -40,6 +40,7 @@ import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlCo
 import ChildExpiredSavingComponentCopy from '../views/components/bank/child-bank/ChildExpiredSavingComponent copy.vue';
 import PrivateInfoComponent from '../views/components/auth/private/PrivateInfoComponent.vue';
 import ParentPrivateFamCodeComponent from '../views/components/auth/private/ParentPrivateFamCodeComponent.vue';
+import ChildPointComponent from '../views/components/bank/child-bank/ChildPointComponent.vue';
 
 
 
@@ -396,10 +397,10 @@ const routes = [
         beforeEnter: chkAuth,
     },
     
-    // 자녀 통장 페이지(통장 상세 내역)
+    // 자녀 통장(포인트) 페이지(통장 상세 내역)
     {
-        path: '/child/bankbook/:bankbook_id',
-        component: ChildBankBookComponent,
+        path: '/child/point',
+        component: ChildPointComponent,
         beforeEnter: chkAuth,
     },
     
@@ -411,11 +412,11 @@ const routes = [
     },
     
     // 자녀 만기된 적금 상세 페이지
-    {
-        path: '/child/expired/saving/:expired_id',
-        component: ChildExpiredSavingComponentCopy,
-        beforeEnter: chkAuth,
-    },
+    // {
+    //     path: '/child/expired/saving/:expired_id',
+    //     component: ChildExpiredSavingComponentCopy,
+    //     beforeEnter: chkAuth,
+    // },
 
     // +==================================+
     // +          테스트 하는 중           +

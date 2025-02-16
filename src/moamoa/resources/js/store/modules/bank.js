@@ -154,7 +154,8 @@ export default {
                 .catch(error => {
                     console.log('해당 적금 상품을 불러올 수 없습니다', error);
                 }) 
-        }
+        },
+
     },
     getters: {
         getNextPage(state) {
