@@ -41,6 +41,9 @@ export default {
             state.perPage = per_page;
             state.total = total;
         },
+        setChildId(state, childId) {
+            state.childId = childId;
+        },
 
     },
 
@@ -58,13 +61,44 @@ export default {
                     console.error('자녀 적금 리스트 불러오기 실패', error);
                 })
         },
+        //부모가 확인
+        parentChildSaving(context, child_id) {
+            const url = '/api/parent/saving/list/' + child_id;
+            console.log(url);
+            axios.get(url)
+                .then(response => {
+                    context.commit('setChildSavingList', response.data.savingList);
+                    context.commit('setChildId', child_id);
+                    console.log('자녀 적금 리스트 불러오기:', response.data.savingList);
+                })
+                .catch(error => {
+                    console.error('자녀 적금 리스트 받아오기 실패', error);
+                })
+        },
+
 
         // 자녀 통장 내역
         childSavingDetail(context, bankbook_id) {
             const url = '/api/child/moabank/bankbook/'+ bankbook_id;
-            console.log(url);
 
             axios.get(url)
+                .then(response => {
+                    sessionStorage.setItem('bankbook_id', bankbook_id);
+                    context.commit('setBankBookId', bankbook_id);
+                    context.commit('setSavingDetail', response.data.bankBook);
+                    context.commit('setSavingInfo', response.data.bankBookInfo);
+                    console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
+                })
+                .catch(error => {
+                    console.error('자녀 통장 내역 불러오기 실패', error);
+                });
+        },
+
+        // 부모가 자녀 통장 확인
+        parnetChildSavingDetail(context, bankbook_id) {
+            const url = '/api/parent/bankbook/' + bankbook_id;
+            console.log(url);
+            axios.get(url) 
                 .then(response => {
                     sessionStorage.setItem('bankbook_id', bankbook_id);
                     context.commit('setBankBookId', bankbook_id);

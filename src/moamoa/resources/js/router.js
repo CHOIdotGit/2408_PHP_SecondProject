@@ -268,7 +268,7 @@ const routes = [
     // +          부모 은행 페이지         +
     // +==================================+
 
-    // 부모 통장 페이지
+    // 부모 은행 페이지
     {
         path: '/parent/moabank/:child_id',
         component: ParentsMoaBankComponent,
@@ -277,7 +277,7 @@ const routes = [
 
     // 부모 자녀 적금 페이지
     {
-        path: '/parent/bankbook/:child_id',
+        path: '/parent/bankbook/:bankbook_id',
         component: ParentsBankBookComponent,
         beforeEnter: chkAuth,
     },

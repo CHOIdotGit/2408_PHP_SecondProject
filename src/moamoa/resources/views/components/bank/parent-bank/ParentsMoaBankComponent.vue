@@ -31,7 +31,7 @@
                 </div>
                 <div class="div-box-item">
                     <p>이자율 : </p>
-                    <div>{{ item.saving_product_interest_rate.toFixed(1) }} %</div>
+                    <div>{{ item.saving_product_interest_rate }} %</div>
                 </div>
             </div>
             <!-- v-else -->
@@ -60,22 +60,25 @@ const childId = computed(() => store.state.bank.childId);
 
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
+
 // 적금 상품 가져오기
-const savingProduct = computed(()=> store.state.bank.savingList);
+// const savingProduct = computed(()=> store.state.bank.savingList);
 
 // 자녀 적금 상품 가져 오기
 const savingList = computed(()=> store.state.saving.childSavingList);
+
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
     const bankbook_id = saving_sign_up_id;
-    store.dispatch('saving/childSavingDetail', bankbook_id);
-    router.push('/child/bankbook/' + bankbook_id);
+    store.dispatch('saving/parnetChildSavingDetail', bankbook_id);
+    router.push('/parent/bankbook/' + bankbook_id);
     console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
 onMounted(() => {
     store.dispatch('bank/koreaBank');
     store.dispatch('bank/savingProductList');
+    store.dispatch('saving/parentChildSaving', route.params.child_id);
 });
 
 // const addSavingPage = () => {
@@ -86,6 +89,7 @@ onMounted(() => {
 // 가입한 적금 상품 개수 
 onBeforeMount(() => {
     store.dispatch('bank/signProductCount', route.params.child_id);
+    
 });
 </script>
 
@@ -191,6 +195,15 @@ onBeforeMount(() => {
     margin-top: 10px;
     font-size: 1.3rem;
     font-weight: 600;
+}
+
+.div-box-item {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+    padding-right: 50px;
+    font-size: 1.3rem;
 }
 
 .interest-rate {

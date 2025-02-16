@@ -20,7 +20,6 @@
             </div>
             <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
                 <p class="have-point">모아 적금통장</p>
-                {{ savingList.length }}
                 <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
                 <div class="div-box-item">
                     <p >잔액</p>

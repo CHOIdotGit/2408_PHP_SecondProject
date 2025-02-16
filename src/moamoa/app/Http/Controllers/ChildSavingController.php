@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\AutoSavingRecord;
+use App\Models\Child;
 use App\Models\SavingDetail;
 use App\Models\SavingProduct;
 use App\Models\SavingSignUp;
@@ -18,20 +19,6 @@ class ChildSavingController extends Controller
         // /child/moabank 에서 보여지는 가입 적금 리스트
         // 로그인 유저가 자녀인지 확인
         $child = Auth::guard('children')->user();
-
-        // $childSavingList = SavingSignUp::select('child_id', 'saving_sign_up_id', 'saving_product_id')
-        //                                 ->where('child_id', $child->child_id)
-        //                                 ->orderBy('created_at', 'DESC')
-        //                                 ->with([
-        //                                     'saving_products' => function ($query) {
-        //                                         $query
-        //                                             ->select('saving_product_id', 'saving_product_name', 'saving_product_interest_rate');
-                                                    
-        //                                     }
-        //                                 ])
-
-                                        
-        //                                 ->get();
 
         // 조인문으로 자녀 id, 적금 상품 이름, 이자율, 잔액 합계 불러오기
         $childSavingList = SavingSignUp::select('saving_sign_ups.child_id',
@@ -52,18 +39,18 @@ class ChildSavingController extends Controller
                                         ->whereNull('saving_sign_ups.deleted_at')
                                         ->orderBy('saving_sign_ups.created_at', 'DESC')
                                         ->get();
+          
 
-
-        $responseData = [
-            'success' => true
-            , 'msg' => '적금상품리스트 획득 성공'
-            ,'childSavingList' => $childSavingList
-            // , 'childTest' => $childTest
-        ];
-        return response()->json($responseData, 200);
+                $responseData = [
+                    'success' => true
+                    , 'msg' => '적금상품리스트 획득 성공'
+                    ,'childSavingList' => $childSavingList
+                ];
+                return response()->json($responseData, 200);
+    
     }
     
-    // 자녀 적금 통상 상세
+    // 자녀 적금 통장 상세
     public function show($bankbook_id) {
             // 로그인 유저가 자녀인지 확인
             $child = Auth::guard('children')->user();
@@ -99,9 +86,7 @@ class ChildSavingController extends Controller
                                             ->get();
 
             }
-            else if($parent) {
-                
-            }
+
 
 
 
@@ -136,6 +121,18 @@ class ChildSavingController extends Controller
         // type = 0(매일) => deposit = 7
         // type = 1(매주) => 0~6
         // 적금 상품 확인
+
+        // 가입한 적금이 3개면 가입불가
+        $savingCount = SavingSignUp::where('child_id', $child)
+                                    ->count();
+
+        if($savingCount === 3) {
+            return response()
+                    ->json(['msg' => '최대 3개의 적금만 가입할 수 있습니다.']);
+    
+        }
+
+
         $savingInfo = SavingProduct::select('saving_product_id'
                                         ,'saving_product_type'
                                         ,'saving_product_interest_rate'
@@ -143,6 +140,7 @@ class ChildSavingController extends Controller
                                     ->where('saving_product_id', $request->product_id)
                                     ->first();
 
+        
         $savingPeriod = intval($savingInfo->saving_product_period);
         $endDate = date("Y-m-d", strtotime("+$savingPeriod days", strtotime($today)));
 

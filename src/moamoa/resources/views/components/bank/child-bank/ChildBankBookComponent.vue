@@ -13,8 +13,8 @@
                     <p>{{ savingInfo.saving_product_name }} 적금</p>
                 </div>
                 <div class="b-info">
-                        <p class="margin-left p-first">납입 유형</p>
-                        <p>{{ savingInfo.saving_product_type }}</p>
+                    <p class="margin-left p-first">납입 유형</p>
+                    <p>{{ savingInfo.saving_product_type }}</p>
                 </div>
                 <div class="b-info">
                     <p class="p-first">가입한 날</p>

@@ -205,14 +205,14 @@ Route::get('/api/moabank/product/regist/{id}', [BankController::class, 'product'
 // ******************************
 // *      부모 은행 관련         *
 // ******************************
-// 부모 자녀가 가입한 적금 목록 받아오기
+// 부모: 자녀가 가입한 적금 목록 받아오기
 Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class, 'index']);
 
 // 부모 은행 페이지
 Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
 
-// 부모 자녀 적금 페이지
-// Route::get('/api/parent/bankbook/{id}', [ParentPointController::class, 'index']);
+// 부모: 자녀 적금 통장 페이지
+Route::get('/api/parent/bankbook/{bankbook_id}', [ParentPointController::class, 'show']);
 
 // 부모 자녀 포인트 페이지
 Route::get('/api/parent/point/{id}', [ParentPointController::class, 'parent']);

@@ -79,7 +79,6 @@ export default {
             console.log(url);
             axios.get(url)
             .then(response => {
-                console.log('savingList', response.data.savingList.data);
                 context.commit('setSavingList', response.data.savingList.data);
                 context.commit('setSingleSaving', response.data.singleSavingList);
                 context.commit('setWeekSaving', response.data.weekSavingList);
