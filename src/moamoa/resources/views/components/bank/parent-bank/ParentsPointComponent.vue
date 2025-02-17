@@ -38,9 +38,7 @@
             <!-- 거래 내역 -->
             <div class="bankbook-table">
                 <div class="bankbook-title">
-                    <p>년 월 일
-                        <!-- 이걸 클릭하면 최신순, 오래된순 정렬하는 기능 추가 -->
-                    </p>
+                    <p @click="toggleSortOrder" class="change-date">년 월 일</p>
                     <p>출금 금액</p>
                     <p>맡기신 금액</p>
                     <p>거래 후 잔액</p>
@@ -49,7 +47,7 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="(item, index) in pointListWithTotal" :key="item.id || index" class="bankbook-transactions">
+                            <div v-for="(item, index) in pointListWithBalance" :key="item.id || index" class="bankbook-transactions">
                                 <!-- 번호 -->
                                 <p>{{ index + 1 }}</p>
                                 <!-- 날짜 -->
@@ -116,7 +114,7 @@
   
 <script setup>
 
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -126,11 +124,45 @@ const pointList = computed(() => store.state.point.pointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
 // const childId = computed(() => store.state.point.childId);
 
+// 정렬 순서: 'asc' = 오래된순, 'desc' = 최신순
+const sortOrder = ref('asc');
+
+// 정렬 토글 함수
+const toggleSortOrder = () => {
+    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
+    fetchData(); // 정렬 변경 시 데이터 다시 요청
+};
+
+// 각 항목에 누적 잔액(거래 후 잔액)을 추가하는 computed property
+const pointListWithBalance = computed(() => {
+    let balance = 0;
+
+    // payment_at 기준으로 정렬
+    let sortedList = [...pointList.value].sort((a, b) => new Date(a.payment_at) - new Date(b.payment_at));
+
+    // 정렬 순서 변경 (desc일 경우 뒤집기)
+    if (sortOrder.value === 'desc') {
+        sortedList.reverse();
+    }
+
+    // 정렬된 리스트에 누적 합계 계산
+    return sortedList.map(item => {
+        const withdrawal = item.point_code === '3' ? Number(item.point) : 0;
+        const deposit = item.point_code !== '3' ? Number(item.point) : 0;
+        balance += (deposit - withdrawal);
+        return {
+            ...item,
+            cumulativeTotal: balance, // 누적 잔액(거래 후 잔액)
+            deposit,                  // 입금 값 (필요시)
+            withdrawal                // 출금 값 (필요시)
+        };
+    });
+});
 
 // 시분초 제외
 const formatDate = (date) => {
-  const d = new Date(date);
-  return d.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식으로 반환
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식으로 반환
 }
 
 // 카테고리를 문자열로 변환하는 함수
@@ -203,25 +235,16 @@ const goToNext = () => {
     }
 };
 
-// 각 항목에 누적 잔액(거래 후 잔액)을 추가하는 computed property
-const pointListWithTotal = computed(() => {
-    let balance = 0;
-    return pointList.value.map(item => {
-        // 만약 point_code가 '3'이면 출금, 아니면 입금으로 간주
-        const withdrawal = (item.point_code === '3') ? Number(item.point) : 0;
-        const deposit = (item.point_code !== '3') ? Number(item.point) : 0;
-        balance += (deposit - withdrawal);
-        return {
-        ...item,
-        cumulativeTotal: balance, // 누적 잔액(거래 후 잔액)
-        deposit,                  // 입금 값 (필요시)
-        withdrawal                // 출금 값 (필요시)
-        };
-    });
-});
+
 
 onMounted(() => {
-    store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
+    // store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
+    store.dispatch('point/printPointList', {
+        child_id: route.params.child_id,
+        // page: currentPage.value,
+        page: 1,
+        sort: sortOrder.value // 서버로 정렬 정보 전달
+    });
 });
 
 </script>

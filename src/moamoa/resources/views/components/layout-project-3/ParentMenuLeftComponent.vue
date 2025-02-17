@@ -62,25 +62,25 @@
             </router-link>
             <!-- <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="router.push('/parent/spend/list/' + selectedChildId.child_id)"> 
+            <div class="menu-title" @click="router.push('/parent/spend/list/' + selectedChild.child_id)"> 
                 <img src="/img/icon-coin.png" alt="" class="menu-icon">
                 지출
             </div>
             <!-- <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="router.push('/parent/mission/list/' + selectedChildId.child_id)"> 
+            <div class="menu-title" @click="router.push('/parent/mission/list/' + selectedChild.child_id)"> 
                 <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                 미션
             </div>
-            <div class="menu-title" @click="goParentCalendar(selectedChildId.child_id)">
+            <div class="menu-title" @click="goParentCalendar(selectedChild.child_id)">
                 <img src="/img/icon-calendar.png" alt="" class="menu-icon">
                 캘린더
             </div>
-            <div class="menu-title" @click="goParentStatis(selectedChildId.child_id)">
+            <div class="menu-title" @click="goParentStatis(selectedChild.child_id)">
                 <img src="/img/icon-signal.png" alt="" class="menu-icon">
                 통계
             </div>
-            <div class="menu-title" @click="goBankbook(selectedChildId.child_id)">
+            <div class="menu-title" @click="goBankbook(selectedChild.child_id)">
                 <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                 모아통장
             </div>
@@ -129,12 +129,13 @@ const childProfile = ref({}); // 선택된 자녀 정보
 const myName = computed(() => store.state.header.myName);
 
 // watch(selectedChildId, (newId) => {
-// watch(selectedChild, (newId) => {
-//     console.log('선택된 자녀 정보', childProfile);
-//     if(selectedChildId) {
-//         childProfile.value = newId;
-//     }
-// })
+watch(selectedChild, (newId) => {
+    console.log('선택된 자녀 정보', childProfile);
+    // if(selectedChildId) {
+    if(selectedChild) {
+        childProfile.value = newId;
+    }
+})
 
 const displayProfile = computed(() => {
     return selectedChild.value ? selectedChild.value : myName.value;

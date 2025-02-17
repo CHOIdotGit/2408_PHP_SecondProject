@@ -94,6 +94,10 @@
     font-size: 1.3rem;
 }
 
+.change-date {
+    cursor: pointer;
+}
+
 .bankbook-item {
     display: flex;
     width: 900px;
@@ -235,5 +239,5 @@
 
 .text-end {
     text-align: end;
-    padding-right: 1px;
+    padding-right: 2px;
 }

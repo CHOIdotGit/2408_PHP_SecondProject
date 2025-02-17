@@ -99,7 +99,7 @@ class BankController extends Controller
 
         // 가입한 적금 상품 상세 정보 불러오기
         // $productInfo = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
-        $productInfo = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_product_id', 'saving_sign_ups.child_id', 'saving_products.saving_product_id'
+        $productInfo = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_product_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_products.saving_product_id'
                                             , 'saving_products.saving_product_name', 'saving_products.saving_product_period', 'saving_products.saving_product_amount'
                                             , 'saving_products.saving_product_interest_rate', 'saving_products.saving_product_type')
                                     ->where('saving_sign_ups.child_id', $id)

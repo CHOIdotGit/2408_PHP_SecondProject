@@ -13,12 +13,13 @@
         </div>
         <div class="account">
             <!-- 가입 날짜로 정렬할 예정 -->
-            <div class="div-box">
-                <p @click="router.push('/parent/point/' + childId)" class="have-point go-point">보유중인 모아 포인트</p>
+            <!-- <div @click="router.push('/parent/point/' + route.params.child_id)" class="div-box"> -->
+            <div @click="goPointPage" class="div-box go-point">
+                <p class="have-point">보유중인 모아 포인트</p>
                 <!-- 온클릭으로 링크는 부모 포인트 페이지로 설정하기 -->
                 <p class="have-moa">{{ Number(point).toLocaleString() }}</p>
                 <!-- totalPoint 가져오면 -->
-                <p class="subscribe">현재 가입한 적금 상품 : {{ productCount }} 개</p>
+                <p class="subscribe">현재 가입한 적금 상품 : {{ emptySlots }} 개</p>
                 <!-- 가입한 적금 상품 개수 쿼리문으로 가져오기 -->
             </div>
             <!-- v-if -->
@@ -55,8 +56,21 @@ const store = useStore();
 const route = useRoute();
 
 const point = computed(() => store.state.bank.point);
-const productCount = computed(() => store.state.bank.productCount);
-const childId = computed(() => store.state.bank.childId);
+// const childId = computed(() => store.state.bank.childId);
+// const productCount = computed(() => store.state.bank.productCount);
+
+const productCount = computed(() => {
+    const today = new Date();
+    const productInfoArray = Object.values(store.state.bank.productInfo); // 객체를 배열로 변환
+
+    return productInfoArray.filter(item => {
+        return new Date(item.saving_sign_up_end_at) >= today;
+    });
+});
+
+const emptySlots = computed(() => {
+    return Math.max(3 - productCount.value.length, 0);
+});
 
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
@@ -67,6 +81,12 @@ const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 // 자녀 적금 상품 가져 오기
 const savingList = computed(()=> store.state.saving.childSavingList);
 
+// 자녀 포인트 페이지로 이동
+const goPointPage = () => {
+    store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
+    router.push('/parent/point/' + route.params.child_id);
+}
+
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
     const bankbook_id = saving_sign_up_id;
@@ -75,12 +95,6 @@ const goSavingDetail = (saving_sign_up_id) => {
     console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
-onMounted(() => {
-    store.dispatch('bank/koreaBank');
-    store.dispatch('bank/savingProductList');
-    store.dispatch('saving/parentChildSaving', route.params.child_id);
-});
-
 // const addSavingPage = () => {
 //     console.log('적금상품 더보기');
 //     store.dispatch('bank/addsavingList');
@@ -88,8 +102,10 @@ onMounted(() => {
 
 // 가입한 적금 상품 개수 
 onBeforeMount(() => {
+    store.dispatch('bank/koreaBank');
+    // store.dispatch('bank/savingProductList');
     store.dispatch('bank/signProductCount', route.params.child_id);
-    
+    console.log('child_id:', route.params.child_id);
 });
 </script>
 
@@ -113,6 +129,7 @@ onBeforeMount(() => {
 
 .kr-bank {
     display: flex;
+    align-items: center;
     border-radius: 10px;
     width: 60%;
 }

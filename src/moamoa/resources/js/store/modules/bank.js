@@ -12,7 +12,7 @@ export default {
         ,point: 0 // 보유중인 모아 포인트
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
-        ,productInfo: {}
+        ,productInfo: []
         ,singleList: [] //매일 적금
         ,weekList: [] // 매주 적금
         ,computedInterestRate: 0
@@ -41,6 +41,7 @@ export default {
             state.childId = childId;
         },
         setPoint(state, point) {
+            console.log('Mutation 실행됨:', point);
             state.point = point;
         },
         setProductInfo(state, productInfo) {
@@ -104,21 +105,36 @@ export default {
         },
 
         // 가입한 적금 상품 개수와 포인트
-        signProductCount(context, child_id) {
-            const url = '/api/parent/moabank/'+ child_id;
+        // signProductCount(context, child_id) {
+        //     const url = '/api/parent/moabank/'+ child_id;
 
-            axios.get(url)
-                .then(response => {
-                    context.commit('setProductCount', response.data.productCount);
-                    context.commit('setPoint', response.data.point);
-                    console.log('상품 개수와 포인트 확인 : ', response.data);
-                    console.log('자녀 : ', child_id);
+        //     axios.get(url)
+        //         .then(response => {
+        //             context.commit('setProductCount', response.data.productCount);
+        //             context.commit('setPoint', response.data.point);
+        //             context.commit('setProductInfo', response.data.productInfo);
+        //             console.log('상품 개수와 포인트 확인 : ', response.data);
+        //             console.log('자녀 : ', child_id);
 
-                })
-                .catch(error => {
-                    console.log('가입한 적금 상품 개수 불러오기 오류', error);
-                });
+        //         })
+        //         .catch(error => {
+        //             console.log('가입한 적금 상품 개수 불러오기 오류', error);
+        //         });
             
+        // },
+        async signProductCount(context, child_id) {
+            try {
+                const response = await axios.get('/api/parent/moabank/'+ child_id);
+
+                context.commit('setProductCount', response.data.productCount);
+                context.commit('setPoint', response.data.point);
+                context.commit('setProductInfo', response.data.productInfo);
+                console.log('상품 개수, 포인트, 만기일 확인 : ', response.data);
+                console.log('자녀 : ', child_id);
+                
+            } catch (error) {
+                console.error('API 호출 실패:', error);
+            }
         },
 
         // id로 받아온 적금 상품
