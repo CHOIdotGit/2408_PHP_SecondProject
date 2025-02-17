@@ -119,6 +119,7 @@ class BankController extends Controller
     }
 
     
+    // db에 저장된 적금 상품 불어오기
     public function product($id) {
         
         $childProductInfo =  SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')

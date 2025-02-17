@@ -80,16 +80,16 @@
 
             <!-- 적금 가입 동의하기 버튼 -->
             <div class="bank-box-bottom">
-                <div>모아은행 적금 상품에 동의하십니까</div>
-                <div>
+                <div>※ 모아은행 적금 상품에 동의하십니까</div>
+                <div class="agreeBtn">
                     <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
                     <label for="agree-no">아니요, 동의하지 않습니다.</label>
                     
-                    <input type="radio" id="agree-yes" value="yes" name="agree" checked v-model="agreement">
+                    <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
                     <label for="agree-yes">네, 동의합니다</label>
                 </div>
 
-                <div>
+                <div class="registBtn">
                     <div class="box-btn cancel">돌아가기</div>
                     <div class="box-btn" @click="goResigt">가입하기</div>
                 </div>
@@ -138,8 +138,11 @@
             </div>
             <!-- 적금 가입하기 버튼 -->
             <div class="bank-box-bottom">
-                <div class="box-btn cancel">돌아가기</div>
-                <div class="box-btn" @click="goBank">가입하기</div>
+                <div class="registBtn">
+                    <div class="box-btn cancel">돌아가기</div>
+                    <div class="box-btn" @click="goBank">가입하기</div>
+
+                </div>
             </div>
         </div>
 
@@ -181,8 +184,8 @@ onBeforeMount(async () => {
 })
 
 onMounted(() => {
-    const id = route.params.id;
-    console.log('상품 ID:', id);  // id가 제대로 전달되는지 확인
+    const id = route.params.product_id;
+    console.log('상품 ID:', route.params);  // id가 제대로 전달되는지 확인
     store.dispatch('bank/registrationProduct', id);
 });
 
@@ -248,18 +251,25 @@ const goBank = () =>{
 <style scoped>
 h1 {
     font-size: 2.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    margin-left: 273px;
 }
 
 .headline {
     padding-bottom: 5px;
+    display: flex;
+    gap: 30px;
+    font-size: 1.2rem;
+    flex-direction: flex-start;
+    margin-left: 273px;
+    /* margin-bottom: 50px; */
 }
 
 .bank-product-register-container {
     display: flex;
     flex-direction: column;
     /* margin: auto; */
-    align-items: center;
+
 
 }
 
@@ -267,6 +277,7 @@ h1 {
 .bank-form-box {
     border-top: 3px solid #e0e7ee;
     border-bottom: 3px solid #e0e7ee;
+    margin: auto;
 }
 
 .bank-form {
@@ -300,6 +311,7 @@ h1 {
 .box-flex {
     display: flex;
     flex-direction: column;
+    width: 700px;
 }
 
 .amountInput {
@@ -344,10 +356,23 @@ h1 {
     display: flex;
     flex-direction: column;
     margin-top: 20px;
-    /* align-items: flex-end; */
+    align-items: center;
     gap: 20px;
 }
 
+#agree {
+    padding: 10px;
+    border: 1px solid #c9c9c9;
+}
+
+.registBtn {
+    display: flex;
+    gap: 100px;
+}
+
+.bank-box-bottom:first-child {
+    font-size: 1.5rem;
+}
 .box-btn {
     background-color: #ffcf0f;
     cursor: pointer;
