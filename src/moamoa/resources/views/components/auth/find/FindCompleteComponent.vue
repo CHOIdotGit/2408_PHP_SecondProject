@@ -29,7 +29,7 @@
         
         <div v-else class="find-content-pwd">
           <p>
-            입력하신 정보로 회원(user1234)님의 비밀번호를 재설정 하였습니다. 
+            입력하신 정보로 회원({{ userInfo.account }})님의 비밀번호를 재설정 하였습니다. 
             다시 로그인 해주세요.
           </p>
         </div>
