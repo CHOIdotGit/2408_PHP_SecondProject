@@ -43,6 +43,7 @@ import ChildPointComponent from '../views/components/bank/child-bank/ChildPointC
 import FindFormComponent from '../views/components/auth/find/FindFormComponent.vue';
 import FindCompleteComponent from '../views/components/auth/find/FindCompleteComponent.vue';
 import FindPasswordComponent from '../views/components/auth/find/FindPasswordComponent.vue';
+import ChildAgreeComponent from '../views/components/bank/child-bank/ChildAgreeComponent.vue';
 
 
 
@@ -409,7 +410,12 @@ const routes = [
         component: ChildBankProductDetailComponent,
         beforeEnter: chkAuth,
     },
-
+    // 적금 상품 가입 약관 동의 페이지
+    {
+        path: '/moabank/product/regist/agree/:product_id',
+        component: ChildAgreeComponent,
+        beforeEnter: chkAuth,
+    },
     // 적금 상품 가입 페이지(적금상품 가입하기)
     {
         path: '/moabank/product/regist/:product_id',
@@ -421,6 +427,13 @@ const routes = [
     {
         path: '/child/point',
         component: ChildPointComponent,
+        beforeEnter: chkAuth,
+    },
+
+    // 자녀 통장 페이지(상세 내역)
+    {
+        path: '/child/bankbook/:bankbook_id',
+        component: ChildBankBookComponent,
         beforeEnter: chkAuth,
     },
     

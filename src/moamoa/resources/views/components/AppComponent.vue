@@ -19,25 +19,18 @@
             </div>
         </main>
 
-        <!-- footer -->
-        <!-- <footer v-if="isAuth">
-            <div>
-
-            </div>
+        <!-- 하단 메뉴 -->
+        <!-- <footer>
+            <FooderComponent />
         </footer> -->
     </div>
     <div v-else class="app-container">
-
-        <!-- 상단 메뉴 -->
-        <!-- <header></header> -->
         
         <main class="app-layout">
             <!-- 화면 -->
             <router-view></router-view>
         </main>
 
-        <!-- 하단 메뉴 -->
-        <!-- <footer></footer> -->
 
     </div>
 </template>
@@ -49,6 +42,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import MenuLeftComponent from './layout-project-3/MenuLeftComponent.vue';
 import HeaderMenuComponent from './layout-project-3/HeaderMenuComponent.vue';
+import FooderComponent from './layout-project-3/FooderComponent.vue';
 
 
 const store = useStore();

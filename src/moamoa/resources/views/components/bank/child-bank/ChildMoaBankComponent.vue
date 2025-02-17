@@ -136,7 +136,6 @@ onBeforeMount(() => {
 .kr-bank {
     display: flex;
     justify-content: space-between;
-    border: 1px solid #e0e7ee;
     border-radius: 10px;
     width: 600px;
 }

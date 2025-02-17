@@ -21,7 +21,7 @@
                     <img src="/img/icon-moabank-amount.png" alt="">
                     <div>
                         <p class="box-item-title">금액</p>
-                        <p class="box-item-content">100 ~ 1000모아</p>
+                        <p class="box-item-content">100 ~ 1,000모아</p>
                     </div>
                 </div>
                 <div class="box-item">
@@ -35,7 +35,7 @@
             </div>
             <div class="bank-box-bottom">
                 <!-- <div @click="router.push('/moabank/product/regist/'+ saving_product_id)" class="box-btn">가입하기</div> -->
-                <div @click="router.push('/moabank/product/regist/'+ productInfo.saving_product_id)" class="box-btn">가입하기</div>
+                <div @click="router.push('/moabank/product/regist/agree/'+ productInfo.saving_product_id)" class="box-btn">가입하기</div>
                 <p>※ 자세한 내용은 아래 상품안내를 참조하시기 바랍니다.</p>
 
             </div>
