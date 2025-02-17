@@ -63,19 +63,18 @@ class StatsController extends Controller
         //+=========================================+
         $totalAmountChild = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
                                         ->where('transaction_code', '1')
+                                        // ->where('deleted_at IS NULL')
                                         ->where('child_id', $child_id)
                                         ->sum('amount');
 
         //+=========================================+
         //+     자녀, 한달 용돈 총합(최종 수정)       +
         //+=========================================+
-        $totalExpenses = Child::withSum(['missions' => function($query) use ($startOfMonth, $endOfMonth) {
-                                    $query
-                                    ->whereBetween('created_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')]);
-                                }], 'amount')
-                                ->where('parent_id', $parent->parent_id)
-                                ->where('child_id', $child_id)
-                                ->first();
+        $totalExpenses = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->where('transaction_code', '0')
+                                    // ->where('deleted_at IS NULL')
+                                    ->where('child_id', $child_id)
+                                    ->sum('amount');
         
         //  카테고리별 지출 구하기**
         // $eachCategoryTransaction = Transaction::select(
@@ -99,7 +98,8 @@ class StatsController extends Controller
         $data = [
             'transactions_max_amount' => empty($transactionAmount) ? 0 :(int)$transactionAmount,
             'transactions_max_category' => empty($mostUsedCategory) ? '' : $mostUsedCategory->category,
-            'missions_sum_amount' => empty($totalExpenses) ? 0 :(int)$totalExpenses->missions_sum_amount,
+            // 'missions_sum_amount' => empty($totalExpenses) ? 0 :(int)$totalExpenses->missions_sum_amount,
+            'missions_sum_amount' => $totalExpenses,
             'totalExpenses' => empty($totalAmountChild) ? 0 :(int)$totalAmountChild
         ];
 

@@ -44,6 +44,7 @@ return new class extends Migration
                     FROM transactions
                     WHERE transactions.transaction_date BETWEEN s_d AND e_d
                     AND transactions.child_id = child_id
+                    AND transactions.transaction_code = 1
                     AND deleted_at IS NULL
                 ) transactions ON weeks_table.week = transactions.week
                 GROUP BY weeks_table.week

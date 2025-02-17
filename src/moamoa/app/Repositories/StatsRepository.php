@@ -18,7 +18,7 @@ class StatsRepository extends Repositories
         )
         ->whereBetween('transactions.transaction_date', [$startOfMonth, $endOfMonth])
         ->where('child_id', $child_id)
-        // ->where('transaction_code', 1)
+        ->where('transaction_code', 1)
         ->groupBy('category')
         ->orderBy('category')
         ->get();

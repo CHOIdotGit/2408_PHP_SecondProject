@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -85,37 +86,34 @@ class HomeController extends Controller
         //                 ->get();
                         
         // 자녀 홈, 가장 큰 지출
-        $transactionAmount = $childHome->transactions()
-                                ->select('transactions.transaction_id', 'transactions.child_id', 'transactions.amount')
-                                ->whereNull('transactions.deleted_at')
-                                ->where('transactions.transaction_code', '1')
-                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
-                                ->orderBy('transactions.amount', 'DESC') // 가장 큰 지출
-                                ->first();
+        $transactionAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->where('transaction_code', '1')
+                                    ->where('child_id', $child->child_id)
+                                    ->max('amount');
 
         // 자녀 홈, 가장 많이 사용한 카테고리
-        $mostUsedCategory = $childHome->transactions()
-                                ->select('transactions.category', DB::raw('COUNT(*) as count')) // 카테고리와 해당 카테고리 개수를 가져옴
-                                ->whereNull('transactions.deleted_at')
-                                ->where('transactions.transaction_code', '1')
-                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
-                                ->groupBy('transactions.category') // 카테고리 기준으로 그룹화
-                                ->orderBy('count', 'DESC') // 사용 횟수 기준으로 내림차순 정렬
-                                ->first(); // 가장 많이 사용된 카테고리 가져오기
+        $mostUsedCategory = Transaction::select('category', DB::raw('COUNT(*) cnt'))
+                                        ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->where('transaction_code', '1')
+                                        ->where('child_id', $child->child_id)
+                                        ->groupBy('category')
+                                        ->orderBy('cnt', 'DESC')
+                                        ->orderBy('transaction_date', 'DESC')
+                                        ->first();// 가장 많이 사용된 카테고리 가져오기
 
         // 해당 월(예시, 12월 한 달)의 지출 총 합
-        $totalAmount = $childHome->transactions()
-                                ->whereNull('transactions.deleted_at')
-                                ->where('transactions.transaction_code', '1')
-                                ->whereBetween('transactions.created_at', [$startOfMonth, $endOfMonth])
-                                ->sum('transactions.amount');
+        $totalAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->where('transaction_code', '1')
+                                    // ->where('deleted_at IS NULL')
+                                    ->where('child_id',$child->child_id)
+                                    ->sum('amount');
 
         // 해당 월(예시, 12월 한 달)의 용돈 총 합
-        $totalExpenses = $childHome->missions()
-                                ->whereNull('missions.deleted_at')
-                                ->whereBetween('missions.created_at', [$startOfMonth, $endOfMonth])
-                                ->sum('missions.amount');
-        
+        $totalExpenses = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->where('transaction_code', '0')
+                                    // ->where('deleted_at IS NULL')
+                                    ->where('child_id', $child->child_id)
+                                    ->sum('amount');
         // 관계 데이터 설정
         // $childHome->setRelation('missions', $missions);
             

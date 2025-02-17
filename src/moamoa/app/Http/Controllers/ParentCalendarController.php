@@ -42,6 +42,7 @@ class CalendarController extends Controller
         $dailyIncomeData = Transaction::selectRaw('DATE(transactions.transaction_date) as target_at, SUM(amount) as total_income')
                                     ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // 날짜 범위
                                     ->where('transactions.transaction_code', 0)
+                                    ->where('deleted_at IS NULL')
                                     ->groupBy('target_at') // 날짜만 그룹화
                                     ->orderBy('target_at') // 날짜 순 정렬
                                     ->get();
@@ -50,6 +51,7 @@ class CalendarController extends Controller
         $dailyOutgoData = Transaction::selectRaw('DATE(transactions.transaction_date) as target_at, SUM(amount) as total_outgo')
                                 ->whereBetween('transactions.transaction_date', [$startDate, $endDate]) // 날짜 범위
                                 ->where('transactions.transaction_code', 1)
+                                ->where('deleted_at IS NULL')
                                 ->groupBy('target_at') // 날짜만 그룹화
                                 ->orderBy('target_at') // 날짜 순 정렬
                                 ->get();
