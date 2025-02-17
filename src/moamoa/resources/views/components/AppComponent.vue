@@ -3,27 +3,31 @@
 
     <div v-if="!isMobile" class="container">
     <!-- 상단 메뉴 -->
-        <header>
-            <!-- 좌측 고정 메뉴 -->
-                <MenuLeftComponent v-if="isAuth"/>
-        </header>
-        
-        <main class="layout">
-            <!-- 상단 메뉴 버튼 -->
-            <div v-if="isAuth" class="top-header-menu">
-                <HeaderMenuComponent/>
-            </div>
-            <!-- 화면 -->
-            <div class="app-div">
-                <router-view></router-view>
-            </div>
-        </main>
+     <div class="containver-view">
+         <header>
+             <!-- 좌측 고정 메뉴 -->
+                 <MenuLeftComponent v-if="isAuth"/>
+         </header>
+         
+         <main class="layout">
+             <!-- 상단 메뉴 버튼 -->
+             <div v-if="isAuth" class="top-header-menu">
+                 <HeaderMenuComponent/>
+             </div>
+             <!-- 화면 -->
+             <div class="app-div">
+                 <router-view></router-view>
+             </div>
+         </main>
+
+     </div>
 
         <!-- 하단 메뉴 -->
-        <!-- <footer>
+        <footer>
             <FooderComponent />
-        </footer> -->
+        </footer>
     </div>
+
     <div v-else class="app-container">
         
         <main class="app-layout">
@@ -62,9 +66,9 @@ const isMobile = store.state.mobile.isMobile;
 @import url("../../css/swiper.css");
 
 /* footer */
-footer > p {
-    text-align: center;
-    color: white;
+footer {
+    height: 32vh;
+    background: #f3f3f3;
 }
 
 .container {
@@ -72,12 +76,19 @@ footer > p {
     /* min-height: 100%; */
     /* height: 100vh; */
     display: flex;
+    flex-direction: column;
+
+}
+
+.containver-view {
+    display: flex;
 }
 
 .layout {
     /* width: 100%; */
     display: flex;
     flex-direction: column;
+    margin-bottom: 200px;
 }
 
 .top-header-menu {

@@ -38,9 +38,9 @@
             <!-- 매주 적금일때 ---- 활성화 -->
             <div class="selectdays">
                 <div class="dayOption" v-for="item in days" :key="item" >
-                    <input type="radio" :value="item"  name="days" :id="'day-'+item" class="days-btn"  :disabled="isDisabled(item)" v-model="selectdays" >
-                    <label :for="'day-' + item" >
-                        <p>{{ dayMatching(item) }}</p>
+                    <label :for="'day-' + item" class="radioStyle">
+                        <input type="radio" :value="item"  name="days" :id="'day-'+item"  :disabled="isDisabled(item)" v-model="selectdays" >
+                        <p class="days-btn">{{ dayMatching(item) }}</p>
                     </label>
                 </div>
             </div>
@@ -49,7 +49,7 @@
     <!-- 적금 가입하기 버튼 -->
     <div class="bank-box-bottom">
         <div class="registBtn">
-            <div class="box-btn cancel">돌아가기</div>
+            <div class="box-btn cancel" >돌아가기</div>
             <div class="box-btn" @click="goBank">가입하기</div>
 
         </div>
@@ -140,7 +140,10 @@ const isDisabled = (item) => {
 
 // 적금 가입하기
 const today = ref(new Date().toISOString().slice(0, 10));
-const endDay = ref(new Date().toISOString().slice(0, 10)); 
+
+
+const endDay = ref(new Date().toISOString().slice(0, 10));
+console.log(endDay);
 const regist = reactive({
     amount: ''
     ,child_id: route.params.child_id
@@ -152,7 +155,16 @@ const regist = reactive({
 })
 
 const goBank = () =>{
-    store.dispatch('saving/createSaving', regist);
+    if(regist.amount > 1000) {
+        alert('최대 1000 모아까지 가능합니다.')
+    }
+    else if(regist.amount < 100) {
+        alert('최소 100 모아부터 가능합니다. ')
+    }
+    else {
+        store.dispatch('saving/createSaving', regist);
+    }
+    
 }
 
 </script>
@@ -218,7 +230,7 @@ h1 {
 .bank-form-title {
     /* line-height: 77px; */
     width: 250px;
-    height: 80px;
+    height: 100px;
     font-size: 1.4rem;
     background: #f6f6f6;
     text-align: center;
@@ -231,7 +243,7 @@ h1 {
     /* line-height: 77px; */
     font-size: 1.2rem;
     padding-left: 20px;
-    width: 500px;
+    width: 700px;
 }
 
 .box-flex {
@@ -267,14 +279,22 @@ h1 {
     text-align: center;
 }
 
-.days-btn {
-    font-size: 1.2rem;
-    background-color: #c9c9c9;
+
+
+.radioStyle input[type=radio] {
+    display: none;
 }
 
-.days-btn>input {
-    display: hidden;
+.days-btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-color: #ffcf0f;
+    
 }
+
+
+
 /* ************************************end */
 
 /* 가입,취소 버튼 */

@@ -33,15 +33,7 @@
                 <p class="bank-form-title">최대 가입(납입) 금액</p>
                 <p class="bank-form-content">1,000 모아</p>
             </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 방법</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">모아에서 받은 포인트를 통해서만 납입 가능 </p>
-                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
-                    <p class="bank-form-content">모아 포인트가 납입 포인트에 미달할 시 자동 </p>
 
-                </div>
-            </div>
             <div class="bank-form">
                 <p class="bank-form-title">납입 방법</p>
                 <div class="box-flex">
@@ -77,21 +69,29 @@
                 </div>
             </div>
 
-            <!-- 적금 가입 동의하기 버튼 -->
-            <div class="bank-box-bottom">
-                <div>※ 모아은행 적금 상품에 동의하십니까</div>
-                <div class="agreeBtn">
-                    <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
-                    <label for="agree-no">아니요, 동의하지 않습니다.</label>
-                    
-                    <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
-                    <label for="agree-yes">네, 동의합니다</label>
-                </div>
+        </div>
+        <!-- 적금 가입 동의하기 버튼 -->
+        <div class="bank-box-bottom">
+            <div>※ 모아은행 적금 상품에 동의하십니까</div>
+            <div class="agreeBtn">
+                <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
+                <label for="agree-no">아니요, 동의하지 않습니다.</label>
+                
+                <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
+                <label for="agree-yes">네, 동의합니다</label>
 
-                <div class="registBtn">
-                    <div class="box-btn cancel">돌아가기</div>
-                    <div class="box-btn" @click="goResigt(agreement)">가입하기</div>
-                </div>
+                <!-- <div class="radioBtn">
+                    <label for="agree-yes" class="radioStyle">
+                        <input type="radio" iid="agree-yes" value="yes" name="agree">
+                        <div>네, 동의합니다</div>
+                    </label>
+
+                </div> -->
+            </div>
+
+            <div class="registBtn">
+                <div class="box-btn cancel">돌아가기</div>
+                <div class="box-btn" @click="goResigt(agreement)">가입하기</div>
             </div>
         </div>
     </div>
@@ -344,6 +344,24 @@ h1 {
     background-color: #fff;
     border: 1px solid #c9c9c9;
     color: #c9c9c9;
+}
+
+/* input raido 커스텀 */
+.radioBtn {
+    display: flex;
+
+}
+
+.radioStyle [type='radio'] {
+    display: none;
+}
+
+.radioStyle > div {
+    width: 200px;
+    border-radius: 15px;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 10px #dcdcdc;
+    height: 50px;
 }
 
 
