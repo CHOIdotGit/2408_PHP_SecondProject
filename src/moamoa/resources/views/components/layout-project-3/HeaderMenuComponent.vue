@@ -11,9 +11,9 @@
             <div class="menu-btn">이용자 매뉴얼</div>
             <!-- 알람 아이콘 -->
             <div  class="icon-btn" @click="openBellModal" v-if="$store.state.auth.parentFlg">
-                <img src="/img/icon-bell-black.png" alt="" class="icon">
+                <img src="/img/icon-bell-black.png" alt="" class="icon" v-if="bellContent.length === 0">
                 <!-- 알람 내용이 있을 경우 나타나는 빨간색 동그라미 -->
-                <img src="/img/icon-circle.png" alt="" class="icon-circle" v-if="bellContent.length > 0">
+                <img src="/img/icon-bell-black-circle.png" alt="" class="icon" v-if="bellContent.length > 0">
             </div>
             <!-- 부모 알람 모달 메뉴  -->
             <div class="dropdown-bell" v-if="$store.state.auth.parentFlg" v-show="bellModal">
@@ -243,12 +243,12 @@ const checkMission = (mission_id) => {
     top: -30px;
 }
 
-.icon-circle {
+/* .icon-circle {
     position: absolute;
     top: 23px;
     right: 177px;
     width: 10px;
-}
+} */
 
 .alram-deco {
     width: 30px;
