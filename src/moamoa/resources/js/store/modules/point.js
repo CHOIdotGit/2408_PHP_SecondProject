@@ -67,7 +67,7 @@ export default {
                     total: response.data.childPointList.total,
                 });
             } catch (error) {
-              console.error('지출 정보 불러오기 오류', error);
+              console.error('포인트 정보 불러오기 오류', error);
             }
         },
 
@@ -88,7 +88,7 @@ export default {
                     total: response.data.pointList.total,
                 });
             } catch (error) {
-              console.error('지출 정보 불러오기 오류', error);
+              console.error('포인트 정보 불러오기 오류', error);
             }
         },
 

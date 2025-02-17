@@ -47,9 +47,7 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="(item, index) in pointListWithBalance" :key="item.id || index" class="bankbook-transactions">
-                                <!-- 번호 -->
-                                <p>{{ index + 1 }}</p>
+                            <div v-for="item in pointListWithBalance" :key="item.id" class="bankbook-transactions">
                                 <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
                                 <!-- 출금: point_code가 '3'인 경우에만 표시 -->
@@ -122,39 +120,18 @@ const store = useStore();
 const route = useRoute();
 const pointList = computed(() => store.state.point.pointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
-// const childId = computed(() => store.state.point.childId);
 
-// 정렬 순서: 'asc' = 오래된순, 'desc' = 최신순
-const sortOrder = ref('asc');
-
-// 정렬 토글 함수
-const toggleSortOrder = () => {
-    sortOrder.value = sortOrder.value === 'asc' ? 'desc' : 'asc';
-    fetchData(); // 정렬 변경 시 데이터 다시 요청
-};
-
-// 각 항목에 누적 잔액(거래 후 잔액)을 추가하는 computed property
-const pointListWithBalance = computed(() => {
-    let balance = 0;
-
-    // payment_at 기준으로 정렬
-    let sortedList = [...pointList.value].sort((a, b) => new Date(a.payment_at) - new Date(b.payment_at));
-
-    // 정렬 순서 변경 (desc일 경우 뒤집기)
-    if (sortOrder.value === 'desc') {
-        sortedList.reverse();
-    }
-
-    // 정렬된 리스트에 누적 합계 계산
-    return sortedList.map(item => {
+const pointListWithTotal = computed(() => {
+    let balance = Number(totalPoint.value); // 숫자로 변환
+    return pointList.value.map(item => {
         const withdrawal = item.point_code === '3' ? Number(item.point) : 0;
         const deposit = item.point_code !== '3' ? Number(item.point) : 0;
-        balance += (deposit - withdrawal);
+        balance -= (deposit - withdrawal);
         return {
             ...item,
-            cumulativeTotal: balance, // 누적 잔액(거래 후 잔액)
-            deposit,                  // 입금 값 (필요시)
-            withdrawal                // 출금 값 (필요시)
+            cumulativeTotal: balance, // 누적 잔액
+            deposit,                  // 입금 금액 (필요시)
+            withdrawal                // 출금 금액 (필요시)
         };
     });
 });
@@ -235,16 +212,8 @@ const goToNext = () => {
     }
 };
 
-
-
 onMounted(() => {
-    // store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
-    store.dispatch('point/printPointList', {
-        child_id: route.params.child_id,
-        // page: currentPage.value,
-        page: 1,
-        sort: sortOrder.value // 서버로 정렬 정보 전달
-    });
+    store.dispatch('point/printPointList', {child_id: route.params.child_id, page: 1});
 });
 
 </script>

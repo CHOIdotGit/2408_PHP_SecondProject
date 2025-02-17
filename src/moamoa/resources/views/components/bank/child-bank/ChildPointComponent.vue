@@ -47,9 +47,7 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="(item, index) in pointListWithTotal" :key="item.id || index" class="bankbook-transactions">
-                                <!-- 번호 -->
-                                <p>{{ index + 1 }}</p>
+                            <div v-for="item in pointListWithTotal" :key="item.id" class="bankbook-transactions">
                                 <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
                                 <!-- 출금: point_code가 '3'인 경우에만 표시 -->
@@ -123,7 +121,6 @@ const route = useRoute();
 const pointList = computed(() => store.state.point.pointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
 // const childId = computed(() => store.state.point.childId);
-
 
 // 시분초 제외
 const formatDate = (date) => {
@@ -201,19 +198,18 @@ const goToNext = () => {
     }
 };
 
-// 각 항목에 누적 잔액(거래 후 잔액)을 추가하는 computed property
+// 현재 페이지의 데이터(pointList.value)는 백엔드에서 전달된 20개 데이터라고 가정
 const pointListWithTotal = computed(() => {
-    let balance = 0;
+    let balance = Number(totalPoint.value); // 숫자로 변환
     return pointList.value.map(item => {
-        // 만약 point_code가 '3'이면 출금, 아니면 입금으로 간주
-        const withdrawal = (item.point_code === '3') ? Number(item.point) : 0;
-        const deposit = (item.point_code !== '3') ? Number(item.point) : 0;
-        balance += (deposit - withdrawal);
+        const withdrawal = item.point_code === '3' ? Number(item.point) : 0;
+        const deposit = item.point_code !== '3' ? Number(item.point) : 0;
+        balance -= (deposit - withdrawal);
         return {
             ...item,
-            cumulativeTotal: balance, // 누적 잔액(거래 후 잔액)
-            deposit,                  // 입금 값 (필요시)
-            withdrawal                // 출금 값 (필요시)
+            cumulativeTotal: balance, // 누적 잔액
+            deposit,                  // 입금 금액 (필요시)
+            withdrawal                // 출금 금액 (필요시)
         };
     });
 });

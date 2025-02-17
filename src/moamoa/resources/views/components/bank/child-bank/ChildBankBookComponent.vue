@@ -45,8 +45,7 @@
             </div>
             <div class="bankbook-item">
                 <div class="main-content" >
-                    <div v-for="(item, index) in savingDetail" :key="item" class="bankbook-transactions">
-                        <p>{{ index + 1 }}</p>
+                    <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
                         <p>{{ formatDate(item.saving_detail_created_at) }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_outcome }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_income }}</p>
