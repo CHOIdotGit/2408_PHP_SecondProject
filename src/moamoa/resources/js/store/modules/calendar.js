@@ -19,6 +19,8 @@ export default {
         dailyOutgoData: [],
         transactionsOnDay: [],
         missionList: [],
+        income: [],
+        expense: [],
     }),
     mutations: {
         setCalendarInfo(state, data) {
@@ -45,7 +47,15 @@ export default {
         },
         setMissionList(state, missionList) {
             state.missionList = missionList;
-        }
+        },
+        setIncome(state, income) {
+            console.log("Income 업데이트됨:", income); // 확인용
+            state.income = income;
+        },
+        setExpense(state, expense) {
+            console.log("Expense 업데이트됨:", expense); // 확인용
+            state.expense = expense;
+        },
     },
     actions: {
         // 자녀 캘린더 불러오기
@@ -81,6 +91,7 @@ export default {
                     reject();
                 });
             });
+            
         },
 
         
@@ -140,7 +151,7 @@ export default {
                 });
         },
 
-        // 일별 지출 합계 - 모달
+        // 자녀 달력 모달
         transactionsOnDay(context, strDate) {
             if (!strDate) {
                 // year, month가 있는지 확인
@@ -162,7 +173,27 @@ export default {
                 .catch(error => {
                     console.error('캘린더 데이터를 불러오는 도중 오류 발생', error);
                 });
-        }
+        },
+
+        ParentCalendarModal(context, strDate) {
+            if (!strDate) {
+                // year, month가 있는지 확인
+                // console.log('날짜 확인', searchData.strDate);
+                console.error('date 값이 필요합니다.');
+                return;
+            }
+
+            const url = `/api/parent/calendar/modal/${strDate.child_id}?date=${strDate.strDate}`;
+            axios.get(url)
+                .then(response => {
+                    console.log("API 응답 데이터:", response.data);
+                    context.commit('setIncome', response.data.income);
+                    context.commit('setExpense', response.data.expense);
+                })
+                .catch(error => {
+                    console.error('부모 캘린더 모달 데이터 불러오지 못 함', error);
+                });
+        },
         
     },
     getters: {

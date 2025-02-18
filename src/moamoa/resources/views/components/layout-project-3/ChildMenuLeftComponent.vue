@@ -21,14 +21,12 @@
                     </div>
                 </router-link>
                 <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
-                <!-- <div class="menu-title" @click="$store.dispatch('childTransaction/transactionList')"> -->
-                <div class="menu-title" @click="router.push('/child/spend/list')"> 
+                <div class="menu-title" @click="goSpendList"> 
                     <img src="/img/icon-coin.png" alt="" class="menu-icon">
                     지출
                 </div>
                 <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
-                <!-- <div class="menu-title" @click="$store.dispatch('childMission/setChildMissionList')"> -->
-                <div class="menu-title" @click="router.push('/child/mission/list')"> 
+                <div class="menu-title" @click="goMissionList"> 
                     <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                     미션
                 </div>
@@ -66,10 +64,10 @@ import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-
 const store = useStore();
 const route = useRoute();
 const router = useRouter();
+
 // +==========================+
 // +    모바일 화면 전환       +
 // +==========================+
@@ -100,10 +98,21 @@ const toggleSavingProduct = () => {
     isOpen.value = !isOpen.value;
 };
 
+// 자녀 지출 리스트 페이지로 이동
+const goSpendList = () => {
+    store.dispatch('childTransaction/transactionList', {child_id: route.params.id, page: 1});
+    router.push('/child/spend/list');
+}
+
+// 자녀 미션 리스트 페이지로 이동
+const goMissionList = () => {
+    store.dispatch('childMission/setChildMissionList', {child_id: route.params.id, page: 1});
+    router.push('/child/mission/list');
+}
 
 //  자녀 캘린더로 이동
 const goChildCalendar = () => {
-    store.dispatch('calendar/childCalendarInfo')
+    store.dispatch('calendar/childCalendarInfo');
     router.push('/child/calendar');
 }
 

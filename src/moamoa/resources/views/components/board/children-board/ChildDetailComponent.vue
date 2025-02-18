@@ -39,7 +39,7 @@
                 </div>
                 <div class="c-bottom-btn">
                     <div class="c-left">
-                        <button @click="goBack(missionDetail.child_id)" class="c-back">뒤로가기</button>
+                        <button @click="goBack" class="c-back">뒤로가기</button>
                     </div>
                     <div class="c-right">
                         <button @click="delOpenModal('mission', mission_id)" class="c-ms-del">미션 삭제</button>
@@ -81,11 +81,13 @@
 <script setup>
 import { ref, computed, onMounted, reactive } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import ModalComponent from '../../modal/ModalComponent.vue';
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
+
 const missionDetail = computed(() => store.state.childMission.missionDetail);
 onMounted(() => {
     store.dispatch('childMission/showMissionDetail', store.state.childMission.missionId);
@@ -104,8 +106,8 @@ const categories = reactive([
 ]);
 
 // 뒤로가기
-const goBack = (child_id) => {
-    store.dispatch('childMission/setChildMissionList', child_id);
+const goBack = () => {
+    store.dispatch('childMission/setChildMissionList', {child_id: route.params.id, page: 1});
     router.push('/child/mission/list');
 
 }

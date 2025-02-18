@@ -211,7 +211,6 @@ const goToNext = () => {
     }
 };
 
-
 // +=================+
 // +    검색 필터     +
 // +=================+
@@ -224,19 +223,13 @@ const filters = ref({
     child_id: ""
 });
 
-
-
-
 const search = (childId) => {
     filters.value.child_id = childId;
     console.log(filters.value.date);
     store.dispatch('transaction/transactionSearch', filters.value);
 };
 
-
 </script>
-
-
 
 <style scoped>
 @import url('../../../../css/list.css');

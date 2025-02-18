@@ -32,7 +32,7 @@
                     <input type="number" class="ms-amount deco" id="ms-amount" required v-model="transactionCreate.amount">
                 </div>
                 <div class="c-bottom-btn">
-                    <button @click="$router.replace('/child/spend/list')" class="c-create-btn cancel">취소</button>
+                    <button @click="goBack" class="c-create-btn cancel">취소</button>
                     <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">작성</button>
                 </div>
             </div>
@@ -43,8 +43,12 @@
 
 <script setup>
 import { reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
-
+const store = useStore();
+const router = useRouter();
+const route = useRoute();
 
 // 오늘 날짜 가져오기
 const today = new Date().toISOString().split('T')[0];
@@ -68,6 +72,12 @@ const transactionCreate = reactive({
     amount: '',
     transaction_code: '1',
 });
+
+// 지출 리스트로 이동
+const goBack = () => {
+    store.dispatch('childTransaction/transactionList', {child_id: route.params.id, page: 1});
+    router.replace('/child/spend/list');
+}
 </script>
 
 

@@ -78,11 +78,12 @@
 <script setup>
 import { computed, ref, onMounted, reactive  } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 // *****미션 상세 정보******
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 const missionDetail = computed(() => store.state.mission.missionDetail);
 onMounted(() => {
@@ -122,7 +123,7 @@ const delCloseModal = () => { //모달창 닫기
 
 // 뒤로가기
 const goBack = (child_id) => {
-    store.dispatch('mission/missionList', child_id);
+    store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
     router.push('/parent/mission/list/' + child_id);
 }
 // *****미션 삭제*******

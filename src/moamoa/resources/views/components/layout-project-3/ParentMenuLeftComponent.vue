@@ -62,13 +62,13 @@
             </router-link>
             <!-- <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="router.push('/parent/spend/list/' + selectedChild.child_id)"> 
+            <div class="menu-title" @click="goSpendList(selectedChild.child_id)"> 
                 <img src="/img/icon-coin.png" alt="" class="menu-icon">
                 지출
             </div>
             <!-- <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="router.push('/parent/mission/list/' + selectedChild.child_id)"> 
+            <div class="menu-title" @click="goMissionList(selectedChild.child_id)"> 
                 <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                 미션
             </div>
@@ -156,9 +156,25 @@ onBeforeMount(async () => {
     // TODO : 확인용 나중에 삭제 end ----------
 })
 
+// 부모 지출 리스트 페이지로 이동
+const goSpendList = (child_id) => {
+    // 거래 정보를 가져오는 액션 호출
+    store.dispatch('transaction/transactionList', {child_id: route.params.id, page: 1});
+    router.push('/parent/spend/list/' + child_id);
+};
+
+// 부모 미션 리스트 페이지로 이동
+const goMissionList = (child_id) => {
+    // store.dispatch('mission/missionList', child_id);
+    store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
+    router.push('/parent/mission/list/' + child_id);
+};
+
+const dateToday = ref(new Date());
 //  부모 캘린더로 이동
 const goParentCalendar = (child_id) => {
-    store.dispatch('calendar/parentCalendar', child_id)
+    // store.dispatch('calendar/parentCalendarInfo', child_id)
+    store.dispatch('calendar/parentCalendarInfo', { date: dateToday.value, child_id })
     router.push('/parent/calendar/'+ child_id);
 }
 

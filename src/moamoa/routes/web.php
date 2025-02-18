@@ -183,12 +183,14 @@ Route::get('/api/child/info', [HeaderController::class, 'childInfo']);
 // 자녀 달력
 Route::get('/api/child/calendar', [CalendarController::class, 'childIndex']);
 
+// 자녀 달력 모달
+Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);
 
 // 부모 달력
 Route::get('/api/parent/calendar/{id}', [CalendarController::class, 'parentIndex']);
 
-// 자녀 달력 모달
-Route::get('/api/child/calendar/modal', [ModalController::class, 'show']);
+Route::get('/api/parent/calendar/modal/{id}', [ModalController::class, 'index']);
+
 
 // ******************************
 // *         은행 관련           *

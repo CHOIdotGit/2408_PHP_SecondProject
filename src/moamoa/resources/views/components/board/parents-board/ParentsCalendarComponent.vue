@@ -25,72 +25,30 @@
                         <!-- 시작 요일 빈 칸 -->
                         <div v-for="n in startDay" :key="'empty-' + n" class="day empty"></div>
                         <!-- 날짜 표시 -->
-                        <div v-for="day in daysInMonth" :key="day" class="day">
-                            <p @click="delOpenModal" :class="{ 'circle-class': isToday(day) }">
+                        <div v-for="day in daysInMonth" :key="day">
+                            <p @click="openModal(day)" :class="{ 'circle-class': isToday(day) }" class="day">
                                 {{ day }}
                             </p>
                             <p class="minus">{{ getDailyIncomeExpense(day, dailyOutgoData, false) }}</p>
                             <p class="plus">{{ getDailyIncomeExpense(day, dailyIncomeData, true) }}</p>
-                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <!-- ************************* -->
-    <!-- ********상세 모달********* -->
-    <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal.isOpen">
-        <div class="del-modal-white">
-            <div class="modal-list-container">
-                <div class="modal-mission-title">
-                    <p class="mission-name">제목</p>
-                    <p class="expense-type">종류</p>
-                    <p class="inout-come">분류</p>
-                    <p class="charge">금액</p>
-                    <p class="due-date">작성일자</p>
-                </div>
-                <div class="mission-inserted-list">
-                    <div class="modal-mission-content">
-                        <p class="mission-name">설거지</p>
-                        <p class="expense-type">집안일</p>
-                        <p class="inout-come income">수입</p>
-                        <p class="charge">5,000</p>
-                        <p class="due-date">2024.12.17</p>
-                    </div>
-                    <div class="mission-content">
-                        <div class="modal-mission-content">
-                            <p class="mission-name">올리브영가서 세일하길래 쿠션삼</p>
-                            <p class="expense-type">쇼핑</p>
-                            <span class="inout-come outgo">지출</span>
-                            <p class="charge">32,000</p>
-                            <p class="due-date">2024.12.17</p>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="del-btn">
-                    <button @click="delCloseModal" class="modal-cancel">취소</button>
-                </div>
-            </div>
-        </div>
-
-
+    <ParentCalendarModalComponent v-if="isModalOpen" :selectedDate="selectedDay.value" :isOpen="isModalOpen" @close="closeModal" />
 </template>
 
-
 <script setup>
-
 import { ref, computed, reactive, onBeforeMount } from "vue";
-import axios from "axios";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
+import ParentCalendarModalComponent from "../../modal/ParentCalendarModalComponent.vue";
 
-const route = useRoute();
 const store = useStore();
+const route = useRoute();
+
 const dailyIncomeData = computed(() => store.state.calendar.calendarInfo.dailyIncomeData);
 const dailyOutgoData = computed(()=> store.state.calendar.calendarInfo.dailyOutgoData);
 
@@ -100,90 +58,134 @@ const dateToday = ref(new Date());
 
 // 현재 연월 표시 (반응형 데이터)
 const formattedDate = computed(() =>
-  dateToday.value.toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "long",
-    timeZone: "Asia/Seoul",
-  })
+    dateToday.value.toLocaleString("ko-KR", {
+        year: "numeric",
+        month: "long",
+        timeZone: "Asia/Seoul",
+    })
 );
-
 
 // 해당 월의 시작 요일 계산
 const startDay = computed(() => {
-  const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
-  return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
+    const firstDayOfMonth = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), 1);
+    return firstDayOfMonth.getDay(); // 0: 일요일, 1: 월요일, ..., 6: 토요일
 });
 
 // 해당 월의 일수 계산
 const daysInMonth = computed(() => {
-  const year = dateToday.value.getFullYear();
-  const month = dateToday.value.getMonth();
-  return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
+    const year = dateToday.value.getFullYear();
+    const month = dateToday.value.getMonth();
+    return new Array(new Date(year, month + 1, 0).getDate()).fill(null).map((_, i) => i + 1);
 });
 
 // 오늘 날짜인지 확인하는 함수
 function isToday(day) {
-  const today = new Date();
-  const year = dateToday.value.getFullYear();
-  const month = dateToday.value.getMonth();
-  return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
+    const today = new Date();
+    const year = dateToday.value.getFullYear();
+    const month = dateToday.value.getMonth();
+    return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
 }
+
+// // 이전 월로 이동
+// async function prevMonth() {
+//     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
+//     await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
+//     dateToday.value = currentDate;
+// }
+
+// // 다음 월로 이동
+// async function nextMonth() {
+//     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
+//     await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
+//     dateToday.value = currentDate;
+// }
 
 // 이전 월로 이동
 async function prevMonth() {
-  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-  await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
-  dateToday.value = currentDate;
+    const currentDate = new Date(dateToday.value);
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    dateToday.value = currentDate; // dateToday를 바로 업데이트
+    await store.dispatch("calendar/parentCalendarInfo", {date: dateToday.value, child_id: route.params.child_id});
 }
 
 // 다음 월로 이동
 async function nextMonth() {
-  const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-  await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
-  dateToday.value = currentDate;
+    const currentDate = new Date(dateToday.value);
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    dateToday.value = currentDate; // dateToday를 바로 업데이트
+    await store.dispatch("calendar/parentCalendarInfo", {date: dateToday.value, child_id: route.params.child_id});
 }
 
 // 모달 상태 관리
-const delModal = reactive({ isOpen: false });
+// const delModal = reactive({ isOpen: false });
 
-const delOpenModal = () => {
-  delModal.isOpen = true;
+// const delOpenModal = () => {
+//     delModal.isOpen = true;
+// };
+
+// const delCloseModal = () => {
+//     delModal.isOpen = false;
+// };
+
+// 모달 상태 관리
+const isModalOpen = ref(false);
+const selectedDate = ref(null);
+const selectedDay = ref(null); // 클릭한 날짜를 저장할 상태
+
+const openModal = (day) => {
+  selectedDay.value = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), day);
+  console.log("부모에서 선택한 날짜:", selectedDay.value);
+  isModalOpen.value = true;
 };
 
-const delCloseModal = () => {
-  delModal.isOpen = false;
+const closeModal = () => {
+    isModalOpen.value = false;
+    // selectedDay.value = null; // 선택한 날짜 초기화 (필요시)
 };
 
 // -----------------------
-
-
-
 onBeforeMount(() => {
     store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
-  });
-
+});
 
 // 각 날짜에 맞는 값입력
 function getYearMonth(day) {
-  return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
 
-function getDailyIncomeExpense(day, data, incomFlg) {
-    const item = data.find(item => item.target_at === getYearMonth(day));
-    console.log('item', item);
-    const symbol = incomFlg ? '+' : '-';
-    if(item) {
-        const money = incomFlg ? item.income : item.outgo;
-        return item ? symbol + Number(money).toLocaleString() : '';
+function getDailyIncomeExpense(day, data, incomeFlg) {
+    const yearMonth = getYearMonth(day); // 2025-02-18
+    if (!data || !Array.isArray(data) || data.length === 0) {
+        return ''; // data가 없으면 빈 문자열 반환
     }
-    // return item ? symbol + Number(item.income).toLocaleString() : '';
+
+    const item = data.find(item => {
+        const targetMonth = `${item.target_at.year}-${String(item.target_at.month).padStart(2, '0')}`;
+        return targetMonth === yearMonth.slice(0, 7); // 비교는 'YYYY-MM'만
+    });
+
+    // console.log('item', item);
+    const symbol = incomeFlg ? '+' : '-';
+    if (item) {
+        const money = incomeFlg ? item.income : item.outgo;
+        return symbol + Number(money).toLocaleString();
+    }
+    return '';
 }
+// function getDailyIncomeExpense(day, data, incomeFlg) {
+//     const item = data.find(item => item.target_at === getYearMonth(day));
+//     console.log('item', item);
+//     const symbol = incomeFlg ? '+' : '-';
+//     if(item) {
+//         const money = incomeFlg ? item.income : item.outgo;
+//         return item ? symbol + Number(money).toLocaleString() : '';
+//     }
+//     // return item ? symbol + Number(item.income).toLocaleString() : '';
+// }
 
 </script>
 
-
 <style scoped>
-
 .cal-container {
     /* width: 93%; */
     display: flex;
@@ -227,7 +229,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     word-spacing: 0.5rem;
 }
 
-.days{
+.days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding: 0 20px;
@@ -235,10 +237,13 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     align-items: center;
     padding-top: 15px;
     padding: auto;
-
 }
 
-.week{
+.day {
+    cursor: pointer;
+}
+
+.week {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     padding: 0 20px;
@@ -255,7 +260,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     }
 }
 
-.days div{
+.days div {
     /* padding: auto; */
     text-align: center;
     font-size: 2rem;
@@ -299,99 +304,5 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 
 .date-display {
     margin-top: 15px;
-}
-
-.del-modal-black {
-    background-color: rgba(0, 0, 0, 0.5);
-    position: fixed;
-    /* top: 182px;
-    left: 177px; */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    /* margin-top: 500px; */
-    justify-content: center;
-}
-
-.del-modal-white {
-    width: 800px;
-    height: 500px;
-    background-color: #FFFFFF;
-    border: 3px solid #a2caac;
-    /* margin: 170px; */
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-}
-
-
-.modal-name {
-    font-size: 1.3rem;
-    padding: 10px;
-}
-
-.modal-mission-title {
-    display: grid;
-    grid-template-columns: 250px 100px 100px 100px 100px;  
-    height: 40px;
-    gap: 20px;
-    background-color: #F5F5F5;
-    font-size: 1rem;
-    margin: 10px;
-    align-items: center;
-    width: 750px;
-    text-align: center;
-}
-
-.del-guide {
-    font-size: 1.4rem;
-    padding: 15px;
-}
-
-
-.modal-img{
-    width: 100px;
-    height: 100px;
-    background-color: #FFFFFF;
-    border: 3px solid #a2caac;
-    border-radius: 50px;
-    padding: 3px;
-}
-
-
-
-/* 버튼 */
-.modal-cancel {
-    color: #a2caac;
-    background-color: #FFFFFF;
-    font-size: 1.5rem;
-    border: 1px solid #a2caac;
-    padding: 5px;
-    width: 100px;
-    height: 50px;
-    cursor: pointer;
-    margin: 10px;
-    position: absolute;
-    top: 400px;
-    right: 350px;
-}
-
-.modal-mission-content{
-    display: grid;
-    grid-template-columns: 250px 100px 100px 100px 100px;  
-    min-height: 40px;
-    gap: 20px;
-    /* background-color: #F5F5F5; */
-    font-size: 1rem;
-    margin: 10px;
-    align-items: center;
-    width: 1400px;
-    text-align: center;
-    /* border-bottom: 2px solid black; */
 }
 </style>

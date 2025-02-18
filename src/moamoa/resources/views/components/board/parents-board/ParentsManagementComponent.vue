@@ -2,10 +2,10 @@
     <div class="d-flex" v-if="!isMobile">
         <div class="div-container">
             <!-- :slides-per-view="parentHome.length === 2 ? 2 : 3" -->
+            <!-- :loop="parentHome.length > 2" -->
             <Swiper v-if="parentHome.length > 0"
                 :slides-per-view="parentHome.length === 2 ? 2 : 3"
                 ref="swiper"
-                :loop="parentHome.length > 2"
                 :modules="modules"
                 :navigation="parentHome.length > 2"
                 :scrollbar="true"
@@ -101,6 +101,7 @@
 <script setup>
 
 import { computed, ref, onBeforeMount } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 // 스와이퍼
@@ -112,7 +113,6 @@ const modules = [Navigation, Scrollbar];
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import router from '../../../../js/router';
 
 // 스와이퍼 인스턴스
 const swiper = ref(null);
@@ -127,7 +127,11 @@ console.warn = function(message, ...args) {
 };
 
 // ------------------------------------------------------
+
+// 스토어, 라우터, 라우트
 const store = useStore();
+const router = useRouter();
+const route = useRoute();
 
 // 미션 리스트 가져오기
 const parentHome = computed(() => store.state.mission.parentHome);
@@ -147,7 +151,8 @@ const getTruncatedTitle =(title) => {
 const isMobile = store.state.mobile.isMobile;
 // 미션 리스트로 이동
 const goMissionList = (child_id) => {
-    store.dispatch('mission/missionList', child_id);
+    // store.dispatch('mission/missionList', child_id);
+    store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
     router.push('/parent/mission/list/' + child_id);
 };
 

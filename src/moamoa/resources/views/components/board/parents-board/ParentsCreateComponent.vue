@@ -52,12 +52,13 @@
 
 
 <script setup>
-import { computed, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onMounted, reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-const route = useRoute();
 const store = useStore();
+const router = useRouter();
+const route = useRoute();
 
 const categories = reactive([
     {name: '학습' , img:'/img/icon-pencil.png', index : "0"}
@@ -102,10 +103,28 @@ const missionCreate = reactive({
 });
 // 자녀 id 파라미터 세팅
 const childId = computed(() => store.state.mission.childId);
+
+// 미션 리스트의 데이터 사용
+// const missionList = computed(() => store.state.mission.missionList);
+
+// 자녀 미션 리스트 페이지로 이동
 const getChildId = (child_id) => {
-    console.log('자녀 아이디 확인', child_id)
-    store.dispatch('mission/missionList', child_id);
+    store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
+    router.push('/parent/mission/list/' + child_id);
 }
+
+// 자녀 미션 등록 후 미션 상세 페에지로 이동
+// const createMission = (mission_id) => {
+
+//     router.replace('/parent/mission/detail/' + newMission.mission_id);
+// }
+
+// 데이터를 가져오기 위한 마운트
+// onMounted(() => {
+//     store.dispatch('mission/createMission', missionCreate);
+//     store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
+// });
+
 
 </script>
 

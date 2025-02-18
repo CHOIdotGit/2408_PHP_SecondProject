@@ -130,10 +130,13 @@
 
 <script setup>
 import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-const route = useRoute();
+
+// 스토어 라우터 라우트
 const store = useStore();
+const router = useRouter();
+const route = useRoute();
 
 // 라우터에서 쿼리 파라미터 받기
 // const childId = router.query.child_id;

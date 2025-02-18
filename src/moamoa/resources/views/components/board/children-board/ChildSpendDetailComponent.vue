@@ -64,12 +64,13 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import ModalComponent from '../../modal/ModalComponent.vue';
 
 const store = useStore();
 const router = useRouter();
+const route = useRoute();
 
 // 지출 상세 정보 불러오기기
 const transactionDetail = computed(() => store.state.childTransaction.transactionDetail);
@@ -92,7 +93,7 @@ const categories = reactive([
 
 // 뒤로가기
 const goBack = (child_id) => {
-    store.dispatch('childTransaction/transactionList', child_id);
+    store.dispatch('childTransaction/transactionList', {child_id: route.params.id, page: 1});
     router.push('/child/spend/list');
 
 }
