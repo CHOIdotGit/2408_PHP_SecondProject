@@ -52,7 +52,7 @@ class AuthRepository extends Repositories {
   // 부모 정보와 연결 자녀들 정보 획득
   public function parentInfoWithChildren($parent_id) {
     return $this->parent->where('parent_id', $parent_id)
-      ->with(['children' => fn($q) => $q->withoutGlobalScope('app_state')])
+      ->with(['children' => fn($q) => $q->withoutGlobalScope('app_state')->latest('app_state')])
       ->first();
   }
 
@@ -75,6 +75,7 @@ class AuthRepository extends Repositories {
         ?? $child->where(['name' => $findInfo->name, 'email' => $findInfo->email])->first();
   }
 
+  // id로 찾기 정보 획득
   public function findUserById($userInfo) {
     $user = $userInfo->userType === 'parent' ? $this->parent : $this->child;
     $columnName = $userInfo->userType.'_id';

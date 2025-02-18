@@ -33,10 +33,12 @@ export default {
 
       // nick_name: null,
     },
+    isError: false,
     
     // 모달 관련 ---------------------------------------------------------------------------------------------
     emailModalFlg: false,
     matchingModalFlg: false,
+    privateModalFlg: false,
 
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     matchingInfo: {}, // 매칭 정보
@@ -84,6 +86,9 @@ export default {
     },
     setMatchingModalFlg(state, matchingModalFlg) {
       state.matchingModalFlg = matchingModalFlg;
+    },
+    setPrivateModalFlg(state, privateModalFlg) {
+      state.privateModalFlg = privateModalFlg;
     },
 
     // 회원가입 관련 ---------------------------------------------------------------------------------------------
@@ -151,6 +156,10 @@ export default {
     },
     setIsMatchingPass(state, isMatchingPass) {
       state.isMatchingPass = isMatchingPass;
+    },
+
+    setIsError(state, isError) {
+      state.isError = isError;
     },
     
     // 초기화 관련 ------------------------------------------------------------------------------------------
@@ -645,7 +654,8 @@ export default {
 
       axios.post(url, data, config)
       .then(res => {
-        alert('회원 정보의 수정이 완료되었습니다.');
+        // alert('회원 정보의 수정이 완료되었습니다.');
+        context.commit('setIsError', false);
 
         router.replace('/');
       }).catch(err => {
@@ -663,7 +673,7 @@ export default {
             // password: 'setErrMsgPassword',
             newPassword: 'setErrMsgNewPassword',
             newPasswordChk: 'setErrMsgNewPasswordChk',
-            name: 'setErrMsgName',
+            // name: 'setErrMsgName',
             email: 'setErrMsgEmail',
             tel: 'setErrMsgTel',
           };
@@ -700,7 +710,7 @@ export default {
       axios.post(url)
       .then(res => {
         // console.log(res.data);
-        alert('회원 탈퇴 신청이 완료되었습니다. 로그인 페이지로 이동합니다.');
+        // alert('회원 탈퇴 신청이 완료되었습니다. 로그인 페이지로 이동합니다.');
         context.dispatch('logout'); // 로그아웃 실행
       })
       .catch(err => {
@@ -734,7 +744,7 @@ export default {
 
       axios.post(url, {childId: childId})
       .then(res => {
-        alert('해당 자녀의 승인이 완료되었습니다.');
+        // alert('해당 자녀의 승인이 완료되었습니다.');
       });
     },
 
@@ -750,7 +760,7 @@ export default {
 
       axios.post(url, {childId: childId})
       .then(res => {
-        alert('해당 자녀의 취소가 완료되었습니다.');
+        // alert('해당 자녀의 취소가 완료되었습니다.');
       });
     },
 
@@ -852,7 +862,59 @@ export default {
           context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
         }
       });
-    }
+    },
+
+    /**
+     * 회원 정보 검사
+     * 
+     * @param {*} context
+     */
+    chkInfo(context, editInfo) {
+      const url = '/api/auth/chkInfo';
+      const data = JSON.stringify(editInfo);
+
+      axios.post(url, data)
+      .then(res => {
+        // 에러 검사 통과
+        context.commit('setIsError', true);
+      }).catch(err => {
+        // 다시 시도할 경우를 대비해 메세지 초기화
+        context.commit('resetErrMsg');
+
+        // 출력 메세지 변수 연결
+        const errData = err.response.data.error;
+        // console.log(errData);
+
+        // 유효성 검사 실패
+        if(err.response.status === 422) { 
+          // 에러 정보값 세팅
+          const errInfo = {
+            // password: 'setErrMsgPassword',
+            newPassword: 'setErrMsgNewPassword',
+            newPasswordChk: 'setErrMsgNewPasswordChk',
+            // name: 'setErrMsgName',
+            email: 'setErrMsgEmail',
+            tel: 'setErrMsgTel',
+          };
+
+          // 돌려서 있는것만 데이터 담음
+          Object.entries(errData).forEach(([key, val]) => {
+            if(val[0] && errInfo[key]) {
+              context.commit(errInfo[key], val[0]);
+            }
+          });
+        }
+        // 공용 실패
+        else if(err.response.status === 401) {
+          context.commit('setErrMsgCommon', errData);
+        }
+        // 그 이외 오류
+        else {
+          context.commit('setErrMsgCommon', '예기치 못한 오류 발생.');
+        }
+      });
+    },
+
     
     // --------------------------- V001 del start -----------------------------
     // /**

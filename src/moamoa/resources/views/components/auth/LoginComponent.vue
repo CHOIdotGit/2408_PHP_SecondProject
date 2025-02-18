@@ -89,7 +89,7 @@ const userInfo = reactive({
 // 로그인 버튼
 const loginBtn = () => {
     // 에러정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
         store.commit('auth/resetErrMsg');
     }
 
@@ -98,7 +98,7 @@ const loginBtn = () => {
 
 onBeforeMount(() => {
     // 에러정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
         store.commit('auth/resetErrMsg');
     }
 });
@@ -108,7 +108,7 @@ onBeforeMount(() => {
 // 예외 정보 리셋
 const clearState = () => {
     // 들어간 값이 하나라도 있으면 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
         store.commit('auth/resetErrMsg');
     }
 };

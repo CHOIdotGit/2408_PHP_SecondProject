@@ -70,7 +70,7 @@ import { useStore } from 'vuex';
   // 확인 버튼
   const resetBtn = () => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
 
@@ -81,7 +81,7 @@ import { useStore } from 'vuex';
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   onBeforeMount(() => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
   });

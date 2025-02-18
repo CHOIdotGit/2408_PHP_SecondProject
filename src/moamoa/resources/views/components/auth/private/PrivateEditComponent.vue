@@ -49,7 +49,7 @@
           </label>
           <label for="name">
             이름
-            <span>*</span>
+            <!-- <span>*</span> -->
           </label>
           <label for="email">
             이메일
@@ -64,7 +64,7 @@
         <!-- 내용 컨텐츠 DIV -->
         <div class="edit-item-content">
           <!-- 아이디 입력 DIV -->
-          <div>
+          <div class="edit-text-group">
             <p>{{ userInfo.account }}</p>
           </div>
 
@@ -77,7 +77,7 @@
           </div> -->
 
           <!-- 새 비밀번호 확인 입력 DIV -->
-          <div>
+          <div class="edit-input-group">
             <input v-model="editInfo.newPassword" :class="{ 'err-border' : errMsg.newPassword }" type="password" name="newPassword" id="newPassword" autocomplete="off">
             <p v-if="errMsg.newPassword" class="err-msg">
               {{ errMsg.newPassword }}
@@ -88,7 +88,7 @@
           </div>
 
           <!-- 새 비밀번호 확인 입력 DIV -->
-          <div>
+          <div class="edit-input-group">
             <input v-model="editInfo.newPasswordChk" :class="{ 'err-border' : errMsg.newPasswordChk }" type="password" name="newPasswordChk" id="newPasswordChk" autocomplete="off">
             <p v-if="errMsg.newPasswordChk" class="err-msg">
               {{ errMsg.newPasswordChk }}
@@ -99,32 +99,37 @@
           </div>
 
           <!-- 이름 입력 DIV -->
-          <div>
-            <input v-model="editInfo.name" :class="{ 'err-border' : errMsg.name }" type="text" name="name" id="name" autocomplete="off" required>
-            <p v-if="errMsg.name" class="err-msg">
-              {{ errMsg.name }}
-            </p>
+          <div class="edit-text-group">
+            <p>{{ userInfo.name }}</p>
           </div>
 
           <!-- 이메일 입력 DIV -->
-          <div>
-            <input 
-              v-model="editInfo.email" 
-              :class="{ 'err-border' : errMsg.email }"
-              @input="onlyEmail"
-              type="email" 
-              name="email" 
-              id="email" 
-              autocomplete="off" 
-              required
-            >
+          <div class="edit-input-group">
+            <div class="btn-group">
+              <input 
+                v-model="editInfo.email" 
+                :class="{ 'err-border' : errMsg.email }"
+                @input="onlyEmail"
+                @blur="chgEmail"
+                type="email" 
+                name="email" 
+                id="email" 
+                autocomplete="off" 
+                required
+              >
+              <img v-if="isEmailPass || editInfo.email === oldInfo.email" src="/img/icon-check-green.webp">
+              <button v-else-if="emailSwitch" @click="openEmailModal" type="button">인증확인</button>
+            </div>
             <p v-if="errMsg.email" class="err-msg">
               {{ errMsg.email }}
+            </p>
+            <p v-else class="ann-msg">
+              이메일을 변경하실 경우 이메일 인증을 진행해 주세요.
             </p>
           </div>
 
           <!-- 전화번호 입력 DIV -->
-          <div>
+          <div class="edit-input-group">
             <input 
               v-model="editInfo.tel" 
               :class="{ 'err-border' : errMsg.tel }" 
@@ -151,9 +156,25 @@
 
     </div>
   </div>
+
+  <!-- 이메일 인증 모달 -->
+  <EmailAuthModalComponent 
+    :email="editInfo.email"
+  />
+
+  <PrivateAskModalComponent
+    v-if="privateModalFlg"
+    :msg="'해당 정보를 수정하시겠습니까?'"
+    :successMsg="'회원정보 수정처리가 완료되었습니다.'"
+    @confirm="runningUpdate()"
+    @cancel="store.commit('auth/setPrivateModalFlg', false)"
+  />
+  
 </template>
 
 <script setup>
+import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
+import EmailAuthModalComponent from '../../modal/EmailAuthModalComponent.vue';
 import { computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
@@ -163,7 +184,13 @@ import { useRoute } from 'vue-router';
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);
+  const isError = computed(() => store.state.auth.isError);
 
+  // 이전 입력 이메일
+  const prevEmail = ref('');
+
+  // 모달 스위칭
+  const privateModalFlg = computed(() => store.state.auth.privateModalFlg);
 
   // 유저 정보 ---------------------------------------------------------------------------------------------
   const userInfo = computed(() => store.state.auth.parentFlg ? store.state.auth.parentInfo : store.state.auth.childInfo);
@@ -173,18 +200,30 @@ import { useRoute } from 'vue-router';
     // password: '',
     newPassword: null,
     newPasswordChk: null,
-    name: '',
+    // name: '',
     email: '',
     tel: '',
     profile: null,
   });
 
+  const oldInfo = ref({
+    email: '',
+    tel: '',
+  });
+
   // watch를 사용해 유저 정보가 로드되면 editInfo를 업데이트
-  watch(() => userInfo.value, (newUserInfo) => {
+  watch(() => userInfo.value, (newUserInfo, oldUserInfo, onCleanup) => {
     if(newUserInfo) {
-      editInfo.name = newUserInfo.name;
+      // editInfo.name = newUserInfo.name;
       editInfo.email = newUserInfo.email;
       editInfo.tel = newUserInfo.tel;
+
+      oldInfo.email = newUserInfo.email;
+      prevEmail.value = newUserInfo.email;
+      oldInfo.tel = newUserInfo.tel;
+      
+      // watch 중지
+      onCleanup();
     }
   }, { immediate: true });
 
@@ -208,7 +247,44 @@ import { useRoute } from 'vue-router';
     }
   };
 
-  // 이메일은 @와 .하나씩 그리고 영문숫자만 입력가능 ---------------------------------------------------------------------------------------------
+  // 이메일 설정 ---------------------------------------------------------------------------------------------
+  
+
+  // 인증 통과 여부
+  const isEmailPass = computed(() => store.state.auth.isEmailPass);
+
+  // 인증 확인 버튼 스위치
+  const emailSwitch = ref(false);
+
+  // 인증 확인 버튼
+  const openEmailModal = () => {
+    // 중복검사 및 메일전송 액션 실행
+    store.dispatch('auth/chkEmail', editInfo.email);
+
+    // 입력값 저장
+    prevEmail.value = editInfo.email;
+  };
+
+  // 이메일 추가 입력 검사
+  const chgEmail = () => {
+    // 인증 통과후 추가 입력을 했을때 입력값이 기존것과 다를경우
+    if((isEmailPass.value || editInfo.email !== oldInfo.email)
+    && (editInfo.email !== prevEmail.value)
+    ) {
+      // 통과 취소 시키고
+      store.commit('auth/setIsEmailPass', false);
+
+      // 메시지 출력
+      store.commit('auth/setErrMsgEmail', '이메일 인증을 진행해 주세요.');
+    }
+
+    if(editInfo.email === oldInfo.email) {
+      store.commit('auth/setIsEmailPass', true);
+      store.commit('auth/setErrMsgEmail', null);
+    }
+  };
+
+  // 이메일은 @와 .하나씩 그리고 영문숫자만 입력가능
   const onlyEmail = () => {
     editInfo.email = editInfo.email
       .replace(/@+/g, '@')   // `@`가 두 번 이상 입력되면 하나로 변경
@@ -227,6 +303,8 @@ import { useRoute } from 'vue-router';
     else if((editInfo.email.match(/\./g) || []).length > 1) {
       editInfo.email = editInfo.email.replace('.', '');  
     };
+
+    emailSwitch.value = editInfo.email !== oldInfo.email ? true : false;
   };
 
   // 전화번호는 숫자만 입력가능 ---------------------------------------------------------------------------------------------
@@ -236,23 +314,43 @@ import { useRoute } from 'vue-router';
   }
 
   // 회원수정 처리 ---------------------------------------------------------------------------------------------
-  const editBtn = () => {
+  const editBtn = async () => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
     
-    // 회원수정 액션 실행
+    // 유효성 검사 실행
+    await store.dispatch('auth/chkInfo', editInfo);
+
+    // 변경 이력 없으면 중지
+    if(editInfo.email === oldInfo.email && editInfo.tel === oldInfo.tel && editInfo.profile === null 
+    && (editInfo.newPassword === null || editInfo.newPassword === '') 
+    && (editInfo.newPasswordChk === null || editInfo.newPasswordChk === '')
+    ) {
+      store.commit('auth/setErrMsgCommon', '변경이력이 없습니다. 바꾸실 항목을 입력해 주세요.');
+      return;
+    }
+
+    setTimeout(() => {
+      // 통과 못햇으면 중지
+      if(!isError.value) {
+        return;
+      }
+  
+      // 모달 활성
+      store.commit('auth/setPrivateModalFlg', true);
+    }, 500);
+  };
+
+  // 회원수정 액션 실행
+  const runningUpdate = () => {
     store.dispatch('auth/modifyUser', editInfo);
   };
 
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
   onBeforeMount(() => {
-    // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
-      store.commit('auth/resetErrMsg');
-    }
 
     // 유저 정보 로드
     store.dispatch(store.state.auth.parentFlg ? 'auth/parentInfo' : 'auth/childInfo' );
@@ -381,25 +479,25 @@ import { useRoute } from 'vue-router';
   
   /* ------------------------------------------------------------------------ */
 
-    /* 필수입력 안내사항 */
-    .edit-main-profile + p {
-      font-size: 0.95rem;
-      font-weight: 500;
-      text-align: left;
-      width: 100%;
-    }
+  /* 필수입력 안내사항 */
+  .edit-main-profile + p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+  }
 
-    /* 안내사항 별 */
-    .edit-main-profile + p > span {
-      padding: 0;
-      color: #ff0000;
-    }
+  /* 안내사항 별 */
+  .edit-main-profile + p > span {
+    padding: 0;
+    color: #ff0000;
+  }
 
-    /* 필수항목 별 */
-    .edit-item-title > label > span {
-      padding: 0;
-      color: #ff0000;
-    }
+  /* 필수항목 별 */
+  .edit-item-title > label > span {
+    padding: 0;
+    color: #ff0000;
+  }
 
   /* ------------------------------------------------------------------------ */
   
@@ -435,23 +533,52 @@ import { useRoute } from 'vue-router';
     background-color: #F6F6F6;
   }
 
-  /* 내용 섹션 위치 조정 */
-  .edit-item-content > div:not(:first-child) {
-    padding: 17px 0 0 14px;
-  }
-  /* 아이디 내용 */
-  .edit-item-content > div:first-child {
+  /* 내용 텍스트 조정 */
+  .edit-text-group {
     display: flex;
     align-items: center;
-    font-size: 1.4rem;
+    font-size: 1.25rem;
     padding-left: 16px;
     color: #5a5a5a;
   }
+
+  /* 내용 섹션 위치 조정 */
+  .edit-input-group {
+    padding: 17px 0 0 14px;
+  }
   /* 내용 안의 인풋들 */
-  .edit-item-content > div input {
+  .edit-input-group input {
     padding: 5px;
     font-size: 1.2rem;
     width: 330px;
+  }
+  
+  /* 내용 안의 우측 버튼들 */
+  .btn-group button {
+    margin-left: 5px;
+    padding: 4px;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #779CCD;
+    color: #4D7BBE;
+  }
+  .btn-group img {
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+  }
+
+  /* 버튼 있는 인풋 그룹 */
+  .btn-group {
+    display: flex;
+    align-items: center;
+  }
+
+  /* 해당 버튼 호버시 효과 */
+  .btn-group button:hover {
+    color: #fff;
+    background-color: #3D7CC3;
+    border: 2px solid #3D7CC3;
   }
 
   /* ------------------------------------------------------------------------ */

@@ -436,7 +436,7 @@ import { useRoute } from 'vue-router';
       return;
     }else {
       // 에러 정보 리셋
-      if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+      if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
         store.commit('auth/resetErrMsg');
       }
       
@@ -448,7 +448,7 @@ import { useRoute } from 'vue-router';
   // 이벤트 세팅 ---------------------------------------------------------------------------------------------
   onBeforeMount(() => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
 

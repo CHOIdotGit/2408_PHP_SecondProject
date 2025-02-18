@@ -126,7 +126,7 @@ import { useRoute, useRouter } from 'vue-router';
   // 확인 버튼
   const findBtn = () => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
 
@@ -148,7 +148,7 @@ import { useRoute, useRouter } from 'vue-router';
 
   onBeforeMount(() => {
     // 에러 정보 리셋
-    if(Object.values(errMsg).some(value => value !== '' || value !== null || value !== undefined)) {
+    if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
       store.commit('auth/resetErrMsg');
     }
   });

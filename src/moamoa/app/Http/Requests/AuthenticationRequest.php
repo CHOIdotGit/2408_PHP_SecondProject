@@ -30,6 +30,7 @@ class AuthenticationRequest extends FormRequest {
     // 회원가입 or 회원수정
     elseif($this->routeIs('auth.store.user')
         || $this->routeIs('auth.modify.user')
+        || $this->routeIs('auth.chk.info')
     ) {
 
       // 들어온게 회원가입이면
@@ -38,9 +39,10 @@ class AuthenticationRequest extends FormRequest {
         $rules['account'][] = new UniqueFamilyRule;
         $rules['password'][] = 'regex:/^(?=.*[a-zA-Z])(?=.*[0-9]).{6,18}$/';
         $rules['passwordChk'] = ['required', 'same:password'];
+        $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
 
       // 회원수정 이라면
-      }elseif($this->routeIs('auth.modify.user')) {
+      }elseif($this->routeIs('auth.modify.user') || $this->routeIs('auth.chk.info')) {
         $rules['account'] = ['nullable'];
         // $rules['password'][] = new CheckPasswordRule;
         $rules['password'] = ['nullable'];
@@ -57,7 +59,6 @@ class AuthenticationRequest extends FormRequest {
       }
 
       // 그외 필수 체크 정보들
-      $rules['name'] = ['required', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/'];
       $rules['email'] = ['required', 'regex:/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/']; // 영문숫자 @ 영문숫자 . 영문
       $rules['tel'] = ['required', 'regex:/^010\d{8,9}$/']; // 010 반드시 포함 뒤에 8 ~ 9자의 숫자  // 'regex:/^\d{10,11}$/' 10 ~ 11자의 숫자
       // $rules['nick_name'] = ['nullable', 'between:1,20', 'regex:/^[a-zA-Z가-힣][a-zA-Z0-9가-힣]+$/']; // 첫문자는 영문대소문자한글 그뒤는 숫자포함

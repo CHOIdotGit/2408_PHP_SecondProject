@@ -86,12 +86,12 @@ import { useStore } from 'vuex';
   const inputCode = ref('');
 
   // 발급된 인증코드
-  const issCode = computed(() => store.state.auth.mailCode);
+  const isCode = computed(() => store.state.auth.mailCode);
 
   // 인증완료 버튼
   const completeBtn = () => {
     // 발급된 코드와 입력한 코드를 비교
-    if(inputCode.value === issCode.value) {
+    if(inputCode.value === isCode.value) {
       // 맞으면 모달닫고 통과 처리
       store.commit('auth/setIsEmailPass', true);
       store.commit('auth/setEmailModalFlg', false);

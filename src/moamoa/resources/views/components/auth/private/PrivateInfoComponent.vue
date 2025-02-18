@@ -30,6 +30,19 @@
             <button @click="copyFamCode" type="button">
               <img src="/img/icon-copy.webp">
             </button>
+            
+            <!-- 복사 알림창 DIV -->
+            <div v-show="copyboard" class="info-alarm-copy">
+              <div>
+                <img @click="copyboardClose" src="/img/icon-cross.png">
+                
+                <br>
+
+                <p>가족코드가 복사되었습니다</p>
+              </div>
+              
+              <img src="/img/alarm-reverse.webp">
+            </div>
           </div>
 
           <p>이 코드를 자녀와 공유하여 계정을 연결하세요</p>
@@ -66,8 +79,16 @@
         <div v-if="userInfo.children?.length === 0" class="empty-child">
           <p>등록된 자녀의 정보가 없습니다.</p>
         </div>
+
         <div v-else :class="{ 'over-gap' : userInfo.children?.length > 3 }">
           <div v-for="item in userInfo.children" :key="item" class="info-footer-item">
+
+            <!-- 승인 대기중 DIV -->
+            <div v-if="item.app_state === '0'" class="info-wait-apply">
+              <p>승인 대기중</p>
+            </div>
+            
+            <!-- 자녀 프로필 DIV -->
             <div class="info-footer-profile">
               <img :src="item.profile">
             </div>
@@ -77,18 +98,48 @@
             <div class="info-footer-btn">
               
               <div v-if="item.app_state === '0'">
-                <button type="button">
-                  <img @click="applyBtn(item)" src="/img/icon-agree-blue.webp" alt="승인">
-                </button>
+                <div class="info-btn-position">
+                  <button type="button" class="info-apply-btn">
+                    <img @click="applyBtn(item)" src="/img/icon-agree-blue.webp" alt="승인">
+                  </button>
 
-                <button type="button">
-                  <img @click="cancelBtn(item)" src="/img/icon-disagree-red.webp" alt="취소">
-                </button>
+                  <div class="info-alarm-apply">
+                    <div>
+                      <p>승인</p>
+                    </div>
+                    
+                    <img src="/img/alarm-reverse.webp">
+                  </div>
+                </div>
+
+                <div class="info-btn-position">
+                  <button type="button" class="info-cancel-btn">
+                    <img @click="cancelBtn(item)" src="/img/icon-disagree-red.webp" alt="취소">
+                  </button>
+
+                  <div class="info-alarm-cancel">
+                    <div>
+                      <p>취소</p>
+                    </div>
+                    
+                    <img src="/img/alarm-reverse.webp">
+                  </div>
+                </div>
               </div>
 
-              <button v-else type="button" class="btn-green">
-                <img src="/img/icon-agree-green.webp" alt="승인됨">
-              </button>
+              <div v-else class="info-btn-position">
+                <button type="button" class="info-applied-btn btn-green">
+                  <img src="/img/icon-agree-green.webp" alt="승인됨">
+                </button>
+
+                <div class="info-alarm-applied">
+                  <div>
+                    <p>승인됨</p>
+                  </div>
+                  
+                  <img src="/img/alarm-reverse.webp">
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -96,12 +147,22 @@
 
     </div>
   </div>
+
+  <PrivateAskModalComponent
+    v-if="privateModalFlg"
+    :msg="actionType === 'apply' ? '해당 자녀를 승인하시겠습니까?' : '해당 자녀를 취소하시겠습니까?'"
+    :successMsg="actionType === 'apply' ? '승인처리가 완료되었습니다.' : '취소처리가 완료되었습니다.'"
+    @confirm="actionType === 'apply' ? runningApply() : runningCancel()"
+    @cancel="store.commit('auth/setPrivateModalFlg', false)"
+  />
+
 </template>
 
 <script setup>
-import { computed, onBeforeMount, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
 
   const store = useStore();
   const route = useRoute();
@@ -113,6 +174,13 @@ import { useRoute } from 'vue-router';
 
   // 클립보드 복사 처리 ---------------------------------------------------------------------------------------------
   
+  // 복사 알림창 스위칭
+  const copyboard = ref(false);
+
+  const copyboardClose = () => {
+    copyboard.value = false;
+  }
+
   // 복사 버튼
   const copyFamCode = () => {
     // 새요소 생성
@@ -134,27 +202,60 @@ import { useRoute } from 'vue-router';
     document.body.removeChild(textCode);
 
     // 메세지로 알림
-    alert('가족코드가 복사되었습니다.');
+    copyboard.value = true;
   };
   
   // 부모의 자녀 관리 ---------------------------------------------------------------------------------------------
   
+  // 모달 스위칭
+  const privateModalFlg = computed(() => store.state.auth.privateModalFlg);
+
+  // 선택 자녀 저장용
+  const selectChild = ref(null);
+
+  // 실행한 버튼 액션
+  const actionType = ref('');
+
   // 자녀 승인 처리
   const applyBtn = (child) => {
-    store.dispatch('auth/applyChild', child.child_id).then(() => {
-      setTimeout(() => {
-        // 업데이트 성공시 수동 처리
-        child.app_state = '1';
-      }, 500);
-    });
+    // 선택된 자녀 저장
+    selectChild.value = child;
+
+    // 타입을 승인으로 세팅
+    actionType.value = 'apply';
+
+    // 모달 활성
+    store.commit('auth/setPrivateModalFlg', true);
   };
 
   // 자녀 취소 처리
   const cancelBtn = (child) => {
-    store.dispatch('auth/deleteChild', child.child_id).then(() => {
+    // 선택된 자녀 저장
+    selectChild.value = child;
+
+    // 타입을 취소로 세팅
+    actionType.value = 'cancel';
+
+    // 모달 활성
+    store.commit('auth/setPrivateModalFlg', true);
+  };
+
+  // 승인시 실행
+  const runningApply = () => {
+    store.dispatch('auth/applyChild', selectChild.value.child_id).then(() => {
+      setTimeout(() => {
+        // 업데이트 성공시 수동 처리
+        selectChild.value.app_state = '1';
+      }, 500);
+    });
+  };
+
+  // 취소시 실행
+  const runningCancel = () => {
+    store.dispatch('auth/deleteChild', selectChild.value.child_id).then(() => {
       setTimeout(() => {
         // 해당 자녀 정보를 배열에서 제거
-        const index = userInfo.value.children.findIndex(item => item.child_id === child.child_id);
+        const index = userInfo.value.children.findIndex(item => item.child_id === selectChild.value.child_id);
         
         if(index !== -1) {
           userInfo.value.children.splice(index, 1);
@@ -165,6 +266,28 @@ import { useRoute } from 'vue-router';
 
 
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
+
+
+  // 클릭 외부 감지 함수
+  const handleCopyBoard = (e) => {
+    const copyIcon = document.querySelector('.info-alarm-copy');
+
+    // 알림창이 활성화 되어있고 타겟이 해당DOM의 이외를 클릭했을때
+    if(copyIcon && !copyIcon.contains(e.target) && copyboard.value) {
+      // 외부 클릭시 알림 숨김
+      copyboard.value = false;
+    }
+  };
+
+  // 이벤트 등록
+  onMounted(() => {
+    document.addEventListener('mousedown', handleCopyBoard);
+  });
+
+  // 이벤트 해제
+  onUnmounted(() => {
+    document.removeEventListener('mousedown', handleCopyBoard);
+  });  
   
   onBeforeMount(() => {
     // 유저 정보 로드
@@ -194,7 +317,6 @@ import { useRoute } from 'vue-router';
     /* justify-content: center; */
     /* border: 1px solid #000; */
   }
-
   /* ------------------------------------------------------------------------ */
 
   /* 헤더 박스 */
@@ -281,6 +403,7 @@ import { useRoute } from 'vue-router';
     justify-content: center;
     background-color: #f5f5f5;
     padding: 30px 0;
+    position: relative;
   }
   /* 가족코드 출력 */
   .info-copy-code > span {
@@ -306,8 +429,62 @@ import { useRoute } from 'vue-router';
     cursor: pointer;
   }
 
+  /* 복사 알림창 */
+  .info-alarm-copy {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    left: 55.9%;
+    top: -14.2%;
+    /* transform: translate(-50%, -50%); */
+  }
+
+  /* 알림 박스 설정 */
+  .info-alarm-copy > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 10px;
+    padding-right: 20px;
+    /* width: 200px; */
+  }
+
+  /* 알림 x 버튼 */
+  .info-alarm-copy > div > img {
+    position: absolute;
+    left: 92%;
+    top: 17%;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+  }
+
+  /* 복사 알리 텍스트 */
+  .info-alarm-copy > div > p {
+    font-size: 0.9rem;
+    height: 100%;
+    /* margin: 10px; */
+  }
+
+  /* 꼬다리 이미지 */
+  .info-alarm-copy > img {
+    position: absolute;
+    left: 46.5%;
+    top: 97%;
+    width: 20px;
+    height: 20px;
+  }
+
   /* ------------------------------------------------------------------------ */
 
+  /* 자녀 가족정보 박스 */
   .info-connect-card {
     display: grid;
     grid-template-columns: 160px 1fr 160px;
@@ -317,7 +494,7 @@ import { useRoute } from 'vue-router';
     background-color: #f5f5f5;
     padding: 60px 50px;
   }
-
+  /* 자녀 내용 */
   .info-connect-content {
     width: 100%;
     display: flex;
@@ -326,18 +503,18 @@ import { useRoute } from 'vue-router';
     flex-direction: column;
     width: auto;
   }
-  
+  /* 자녀 가족정보 부모명 */
   .info-connect-content > h2 {
     font-size: 1.8rem;
   }
-  
+  /* 보호자 텍스트 */
   .info-connect-content > p {
     margin-top: 10px;
     padding-left: 2px;
     font-size: 1.2rem;
     color: #A5A5A5;
   }
-
+  /* 우측 연결됨 버튼 */
   .info-connect-btn {
     display: flex;
     justify-content: flex-end;
@@ -399,10 +576,26 @@ import { useRoute } from 'vue-router';
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 3px 3px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    position: relative;
   }
   /* 자녀 이름 크기 */
   .info-footer-item > p {
     font-size: 1.4rem;
+  }
+  /* 승인 대기중 */
+  .info-wait-apply {
+    position: absolute;
+    top: -6%;
+    left: 17%;
+    width: 110px;
+    height: 25px;
+    border-radius: 10px;
+    background-color: #e9e900;
+    font-size: 1rem;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   /* 자녀 아이콘 */
@@ -432,6 +625,7 @@ import { useRoute } from 'vue-router';
     align-items: center;
     margin-top: 15px;
   }
+  /* 승인 아이콘 정렬 */
   .info-footer-btn > div {
     display: flex;
     justify-content: center;
@@ -450,10 +644,69 @@ import { useRoute } from 'vue-router';
     cursor: pointer;
   }
   /* 이미지 크기 조정 */
-  .info-footer-btn button > img {
+  .info-footer-btn img {
     width: 100%;
     height: 100%;
   }
+
+  /* 포지션 설정 */
+  .info-btn-position {
+    position: relative;
+  }
+  
+  /* 미니박스 공통 설정  */
+  .info-alarm-apply
+  ,.info-alarm-cancel
+  ,.info-alarm-applied {
+    height: 25px;
+    border-radius: 50px;
+    background-color: #e9e900;
+    font-size: 0.9rem;
+    background-color: #fff;
+    border: 1px solid #eee;
+    position: absolute;
+    display: none;
+  }
+  /* 미니박스 꼬다리 공통 설정 */
+  .info-alarm-apply > img
+  ,.info-alarm-cancel > img
+  ,.info-alarm-applied > img {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+  }
+  /* 호버시 중앙정렬 */
+  .info-apply-btn:hover + .info-alarm-apply
+  ,.info-cancel-btn:hover + .info-alarm-cancel
+  ,.info-applied-btn:hover + .info-alarm-applied {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 승인취소 좌표 */
+  .info-alarm-apply
+  ,.info-alarm-cancel {
+    top: -65%;
+    left: -18%;
+    width: 45px;
+  }
+
+  /* 승인됨 좌표 */
+  .info-alarm-applied {
+    top: -75%;
+    left: -28%;
+    width: 55px;
+  }
+
+  /* 미니박스 꼬다리 좌표 */
+  .info-alarm-apply > img
+  ,.info-alarm-cancel > img
+  ,.info-alarm-applied > img {
+    left: 35%;
+    top: 96%;
+  }
+
 
   /* ------------------------------------------------------------------------ */
 

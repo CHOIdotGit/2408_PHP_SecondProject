@@ -21,7 +21,6 @@ import ChildSpendUpdateComponent from '../views/components/board/children-board/
 import ParentsStatsComponent from '../views/components/board/parents-board/ParentsStatsComponent.vue';
 import ChildHomeComponent from '../views/components/board/children-board/ChildHomeComponent.vue';
 import ParentsSpendDetailComponent from '../views/components/board/parents-board/ParentsSpendDetailComponent.vue';
-import LoginTestComponent from '../views/components/auth/LoginTestComponent.vue';
 import ParentsMoaBankComponent from '../views/components/bank/parent-bank/ParentsMoaBankComponent.vue';
 import ChildBankProductComponent from '../views/components/bank/child-bank/ChildBankProductComponent.vue';
 import ChildBankProductRegisterComponent from '../views/components/bank/child-bank/ChildBankProductRegisterComponent.vue';
@@ -450,14 +449,6 @@ const routes = [
     //     component: ChildExpiredSavingComponentCopy,
     //     beforeEnter: chkAuth,
     // },
-
-    // +==================================+
-    // +          테스트 하는 중           +
-    // +==================================+
-    {
-        path: '/test/login',
-        component: LoginTestComponent,
-    },
 
     // +==================================+
     // +          페이지 못찾음            +

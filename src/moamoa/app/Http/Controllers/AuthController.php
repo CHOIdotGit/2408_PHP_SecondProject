@@ -95,6 +95,7 @@ class AuthController extends Controller {
   public function logout() { 
 
     Auth::logout(); // 로그아웃 처리
+    Session::flush(); // 사용자 세션 제거
     Session::invalidate(); // 기존 세션 제거후 새 새션 발급
     Session::regenerateToken(); // CSRF토큰 재발급
 
@@ -470,7 +471,7 @@ class AuthController extends Controller {
    */
   public function modifyUser(AuthenticationRequest $request) {
     if(empty($request->all()) || // 요청값이 아무것도 없거나
-      $request->missing(['name', 'tel', 'email']) // 필수값중에 하나라도 없으면
+      $request->missing(['tel', 'email']) // 필수값중에 하나라도 없으면
     ) { 
       return response()->json([
         'success' => false,
@@ -491,7 +492,7 @@ class AuthController extends Controller {
         $updateData = [];
   
         // 필수 정보들을 루프를 돌려 값이 바뀐것만 세팅
-        foreach(['name', 'email', 'tel'] as $field) {
+        foreach(['email', 'tel'] as $field) {
           if($request->$field !== $user->$field) {
             $updateData[$field] = $request->$field;
           }
@@ -707,6 +708,27 @@ class AuthController extends Controller {
         'success' => false,
         'error' => '비밀번호 변경 실패: ' . $th->getMessage(),
       ], 500);
+    }
+  }
+
+  /**
+   * 회원 정보 검사
+   * 
+   * @param AuthenticationRequest $request
+   */
+  public function chkInfo(AuthenticationRequest $request) {
+    if(empty($request->all()) || // 요청값이 아무것도 없거나
+      $request->missing(['tel', 'email']) // 필수값중에 하나라도 없으면
+    ) { 
+      return response()->json([
+        'success' => false,
+        'error' => '요청값이 없거나 필수적으로 들어가야할 정보가 없습니다.',
+      ], 401);
+    }else {
+      return response()->json([
+        'success' => true,
+        'error' => '회원 정보 검사 성공',
+      ], 200);
     }
   }
   

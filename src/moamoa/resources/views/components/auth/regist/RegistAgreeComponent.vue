@@ -726,7 +726,7 @@ import { useRouter } from 'vue-router';
 
 <style scoped>
   /* 버튼 커서 손모양 */
-  button, input[type="checkbox"] {
+  button, input[type="checkbox"], label {
     cursor: pointer;
   }
 

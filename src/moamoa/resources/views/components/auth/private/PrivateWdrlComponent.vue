@@ -93,9 +93,18 @@
       </div>
     </div>
   </div>
+
+  <PrivateAskModalComponent
+    v-if="privateModalFlg"
+    :msg="'해당 계정의 회원 탈퇴가 진행됩니다.'"
+    :successMsg="'　회원탈퇴 신청처리가 완료되었습니다. 로그인으로 이동합니다.'"
+    @confirm="runningDelete()"
+    @cancel="store.commit('auth/setPrivateModalFlg', false)"
+  />
 </template>
 
 <script setup>
+  import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
   import { computed, onBeforeMount, ref } from 'vue';
   import { useStore } from 'vuex';
   import { useRoute } from 'vue-router';
@@ -105,6 +114,9 @@
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   // const errMsg = computed(() => store.state.auth.errMsg);
+
+  // 모달 스위칭
+  const privateModalFlg = computed(() => store.state.auth.privateModalFlg);
 
   // 유저 정보 ---------------------------------------------------------------------------------------------
   const userInfo = computed(() => store.state.auth.parentFlg ? store.state.auth.parentInfo : store.state.auth.childInfo);
@@ -118,7 +130,11 @@
       return;
     }
     
-    // 탈퇴 실행
+    store.commit('auth/setPrivateModalFlg', true);
+  };
+
+  // 탈퇴 실행
+  const runningDelete = () => {
     store.dispatch('auth/removeUser');
   };
   
