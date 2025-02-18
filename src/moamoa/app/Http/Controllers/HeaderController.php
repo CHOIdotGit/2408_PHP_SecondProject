@@ -140,7 +140,7 @@ class HeaderController extends Controller
         // ************************************************ 
         $child = Auth::guard('children')->user();
 
-        $childInfo = Child::select('children.name', 'children.profile')
+        $childInfo = Child::select('children.child_id','children.name', 'children.profile')
                             ->where('children.child_id', $child->child_id)
                             ->first();
         

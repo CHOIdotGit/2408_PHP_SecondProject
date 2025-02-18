@@ -23,24 +23,25 @@
         <div class="bank-form">
             <p class="bank-form-title">납입 금액</p>
             <div class="bank-form-content">
-                <input type="num" class="amountInput" maxlength="4" v-model="regist.amount"> 모아
-                <p class="guide">*최소 100 ~ 최대 1,000 금액을 입력할 수 있습니다</p>
+                <input type="num" class="amountInput" maxlength="4" v-model="regist.saving_sign_up_amount"> 모아
+                <p class="guide">* 최소 100 ~ 최대 1,000 금액을 입력할 수 있습니다</p>
             </div>
         </div>
         <div class="bank-form">
             <p class="bank-form-title">납입 유형</p>
             <p class="bank-form-content">{{ getTypeText(productInfo.saving_product_type) }}</p>
         </div>
-        <div class="bank-form">
+        <div class="bank-form" v-if="productInfo.saving_product_type !== '0'">
             <p class="bank-form-title">납입 날짜</p>
 
             <!-- 매일 적금일때 ---- 비활성화 -->
             <!-- 매주 적금일때 ---- 활성화 -->
             <div class="selectdays">
-                <div class="dayOption" v-for="item in days" :key="item" >
-                    <label :for="'day-' + item" class="radioStyle">
-                        <input type="radio" :value="item"  name="days" :id="'day-'+item"  :disabled="isDisabled(item)" v-model="selectdays" >
-                        <p class="days-btn">{{ dayMatching(item) }}</p>
+                <div class="dayOption" v-for="val in days" :key="val" >
+                    <label :for="'day-' + val" class="radioStyle">
+                        <input type="radio" :value="val"  name="days" :id="'day-'+val" v-model="regist.saving_sign_up_deposit_at" >
+                        <p class="days-btn">{{ dayMatching(val) }}</p>
+                        {{ val }}
                     </label>
                 </div>
             </div>
@@ -51,7 +52,6 @@
         <div class="registBtn">
             <div class="box-btn cancel" >돌아가기</div>
             <div class="box-btn" @click="goBank">가입하기</div>
-
         </div>
     </div>
 
@@ -63,7 +63,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -108,7 +108,7 @@ const getTypeText = (saving_product_type) => {
 };
 
 // 요일 선택하기
-const days = ref(["0", "1", "2", "3", "4", "5", "6", "7"]);
+const days = ref(["0", "1", "2", "3", "4", "5", "6"]);
 
 //요일 매칭
 const dayMatching = (item) => {
@@ -120,39 +120,15 @@ const dayMatching = (item) => {
         "4": "목",
         "5": "금",
         "6": "토",
-        "7": "매일"
     }
     return dayLabel[item];
 }
 
-const selectdays = ref("7"); // 기본값 : 매일 선택
-console.log('선택된 날짜 :', selectdays.value);
-
-const isDisabled = (item) => {
-    if(productInfo.value.saving_product_type === "0") {
-        return item.days !== "7";
-    }
-    else {
-        return item.days === "7";
-
-    }
-};
-
-// 적금 가입하기
-const today = ref(new Date().toISOString().slice(0, 10));
-
-
-const endDay = ref(new Date().toISOString().slice(0, 10));
-console.log(endDay);
 const regist = reactive({
-    amount: ''
-    ,child_id: route.params.child_id
+    saving_sign_up_amount: ''
     ,saving_product_id: route.params.product_id
-    ,saving_sign_up_status: productInfo.value.saving_product_type
-    ,saving_sign_up_start_day: today
-    ,saving_sign_up_end_day: endDay
-    ,saving_sign_up_deposit_at: selectdays.value
-})
+    ,saving_sign_up_deposit_at: ''
+});
 
 const goBank = () =>{
     if(regist.amount > 1000) {
@@ -281,15 +257,15 @@ h1 {
 
 
 
-.radioStyle input[type=radio] {
+/* .radioStyle input[type=radio] {
     display: none;
-}
+} */
 
 .days-btn {
     cursor: pointer;
     width: 30px;
     height: 30px;
-    background-color: #ffcf0f;
+    /* background-color: #ffcf0f; */
     
 }
 
