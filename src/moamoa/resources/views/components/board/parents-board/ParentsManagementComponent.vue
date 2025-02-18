@@ -67,12 +67,20 @@
         </div>
         <div class="m-child">
             <img src="../../../../../public/img/icon-girl-1.png" alt="" class="m-child-profile">
-            <p class="m-child-name"> 배현진 </p>
-            <div class="m-expenses">
-                <p class="m-home-title">지출내역</p>
-                <p class="m-home-content">2,400원</p>
-                <p class="m-home-content">1,700원</p>
-                <p class="m-home-content">32,600원</p>
+            <div class="m-main-content">
+                <p class="m-child-name"> 배현진 </p>
+                <div class="m-expenses">
+                    <p class="m-home-title">지출내역</p>
+                    <p class="m-home-content m-first">2,400원</p>
+                    <p class="m-home-content">1,700원</p>
+                    <p class="m-home-content">32,600원</p>
+                </div>
+                <div class="m-expenses">
+                    <p class="m-home-title"> 승인 대기중인 내역</p>
+                    <p class="m-home-content m-first"> 테스트 </p>
+                    <p class="m-home-content"> 방청소하기</p>
+                    <p class="m-home-content"> 프로젝트 마무리하기</p>
+                </div>
             </div>
         </div>
     </div>
@@ -379,7 +387,7 @@ onBeforeMount(async () => {
     width: 80px;
     height: 80px;
     border-radius: 50px;
-    border: 2px solid #A2CAAC;
+    border: 3px solid #A2CAAC;
     background-color: white;
 }
 
@@ -388,21 +396,44 @@ onBeforeMount(async () => {
     flex-direction: column;
     align-items: center;
     margin-top: 20px;
-}
+}   
 
 .m-child-name {
-    margin-top: 10px;
+    margin-top: 20px;
     font-size: 1.5rem;
+    text-align: center;
+    font-weight: 600;
 }
 
 .m-home-title{
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    margin-left: 65px;
     background-color: #A2CAAC;
+    color: white;
     border-radius: 15px;
+    font-weight: 600;
     width: 120px;
     text-align: center;
     margin-top: 20px;
     height: 50px;
     line-height: 50px;
+}
+
+.m-home-content {
+    text-align: center;
+    font-size: 1.2rem;
+    height: 25px;
+    line-height: 25px;
+}
+
+.m-first {
+    margin-top: 20px;
+}
+
+.m-main-content {
+    margin-top: 20px;
+    width: 250px;
+    border: 3px solid #A2CAAC;
+    border-radius: 20px;
 }
 </style>
