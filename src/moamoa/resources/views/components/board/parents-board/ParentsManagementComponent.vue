@@ -61,7 +61,7 @@
 
     <div class="m-container" v-if="isMobile">
         <div class="m-header">
-            <img src="/img/icon-girl-4.png" alt="" width="45px" height="45px" class="m-user-image">
+            <img src="/img/icon-girl-4.png" alt="" class="m-user-image">
             <p class="m-user-profile">김주연</p>
             <p class="go-update"> > </p>
         </div>
@@ -70,21 +70,34 @@
             <div class="m-main-content">
                 <p class="m-child-name"> 배현진 </p>
                 <div class="m-expenses">
-                    <p class="m-home-title">지출내역</p>
+                    <p class="m-home-title-e">지출내역</p>
                     <p class="m-home-content m-first">2,400원</p>
                     <p class="m-home-content">1,700원</p>
                     <p class="m-home-content">32,600원</p>
                 </div>
                 <div class="m-expenses">
-                    <p class="m-home-title"> 승인 대기중인 내역</p>
+                    <p class="m-home-title-c"> 승인 대기중인 내역</p>
                     <p class="m-home-content m-first"> 테스트 </p>
                     <p class="m-home-content"> 방청소하기</p>
                     <p class="m-home-content"> 프로젝트 마무리하기</p>
                 </div>
             </div>
         </div>
+
+        <div class="m-footer-menu">
+            <div class="m-menu">
+                <img src="/img/icon-home.png" alt="" class="m-home">
+                <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
+                <img src="/img/icon-coin.png" alt="" class="m-expense">
+                <img src="/img/icon-calendar.png" alt="" class="m-calendar">
+                <img src="/img/icon-sack-dollar.png" alt="" class="m-bank">
+                <img src="/img/icon-hamburger-black.png" alt="" class="m-etc">
+        </div>
     </div>
+</div>
+
 </template>
+
 <script setup>
 
 import { computed, ref, onBeforeMount } from 'vue';
@@ -362,30 +375,35 @@ onBeforeMount(async () => {
 
 .m-header {
     display: flex;
-    height: 50px;
+    height: 70px;
     background-color: #A2CAAC;
     width: 100vw;
     align-items: center;
-    gap: 5px;
+    gap: 10px;
 }
 
 .m-user-image {
-    height: 35px;
-    width: 35px;
+    height: 50px;
+    width: 50px;
     border-radius: 50px;
     border: 2px white solid;
     background-color: white;
     margin-left: 20px;
 }
 
+.m-user-profile {
+    font-size: 1.7rem;
+    width: 100px;
+}
+
 .go-update {
-    font-size: 1.3rem;
-    margin-left: 260px;
+    font-size: 2rem;
+    margin-left: 180px;
 }
 
 .m-child-profile {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50px;
     border: 3px solid #A2CAAC;
     background-color: white;
@@ -405,14 +423,28 @@ onBeforeMount(async () => {
     font-weight: 600;
 }
 
-.m-home-title{
-    font-size: 1.5rem;
-    margin-left: 65px;
+.m-home-title-e{
+    font-size: 1.3rem;
+    margin-left: 70px;
     background-color: #A2CAAC;
     color: white;
     border-radius: 15px;
     font-weight: 600;
-    width: 120px;
+    width: 100px;
+    text-align: center;
+    margin-top: 20px;
+    height: 50px;
+    line-height: 50px;
+}
+
+.m-home-title-c{
+    font-size: 1.3rem;
+    margin-left: 25px;
+    background-color: #A2CAAC;
+    color: white;
+    border-radius: 15px;
+    font-weight: 600;
+    width: 180px;
     text-align: center;
     margin-top: 20px;
     height: 50px;
@@ -422,8 +454,8 @@ onBeforeMount(async () => {
 .m-home-content {
     text-align: center;
     font-size: 1.2rem;
-    height: 25px;
-    line-height: 25px;
+    height: 30px;
+    line-height: 30px;
 }
 
 .m-first {
@@ -435,5 +467,22 @@ onBeforeMount(async () => {
     width: 250px;
     border: 3px solid #A2CAAC;
     border-radius: 20px;
+    height: 420px;
+}
+
+.m-menu {
+    display: flex;
+    gap: 30px;
+    border-top: 2px solid black;
+    margin-top: 150px;
+    img {
+        margin-top: 10px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+.m-home {
+    margin-left: 15px;
 }
 </style>
