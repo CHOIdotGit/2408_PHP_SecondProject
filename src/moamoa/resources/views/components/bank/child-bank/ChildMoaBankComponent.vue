@@ -149,7 +149,7 @@ onBeforeMount(() => {
 
 .red {
     color: red;
-    font-family: 'LAB디지털';
+    font-weight: 700;
     font-size: 2rem;
     width: 150px;
     padding: 5px;

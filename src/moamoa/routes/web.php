@@ -233,7 +233,7 @@ Route::get('/api/child/moabank', [ChildPointController::class, 'total']);
 Route::get('/api/child/point', [ChildPointController::class, 'child']);
 
 // 자녀 적금 통장 상세
-Route::get('/api/child/moabank/bankbook/{bankbook_id}', [ChildSavingController::class, 'show']);
+Route::get('/api/child/moabank/bankbook/{saving_sign_up_id}', [ChildSavingController::class, 'show']);
 
 // 자녀 만기 적금 리스트 페이지
 Route::get('/api/child/expired/saving', [ChildSavingController::class, 'expiredSaving']);

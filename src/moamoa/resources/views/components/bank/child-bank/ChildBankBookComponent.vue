@@ -14,11 +14,11 @@
                 </div>
                 <div class="b-info">
                     <p class="margin-left p-first">납입 유형</p>
-                    <p>{{ savingInfo.saving_product_type }}</p>
+                    <p>{{ savingInfo.saving_sign_up_status }}</p>
                 </div>
                 <div class="b-info">
                     <p class="p-first">가입한 날</p>
-                    <p>{{ savingInfo.saving_detail_created_at }}</p>
+                    <p>{{ savingInfo.saving_sign_up_start_at }}</p>
                 </div>
                 <div class="b-info">
                     <p class="margin-left p-first">금리</p>
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <div class="bankbook-profile">
-                <img src="" class="img-size">
+                <img :src="childInfo.profile" class="img-size">
                 <div class="div-child-name">
                     <p>{{ childInfo.name }}</p>
                 </div>
@@ -46,7 +46,7 @@
             <div class="bankbook-item">
                 <div class="main-content" >
                     <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
-                        <p>{{ formatDate(item.saving_detail_created_at) }}</p>
+                        <p class="bankbook-date">{{ item.saving_detail_created_at }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_outcome }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_income }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_left }}</p>
@@ -81,17 +81,13 @@ const childInfo = store.state.header.childInfo;
 
 
 onMounted(()=> {
-    const bankbookId = route.params.bankbook_id;
-    console.log('파라미터 bankbook_id:', bankbookId);
+    const bankbookId = route.params.saving_sign_up_id;
     store.dispatch('saving/childSavingDetail', bankbookId);
     store.dispatch('header/childInfo')
 })
 
 // 날짜 형태 바꾸기 yyyy-mm-dd
-const formatDate = (date) =>  {
-    const day = new Date(date);
-    return day.toISOString().split('T')[0];
-}
+
 
 // 카테고리 문자로 변환
 const getCategoryText = (saving_detail_category) => {

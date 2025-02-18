@@ -432,7 +432,7 @@ const routes = [
 
     // 자녀 통장 페이지(상세 내역)
     {
-        path: '/child/bankbook/:bankbook_id',
+        path: '/child/bankbook/:saving_sign_up_id',
         component: ChildBankBookComponent,
         beforeEnter: chkAuth,
     },

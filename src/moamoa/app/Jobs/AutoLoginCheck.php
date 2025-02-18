@@ -47,7 +47,7 @@ class AutoLoginCheck extends MyJob {
             ,'payment_at' => $today
         ];
     
-
+        Point::create($point);
 
         // $loginCheck = Child::select('login_at')
         //                     ->get();

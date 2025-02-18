@@ -54,7 +54,7 @@ class ChildSavingController extends Controller
     }
     
     // 자녀 적금 통장 상세
-    public function show($bankbook_id) {
+    public function show($saving_sign_up_id) {
             // 로그인 유저가 자녀인지 확인
             $child = Auth::guard('children')->user();
 
@@ -72,8 +72,7 @@ class ChildSavingController extends Controller
                                                 )
                                         ->join('saving_details', 'saving_sign_ups.saving_sign_up_id', '=', 'saving_details.saving_sign_up_id')
                                         ->join('saving_products','saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
-                                        ->where('child_id', $child->child_id)
-                                        ->where('saving_sign_ups.saving_sign_up_id', $bankbook_id)
+                                        ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
                                         ->whereNull('saving_sign_ups.deleted_at')
                                         ->get();
                 // 자녀가 가입한 통장 정보
@@ -82,8 +81,7 @@ class ChildSavingController extends Controller
                                                     ,'saving_sign_ups.saving_sign_up_status'
                                                     ,'saving_sign_ups.created_at'
                                                     )
-                                            ->where('child_id', $child->child_id)
-                                            ->where('saving_sign_ups.saving_sign_up_id', $bankbook_id)
+                                            ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
                                             ->get();
 
             // $bankBook = SavingDetail::select('saving_details.saving_detail_left'
@@ -108,16 +106,17 @@ class ChildSavingController extends Controller
     // ***************************
     // 적금 상품 가입하기
     // ***************************
-    public function store(Request $request) {
+    public function store(Request $request, $product_id) {
+        Log::debug('request', $request->all());
         $child = Auth::guard('children')->user();
-        $parent = $child->parent_id;
         $today = date("Y-m-d");
         // type = 0(매일) => deposit = 7
         // type = 1(매주) => 0~6
         // 적금 상품 확인
 
+
         // 가입한 적금이 3개면 가입불가
-        $savingCount = SavingSignUp::where('child_id', $child)
+        $savingCount = SavingSignUp::where('child_id', $child->child_id)
                                     ->count();
 
         if($savingCount === 3) {
@@ -131,7 +130,7 @@ class ChildSavingController extends Controller
                                         ,'saving_product_type'
                                         ,'saving_product_interest_rate'
                                         ,'saving_product_period')
-                                    ->where('saving_product_id', $request->product_id)
+                                    ->where('saving_product_id', $product_id)
                                     ->first();
 
         
@@ -157,7 +156,22 @@ class ChildSavingController extends Controller
         else if($savingInfo->saving_product_type === "1") {
             $savingResit['saving_sign_up_deposit_at'] = $request->saving_sign_up_deposit_at;
         }
+
         $regist = SavingSignUp::create($savingResit);
+
+        $savingDetail = [
+            'saving_sign_up_id'=> $regist->saving_sign_up_id
+            ,'saving_detail_category' => "0"
+            ,'saving_detail_left' => $regist->saving_sign_up_amount
+            ,'saving_detail_income'=> $regist->saving_sign_up_amount
+            ,'saving_detail_outcome' => "0"
+        ];
+
+        SavingDetail::create($savingDetail);
+
+
+        
+
         $responseData = [
             'success' => true
             ,'msg' => '미션 등록 성공'
