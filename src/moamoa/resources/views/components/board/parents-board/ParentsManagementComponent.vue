@@ -373,6 +373,10 @@ onBeforeMount(async () => {
 
 /* ------------- 모바일 버전 css ------------ */
 
+.m-container {
+    width: 100vw;
+    height: 100vh;
+}
 .m-header {
     display: flex;
     height: 70px;
