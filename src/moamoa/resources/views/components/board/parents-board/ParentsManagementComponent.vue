@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex">
+    <div class="d-flex" v-if="!isMobile">
         <div class="div-container">
             <!-- :slides-per-view="parentHome.length === 2 ? 2 : 3" -->
             <Swiper v-if="parentHome.length > 0"
@@ -58,6 +58,24 @@
             </div> -->
         </div>
     </div>
+
+    <div class="m-container" v-if="isMobile">
+        <div class="m-header">
+            <img src="../../../../../public/img/icon-boy-4.png" alt="" width="45px" height="45px" class="m-user-image">
+            <p class="m-user-profile">김주연</p>
+            <p class="go-update"> > </p>
+        </div>
+        <div class="m-child">
+            <img src="../../../../../public/img/icon-girl-1.png" alt="" class="m-child-profile">
+            <p class="m-child-name"> 배현진 </p>
+            <div class="m-expenses">
+                <p class="m-home-title">지출내역</p>
+                <p class="m-home-content">2,400원</p>
+                <p class="m-home-content">1,700원</p>
+                <p class="m-home-content">32,600원</p>
+            </div>
+        </div>
+    </div>
 </template>
 <script setup>
 
@@ -105,6 +123,7 @@ const getTruncatedTitle =(title) => {
     : title;
 };
 
+const isMobile = store.state.mobile.isMobile;
 // 미션 리스트로 이동
 const goMissionList = (child_id) => {
     store.dispatch('mission/missionList', child_id);
@@ -135,7 +154,7 @@ onBeforeMount(async () => {
 
 /* 메인 화면 */
 .d-flex {
-    /* width: 1620px; */
+    margin-left: 80px;
     width: 100%;
     height: 800px;
     display: flex;
@@ -331,59 +350,59 @@ onBeforeMount(async () => {
   background: rgba(173, 216, 230, 0.8);
 }
 
-/* 현재 사용하지 않는 css 효과 */
-/* .blank {
-    color: transparent;
-    height: 5px;
+/* ------------- 모바일 버전 css ------------ */
+
+.m-header {
+    display: flex;
+    height: 50px;
+    background-color: #A2CAAC;
+    width: 100vw;
+    align-items: center;
+    gap: 5px;
 }
 
-.child-list-triangle {
-    background-color: transparent;
-    width: 40px;
-    height: 40px;
-    color: #A2CAAC;
-    font-size: 4rem;
-    border: none;
+.m-user-image {
+    height: 35px;
+    width: 35px;
+    border-radius: 50px;
+    border: 2px white solid;
+    background-color: white;
+    margin-left: 20px;
 }
 
-.text-center{
-    text-align: center;
-    margin-top: 60px;
-} 
+.go-update {
+    font-size: 1.3rem;
+    margin-left: 260px;
+}
 
-.approve {
-    border: none;
-    background-color: #a2caac;
-    color: black;
+.m-child-profile {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    border: 2px solid #A2CAAC;
+    background-color: white;
+}
+
+.m-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.m-child-name {
+    margin-top: 10px;
     font-size: 1.5rem;
 }
 
-버튼 설정 
-.btn-border{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.btn-div{
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+.m-home-title{
+    font-size: 1.3rem;
+    background-color: #A2CAAC;
+    border-radius: 15px;
+    width: 120px;
+    text-align: center;
     margin-top: 20px;
-    vertical-align: middle;
+    height: 50px;
+    line-height: 50px;
 }
-
-.btn {
-    width: 160px;
-    height: 40px;
-    cursor: pointer;
-}
-
-.btn-disable {
-    display: none;
-    width: 160px;
-    height: 40px;
-    cursor: default;
-    pointer-events: none;  클릭 이벤트 막기 
-}*/
 </style>

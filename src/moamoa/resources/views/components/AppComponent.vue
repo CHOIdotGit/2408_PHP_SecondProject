@@ -1,17 +1,17 @@
 <template>
     <!-- :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }" -->
 
-    <div v-if="!isMobile" class="container">
+    <div class="container">
     <!-- 상단 메뉴 -->
      <div class="containver-view">
-         <header>
+         <header v-if="!isMobile">
              <!-- 좌측 고정 메뉴 -->
                  <MenuLeftComponent v-if="isAuth"/>
          </header>
          
          <main class="layout">
              <!-- 상단 메뉴 버튼 -->
-             <div v-if="isAuth" class="top-header-menu">
+             <div v-if="isAuth && !isMobile" class="top-header-menu">
                  <HeaderMenuComponent/>
              </div>
              <!-- 화면 -->
@@ -23,20 +23,12 @@
      </div>
 
         <!-- 하단 메뉴 -->
-        <footer>
+        <footer v-if="!isMobile">
             <FooderComponent />
         </footer>
     </div>
 
-    <div v-else class="app-container">
-        
-        <main class="app-layout">
-            <!-- 화면 -->
-            <router-view></router-view>
-        </main>
-
-
-    </div>
+    
 </template>
 
 
