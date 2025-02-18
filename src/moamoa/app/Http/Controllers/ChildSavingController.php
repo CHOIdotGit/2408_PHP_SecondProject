@@ -20,6 +20,8 @@ class ChildSavingController extends Controller
         // 로그인 유저가 자녀인지 확인
         $child = Auth::guard('children')->user();
 
+        $today = date("Y-m-d");
+
         // 조인문으로 자녀 id, 적금 상품 이름, 이자율, 잔액 합계 불러오기
         $childSavingList = SavingSignUp::select('saving_sign_ups.child_id',
                                                 'saving_sign_ups.saving_sign_up_id',
@@ -36,10 +38,11 @@ class ChildSavingController extends Controller
                                             )
                                         ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
                                         ->where('child_id', $child->child_id)
+                                        ->whereDate('saving_sign_up_end_at', '>', $today )
                                         ->whereNull('saving_sign_ups.deleted_at')
                                         ->orderBy('saving_sign_ups.created_at', 'DESC')
                                         ->get();
-          
+
 
                 $responseData = [
                     'success' => true
@@ -55,10 +58,7 @@ class ChildSavingController extends Controller
             // 로그인 유저가 자녀인지 확인
             $child = Auth::guard('children')->user();
 
-            // 로그인 유저가 부모인지 확인
-            $parent = Auth::guard('parents')->user();
 
-            if($child) {
                 // 자녀 적금 통장 내역
                 $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
                                                 ,'saving_products.saving_product_name'
@@ -83,14 +83,8 @@ class ChildSavingController extends Controller
                                                     ,'saving_sign_ups.created_at'
                                                     )
                                             ->where('child_id', $child->child_id)
+                                            ->where('saving_sign_ups.saving_sign_up_id', $bankbook_id)
                                             ->get();
-
-            }
-
-
-
-
-
 
             // $bankBook = SavingDetail::select('saving_details.saving_detail_left'
             //                                 ,'saving_details.saving_detail_income'

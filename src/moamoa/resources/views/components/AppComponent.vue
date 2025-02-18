@@ -3,41 +3,38 @@
 
     <div v-if="!isMobile" class="container">
     <!-- 상단 메뉴 -->
-        <header>
-            <!-- 좌측 고정 메뉴 -->
-                <MenuLeftComponent v-if="isAuth"/>
-        </header>
-        
-        <main class="layout">
-            <!-- 상단 메뉴 버튼 -->
-            <div v-if="isAuth" class="top-header-menu">
-                <HeaderMenuComponent/>
-            </div>
-            <!-- 화면 -->
-            <div class="app-div">
-                <router-view></router-view>
-            </div>
-        </main>
+     <div class="containver-view">
+         <header>
+             <!-- 좌측 고정 메뉴 -->
+                 <MenuLeftComponent v-if="isAuth"/>
+         </header>
+         
+         <main class="layout">
+             <!-- 상단 메뉴 버튼 -->
+             <div v-if="isAuth" class="top-header-menu">
+                 <HeaderMenuComponent/>
+             </div>
+             <!-- 화면 -->
+             <div class="app-div">
+                 <router-view></router-view>
+             </div>
+         </main>
 
-        <!-- footer -->
-        <!-- <footer v-if="isAuth">
-            <div>
+     </div>
 
-            </div>
-        </footer> -->
+        <!-- 하단 메뉴 -->
+        <footer>
+            <FooderComponent />
+        </footer>
     </div>
-    <div v-else class="app-container">
 
-        <!-- 상단 메뉴 -->
-        <!-- <header></header> -->
+    <div v-else class="app-container">
         
         <main class="app-layout">
             <!-- 화면 -->
             <router-view></router-view>
         </main>
 
-        <!-- 하단 메뉴 -->
-        <!-- <footer></footer> -->
 
     </div>
 </template>
@@ -49,6 +46,7 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 import MenuLeftComponent from './layout-project-3/MenuLeftComponent.vue';
 import HeaderMenuComponent from './layout-project-3/HeaderMenuComponent.vue';
+import FooderComponent from './layout-project-3/FooderComponent.vue';
 
 
 const store = useStore();
@@ -68,9 +66,9 @@ const isMobile = store.state.mobile.isMobile;
 @import url("../../css/swiper.css");
 
 /* footer */
-footer > p {
-    text-align: center;
-    color: white;
+footer {
+    height: 32vh;
+    background: #fafafa;
 }
 
 .container {
@@ -78,12 +76,19 @@ footer > p {
     /* min-height: 100%; */
     /* height: 100vh; */
     display: flex;
+    flex-direction: column;
+
+}
+
+.containver-view {
+    display: flex;
 }
 
 .layout {
     /* width: 100%; */
     display: flex;
     flex-direction: column;
+    margin-bottom: 200px;
 }
 
 .top-header-menu {

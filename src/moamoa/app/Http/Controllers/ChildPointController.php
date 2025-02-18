@@ -17,8 +17,8 @@ class ChildPointController extends Controller
                                     $query->select('children.child_id', 'children.name', 'children.profile', 'children.created_at');
                                 }])
                                 ->where('points.child_id', $child->child_id)
-                                ->orderBy('points.payment_at')
-                                ->latest()
+                                ->orderBy('points.payment_at', 'desc')
+                                // ->latest()
                                 ->paginate(20);
 
         $childTotalPoint = Point::where('points.child_id', $child->child_id)->where('point_code', '!=', 3)->sum('point');

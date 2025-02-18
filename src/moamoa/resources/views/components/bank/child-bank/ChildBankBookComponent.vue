@@ -6,7 +6,7 @@
             <p class="bank-name">모아은행</p>
         </div>
         <!-- 통장정보 -->
-        <div class="bankbook-info" v-if="savingDetail">
+        <div class="bankbook-info">
             <div class="info-detail">
                 <div class="b-info">
                     <p class="p-first">통장 종류</p>
@@ -45,8 +45,7 @@
             </div>
             <div class="bankbook-item">
                 <div class="main-content" >
-                    <div v-for="(item, index) in savingDetail" :key="item" class="bankbook-transactions">
-                        <p>{{ index + 1 }}</p>
+                    <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
                         <p>{{ formatDate(item.saving_detail_created_at) }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_outcome }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_income }}</p>
@@ -79,6 +78,7 @@ const savingInfo = computed(()=> store.state.saving.savingInfo);
 
 // 자녀 정보
 const childInfo = store.state.header.childInfo;
+
 
 onMounted(()=> {
     const bankbookId = route.params.bankbook_id;

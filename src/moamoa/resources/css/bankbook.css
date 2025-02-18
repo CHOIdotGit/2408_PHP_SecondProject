@@ -94,9 +94,9 @@
     font-size: 1.3rem;
 }
 
-.change-date {
+/* .change-date {
     cursor: pointer;
-}
+} */
 
 .bankbook-item {
     display: flex;
@@ -122,7 +122,7 @@
 .bankbook-transactions {
     width: 870px;
     display: grid;
-    grid-template-columns: 32px 151px 154px 154px 154px 255px;
+    grid-template-columns: 184px 154px 154px 154px 254px;
     text-align: center;
 }
 

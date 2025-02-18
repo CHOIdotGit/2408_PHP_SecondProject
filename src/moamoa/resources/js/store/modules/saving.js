@@ -131,7 +131,7 @@ export default {
 
         // 적금 가입하기
         createSaving(context, data) {
-            const url = '/api/moabank/product/regist/' + data.product_id;
+            const url = '/api/child/moabank/saving/create/' + data.product_id;
             console.log(url);
 
             const formData = new FormData();
@@ -144,7 +144,7 @@ export default {
 
             axios.post(url, formData)
                 .then(response => {
-                    const newSaving = response.data.savingDetail;
+                    const newSaving = response.data.regist;
                     console.log('적금 가입', newSaving);
 
                     context.commit('setBankBookId', newSaving.bankbook_id);

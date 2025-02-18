@@ -11,7 +11,7 @@ class ParentPointController extends Controller
 {
     // 부모 포인트 페이지
     public function parent($id) {
-        $sort = request('sort', 'asc'); // 기본 정렬은 ASC
+        $sort = request('sort', 'desc'); // 기본 정렬은 desc
     
         // 전체 데이터를 정렬한 후, 최신 20개 가져오기
         $childPointList = Point::select('points.child_id', 'points.point', 'points.point_code', 'points.payment_at')

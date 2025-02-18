@@ -146,6 +146,8 @@ onBeforeMount(() => {
     font-family: 'LAB디지털';
     font-size: 2rem;
     width: 150px;
+    padding: 5px;
+    text-align: center;
 }
 
 .p-explanation {

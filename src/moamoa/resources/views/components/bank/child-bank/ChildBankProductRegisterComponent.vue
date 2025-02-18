@@ -1,150 +1,59 @@
 <template>
 <!-- 적금 가입하는 페이지 -->
 <div class="bank-product-register-container">
-    
-        <h1>적금 상품 가입</h1>
+    <h1>적금 상품 가입</h1>
         <div class="headline">
-            <p>개인 약관 동의</p>
-            <p>정보 입력</p>
+            <p class="headline-1">1</p>
+            <p class="headline-2">정보 입력</p>
         </div>
-        <!-- 약관 동의 -->
-        <div class="bank-form-box" v-show="lawInfo">
-            <div class="bank-form">
-                <p class="bank-form-title">가입 대상</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">모아에 가입한 자녀 사용자 (1인 최대 3 적금 통장)</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">가입 기간</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">{{ productInfo.saving_product_period }} 일</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">최소 가입(납입) 금액</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">100 모아</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">최대 가입(납입) 금액</p>
-                <p class="bank-form-content">1000 모아</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 방법</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">모아에서 받은 포인트를 통해서만 납입 가능 </p>
-                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
-                    <p class="bank-form-content">모아 포인트가 납입 포인트에 미달할 시 자동 </p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 방법</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">모아에서 받은 포인트를 통해서만 납입 가능 </p>
-                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
-                    <p class="bank-form-content">포인트의 잔액 부족 시 미납 처리, 추후 납입 불가능</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">금리</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">한국은행 기준금리를 기준으로 모아은행에서 제시하는 변동이율 적용</p>
-                    <p class="bank-form-content">모아 은행 적금 상품에 가입 후 자동으로 납입</p>
-                    <p class="bank-form-content">포인트의 잔액 부족 시 미납 처리, 추후 납입 불가능</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">만기 시 자동해지</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">만기일에 자동으로 해지되어</p>
-                    <p class="bank-form-content">모아 은행 포인트 잔액에 자동으로 추가</p>
-
-                </div>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">이자 계산법</p>
-                <div class="box-flex">
-                    <p class="bank-form-content">모아 은행은 한국 시중 은행의 이율계산법을 기반으로 합니다</p>
-                    <p class="bank-form-content">모아 은행 포인트 잔액에 자동으로 추가</p>
-
-                </div>
-            </div>
-
-            <!-- 적금 가입 동의하기 버튼 -->
-            <div class="bank-box-bottom">
-                <div>※ 모아은행 적금 상품에 동의하십니까</div>
-                <div class="agreeBtn">
-                    <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
-                    <label for="agree-no">아니요, 동의하지 않습니다.</label>
-                    
-                    <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
-                    <label for="agree-yes">네, 동의합니다</label>
-                </div>
-
-                <div class="registBtn">
-                    <div class="box-btn cancel">돌아가기</div>
-                    <div class="box-btn" @click="goResigt">가입하기</div>
-                </div>
-            </div>
-
+    <!-- 정보 입력란  -->
+    <div class="bank-form-box">
+        <div class="bank-form">
+            <p class="bank-form-title">상품명</p>
+            <p class="bank-form-content">{{ productInfo.saving_product_name }} 적금</p>
         </div>
+        <div class="bank-form">
+            <p class="bank-form-title">예금주</p>
+            <p class="bank-form-content">{{ childInfo.name}}</p>
+        </div>
+        <div class="bank-form">
+            <p class="bank-form-title">납입 기간</p>
+            <p class="bank-form-content">{{ productInfo.saving_product_period }} 일</p>
+        </div>
+        <div class="bank-form">
+            <p class="bank-form-title">납입 금액</p>
+            <div class="bank-form-content">
+                <input type="num" class="amountInput" maxlength="4" v-model="regist.amount"> 모아
+                <p class="guide">*최소 100 ~ 최대 1,000 금액을 입력할 수 있습니다</p>
+            </div>
+        </div>
+        <div class="bank-form">
+            <p class="bank-form-title">납입 유형</p>
+            <p class="bank-form-content">{{ getTypeText(productInfo.saving_product_type) }}</p>
+        </div>
+        <div class="bank-form">
+            <p class="bank-form-title">납입 날짜</p>
 
-        <!-- 정보 입력란  -->
-        <div class="bank-form-box" v-show="bankBoxInput">
-            <div class="bank-form">
-                <p class="bank-form-title">상품명</p>
-                <p class="bank-form-content">{{ productInfo.saving_product_name }} 적금</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">예금주</p>
-                <p class="bank-form-content">{{ childInfo.name}}</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 기간</p>
-                <p class="bank-form-content">{{ productInfo.saving_product_period }} 일</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 금액</p>
-                <div class="bank-form-content">
-                    <input type="num" class="amountInput" maxlength="4" v-model="regist.amount"> 모아
-                </div>
-                <p class="guide">*최소 100 ~ 최대 1000 금액을 입력할 수 있습니다</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 유형</p>
-                <p class="bank-form-content">{{ getTypeText(productInfo.saving_product_type) }}</p>
-            </div>
-            <div class="bank-form">
-                <p class="bank-form-title">납입 날짜</p>
-
-                <!-- 매일 적금일때 ---- 비활성화 -->
-                <!-- 매주 적금일때 ---- 활성화 -->
-                <div class="selectdays">
-                    <div class="dayOption" v-for="item in days" :key="item" >
-                        <input type="radio" :value="item"  name="days" :id="'day-'+item" class="days-btn"  :disabled="isDisabled(item)" v-model="selectdays" >
-                        <label :for="'day-' + item" >
-                            <p>{{ dayMatching(item) }}</p>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <!-- 적금 가입하기 버튼 -->
-            <div class="bank-box-bottom">
-                <div class="registBtn">
-                    <div class="box-btn cancel">돌아가기</div>
-                    <div class="box-btn" @click="goBank">가입하기</div>
-
+            <!-- 매일 적금일때 ---- 비활성화 -->
+            <!-- 매주 적금일때 ---- 활성화 -->
+            <div class="selectdays">
+                <div class="dayOption" v-for="item in days" :key="item" >
+                    <label :for="'day-' + item" class="radioStyle">
+                        <input type="radio" :value="item"  name="days" :id="'day-'+item"  :disabled="isDisabled(item)" v-model="selectdays" >
+                        <p class="days-btn">{{ dayMatching(item) }}</p>
+                    </label>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- 적금 가입하기 버튼 -->
+    <div class="bank-box-bottom">
+        <div class="registBtn">
+            <div class="box-btn cancel" >돌아가기</div>
+            <div class="box-btn" @click="goBank">가입하기</div>
+
+        </div>
+    </div>
 
     
 
@@ -231,7 +140,10 @@ const isDisabled = (item) => {
 
 // 적금 가입하기
 const today = ref(new Date().toISOString().slice(0, 10));
-const endDay = ref(new Date().toISOString().slice(0, 10)); 
+
+
+const endDay = ref(new Date().toISOString().slice(0, 10));
+console.log(endDay);
 const regist = reactive({
     amount: ''
     ,child_id: route.params.child_id
@@ -243,7 +155,16 @@ const regist = reactive({
 })
 
 const goBank = () =>{
-    store.dispatch('saving/createSaving', regist);
+    if(regist.amount > 1000) {
+        alert('최대 1000 모아까지 가능합니다.')
+    }
+    else if(regist.amount < 100) {
+        alert('최소 100 모아부터 가능합니다. ')
+    }
+    else {
+        store.dispatch('saving/createSaving', regist);
+    }
+    
 }
 
 </script>
@@ -263,6 +184,22 @@ h1 {
     flex-direction: flex-start;
     margin-left: 273px;
     /* margin-bottom: 50px; */
+}
+
+.headline-2 {
+    border: 2px solid #5589e996;
+    border-radius: 30px;
+    padding: 5px;
+    color: #5589e996;
+}
+
+.headline-1 {
+    color: #fff;
+    background-color: #5589e996;
+    border-radius: 50px;
+    padding: 7px;
+    width: 50px;
+    text-align: center;
 }
 
 .bank-product-register-container {
@@ -306,6 +243,7 @@ h1 {
     /* line-height: 77px; */
     font-size: 1.2rem;
     padding-left: 20px;
+    width: 700px;
 }
 
 .box-flex {
@@ -329,7 +267,7 @@ h1 {
 .guide {
     font-size: 0.8rem;
     color: #7d7d7d;
-    line-height: 125px;
+
 }
 
 /* 날짜 선택 버튼 */
@@ -341,14 +279,22 @@ h1 {
     text-align: center;
 }
 
-.days-btn {
-    font-size: 1.2rem;
-    background-color: #c9c9c9;
+
+
+.radioStyle input[type=radio] {
+    display: none;
 }
 
-.days-btn>input {
-    display: hidden;
+.days-btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    background-color: #ffcf0f;
+    
 }
+
+
+
 /* ************************************end */
 
 /* 가입,취소 버튼 */
