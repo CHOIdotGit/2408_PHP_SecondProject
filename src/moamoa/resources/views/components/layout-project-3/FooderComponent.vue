@@ -1,8 +1,11 @@
 <template>
     <div class="footerContainer">
         <div>
-            <img src="/img/logo.png" alt="">
-            <span>자녀 용돈 관리 사이트</span> <span>모아</span>
+            <div class="logo">
+                <img src="/img/logo.png" alt="">
+                <span>자녀 용돈 관리 사이트</span> <span>모아</span>
+
+            </div>
             <div class="company">
                 <p>대구광역시 중구 중앙대로 364 제일빌딩 5F</p>
                 <p>사업자등록번호 : 504-85-25999(대표자 : 박병주)</p>
@@ -15,7 +18,6 @@
             <span>고객센터</span> <span>1588-9780</span>
             <p>월요일 ~ 금요일  9:00 ~ 17:00</p>
             <p>주말 및 공휴일 휴무</p>
-            <p>juyoon57@naver.com</p>
 
         </div>
 
@@ -29,11 +31,21 @@
 </script>
 
 <style scoped>
+img {
+    width: 180px;
+}
+
 .footerContainer {
     display: flex;
     justify-content: space-between;
-    margin-top: 54px;
+    padding-top: 30px;
     color: #575757;
+    line-height: 24px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
 }
 
 .company {
@@ -44,6 +56,7 @@
 .as {
     text-align: end;
     margin-right: 35px;
+    padding-top: 100px;
 }
 
 p {

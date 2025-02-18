@@ -27,7 +27,8 @@ class Kernel extends ConsoleKernel
                     ->where('status', 0)
                     ->update(['status' => 3]);
             Log::debug('testest');
-                })->dailyAt('17:00'); //매일 17시에 실행
+                //})->dailyAt('17:00'); //매일 17시에 실행
+                  })->dailyAt('15:00'); //매일 15시에 실행
         // })->everyMinute();
 
 
@@ -38,7 +39,8 @@ class Kernel extends ConsoleKernel
         // 자동 이체 처리
         $schedule->call(function() {
             new AutoSavingRecord();
-        })->daily();
+        // })->daily();
+        })->dailyAt('15:00'); //매일 15시에 실행
 
         //로그인하면 하루 한번 포인트 지급
         $schedule->call(function() {

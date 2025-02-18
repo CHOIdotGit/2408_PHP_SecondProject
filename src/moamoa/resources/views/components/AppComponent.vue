@@ -68,7 +68,7 @@ const isMobile = store.state.mobile.isMobile;
 /* footer */
 footer {
     height: 32vh;
-    background: #f3f3f3;
+    background: #fafafa;
 }
 
 .container {
