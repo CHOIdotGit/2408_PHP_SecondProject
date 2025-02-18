@@ -21,6 +21,7 @@ export default {
         ,totalExpenses: 0
         ,categoryData: []
         ,parentStats:[]
+        ,childStats:[]
         ,doughnutData: [0]
         ,weeklyOutgoData: [0]
         ,filter: [] // 필터검색
@@ -71,10 +72,7 @@ export default {
         setChildStats(state, data) {
             state.childstats = data;
         },
-        setParentStatsInfo(state, objDate) {
-            state.parentStatsInfo = data;
-        }
-        ,setDoughnutData(state, data) {
+        setDoughnutData(state, data) {
             state.doughnutData = data;
         },
         setWeeklyOutgoData(state, data) {
@@ -162,9 +160,7 @@ export default {
                     .then((response) => {
                         context.commit('setChildId', objDate.child_id);
                         context.commit('setParentStats', response.data.data);
-                        // const eachCategoryTransaction = response.data.eachCategoryTransaction.map(item => item.total_amount); // v3 del
                         const weeklyExpenseAmount = response.data.weeklyOutgoData.map(item => item.total);
-                        // context.commit('setDoughnutData', eachCategoryTransaction); // v3 del
                         context.commit('setDoughnutData', response.data.eachCategoryTransaction); // v3 add
                         context.commit('setWeeklyOutgoData', weeklyExpenseAmount);
                         return resolve();
@@ -177,12 +173,15 @@ export default {
             });
         },
 
-        childStats(context){
+        childStats(context, objDate){
             return new Promise((resolve, reject) => {
-                const url = '/api/child/home';
+                const url = '/api/child/home'  + '?year=' + objDate.date.getFullYear() + '&month=' + (objDate.date.getMonth() + 1);
                 axios.get(url)
                     .then((response) => {
-                        
+                        // console.log(response.data);
+                        context.commit('setChildId', objDate.child_id);
+                        context.commit('setChildStats', response.data.data);
+                        context.commit('setDoughnutData', response.data.eachCategoryTransaction);
                         return resolve();
                     })
                     .catch((error) => {
@@ -212,17 +211,6 @@ export default {
                 console.log('검색안됨', error);
             })
         },
-            // axios.get(url, {
-            //     params:  searchData 
-            // })
-            // .then(response => {
-            //     context.commit('setTransactionList', response.data.filters.data);
-            //     context.commit('setFilterTransactionList', searchData);
-            // })
-            // .catch(error => {
-            //     console.log('검색안됨', error);
-            // })
-        // },
     },
 
     getters: {

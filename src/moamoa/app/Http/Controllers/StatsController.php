@@ -98,7 +98,6 @@ class StatsController extends Controller
         $data = [
             'transactions_max_amount' => empty($transactionAmount) ? 0 :(int)$transactionAmount,
             'transactions_max_category' => empty($mostUsedCategory) ? '' : $mostUsedCategory->category,
-            // 'missions_sum_amount' => empty($totalExpenses) ? 0 :(int)$totalExpenses->missions_sum_amount,
             'missions_sum_amount' => $totalExpenses,
             'totalExpenses' => empty($totalAmountChild) ? 0 :(int)$totalAmountChild
         ];

@@ -90,26 +90,6 @@ export default {
             })
         },
 
-        /**
-         * 자녀 지출 리스트 페이지
-         * 
-         * @param {*} context commit, state 포함되어있음
-         */
-        // transactionList(context, child_id) {            
-        //     const url = '/api/child/spend/list';
-            
-        //     axios.get(url)
-        //     .then(response => {
-        //         context.commit('setChildTransactionList', response.data.childTransactionList.data);
-        //         // 세션 스토리지에 자녀ID 세팅
-        //         sessionStorage.setItem('child_id', child_id);
-        //         context.commit('setChildId', child_id);
-        //         router.push('/child/spend/list');
-        //     })
-        //     .catch(error => {
-        //         console.error('지출 리스트 불러오기 오류', error);
-        //     });    
-        // },
         async transactionList(context, searchData) {
             try {
                 const response = await axios.get(`/api/child/spend/list?page=${searchData.page}`);

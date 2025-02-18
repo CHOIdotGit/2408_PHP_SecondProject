@@ -11,11 +11,11 @@
         <div class="graph-section">
           <!-- 막대 그래프 -->
           <div class="graph">
-            <canvas ref="graphCanvas"></canvas>
+            <canvas ref="graphCanvas" height="550" width="800"></canvas>
           </div>
           <!-- 도넛 그래프 -->
           <div class="doughnut">
-            <canvas ref="doughnutCanvas"></canvas>
+            <canvas ref="doughnutCanvas" height="550" width="550"></canvas>
           </div>
         </div>
         <!-- <div class="graph-section" v-show="doughnutData?.length < 1">
@@ -28,20 +28,20 @@
             <!-- {{ statis.value.mostSpendAmount }} -->
             <p>
               가장 큰 지출 :
-                    {{ parentStatis.transactions_max_amount }}원
+                    {{ parentStatis.transactions_max_amount ? Number(parentStatis.transactions_max_amount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }}
               </p>
 
                 <p>
                   가장 자주 쓴 카테고리 : 
-                  {{ getCategoryText(parentStatis.transactions_max_category) }}
+                  {{  getCategoryText(parentStatis.transactions_max_category) ? getCategoryText(parentStatis.transactions_max_category) : '최근 사용한 카테고리가 없습니다.' }}
                 </p>
 
                 <p>
-                  지출 총합 : {{ parentStatis.totalExpenses }}원
+                  지출 총합 : {{ parentStatis.totalExpenses ? Number(parentStatis.totalExpenses).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }}
                 </p>
 
                 <p>
-                  용돈 총합 : {{ parentStatis.missions_sum_amount }}원
+                  용돈 총합 : {{ parentStatis.missions_sum_amount ? Number(parentStatis.missions_sum_amount).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.'}}
                 </p>
               </div>
             </div>
@@ -52,7 +52,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import Chart from 'chart.js/auto';
 import { useRoute } from 'vue-router';
@@ -87,6 +87,8 @@ async function nextMonth() {
 }
 
 const parentStatis = computed(() => store.state.transaction.parentStats);
+
+
 // const doughnutGraph = computed(() => store.state.transacion);
 const categoryMapping = [
     '교통비',
@@ -94,6 +96,7 @@ const categoryMapping = [
     '쇼핑',
     '기타',
 ];
+
 const getCategoryText = (category) => {
   return categoryMapping[category] || '알 수 없음';
 };
@@ -124,20 +127,45 @@ const renderGraphChart = () => {
       type: 'bar',
       data: graphChartData,
       options: {
-        responsive: true,
+        responsive: false,
+      
         plugins: {
           legend: {
             position: 'top',
+            display: false
           },
           title: {
             display: true,
             text: '주차별 소비 합계',
+            font: {
+                        size: 20
+                }
           },
         },
         scales: {
-          y: {
-            beginAtZero: true,
+          x: {
+              ticks: {
+                color: 'black', // X축 글자 색상 변경
+                font: {
+                        size: 16
+                }
+              },
+              grid: {
+                color: '#c9c9c9', // X축 눈금선 색상 변경
+              },
           },
+          y: {
+              beginAtZero: true,
+              ticks: {
+                color: 'black',
+                font: {
+                        size: 16
+                } // Y축 글자 색상 변경
+              },
+              grid: {
+                // color: '#c9c9c9', // Y축 눈금선 색상 변경
+              },
+            },
         },
       },
     });
@@ -167,6 +195,7 @@ const doughnutChartData = {
     {
       label: '지출 비율',
       data: doughnutData.value,
+      
       backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
       hoverOffset: 4,
     },
@@ -181,7 +210,7 @@ const renderDoughnutChart = () => {
       type: 'doughnut',
       data: doughnutChartData,
       options: {
-        responsive: true,
+        responsive: false,
         plugins: {
           legend: {
             position: 'top',
@@ -189,6 +218,9 @@ const renderDoughnutChart = () => {
           title: {
             display: true,
             text: '지출 비율 도넛 그래프',
+            font: {
+                        size: 20
+                }
           },
         },
       },
@@ -241,23 +273,17 @@ const setDoughuntDrawData = () => {
 
 .stat-section {
   display: grid;
-  /* grid-template-columns: 1fr 1fr; */
   gap: 30px;
   margin-right: 20px;
   margin-bottom: 20px;
   margin-left: 20px;
-  /* width: 90%;
-  height: 88%;
-  overflow: auto; */
 }
 
 .graph-section {
   height: 550px;
-  background-color: #a2caac;
   display: grid;
   grid-template-columns: 900px 500px;
   margin-top: 20px;
-  /* margin-top: 40px; */
 }
 
 .notice-section {
@@ -302,9 +328,7 @@ const setDoughuntDrawData = () => {
     
   }
 }
-.canvas {
-  margin-top: 20px;
-}
+
 
 
 </style>
