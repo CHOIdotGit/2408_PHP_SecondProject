@@ -1,31 +1,43 @@
 <template>
     <!-- :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }" -->
 
-    <div class="container">
-    <!-- 상단 메뉴 -->
-     <div class="containver-view">
-         <header v-if="!isMobile">
-             <!-- 좌측 고정 메뉴 -->
-                 <MenuLeftComponent v-if="isAuth"/>
-         </header>
-         
-         <main class="layout">
-             <!-- 상단 메뉴 버튼 -->
-             <div v-if="isAuth && !isMobile" class="top-header-menu">
-                 <HeaderMenuComponent/>
-             </div>
-             <!-- 화면 -->
-             <div class="app-div">
-                 <router-view></router-view>
-             </div>
-         </main>
-
-     </div>
+    <!-- 웹 디자인 -->
+    <div class="container" v-if="!isMobile">
+        <!-- 상단 메뉴 -->
+        <div class="containver-view">
+            <header>
+                <!-- 좌측 고정 메뉴 -->
+                    <MenuLeftComponent v-if="isAuth"/>
+            </header>
+            
+            <main class="layout">
+                <!-- 상단 메뉴 버튼 -->
+                <div v-if="isAuth" class="top-header-menu">
+                    <HeaderMenuComponent/>
+                </div>
+                <!-- 화면 -->
+                <div class="app-div">
+                    <router-view></router-view>
+                </div>
+            </main>
+        </div>
 
         <!-- 하단 메뉴 -->
-        <footer v-if="!isMobile">
+        <footer>
             <FooderComponent />
         </footer>
+    </div>
+
+    <!-- 모바일 디자인 -->
+    <div v-else>
+        <div>
+            <main>
+                <!-- 화면 -->
+                <div>
+                    <router-view></router-view>
+                </div>
+            </main>
+        </div>
     </div>
 
     

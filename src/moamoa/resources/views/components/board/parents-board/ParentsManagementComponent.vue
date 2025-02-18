@@ -472,7 +472,7 @@ onBeforeMount(async () => {
 
 .m-menu {
     display: flex;
-    gap: 30px;
+    gap: 25px;
     border-top: 2px solid black;
     margin-top: 150px;
     img {
