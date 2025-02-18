@@ -61,12 +61,12 @@
 
     <div class="m-container" v-if="isMobile">
         <div class="m-header">
-            <img src="../../../../../public/img/icon-boy-4.png" alt="" width="45px" height="45px" class="m-user-image">
+            <img src="/img/icon-girl-4.png" alt="" width="45px" height="45px" class="m-user-image">
             <p class="m-user-profile">김주연</p>
             <p class="go-update"> > </p>
         </div>
         <div class="m-child">
-            <img src="../../../../../public/img/icon-girl-1.png" alt="" class="m-child-profile">
+            <img src="/img/icon-boy-4.png" alt="" class="m-child-profile">
             <div class="m-main-content">
                 <p class="m-child-name"> 배현진 </p>
                 <div class="m-expenses">
