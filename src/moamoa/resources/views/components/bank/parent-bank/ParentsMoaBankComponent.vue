@@ -17,15 +17,15 @@
             <div @click="goPointPage" class="div-box go-point">
                 <p class="have-point">보유중인 모아 포인트</p>
                 <!-- 온클릭으로 링크는 부모 포인트 페이지로 설정하기 -->
-                <p class="have-moa">{{ Number(point).toLocaleString() }}</p>
+                <p class="have-moa">{{ Number(point).toLocaleString() }} moa</p>
                 <!-- totalPoint 가져오면 -->
-                <p class="subscribe">현재 가입한 적금 상품 : {{ emptySlots }} 개</p>
+                <p class="subscribe">현재 가입한 적금 상품 : {{ savingList.length }} 개</p>
                 <!-- 가입한 적금 상품 개수 쿼리문으로 가져오기 -->
             </div>
             <!-- v-if -->
             <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
                 <p class="have-point">모아 적금통장</p>
-                <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
+                <p class="have-moa" >⭐ {{ item.saving_product_name }} 적금 ⭐</p>
                 <div class="div-box-item">
                     <p >잔액</p>
                     <div>{{ item.total }}moa</div>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <!-- v-else -->
-            <div class="div-box">
+            <div class="div-box" v-for="n in emptySlots" :key="'empty-' + n">
                 <p class="have-point">모아 적금통장</p>
                 <p class="non-product p-t">가입한 적금 상품이 없습니다.</p>
                 <!-- <p class="non-product">새로운 적금 상품을 가입하시겠습니까?</p> -->
@@ -80,6 +80,13 @@ const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 
 // 자녀 적금 상품 가져 오기
 const savingList = computed(()=> store.state.saving.childSavingList);
+// const savingList = computed(() => {
+//     const today = new Date();
+//     return store.state.saving.childSavingList.filter(item => {
+//         // item.saving_sign_up_end_at이 오늘 날짜 이후(또는 오늘과 같음)일 때만 포함
+//         return new Date(item.saving_sign_up_end_at) >= today;
+//     });
+// });
 
 // 자녀 포인트 페이지로 이동
 const goPointPage = () => {
@@ -104,7 +111,10 @@ onBeforeMount(() => {
     store.dispatch('bank/koreaBank');
     // store.dispatch('bank/savingProductList');
     store.dispatch('bank/signProductCount', route.params.child_id);
+    store.dispatch('saving/parentChildSaving', route.params.child_id);
 });
+
+
 </script>
 
 
@@ -181,6 +191,7 @@ onBeforeMount(() => {
     text-align: center;
     background: #c9e6d7;
     border-radius: 30px;
+    cursor: pointer;
 }
 
 .div-box:hover {

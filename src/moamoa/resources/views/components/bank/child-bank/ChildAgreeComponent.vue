@@ -55,8 +55,7 @@
             <div class="bank-form">
                 <p class="bank-form-title">만기 시 자동해지</p>
                 <div class="box-flex">
-                    <p class="bank-form-content">만기일에 자동으로 해지되어</p>
-                    <p class="bank-form-content">모아 은행 포인트 잔액에 자동으로 추가</p>
+                    <p class="bank-form-content">만기일에 자동으로 해지되어 모아 은행 포인트 잔액에 자동으로 추가</p>
 
                 </div>
             </div>
@@ -72,7 +71,8 @@
         </div>
         <!-- 적금 가입 동의하기 버튼 -->
         <div class="bank-box-bottom">
-            <div>※ 모아은행 적금 상품에 동의하십니까</div>
+            <div>※ 모아은행 적금 상품 가입에 동의하십니까</div>
+            <div></div>
             <div class="agreeBtn">
                 <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
                 <label for="agree-no">아니요, 동의하지 않습니다.</label>
@@ -226,6 +226,7 @@ h1 {
     padding: 7px;
     width: 50px;
     text-align: center;
+    
 }
 
 .bank-product-register-container {
@@ -241,6 +242,7 @@ h1 {
     border-top: 3px solid #e0e7ee;
     border-bottom: 3px solid #e0e7ee;
     margin: auto;
+    margin-top: 10px;
 }
 
 .bank-form {

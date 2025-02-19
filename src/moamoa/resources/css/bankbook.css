@@ -103,6 +103,7 @@
     width: 900px;
 }
 
+
 /* ****통장 내역 번호**** */
 .bankbook-number {
     width: 30px;
@@ -126,11 +127,13 @@
     text-align: center;
 }
 
+
 /* 금액 오른쪽 정렬 */
 .bankbook-amount {
     text-align: end;
     padding-right: 10px;
 }
+
 
 .bankbook-transactions > p {
     border-right: 1px solid black;

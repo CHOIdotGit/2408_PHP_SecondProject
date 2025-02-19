@@ -218,7 +218,7 @@ Route::get('/api/parent/saving/list/{child_id}', [ParentSavingController::class,
 Route::get('/api/parent/moabank/{id}', [BankController::class, 'index']);
 
 // 부모: 자녀 적금 통장 페이지
-Route::get('/api/parent/bankbook/{saving_sign_up_id}', [ParentPointController::class, 'show']);
+Route::get('/api/parent/bankbook/{saving_sign_up_id}', [ParentSavingController::class, 'show']);
 
 // 부모 자녀 포인트 페이지
 Route::get('/api/parent/point/{id}', [ParentPointController::class, 'parent']);

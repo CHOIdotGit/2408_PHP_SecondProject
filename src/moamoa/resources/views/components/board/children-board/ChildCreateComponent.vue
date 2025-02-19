@@ -37,6 +37,7 @@
                 <div class="c-content">
                     <p class="c-list-title">금액</p>
                     <input v-model="missionCreate.amount" type="num" class="ms-amount deco" id="ms-amount" rmin="0" maxlength="7" placeholder="금액을 입력하세요">
+                    <span>원</span>
                 </div>
                 <div class="c-bottom-btn">
                     <button @click="goBack" class="create-btn cancel">등록 취소</button>

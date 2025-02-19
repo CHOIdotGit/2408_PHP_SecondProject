@@ -16,11 +16,14 @@
             <div class="div-box" @click="goPointList">
                 <p class="have-point">보유중인 모아 포인트</p>
                 <p class="have-moa">{{ Number(totalPoints).toLocaleString() }} moa</p>
-                <p class="subscribe">현재 가입한 적금 상품 : {{ emptySlots }}개</p>
+                <!-- <p class="subscribe">현재 가입한 적금 상품 : {{ emptySlots }}개</p> -->
+
+                <!-- 임시로 통장 갯수 length -->
+                <p class="subscribe">현재 가입한 적금 상품 : {{ savingList.length }}개</p>
             </div>
             <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
                 <p class="have-point">모아 적금통장</p>
-                <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
+                <p class="have-moa" >⭐ {{ item.saving_product_name }} 적금 ⭐</p>
                 <div class="div-box-item">
                     <p >잔액</p>
                     <div>{{ Number(item.total).toLocaleString() }}moa</div>
@@ -83,7 +86,6 @@ const goSavingDetail = (saving_sign_up_id) => {
     const bankbook_id = saving_sign_up_id;
     store.dispatch('saving/childSavingDetail', bankbook_id);
     router.push('/child/bankbook/' + bankbook_id);
-    console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
 // 자녀 포인트 페이지로 이동

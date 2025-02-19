@@ -10,7 +10,7 @@
                 <div class="info-detail">
                     <div class="b-info">
                         <p class="p-first">통장 종류</p>
-                        <p>{{ savingInfo.saving_product_name }} 적금</p>
+                        <p>{{ savingDetail[0]?.saving_product_name }} 적금</p>
                     </div>
                     <div class="b-info">
                         <p class="margin-left p-first">납입 유형</p>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="bankbook-profile">
-                    <img src="" class="img-size">
+                    <img :src="childInfo.profile" class="img-size">
                     <div class="div-child-name">
                     <p>{{ childInfo.name }}</p>
                 </div>

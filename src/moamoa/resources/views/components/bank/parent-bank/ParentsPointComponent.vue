@@ -51,11 +51,11 @@
                                 <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
                                 <!-- 출금: point_code가 '3'인 경우에만 표시 -->
-                                <p class="text-end">{{ item.point_code === '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <p class="bankbook-amount">{{ item.point_code === '3' ? Number(item.point).toLocaleString() : '' }}</p>
                                 <!-- 입금: point_code가 '3'이 아닐 때 표시 -->
-                                <p class="text-end">{{ item.point_code !== '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <p class="bankbook-amount">{{ item.point_code !== '3' ? Number(item.point).toLocaleString() : '' }}</p>
                                 <!-- 거래 후 잔액 -->
-                                <p class="text-end">{{ Number(item.cumulativeTotal).toLocaleString() }}</p>
+                                <p class="bankbook-amount">{{ Number(item.cumulativeTotal).toLocaleString() }}</p>
                                 <!-- 카테고리 -->
                                 <p>{{ getCategoryText(item.point_code) }}</p>
                             </div>

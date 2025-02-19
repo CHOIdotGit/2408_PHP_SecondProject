@@ -9,7 +9,7 @@ export default {
         ,savingDetail: [] // 자녀 통장 내역
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
-        ,savingSignUpId: sessionStorage.getItem('savingSignUpId') ? sessionStorage.getItem('savingSignUpId') : null
+        ,savingSignUpId: sessionStorage.getItem('saving_sign_up_id') ? sessionStorage.getItem('saving_sign_up_id') : null
         ,savingInfo: [] // 자녀 통장 정보
         ,expiredSavings: [] // 자녀 만기 적금 리스트
         // 페이지네이션
@@ -70,6 +70,7 @@ export default {
                     context.commit('setChildSavingList', response.data.savingList);
                     context.commit('setChildId', child_id);
                     console.log('자녀 적금 리스트 불러오기:', response.data.savingList);
+
                 })
                 .catch(error => {
                     console.error('자녀 적금 리스트 받아오기 실패', error);
@@ -83,10 +84,11 @@ export default {
 
             axios.get(url)
                 .then(response => {
-                    sessionStorage.setItem('savingSignUpId', savingSignUpId);
+                    sessionStorage.setItem('saving_sign_up_id', savingSignUpId);
                     context.commit('setSavingSignUpId', savingSignUpId);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
+                    
                 })
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);
@@ -99,11 +101,12 @@ export default {
             console.log(url);
             axios.get(url) 
                 .then(response => {
-                    sessionStorage.setItem('bankbook_id', savingSignUpId);
+                    sessionStorage.setItem('saving_sign_up_id', savingSignUpId);
                     context.commit('setSavingSignUpId', savingSignUpId);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
                     console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
+                    
                 })
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);
