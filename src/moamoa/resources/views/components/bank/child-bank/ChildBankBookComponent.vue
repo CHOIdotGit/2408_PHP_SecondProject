@@ -46,9 +46,9 @@
             <div class="bankbook-item">
                 <div class="main-content" >
                     <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
-                        <p class="bankbook-date">{{ item.saving_detail_created_at }}</p>
-                        <p class="bankbook-amount">{{ item.saving_detail_outcome }}</p>
-                        <p class="bankbook-amount">{{ item.saving_detail_income }}</p>
+                        <p class="bankbook-date">{{ item.saving_detail_created_at.split(" ")[0] }}</p>
+                        <p class="bankbook-amount">{{ Number(item.saving_detail_outcome).toLocaleString() }}</p>
+                        <p class="bankbook-amount">{{ Number(item.saving_detail_income).toLocaleString() }}</p>
                         <p class="bankbook-amount">{{ item.saving_detail_left }}</p>
                         <p>{{ getCategoryText(item.saving_detail_category) }}</p>
                     </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Child;
+use App\Models\Mission;
 use App\Models\Transaction;
 use App\Repositories\StatsRepository;
 use Carbon\Carbon;
@@ -70,9 +71,9 @@ class StatsController extends Controller
         //+=========================================+
         //+     자녀, 한달 용돈 총합(최종 수정)       +
         //+=========================================+
-        $totalExpenses = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
-                                    ->where('transaction_code', '0')
-                                    // ->where('deleted_at IS NULL')
+        $totalExpenses = Mission::whereBetween('missions.start_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->whereBetween('missions.end_at', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                    ->where('missions.status', '2')
                                     ->where('child_id', $child_id)
                                     ->sum('amount');
         

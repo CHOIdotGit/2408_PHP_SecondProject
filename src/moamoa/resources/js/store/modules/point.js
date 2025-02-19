@@ -16,6 +16,9 @@ export default {
         ,perPage: 10
         ,total: 0
         ,childPoint: 0
+        ,deposit: 0
+        ,withdrawal: 0
+        ,startingBalance: 0
         
     }),
     mutations: {
@@ -42,6 +45,15 @@ export default {
         },
         setChildPoint(state, childPoint) {
             state.childPoint = childPoint;
+        },
+        setDeposit(state, deposit) {
+            state.deposit = deposit;
+        },
+        setWithdrawal(state, withdrawal) {
+            state.withdrawal = withdrawal;
+        },
+        setStartingBalance(state, startingBalance) {
+            state.startingBalance = startingBalance;
         },
         
     },
@@ -78,8 +90,11 @@ export default {
                 
                 // pointList 데이터를 commit
                 context.commit('setPointList', response.data.pointList.data);
-        
                 context.commit('setTotalPoint', response.data.childTotalPoint);
+                context.commit('setDeposit', response.data.deposit);
+                context.commit('setWithdrawal', response.data.withdrawal);
+                context.commit('setStartingBalance', response.data.startingBalance);
+        
                 // pagination 정보를 개별적으로 commit
                 context.commit('setPagination', {
                     current_page: response.data.pointList.current_page,

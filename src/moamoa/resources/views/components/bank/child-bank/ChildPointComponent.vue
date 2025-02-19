@@ -112,7 +112,7 @@
   
 <script setup>
 
-import { computed, onBeforeMount, onMounted } from 'vue';
+import { computed, onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -120,6 +120,9 @@ const store = useStore();
 const route = useRoute();
 const pointList = computed(() => store.state.point.pointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
+const deposit = computed(() => store.state.point.deposit);
+const withdrawal = computed(() => store.state.point.withdrawal);
+const startingBalance = computed(() => store.state.point.startingBalance);
 // const childId = computed(() => store.state.point.childId);
 
 // 시분초 제외
@@ -178,11 +181,11 @@ const pageNumbers = computed(() => {
 });
 
 // 페이지 이동 함수
-const goToPage = (page) => {
-    if (page >= 1 && page <= lastPage.value) {
-        store.dispatch('point/childPrintPointList', { child_id: route.params.child_id, page });
-    }
-};
+// const goToPage = (page) => {
+//     if (page >= 1 && page <= lastPage.value) {
+//         store.dispatch('point/childPrintPointList', { child_id: route.params.child_id, page });
+//     }
+// };
 
 // 이전 페이지로 이동하는 함수
 const goToPrevious = () => {
@@ -198,21 +201,39 @@ const goToNext = () => {
     }
 };
 
-// 현재 페이지의 데이터(pointList.value)는 백엔드에서 전달된 20개 데이터라고 가정
 const pointListWithTotal = computed(() => {
-    let balance = Number(totalPoint.value); // 숫자로 변환
-    return pointList.value.map(item => {
-        const withdrawal = item.point_code === '3' ? Number(item.point) : 0;
-        const deposit = item.point_code !== '3' ? Number(item.point) : 0;
-        balance -= (deposit - withdrawal);
+    // API로부터 전달받은 startingBalance (이전 페이지까지의 누적 잔액)
+    let cumulative = Number(startingBalance.value);
+
+    // 거래 내역(pointList.value)을 payment_at 기준 오름차순(과거 → 최신)으로 정렬
+    const sortedList = [...pointList.value].sort(
+        (a, b) => new Date(a.payment_at) - new Date(b.payment_at)
+    );
+
+    // 정렬된 내역을 순회하며 누적 계산 진행
+    const computedList = sortedList.map(item => {
+        const isWithdrawal = item.point_code === '3';
+        const amount = Number(item.point);
+
+        if (isWithdrawal) {
+            cumulative -= amount;
+        } else {
+            cumulative += amount;
+        }
+
         return {
             ...item,
-            cumulativeTotal: balance, // 누적 잔액
-            deposit,                  // 입금 금액 (필요시)
-            withdrawal                // 출금 금액 (필요시)
+            cumulativeTotal: cumulative, // 해당 거래 후 누적 잔액
+            deposit: isWithdrawal ? 0 : amount,
+            withdrawal: isWithdrawal ? amount : 0
         };
     });
+
+    // 최종 결과를 내림차순(최신 거래가 위로 오도록) 정렬하여 반환
+    return computedList.reverse();
 });
+
+
 
 onBeforeMount(() => {
     store.dispatch('point/childPrintPointList', {child_id: route.params.child_id, page: 1});

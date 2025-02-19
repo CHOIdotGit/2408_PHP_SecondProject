@@ -148,9 +148,8 @@ const getCategoryText = (point_code) => {
         "0": '출석 체크',
         "1": '미션 수행',
         "2": '이자',
-        "3": '적금',
+        "3": '출금',
         "4": '도전 과제',
-        "5": '적금 만기',
     };
     return categoryMapping[point_code]; // 기본값 없이 반환
 };

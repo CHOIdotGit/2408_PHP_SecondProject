@@ -90,6 +90,9 @@ class HomeController extends Controller
                     ->limit(6)
                     ->get();
 
+        $savings = $childHome->saving_sign_ups('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_sign_up_start_at', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status', )
+                                ->select();
+
 
         /** transactions 관계에 조건 추가 **/ 
         // $transactions = $childHome->transactions()

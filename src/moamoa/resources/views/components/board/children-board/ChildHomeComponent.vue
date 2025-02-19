@@ -92,7 +92,7 @@ async function nextMonth() {
     dateToday.value = currentDate;
 }
 
-const childStatis = computed(() => store.state.transaction.childStats);
+const childStats = computed(() => store.state.transaction.childStats);
 
 
 const categoryMapping = [
@@ -103,7 +103,7 @@ const categoryMapping = [
 ];
 
 const getCategoryText = (category) =>  {
-  return categoryMapping[category] || '알 수 없음';
+    return categoryMapping[category] || '알 수 없음';
 }
 
 // ✅ **도넛 그래프 설정**
@@ -113,66 +113,66 @@ const doughnutData = computed(() => store.state.transaction.doughnutData);
 
 
 const doughnutChartData = {
-  labels: ['교통비', '식비', '쇼핑', '기타'],
-  datasets: [
-    {
-      label: '지출 비율',
-      data: doughnutData.value,
-      
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
-      hoverOffset: 4,
-    },
-  ],
+    labels: ['교통비', '식비', '쇼핑', '기타'],
+    datasets: [
+        {
+        label: '지출 비율',
+        data: doughnutData.value,
+        
+        backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+        hoverOffset: 4,
+        },
+    ],
 };
 
 const renderDoughnutChart = () => {
-  if (doughnutChartInstance) doughnutChartInstance.destroy();
+    if (doughnutChartInstance) doughnutChartInstance.destroy();
 
-  if (doughnutCanvas.value) {
-    doughnutChartInstance = new Chart(doughnutCanvas.value, {
-      type: 'doughnut',
-      data: doughnutChartData,
-      options: {
-        responsive: false,
-        plugins: {
-          legend: {
-            position: 'top',
-          },
-          title: {
-            display: true,
-            text: '지출 비율 도넛 그래프',
-            font: {
-                        size: 20
-                }
+    if (doughnutCanvas.value) {
+      doughnutChartInstance = new Chart(doughnutCanvas.value, {
+        type: 'doughnut',
+        data: doughnutChartData,
+        options: {
+          responsive: false,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: '지출 비율 도넛 그래프',
+              font: {
+                          size: 20
+                  }
+            },
           },
         },
-      },
-    });
-  }
+      });
+    }
 };
 
 watch(
-  () => doughnutData.value
-  , newQuestion => {
-    setDoughuntDrawData();
-    renderDoughnutChart();
-  }
+    () => doughnutData.value
+    , newQuestion => {
+        setDoughuntDrawData();
+        renderDoughnutChart();
+    }
 );
 
 // ✅ **마운트 시 그래프 렌더링**
 onMounted(async () => {
-  await store.dispatch('transaction/childStats', {date:dateToday.value});
-  setDoughuntDrawData(); // v3 add
-  renderDoughnutChart();
+    await store.dispatch('transaction/childStats', {date:dateToday.value});
+    setDoughuntDrawData(); // v3 add
+    renderDoughnutChart();
 });
 
 // v3 add start
 const setDoughuntDrawData = () => {
-  doughnutChartData.datasets[0].data = store.getters['transaction/getDoughnutDataTotalAmount']; // v3 add
-  doughnutChartData.labels = categoryMapping.filter((val, key) => {
-    const labels = store.getters['transaction/getDoughnutDataLabels'];
-    return labels.some(labelCode => labelCode == key);      
-  });
+    doughnutChartData.datasets[0].data = store.getters['transaction/getDoughnutDataTotalAmount']; // v3 add
+    doughnutChartData.labels = categoryMapping.filter((val, key) => {
+        const labels = store.getters['transaction/getDoughnutDataLabels'];
+        return labels.some(labelCode => labelCode == key);      
+    });
 }
 </script>
 
@@ -247,7 +247,7 @@ const setDoughuntDrawData = () => {
     width: 300px;
     height: 415px;
     margin-top: 25px;
-    background-color: #D9D9D9;
+    background-color: #5589e996;
     text-align: center;
 }
 

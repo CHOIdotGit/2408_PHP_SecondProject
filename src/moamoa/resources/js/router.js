@@ -36,7 +36,7 @@ import ChildBankProductDetailComponent from '../views/components/bank/child-bank
 import PrivateIdentComponent from '../views/components/auth/private/PrivateIdentComponent.vue';
 import PrivateEditComponent from '../views/components/auth/private/PrivateEditComponent.vue';
 import PrivateWdrlComponent from '../views/components/auth/private/PrivateWdrlComponent.vue';
-import ChildExpiredSavingComponentCopy from '../views/components/bank/child-bank/ChildExpiredSavingComponent copy.vue';
+import ChildExpiredSavingComponent from '../views/components/bank/child-bank/ChildExpiredSavingComponent.vue';
 import PrivateInfoComponent from '../views/components/auth/private/PrivateInfoComponent.vue';
 import ChildPointComponent from '../views/components/bank/child-bank/ChildPointComponent.vue';
 import FindFormComponent from '../views/components/auth/find/FindFormComponent.vue';
@@ -440,7 +440,7 @@ const routes = [
     // 자녀 만기된 적금 리스트 페이지
     {
         path: '/child/expired/saving',
-        component: ChildExpiredSavingComponentCopy,
+        component: ChildExpiredSavingComponent,
         beforeEnter: chkAuth,
     },
     

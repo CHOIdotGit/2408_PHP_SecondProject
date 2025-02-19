@@ -7,6 +7,7 @@
                 :slides-per-view="parentHome.length === 2 ? 2 : 3"
                 ref="swiper"
                 :modules="modules"
+                :loop="false"
                 :navigation="parentHome.length > 2"
                 :scrollbar="true"
                 :centeredSlides="parentHome.length < 2"
@@ -50,12 +51,6 @@
             <div v-if="noChildFlg">
                 <p class="no-child">등록된 자녀가 없습니다.</p>
             </div>
-            <!-- <div class="wave-wrapper">
-                <div class="wave-container wave1"></div>
-                <div class="wave-container wave2"></div>
-                <div class="wave-container wave3"></div>
-                <div class="wave-container wave4"></div>
-            </div> -->
         </div>
     </div>
 
@@ -339,41 +334,6 @@ onBeforeMount(async () => {
     font-size: 1.5rem;
     text-align: center;
     margin-top: 10px;
-}
-
-.wave-wrapper {
-    position: relative;
-    width: 1600px;
-    height: 240px; /* 물결이 차지하는 높이 */
-    /* overflow: hidden; 넘치는 부분 숨김  */
-    bottom: 240px;
-    left: -155px;
-}
-
-.wave-container {
-    width: 100%;
-    height: 240px;
-    position: absolute;
-}
-
-.wave1 {
-  clip-path: path('M0,140 C0,120 533,170 900,80 S1333,120 1600,160 V300 H0 Z');
-  background: rgba(173, 216, 230, 0.2);
-}
-
-.wave2 {
-  clip-path: path('M0,90 C267,180 533,30 800,90 S1333,180 1600,90 V300 H0 Z');
-  background: rgba(173, 216, 230, 0.4);
-}
-
-.wave3 {
-  clip-path: path('M0,180 C0,160 533,210 900,120 S1333,160 1600,200 V300 H0 Z');
-  background: rgba(173, 216, 230, 0.6);
-}
-
-.wave4 {
-  clip-path: path('M0,130 C267,220 533,70 800,130 S1333,220 1600,130 V300 H0 Z');
-  background: rgba(173, 216, 230, 0.8);
 }
 
 /* ------------- 모바일 버전 css ------------ */

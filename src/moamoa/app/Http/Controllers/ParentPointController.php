@@ -22,15 +22,19 @@ class ParentPointController extends Controller
                                 ->orderBy('points.payment_at', $sort) // 전체 데이터를 정렬
                                 ->paginate(20); // 최신 20개를 페이지네이션
     
-        $totalPoint = Point::where('child_id', $id)
-                            ->where('point_code', '!=', 3)
-                            ->sum('point');
-    
+        $deposit = Point::where('points.child_id', $id)->where('point_code', '!=', 3)->sum('point');
+
+        $withdrawal = Point::where('points.child_id', $id)->where('point_code', '=', 3)->sum('point');
+
+        $totalPoint = $deposit - $withdrawal;
+
         return response()->json([
-            'success' => true,
-            'msg' => '자녀 포인트 목록 획득 성공',
-            'childPointList' => $childPointList,
-            'totalPoint' => $totalPoint
+            'success' => true
+            ,'msg' => '자녀 포인트 목록 획득 성공'
+            ,'childPointList' => $childPointList
+            ,'totalPoint' => $totalPoint
+            ,'deposit' => $deposit
+            ,'withdrawal' => $withdrawal
         ], 200);
     }
     

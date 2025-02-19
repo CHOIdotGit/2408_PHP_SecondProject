@@ -23,7 +23,7 @@
                 <p class="have-moa" >{{ item.saving_product_name }} 적금</p>
                 <div class="div-box-item">
                     <p >잔액</p>
-                    <div>{{ item.total }}moa</div>
+                    <div>{{ Number(item.total).toLocaleString() }}moa</div>
                 </div>
                 <div class="div-box-item">
                     <p>이자율 : </p>
