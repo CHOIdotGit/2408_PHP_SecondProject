@@ -92,7 +92,6 @@ const goSavingDetail = (saving_sign_up_id) => {
     const bankbook_id = saving_sign_up_id;
     store.dispatch('saving/parnetChildSavingDetail', bankbook_id);
     router.push('/parent/bankbook/' + bankbook_id);
-    console.log('자녀 적금 통장 페이지로 이동', bankbook_id);
 }
 
 // const addSavingPage = () => {
@@ -105,7 +104,6 @@ onBeforeMount(() => {
     store.dispatch('bank/koreaBank');
     // store.dispatch('bank/savingProductList');
     store.dispatch('bank/signProductCount', route.params.child_id);
-    console.log('child_id:', route.params.child_id);
 });
 </script>
 

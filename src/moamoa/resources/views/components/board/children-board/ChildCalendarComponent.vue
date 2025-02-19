@@ -63,41 +63,13 @@
                 </div>
             </div>
         </div>
-                    
-
-    <!-- ************************* -->
-    <!-- ********상세 모달********* -->
-    <!-- ************************* -->
-    <div class="del-modal-black" v-show="delModal.isOpen">
-        <div class="del-modal-white">
-            <div class="modal-list-container">
-                <div class="modal-mission-title">
-                    <p class="mission-name">제목</p>
-                    <p class="expense-type">종류</p>
-                    <p class="inout-come">분류</p>
-                    <p class="charge">금액</p>
-                    <p class="due-date">완료일자</p>
-                </div>
-                <div class="mission-inserted-list">
-                    <div v-for="item in transactionsAndMissions" :key="item" class="modal-mission-content">
-                        <p class="mission-name">{{ item.title }}</p>
-                        <p class="expense-type">{{ getCategoryText(item.category) }}</p>
-                        <p class="inout-come income">{{ getCodeText(item.transaction_code) }}</p>
-                        <p class="charge">{{ Number(item.amount).toLocaleString() }}</p>
-                        <p class="due-date">{{ new Date(item.updated_at).toISOString().split('T')[0] }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="del-btn">
-                <button @click="closeModalTransactionOnDay" class="modal-cancel">닫기</button>
-            </div>
-        </div>
-    </div>
+        <ChildCalendarModalComponent v-if="isModalOpen" :selectedDate="selectedDay.value" @close="closeModal" />
 </template>
 <script setup>
 
 import { ref, computed, reactive, onBeforeMount } from "vue";
 import { useStore } from "vuex";
+import ChildCalendarModalComponent from "../../modal/ChildCalendarModalComponent.vue";
 
 const store = useStore();
 const calendarData = computed(() => store.state.calendar.calendarInfo.calendarData);
@@ -128,7 +100,6 @@ const formattedDate = computed(() =>
         timeZone: "Asia/Seoul",
     })
 );
-
 
 // 해당 월의 시작 요일 계산
 const startDay = computed(() => {
@@ -166,35 +137,49 @@ async function nextMonth() {
 }
 // 모달 관련 --------------------------------------------------------------------
 // 모달 상태 관리
-const delModal = reactive({ isOpen: false });
+// const delModal = reactive({ isOpen: false });
 
-const openModalTransactionOnDay = () => {
-    delModal.isOpen = true;
-};
+// const openModalTransactionOnDay = () => {
+//     delModal.isOpen = true;
+// };
 
-const closeModalTransactionOnDay = () => {
-    delModal.isOpen = false;
-};
+// const closeModalTransactionOnDay = () => {
+//     delModal.isOpen = false;
+// };
 
-// 날짜 클릭 시 모달 열기 및 데이터 필터링
-function openModal(day) {
-    store.dispatch('calendar/transactionsOnDay', getYearMonth(day));
-    openModalTransactionOnDay();
+// // 날짜 클릭 시 모달 열기 및 데이터 필터링
+// function openModal(day) {
+//     store.dispatch('calendar/transactionsOnDay', getYearMonth(day));
+//     openModalTransactionOnDay();
+// }
+
+const isModalOpen = ref(false);
+const selectedDate = ref(null);
+const selectedDay = ref(''); // 클릭한 날짜를 저장할 상태
+
+// 날짜 클릭 시 실행되는 함수
+const openModal = async (day) => {
+    selectedDay.value = getYearMonth(day);
+
+    // day를 인자로 데이터를 불러오는 액션 실행
+    await store.dispatch('calendar/childCalendarModal', selectedDay.value)
+    
+    // 모달 열기
+    isModalOpen.value = true
 }
 
-// // transactions 데이터 가져오기
-// const transactionsOnDay = computed(() => store.state.calendar.transactionsOnDay);
-
-// // missions 데이터 가져오기
-// const missionList = computed(() => store.state.calendar.missionList);
+const closeModal = () => {
+    isModalOpen.value = false;
+    // selectedDay.value = null; // 선택한 날짜 초기화 (필요시)
+};
 
 // transactionsOnDay와 missionList 병합
-const transactionsAndMissions = computed(() => {
-  const transactionsOnDay = store.state.calendar.transactionsOnDay;
-  const missionList = store.state.calendar.missionList;
+// const transactionsAndMissions = computed(() => {
+//   const transactionsOnDay = store.state.calendar.transactionsOnDay;
+//   const missionList = store.state.calendar.missionList;
   
-  return [...transactionsOnDay, ...missionList];
-});
+//   return [...transactionsOnDay, ...missionList];
+// });
 
 // 카테고리 변환
 const getCategoryText = (category) => {

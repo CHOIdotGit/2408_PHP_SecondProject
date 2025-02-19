@@ -35,17 +35,18 @@ class ModalController extends Controller
     
         // 수입
         $income = $childInfo->missions()
-                                        ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.status', 'missions.created_at')
-                                        ->where('missions.status', 2)
-                                        ->whereDate('missions.updated_at', $date) // 날짜 조건 적용
-                                        ->get();
+                                ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.status', 'missions.updated_at')
+                                ->where('missions.status', 2)
+                                ->whereDate('missions.updated_at', $date) // 날짜 조건 적용
+                                ->get();
+                                // income에서 updated_at을 사용한 이유는 부모가 승인을 했다면, 갱신-수정이 되었을 것이라 판단해서 수정날짜를 가져옴
     
         // 지출
         $expense = $childInfo->transactions()
-                                         ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
-                                         ->where('transactions.transaction_code', 1)
-                                         ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
-                                         ->get();
+                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
+                                ->where('transactions.transaction_code', 1)
+                                ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
+                                ->get();
     
         return response()->json([
             'success' => true,
@@ -74,15 +75,16 @@ class ModalController extends Controller
                         ->first();
 
         // 수입
-        $transactions = $childInfo->transactions()
-                                ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
-                                ->where('transactions.transaction_code', 0)
-                                ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
+        $income = $childInfo->missions()
+                                ->select('missions.mission_id', 'missions.title', 'missions.category', 'missions.amount', 'missions.status', 'missions.updated_at')
+                                ->where('missions.status', 2)
+                                ->whereDate('missions.updated_at', $date) // 날짜 조건 적용
                                 ->get();
+        // income에서 updated_at을 사용한 이유는 부모가 승인을 했다면, 갱신-수정이 되었을 것이라 판단해서 수정날짜를 가져옴
 
 
         // 지출
-        $transactions = $childInfo->transactions()
+        $expense = $childInfo->transactions()
                                 ->select('transactions.transaction_id', 'transactions.title', 'transactions.category', 'transactions.transaction_code', 'transactions.amount', 'transactions.transaction_date')
                                 ->where('transactions.transaction_code', 1)
                                 ->whereDate('transactions.transaction_date', $date) // 날짜 조건 적용
@@ -91,7 +93,8 @@ class ModalController extends Controller
         return response()->json([
             'success' => true,
             'msg' => '모달 정보 획득 성공',
-            'transactions' => $transactions,
+            'income' => $income,
+            'expense' => $expense,
         ], 200);
     }
 }

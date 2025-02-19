@@ -76,7 +76,6 @@ const childInfo = store.state.header.childInfo;
 
 onMounted(()=> {
     const bankbookId = route.params.saving_sign_up_id;
-    console.log('파라미터 bankbook_id:', bankbookId);
     store.dispatch('saving/parnetChildSavingDetail', bankbookId);
     store.dispatch('header/childInfo')
 })

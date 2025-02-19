@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <ParentCalendarModalComponent v-if="isModalOpen" :selectedDate="selectedDay.value" :isOpen="isModalOpen" @close="closeModal" />
+    <ParentCalendarModalComponent v-if="isModalOpen" :selectedDate="selectedDay.value" @close="closeModal" />
 </template>
 
 <script setup>
@@ -86,20 +86,6 @@ function isToday(day) {
     return today.getFullYear() === year && today.getMonth() === month && today.getDate() === day;
 }
 
-// // 이전 월로 이동
-// async function prevMonth() {
-//     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() - 1));
-//     await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
-//     dateToday.value = currentDate;
-// }
-
-// // 다음 월로 이동
-// async function nextMonth() {
-//     const currentDate = new Date(dateToday.value.setMonth(dateToday.value.getMonth() + 1));
-//     await store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
-//     dateToday.value = currentDate;
-// }
-
 // 이전 월로 이동
 async function prevMonth() {
     const currentDate = new Date(dateToday.value);
@@ -117,26 +103,20 @@ async function nextMonth() {
 }
 
 // 모달 상태 관리
-// const delModal = reactive({ isOpen: false });
-
-// const delOpenModal = () => {
-//     delModal.isOpen = true;
-// };
-
-// const delCloseModal = () => {
-//     delModal.isOpen = false;
-// };
-
-// 모달 상태 관리
 const isModalOpen = ref(false);
 const selectedDate = ref(null);
-const selectedDay = ref(null); // 클릭한 날짜를 저장할 상태
+const selectedDay = ref(''); // 클릭한 날짜를 저장할 상태
 
-const openModal = (day) => {
-  selectedDay.value = new Date(dateToday.value.getFullYear(), dateToday.value.getMonth(), day);
-  console.log("부모에서 선택한 날짜:", selectedDay.value);
-  isModalOpen.value = true;
-};
+// 날짜 클릭 시 실행되는 함수
+const openModal = async (day) => {
+    selectedDay.value = getYearMonth(day);
+
+    // day를 인자로 데이터를 불러오는 액션 실행
+    await store.dispatch('calendar/parentCalendarModal', {child_id: route.params.child_id, strDate: selectedDay.value})
+    
+    // 모달 열기
+    isModalOpen.value = true
+}
 
 const closeModal = () => {
     isModalOpen.value = false;
@@ -148,7 +128,7 @@ onBeforeMount(() => {
     store.dispatch("calendar/parentCalendarInfo", {date:dateToday.value, child_id:route.params.child_id});
 });
 
-// 각 날짜에 맞는 값입력
+// 각 날짜에 맞는 값입력 << 이거 중요!!!
 function getYearMonth(day) {
     return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 }
@@ -172,16 +152,6 @@ function getDailyIncomeExpense(day, data, incomeFlg) {
     }
     return '';
 }
-// function getDailyIncomeExpense(day, data, incomeFlg) {
-//     const item = data.find(item => item.target_at === getYearMonth(day));
-//     console.log('item', item);
-//     const symbol = incomeFlg ? '+' : '-';
-//     if(item) {
-//         const money = incomeFlg ? item.income : item.outgo;
-//         return item ? symbol + Number(money).toLocaleString() : '';
-//     }
-//     // return item ? symbol + Number(item.income).toLocaleString() : '';
-// }
 
 </script>
 

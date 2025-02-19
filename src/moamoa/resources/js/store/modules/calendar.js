@@ -17,10 +17,10 @@ export default {
         mission: 0,
         dailyIncomeData: [],
         dailyOutgoData: [],
-        transactionsOnDay: [],
         missionList: [],
         income: [],
         expense: [],
+        childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null,
     }),
     mutations: {
         setCalendarInfo(state, data) {
@@ -42,9 +42,6 @@ export default {
         SET_DAILY_INCOME(state, data) {
             state.dailyIncomeData = data;
         },
-        setTransactionsOnDay(state, transactions) {
-            state.transactionsOnDay = transactions;
-        },
         setMissionList(state, missionList) {
             state.missionList = missionList;
         },
@@ -55,6 +52,9 @@ export default {
         setExpense(state, expense) {
             console.log("Expense 업데이트됨:", expense); // 확인용
             state.expense = expense;
+        },
+        setChildId(state, childId) {
+            state.childId = childId;
         },
     },
     actions: {
@@ -152,10 +152,9 @@ export default {
         },
 
         // 자녀 달력 모달
-        transactionsOnDay(context, strDate) {
+        childCalendarModal(context, strDate) {
             if (!strDate) {
                 // year, month가 있는지 확인
-                console.log('날짜 확인', strDate);
                 console.error('date 값이 필요합니다.');
                 return;
             }
@@ -163,30 +162,27 @@ export default {
             const url = `/api/child/calendar/modal?date=${strDate}`;
             axios.get(url)
                 .then(response => {
-                    // 서버 응답에서 미션 데이터를 Vuex 상태에 저장
-                    context.commit('setTransactionsOnDay', response.data.transactions);
-                    // context.commit('setMissionList', response.data.missionList);
-                    console.log('transactions 확인', response.data.transactions);
-                    // console.log('missionList 확인', response.data.missions);
-                    // commit('setSelectedDate', response.data.date); 
+                    // sessionStorage.setItem('child_id', child_id);
+                    // context.commit('setChildId', child_id);
+                    context.commit('setIncome', response.data.income);
+                    context.commit('setExpense', response.data.expense);
                 })
                 .catch(error => {
                     console.error('캘린더 데이터를 불러오는 도중 오류 발생', error);
                 });
         },
 
-        ParentCalendarModal(context, strDate) {
-            if (!strDate) {
+        // 부모 달력 모달
+        parentCalendarModal(context, payload) {
+            if (!payload.strDate) {
                 // year, month가 있는지 확인
-                // console.log('날짜 확인', searchData.strDate);
                 console.error('date 값이 필요합니다.');
                 return;
             }
 
-            const url = `/api/parent/calendar/modal/${strDate.child_id}?date=${strDate.strDate}`;
+            const url = `/api/parent/calendar/modal/${payload.child_id}?date=${payload.strDate}`;
             axios.get(url)
                 .then(response => {
-                    console.log("API 응답 데이터:", response.data);
                     context.commit('setIncome', response.data.income);
                     context.commit('setExpense', response.data.expense);
                 })
