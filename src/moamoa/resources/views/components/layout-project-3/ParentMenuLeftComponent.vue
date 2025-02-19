@@ -30,7 +30,8 @@
             <select name="childName" id="child" v-model="selectedChild">
                 <!-- 기본값: 부모 정보 -->
                 <option :value="null">(나)</option>
-                <option v-for="child in childNameList" :key="child.id" :value="child">
+                <option v-for="child in childNameList" :key="child" :value="child" @change="sendChild(child.child_id)">
+                    {{ child.child_id }}
                     {{ child.name }}
                 </option>
             </select>
@@ -90,10 +91,7 @@
                 상점
             </div> -->
         </div>
-        <!-- 고객센터 -->
-        <div class="cs">
 
-        </div>
     </div>
 
 </div>
@@ -115,31 +113,32 @@ const router = useRouter();
 // v-if="ismobile"적으면 모바일 화면으로 이동
 const isMobile = store.state.mobile.isMobile;
 
+
 // 좌측 메뉴
 const  slidMenu = ref(true);
-const closeMenubtn = () => {
-    slidMenu.value = !slidMenu.value;
-}
 
 // 자녀 프로필 메뉴
 // const selectedChildId = ref(0); // 셀렉트 박스가 처음에 "0=자녀선택" 표시
 const selectedChild = ref(null);
 const childNameList = computed(() => store.state.header.childNameList || []); //등록된 자녀 수 확인
 const childProfile = ref({}); // 선택된 자녀 정보
+
+// to do : 이거 나중에 childNameList로 합칠 수 있을 듯
+// 로그인한 부모 정보
 const myName = computed(() => store.state.header.myName);
 
-// watch(selectedChildId, (newId) => {
-watch(selectedChild, (newId) => {
-    console.log('선택된 자녀 정보', childProfile);
-    // if(selectedChildId) {
-    if(selectedChild) {
-        childProfile.value = newId;
-    }
-})
 
 const displayProfile = computed(() => {
     return selectedChild.value ? selectedChild.value : myName.value;
 });
+
+const selectChild = computed({
+    get: () =>store.state.header.selectChild,
+    set: (newId) => {
+        store.dispatch('header/setSelectChild', newId);
+        router.push(`/parent/mission/list/${newId}`);
+    }
+})
 
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');
@@ -165,10 +164,12 @@ const goSpendList = (child_id) => {
 
 // 부모 미션 리스트 페이지로 이동
 const goMissionList = (child_id) => {
-    // store.dispatch('mission/missionList', child_id);
+
     store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
     router.push('/parent/mission/list/' + child_id);
 };
+
+
 
 const dateToday = ref(new Date());
 //  부모 캘린더로 이동

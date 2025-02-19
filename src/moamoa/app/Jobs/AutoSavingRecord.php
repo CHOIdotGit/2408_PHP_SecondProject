@@ -16,39 +16,82 @@ class AutoSavingRecord extends MyJob {
         
 
         // 가입 내역 받아오기
-        $savingSignUp = SavingSignUp::selectAll();
+        $savingSignUp = SavingSignUp::all();
 
-        $point = Point::groupBy('child_id')
-                        ->sum('point');
+        
+        // 선택한 요일에만 자동이체 처리 **********************************
+        // 1. 매일 자동이체 처리
+        // savingProduct 테이블에 saving_product_type = "0" 일 경우 
+        //  saving_deposit_at = 7(매일)
+        
+        // 2. 매주 자동이체 처리
+        // savingProduct 테이블에 saving_product_type = "1" 일 경우
+        // saving_sign_up 테이블 saving_deposit_at 요일 선택
+        // 0(일), 1(월), 2(화), 3(수), 4(목), 5(금), 6(토)
+        // **************************************************************
+        $today = date('w');
 
-        if($point >= $savingSignUp->saving_sign_up_amount) {
-            // 포인트가 납입 금액보다 많을 경우 정상 처리
-            // 납입 후 잔액 계산
-            $total = 0;
-            foreach($savingSignUp as $item ) {
-                $total = ($total + $item->saving_sign_up_amount);
-            }
+        foreach ($savingSignUp as $key) {
+            $depositDay = $key->saving_sign_up_deposit_at;
+
+        if($depositDay === $today || $depositDay === '7') {
+
+            // **************************************************************
+            // 포인트 잔액 확인 후 자동이체 처리
+            // **************************************************************
+            $point = Point::groupBy('child_id')
+                            ->sum('point');
     
-            // 적금 가입하면 자동이체 내역을 통장에 자동으로 기록
-            SavingDetail::create([
-                'saving_sign_up_id' => $savingSignUp->saving_sign_up_id
-                ,'saving_detail_category'=> "0" //0 =적금
-                ,'saving_detail_left' => $total
-                ,'saving_detail_income' => $savingSignUp->saving_sign_up_amount
-                ,'saving_detail_outcome' => "0" //출금금액 없음
-            ]);
-            
+            if($point >= $savingSignUp->saving_sign_up_amount) {
+                // 포인트가 납입 금액보다 많을 경우 정상 처리
+                // 납입 후 잔액 계산
+                $total = 0;
+                foreach($savingSignUp as $item ) {
+                    $total = ($total + $item->saving_sign_up_amount);
+                }
+                // 적금 가입하면 자동이체 내역을 통장에 자동으로 기록
+                SavingDetail::create([
+                    'saving_sign_up_id' => $savingSignUp->saving_sign_up_id
+                    ,'saving_detail_category'=> "0" //0 =적금
+                    ,'saving_detail_left' => $total
+                    ,'saving_detail_income' => $savingSignUp->saving_sign_up_amount
+                    ,'saving_detail_outcome' => "0" //출금금액 없음
+                ]);
+
+                //포인트 내역에 출금 내역 기록
+                $outcome = [
+                    'child_id' => $savingSignUp->child_id
+                    ,'point' => $savingSignUp->saving_sign_up_amount
+                    ,'point_code' => '4'
+                    ,'payment_at' => date('Y-m-d')
+                ];
+                $outPoint = new Point($outcome);
+                $outPoint->save();
+            }
+            else if($point < $savingSignUp->saving_sign_up_amount) {
+                // 포인트 잔액이 부족할 경우 자동이체 처리가 안되고 그 내역을 통장에 기록
+                SavingDetail::create([
+                    'saving_sign_up_id' => $savingSignUp->saving_sign_up_id
+                    ,'saving_detail_category'=> "0" //0 =적금
+                    ,'saving_detail_left' => $savingSignUp->saving_sign_up_amount
+                    ,'saving_detail_income' => "0" //입금금액 없음
+                    ,'saving_detail_outcome' => "0" //출금금액 없음
+                ]);
+
+                //포인트 내역에 출금 내역 기록
+                $outcome = [
+                    'child_id' => $savingSignUp->child_id
+                    ,'point' => "0"
+                    ,'point_code' => '4'
+                    ,'payment_at' => date('Y-m-d')
+                ];
+                $outPoint = new Point($outcome);
+                $outPoint->save();
+            }
+
         }
-        else if($point < $savingSignUp->saving_sign_up_amount) {
-            // 포인트 잔액이 부족할 경우 자동이체 처리가 안되고 그 내역을 통장에 기록
-            SavingDetail::create([
-                'saving_sign_up_id' => $savingSignUp->saving_sign_up_id
-                ,'saving_detail_category'=> "0" //0 =적금
-                ,'saving_detail_left' => $savingSignUp->saving_sign_up_amount
-                ,'saving_detail_income' => "0" //입금금액 없음
-                ,'saving_detail_outcome' => "0" //출금금액 없음
-            ]);
-        }               
+
+    }
 
     }
 }

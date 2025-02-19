@@ -4,17 +4,17 @@
 
     <div class="top-right-menu" >
         <div class="parent-btn">
-            <!-- <div>
-                <img src="/img/logo.png" class="logo">
-            </div> -->
+
             <div @click="$store.dispatch('auth/logout')" class="menu-btn">로그아웃</div>
             <div class="menu-btn" @click="router.push('/user/manual')">이용자 매뉴얼</div>
+
             <!-- 알람 아이콘 -->
             <div  class="icon-btn" @click="openBellModal" v-if="$store.state.auth.parentFlg">
                 <img src="/img/icon-bell-black.png" alt="" class="icon" v-if="bellContent.length === 0">
                 <!-- 알람 내용이 있을 경우 나타나는 빨간색 동그라미 -->
                 <img src="/img/icon-bell-black-circle.png" alt="" class="icon" v-if="bellContent.length > 0">
             </div>
+
             <!-- 부모 알람 모달 메뉴  -->
             <div class="dropdown-bell" v-if="$store.state.auth.parentFlg" v-show="bellModal">
                 <img src="/img/alram-deco.png" alt="" class="alram-deco">
@@ -36,6 +36,7 @@
                     <div v-if="bellContent.length === 0" class="not">등록된 미션이 없습니다</div>
                 </div>
             </div>
+            
             <!-- 자녀 알람 모달 메뉴  -->
             <!-- 알람 아이콘 -->
             <div  class="icon-btn" @click="openChildBellModal" v-if="$store.state.auth.childFlg">

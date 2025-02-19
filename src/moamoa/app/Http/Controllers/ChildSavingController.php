@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\AutoSavingRecord;
 use App\Models\Child;
+use App\Models\Point;
 use App\Models\SavingDetail;
 use App\Models\SavingProduct;
 use App\Models\SavingSignUp;
@@ -169,7 +170,15 @@ class ChildSavingController extends Controller
 
         SavingDetail::create($savingDetail);
 
-
+        // 포인트 내역에서 출금 기록하기
+        $outcome = [
+            'child_id' => $child->child_id
+            ,'point' => $regist->saving_sign_up_amount
+            ,'point_code' => '3' // 자동이체 출금
+            ,'payment_at' => date('Y-m-d')
+        ];
+        $outPoint = new Point($outcome);
+        $outPoint->save();
         
 
         $responseData = [

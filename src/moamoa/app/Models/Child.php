@@ -25,6 +25,7 @@ class Child extends Authenticatable {
         ,'tel'
         ,'profile'
         ,'app_state'
+        ,'login_at'
     ];
     
     protected $hidden = [

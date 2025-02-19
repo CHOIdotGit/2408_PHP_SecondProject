@@ -11,6 +11,7 @@ export default {
         childInfo: [], // 로그인한 자녀 프로필 정보
         checkChildMissionAlarm: [],
         myName: {},
+        selectChild: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null,
     }),
     mutations: {
         setChildNameList(state, childNameList) {
@@ -32,6 +33,10 @@ export default {
         setMyName(state, myName) {
             state.myName = myName
         },
+        setSelectChild(state, childNameList) {
+            state.childNameList = childNameList
+            sessionStorage.setItem('child_id', childNameList);
+        }
     },
     actions: {
         // ***************************
@@ -39,12 +44,11 @@ export default {
         // ***************************
         bellContent(context) {
             const url = '/api/parent/header/bell';
-            console.log(url);
 
             axios.get(url)
             .then(response => {
                 context.commit('setBellContent', response.data.bellContent);
-                console.log('미션 데이터:', response.data.bellContent );
+
             })
             .catch(error => {
                 console.log('알람 불러오기 실패', error);
@@ -56,12 +60,10 @@ export default {
         // ***************************
         childContent(context) {
             const url = '/api/child/header/bell';
-            console.log(url);
 
             axios.get(url)
             .then(response => {
                 context.commit('setChildBell', response.data.childBellContent);
-                console.log('자녀 미션 승인된 데이터:', response.data.childBellContent );
             })
             .catch(error => {
                 console.log('알람 불러오기 실패', error);
@@ -73,11 +75,9 @@ export default {
         // ***************************
         bellMenuCheck(context, mission_id) {
             const url = '/api/parent/header/bell/check/' + mission_id;
-            console.log('알람 체크 버튼 활성화 확인', url);
             axios.patch(url)
             .then(response => {
                 // context.commit('setBellContent', response.data.bellContent);
-                console.log('미션 체크 완료');
                 context.commit('setCheckChildMissionAlarm', response.data.bellCheck);
             })
             .catch(error => {
@@ -95,8 +95,8 @@ export default {
                 axios.get(url)
                 .then(response => {
     
-                    console.log(response.data.childNameList);
                     context.commit('setChildNameList', response.data.childNameList);
+                    console.log('메뉴에서 자녀 리스트 보이기',response.data.childNameList);
                     context.commit('setMyName', response.data.myName);
                     
                     return resolve();
@@ -107,9 +107,9 @@ export default {
                 });
             });
         },
-        // ***************************
-        // 로그인한 자녀 프로필 정보
-        // ***************************
+        // ****************************************
+        // 로그인한 자녀 프로필 정보(자녀에서만 작동)
+        // ****************************************
         childInfo(context) {
             return new Promise((resolve, reject) => {
                 const url = '/api/child/info';
@@ -125,6 +125,10 @@ export default {
                 });
             });
         },
+
+
+
+
     },
     getters: {
 

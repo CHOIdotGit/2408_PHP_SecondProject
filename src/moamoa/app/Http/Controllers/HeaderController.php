@@ -17,13 +17,14 @@ class HeaderController extends Controller
         //Auth 가 로그인한 유저의 정보를 담고 있고, guard가 어떤 테이블인지(children, parents )
         $parent = Auth::guard('parents')->user();
         // $parentId = ParentModel::where('parent_id', $parent->parent_id)->first();
-        $childNameList = Child::select('name', 'profile','created_at', 'child_id')
+        $childNameList = Child::select('child_id', 'name', 'profile','created_at')
                                 ->where('parent_id', $parent->parent_id)
-                                // ->groupBy('parent_id')
                                 ->orderBy('created_at')
                                 ->get();
 
-        $myName = ParentModel::select('parent_id', 'name', 'profile')->where('parent_id', $parent->parent_id)->first();
+        $myName = ParentModel::select('parent_id', 'name', 'profile')
+                                ->where('parent_id', $parent->parent_id)
+                                ->first();
 
         // 자녀 없을 때 - 유효성 검사
         if($childNameList -> isEmpty()) {

@@ -40,7 +40,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function() {
             new AutoSavingRecord();
         // })->daily();
-        })->dailyAt('17:00'); //매일 15시에 실행
+        })->dailyAt('15:00'); //매일 15시에 실행
 
         //로그인하면 하루 한번 포인트 지급
         $schedule->call(function() {
