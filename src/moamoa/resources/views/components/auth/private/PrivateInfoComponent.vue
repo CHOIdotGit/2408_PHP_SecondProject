@@ -27,6 +27,7 @@
           
           <div class="info-copy-code">
             <span>{{ userInfo.family_code }}</span>
+
             <button @click="copyFamCode" type="button">
               <img src="/img/icon-copy.webp">
             </button>
@@ -436,7 +437,7 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
-    left: 55.9%;
+    left: 55.5%;
     top: -14.2%;
     /* transform: translate(-50%, -50%); */
   }

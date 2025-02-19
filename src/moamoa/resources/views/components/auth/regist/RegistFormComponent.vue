@@ -207,6 +207,10 @@
         <button @click="registBtn" type="button" class="btn-submit">
           가입확인
         </button>
+
+        <router-link to="/regist/select" class="btn-cancel">
+          <button type="button">뒤로</button>
+        </router-link>
       </div>
 
     </div>
@@ -643,7 +647,7 @@ import { useRoute } from 'vue-router';
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     background-color: #F6F6F6;
   }
 
@@ -700,7 +704,7 @@ import { useRoute } from 'vue-router';
 
   /* 안내사항 및 에러 메시지 */
   .ann-msg, .err-msg, .pass-msg {
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     padding-top: 3.5px;
   }
 
@@ -737,26 +741,35 @@ import { useRoute } from 'vue-router';
     box-shadow: 0 0 2px #00a500;
   }
 
+
   /* 아래 버튼 영역 */
   .regist-footer {
     display: flex;
     justify-content: center;
     align-items: center; 
+    column-gap: 30px;
+    margin-top: 27.5px;
+  }
+
+  .btn-submit, .btn-cancel > button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    font-size: 1.2rem;
   }
   
   /* 가입확인 버튼 */
   .btn-submit {
-    margin-top: 27.5px;
-    padding: 10px;
-    width: 100px;
-    border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.2rem;
   }
   /* 버튼 호버 */
   .btn-submit:hover {
     background-color: #2563EB;
+  }
+
+  .btn-cancel > button {
+    background-color: #F3F3F3;
   }
 
 </style>

@@ -694,6 +694,10 @@
 
       <div class="regist-footer">
         <button @click="nextBtn"type="button" class="btn-submit">확인</button>
+        
+        <router-link to="/login" class="btn-cancel">
+          <button type="button">취소</button>
+        </router-link>
       </div>
     
     </div>
@@ -856,20 +860,27 @@ import { useRouter } from 'vue-router';
     display: flex;
     justify-content: center;
     align-items: center; 
+    column-gap: 30px;
+  }
+
+  .btn-submit, .btn-cancel > button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    font-size: 1.2rem;
   }
 
   /* 확인 버튼 */
   .btn-submit {
-    padding: 10px;
-    width: 100px;
-    border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.2rem;
   }
-
   .btn-submit:hover {
     background-color: #2563EB;
+  }
+
+  .btn-cancel > button {
+    background-color: #F3F3F3;
   }
 
   

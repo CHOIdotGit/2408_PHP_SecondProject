@@ -209,7 +209,7 @@ import { useRoute, useRouter } from 'vue-router';
     width: 100%;
     height: 100%;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     font-weight: 600;
     background-color: transparent;
     text-decoration: none;
@@ -267,7 +267,7 @@ import { useRoute, useRouter } from 'vue-router';
   }
   /* 메인 타이틀 */
   .find-main-form h2 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin: 40px 0 20px 10px;
   }
 
@@ -294,7 +294,7 @@ import { useRoute, useRouter } from 'vue-router';
   .find-input-group input {
     width: 100%;
     padding: 10px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     border: 1px solid #aaa;
     margin: 20px;
   }
@@ -312,7 +312,7 @@ import { useRoute, useRouter } from 'vue-router';
 
   /* id 추가 텍스트 */
   .find-footer-btn > p {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin: 45px 0 20px 0;
     color: #acacac;
   }
@@ -331,7 +331,7 @@ import { useRoute, useRouter } from 'vue-router';
     padding: 10px;
     width: 120px;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
   /* 확인 버튼 설정 */
   .find-footer-btn > div > button {

@@ -39,8 +39,8 @@
         <div>
           <button @click="resetBtn" type="button">확인</button>
 
-          <router-link to="/login" class="find-btn-cancel">
-            <button type="button">취소</button>
+          <router-link to="/find/pwd" class="find-btn-cancel">
+            <button type="button">뒤로</button>
           </router-link>
         </div>
       </div>
@@ -134,7 +134,7 @@ import { useStore } from 'vuex';
   }
   /* 메인 타이틀 */
   .find-main-form > h2 {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     margin: 40px 0 20px 10px;
   }
 
@@ -161,7 +161,7 @@ import { useStore } from 'vuex';
   .find-input-group input {
     width: 100%;
     padding: 10px;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     border: 1px solid #aaa;
   }
   
@@ -198,7 +198,7 @@ import { useStore } from 'vuex';
     padding: 10px;
     width: 120px;
     border: none;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
   /* 확인 버튼 설정 */
   .find-footer-btn > div > button {

@@ -33,12 +33,13 @@ export default {
 
       // nick_name: null,
     },
-    isError: false,
+
+    isError: false, // 유효성 검사 통과 여부
     
     // 모달 관련 ---------------------------------------------------------------------------------------------
-    emailModalFlg: false,
-    matchingModalFlg: false,
-    privateModalFlg: false,
+    emailModalFlg: false, // 이메일 인증용
+    matchingModalFlg: false, // 자녀 -> 부모 매칭용
+    privateModalFlg: false, // 개인정보 물어보기용
 
     // 회원가입 관련 -----------------------------------------------------------------------------------------
     matchingInfo: {}, // 매칭 정보
@@ -112,7 +113,7 @@ export default {
       state.preview.url = preview;
     },
 
-    // 예외 메세지 관련 ------------------------------------------------------------------------------------------
+    // 에러 메세지 관련 ------------------------------------------------------------------------------------------
     setErrMsgCommon(state, errMsg) {
       state.errMsg.common = errMsg;
     },
@@ -144,6 +145,10 @@ export default {
       state.errMsg.newPasswordChk = errMsg;
     },
 
+    setIsError(state, isError) {
+      state.isError = isError;
+    },
+
     // 인증 관련 ---------------------------------------------------------------------------------------------
     setIsAccountPass(state, isAccountPass) {
       state.isAccountPass = isAccountPass;
@@ -156,10 +161,6 @@ export default {
     },
     setIsMatchingPass(state, isMatchingPass) {
       state.isMatchingPass = isMatchingPass;
-    },
-
-    setIsError(state, isError) {
-      state.isError = isError;
     },
     
     // 초기화 관련 ------------------------------------------------------------------------------------------

@@ -244,7 +244,7 @@ import { useRoute } from 'vue-router';
 
   /* 안내사항 및 에러 메시지 */
   .ann-msg, .err-msg, .pass-msg {
-    font-size: 0.68rem;
+    font-size: 0.8rem;
     padding-top: 3.5px;
   }
 

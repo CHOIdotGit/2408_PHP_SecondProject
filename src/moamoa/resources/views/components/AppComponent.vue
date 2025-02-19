@@ -2,7 +2,7 @@
     <!-- :class="{'bg-childs': (isChilds === true || isChilds === 'true'), 'bg-parents': (isParents === true || isParents === 'true'), 'bg-auth': !isAuth }" -->
 
     <!-- 웹 디자인 -->
-    <div class="container" v-if="!isMobile">
+    <div class="container" v-if="!isMobile" :class="{ 'container-custom': !isAuth }">
         <!-- 상단 메뉴 -->
         <div class="containver-view">
             <header>
@@ -10,7 +10,7 @@
                     <MenuLeftComponent v-if="isAuth"/>
             </header>
             
-            <main class="layout">
+            <main class="layout" :class="{ 'layout-margin': isAuth }">
                 <!-- 상단 메뉴 버튼 -->
                 <div v-if="isAuth" class="top-header-menu">
                     <HeaderMenuComponent/>
@@ -23,7 +23,7 @@
         </div>
 
         <!-- 하단 메뉴 -->
-        <footer>
+        <footer :class="{ 'footer-custom': !isAuth }">
             <FooderComponent />
         </footer>
     </div>
@@ -74,6 +74,9 @@ footer {
     height: 32vh;
     background: #fafafa;
 }
+.footer-custom {
+    width: 100vw;
+}
 
 .container {
     /* width: 100vw; */
@@ -81,7 +84,9 @@ footer {
     /* height: 100vh; */
     display: flex;
     flex-direction: column;
-
+}
+.container-custom {
+    overflow-x: hidden;
 }
 
 .containver-view {
@@ -92,24 +97,13 @@ footer {
     /* width: 100%; */
     display: flex;
     flex-direction: column;
-    margin-bottom: 200px;
+}
+.layout-margin {
+    margin-bottom: 200px; 
 }
 
 .top-header-menu {
     width: 1500px;
-}
-
-/* 앱 설정 ----------------------------------------------------------------------------------------------- */
-
-.app-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-}
-
-.app-layout {
-    width: 100%;
 }
 
 </style>

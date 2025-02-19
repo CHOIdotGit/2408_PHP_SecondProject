@@ -181,7 +181,7 @@ import { useRoute } from 'vue-router';
   }
 
   .find-content-pwd > p {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
   }
 
   /* -------------------------------------------------------------------- */

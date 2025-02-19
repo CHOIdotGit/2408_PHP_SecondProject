@@ -32,9 +32,23 @@
 
             <div class="regist-complete-code">
               <span>{{ famCode }}</span>
+
               <button @click="copyFamCode" type="button">
                 <img src="/img/icon-copy.webp">
               </button>
+
+              <!-- 복사 알림창 DIV -->
+              <div v-show="copyboard" class="regist-alarm-copy">
+                <div>
+                  <img @click="copyboardClose" src="/img/icon-cross.png">
+                  
+                  <br>
+
+                  <p>가족코드가 복사되었습니다</p>
+                </div>
+                
+                <img src="/img/alarm-reverse.webp">
+              </div>
             </div>
           </div>
 
@@ -73,7 +87,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 
   const route = useRoute();
@@ -83,8 +97,17 @@ import { useRoute } from 'vue-router';
 
   // 가족코드 ---------------------------------------------------------------------------------------------
   const famCode = sessionStorage.getItem('famCode');
+  
+  // 클립보드 복사 처리 ---------------------------------------------------------------------------------------------
+  
+  // 복사 알림창 스위칭
+  const copyboard = ref(false);
 
-  // 복사 버튼 ---------------------------------------------------------------------------------------------
+  const copyboardClose = () => {
+    copyboard.value = false;
+  }
+
+  
   const copyFamCode = () => {
 
     // 새요소 생성
@@ -106,23 +129,42 @@ import { useRoute } from 'vue-router';
     document.body.removeChild(textCode);
     
     // 메세지로 알림
-    alert('가족코드가 복사되었습니다.');
+    copyboard.value = true;
   };
 
-  // 뒤로가기 방지 ---------------------------------------------------------------------------------------------
+  // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
+  // 뒤로가기 방지
   const preventBackNavigation = (e) => {
     e.preventDefault(); // 뒤로 가기 방지
     history.pushState(null, '', window.location.href); // 페이지 URL을 강제로 다시 설정
   }
+  
+
+  // 클릭 외부 감지 함수
+  const handleCopyBoard = (e) => {
+    const copyIcon = document.querySelector('.regist-alarm-copy');
+
+    // 알림창이 활성화 되어있고 타겟이 해당DOM의 이외를 클릭했을때
+    if(copyIcon && !copyIcon.contains(e.target) && copyboard.value) {
+      // 외부 클릭시 알림 숨김
+      copyboard.value = false;
+    }
+  };
 
   onMounted(() => {
     // 뒤로, 앞으로 버튼 이동시
     window.addEventListener('popstate', preventBackNavigation);
+    document.addEventListener('mousedown', handleCopyBoard);
     
     // 히스토리 상태 변경을 강제로 만들어서 뒤로 가기를 막음
     history.pushState(null, '', window.location.href);
   });
+
+  // 이벤트 해제
+  onUnmounted(() => {
+    document.removeEventListener('mousedown', handleCopyBoard);
+  });  
 
 </script>
 <style scoped>
@@ -171,13 +213,13 @@ import { useRoute } from 'vue-router';
 
   /* 완료 텍스트 */
   .regist-complete-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 600;
   }
 
   /* 서브 설명 텍스트 */
   .regist-complete-subtitle {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: #5a5a5a;
     margin: 30px 0;
   }
@@ -196,7 +238,7 @@ import { useRoute } from 'vue-router';
 
   /* 가족코드 텍스트 */
   .regist-complete-codebox > div > p {
-    font-size: 1rem;
+    font-size: 1.2rem;
     margin: 20px 0;
     color: #5a5a5a;
     text-align: center;
@@ -219,13 +261,14 @@ import { useRoute } from 'vue-router';
   /* 가족코드 표시 박스 */
   .regist-complete-code {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
+    position: relative;
   }
 
   /* 가족코드 출력 */
   .regist-complete-code > span {
-    font-size: 2.3rem;
+    font-size: 2.5rem;
     font-weight: 600;
     letter-spacing: 0.4rem;
     padding-left: 12px;
@@ -255,7 +298,7 @@ import { useRoute } from 'vue-router';
 
   /* 하단 텍스트 */
   .regist-complete-footer-text > p {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: #5a5a5a;
   }
 
@@ -279,4 +322,59 @@ import { useRoute } from 'vue-router';
   .regist-complete-footer-btn button:hover {
     background-color: #2563EB;
   }
+
+  /* -------------------------------------------------------------------- */
+  
+  /* 복사 알림창 */
+  .regist-alarm-copy {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    left: 65%;
+    top: -81%;
+    /* transform: translate(-50%, -50%); */
+  }
+
+  /* 알림 박스 설정 */
+  .regist-alarm-copy > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 180px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 10px;
+    padding-right: 20px;
+  }
+
+  /* 알림 x 버튼 */
+  .regist-alarm-copy > div > img {
+    position: absolute;
+    left: 92%;
+    top: 17%;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+  }
+
+  /* 복사 알리 텍스트 */
+  .regist-alarm-copy > div > p {
+    font-size: 0.8rem;
+    height: 100%;
+    /* margin: 10px; */
+  }
+
+  /* 꼬다리 이미지 */
+  .regist-alarm-copy > img {
+    position: absolute;
+    left: 46.5%;
+    top: 97%;
+    width: 20px;
+    height: 20px;
+  }
+
 </style>

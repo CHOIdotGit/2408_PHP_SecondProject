@@ -152,7 +152,7 @@
 <style scoped>
 
   /* 버튼 손모양 */
-  button, input[type="radio"] {
+  button, input[type="radio"], label {
     cursor: pointer;
   }
   

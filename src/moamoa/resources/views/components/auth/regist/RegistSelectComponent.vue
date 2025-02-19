@@ -70,6 +70,12 @@
         </div>
       </div>
 
+      <div class="regist-footer-btn">
+        <router-link to="/regist/agree" class="btn-cancel">
+          <button type="button">뒤로</button>
+        </router-link>
+      </div>
+
     </div>
   </div>
 </template>
@@ -207,5 +213,22 @@
     background-color: #2563EB;
   }
   
+  /* ------------------------------------------------------------------------- */
+  
+  /* 하단 뒤로 버튼 */
+  .regist-footer-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 22px;
+  }
+
+  .btn-cancel > button {
+    padding: 10px;
+    width: 100px;
+    border: none;
+    font-size: 1.2rem;
+    background-color: #F3F3F3;
+  }
   
 </style>
