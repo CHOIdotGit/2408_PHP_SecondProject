@@ -8,7 +8,7 @@
                 <img src="/img/logo.png" class="logo">
             </div> -->
             <div @click="$store.dispatch('auth/logout')" class="menu-btn">로그아웃</div>
-            <div class="menu-btn">이용자 매뉴얼</div>
+            <div class="menu-btn" @click="router.push('/user/manual')">이용자 매뉴얼</div>
             <!-- 알람 아이콘 -->
             <div  class="icon-btn" @click="openBellModal" v-if="$store.state.auth.parentFlg">
                 <img src="/img/icon-bell-black.png" alt="" class="icon" v-if="bellContent.length === 0">

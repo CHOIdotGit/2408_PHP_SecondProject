@@ -43,6 +43,7 @@ import FindFormComponent from '../views/components/auth/find/FindFormComponent.v
 import FindCompleteComponent from '../views/components/auth/find/FindCompleteComponent.vue';
 import FindPasswordComponent from '../views/components/auth/find/FindPasswordComponent.vue';
 import ChildAgreeComponent from '../views/components/bank/child-bank/ChildAgreeComponent.vue';
+import UserManualComponent from '../views/components/manual/UserManualComponent.vue';
 
 
 
@@ -449,6 +450,14 @@ const routes = [
     //     component: ChildExpiredSavingComponentCopy,
     //     beforeEnter: chkAuth,
     // },
+    // +==================================+
+    // +          이용자 매뉴얼            +
+    // +==================================+
+    {
+        path: '/user/manual',
+        component: UserManualComponent,
+        beforeEnter: chkAuth,
+    },
 
     // +==================================+
     // +          페이지 못찾음            +
