@@ -10,11 +10,11 @@
             <div class="info-detail">
                 <div class="b-info">
                     <p class="p-first">통장 종류</p>
-                    <p>{{ savingInfo.saving_product_name }} 적금</p>
+                    <p>{{ savingDetail[0]?.saving_product_name }} 적금</p>
                 </div>
                 <div class="b-info">
                     <p class="margin-left p-first">납입 유형</p>
-                    <p>{{ savingInfo.saving_sign_up_status }}</p>
+                    <p>{{ getTypeText(savingInfo.saving_sign_up_status) }}</p>
                 </div>
                 <div class="b-info">
                     <p class="p-first">가입한 날</p>
@@ -22,7 +22,7 @@
                 </div>
                 <div class="b-info">
                     <p class="margin-left p-first">금리</p>
-                    <p class="p-rate">{{ Number(savingInfo.saving_product_interest_rate).toFixed(1) }} %</p>
+                    <p class="p-rate">{{ Number(savingDetail[0]?.saving_product_interest_rate).toFixed(1) }} %</p>
                 </div>
             </div>
             <div class="bankbook-profile">
@@ -98,6 +98,14 @@ const getCategoryText = (saving_detail_category) => {
     return categoryMapping[saving_detail_category]; // 기본값 없이 반환
 };
 
+// 적금 유형 문자로 변환
+const getTypeText = (saving_product_type) => {
+    const typeMapping = {
+        "0": '매일 납입',
+        "1": '매주 납입',
+    };
+    return typeMapping[saving_product_type]; // 기본값 없이 반환
+};
 
 </script>
 

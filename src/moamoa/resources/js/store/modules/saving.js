@@ -87,7 +87,6 @@ export default {
                     context.commit('setSavingSignUpId', savingSignUpId);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
-                    console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
                 })
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);

@@ -43,9 +43,8 @@
                 </div>
                 <div class="bankbook-item">
                     <div class="main-content" >
-                        <div v-for="(item, index) in savingDetail" :key="item" class="bankbook-transactions">
-                            <p>{{ index + 1 }}</p>
-                            <p>{{ formatDate(item.saving_detail_created_at) }}</p>
+                        <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
+                            <p>{{ item.saving_detail_created_at }}</p>
                             <p class="bankbook-amount">{{ item.saving_detail_outcome }}</p>
                             <p class="bankbook-amount">{{ item.saving_detail_income }}</p>
                             <p class="bankbook-amount">{{ item.saving_detail_left }}</p>
@@ -76,17 +75,14 @@ const savingInfo = computed(()=> store.state.saving.savingInfo);
 const childInfo = store.state.header.childInfo;
 
 onMounted(()=> {
-    const bankbookId = route.params.bankbook_id;
+    const bankbookId = route.params.saving_sign_up_id;
     console.log('파라미터 bankbook_id:', bankbookId);
     store.dispatch('saving/parnetChildSavingDetail', bankbookId);
     store.dispatch('header/childInfo')
 })
 
 // 날짜 형태 바꾸기 yyyy-mm-dd
-const formatDate = (date) =>  {
-    const day = new Date(date);
-    return day.toISOString().split('T')[0];
-}
+
 
 // 카테고리 문자로 변환
 const getCategoryText = (saving_detail_category) => {

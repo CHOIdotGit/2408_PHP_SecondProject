@@ -82,7 +82,7 @@ class ChildSavingController extends Controller
                                                     ,'saving_sign_ups.created_at'
                                                     )
                                             ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
-                                            ->get();
+                                            ->first();
 
             // $bankBook = SavingDetail::select('saving_details.saving_detail_left'
             //                                 ,'saving_details.saving_detail_income'
