@@ -310,13 +310,13 @@ import { useRoute } from 'vue-router';
   }
   
   .regist-complete-footer-btn button {
-    margin-top: 10px;
+    margin-top: 30px;
     padding: 10px;
     width: 120px;
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   
   .regist-complete-footer-btn button:hover {
@@ -376,5 +376,87 @@ import { useRoute } from 'vue-router';
     width: 20px;
     height: 20px;
   }
+
+  /* -------------------------------------------------------------------------- */
+
+  @media(max-width: 390px) {
+
+    /* 메인 컨테이너 */
+    .regist-container {
+      overflow-y: auto;
+      white-space: wrap;
+    }
+    /* 메인 박스 */
+    .regist-main-box {
+      max-width: 97vw;
+      height: 834px;
+      max-height: 100vh;
+      margin: 5px 0;
+      padding: 9px 10px;
+    }
+    
+    /* */
+
+    /* 메인 타이틀 제목 */
+    .regist-main-title, .regist-main-title span {
+      font-size: 1.2rem;
+    }
+    /* 내부 박스 여백 조정 */
+    .regist-complete-box {
+      padding: 5px;
+    }
+
+    /* 헤더 대제목 */
+    .regist-complete-title {
+      font-size: 1.7rem;
+    }
+    /* 헤더 소제목 */
+    .regist-complete-subtitle {
+      font-size: 1rem;
+    }
+
+    /* 음영 박스 */
+    .regist-complete-codebox {
+      width: 100%;
+    }
+    /* 가족코드 텍스트 */
+    .regist-complete-code > span {
+      font-size: 2.2rem;
+    }
+    /* 복사아이콘 간격 조정 */
+    .regist-complete-code > button {
+      margin: 15px 0 0 5px;
+    }
+
+    /* 복사 말풍선 위치 조정 */
+    .regist-alarm-copy {
+      left: 57%;
+      top: -70%;
+    }
+    /* 말풍선 꼬다리 아이콘 */
+    .regist-alarm-copy > img {
+      left: 56.5%;
+    }
+    /* 복사 말풍선 내부조전 */
+    .regist-alarm-copy > div {
+      width: 166px;
+      padding: 5px 5px 5px 10px;
+      justify-content: flex-start;
+    }
+    /* 복사 말풍선 텍스트 */
+    .regist-alarm-copy > div > p {
+      font-size: 0.75rem;
+    }
+
+    /* 하단 소제목 텍스트 조정 */
+    .regist-complete-footer-text > p {
+      font-size: 0.92rem;
+    }
+
+    .regist-complete-footer-btn button {
+      background-color: #2563EB;
+    }
+  }
+
 
 </style>

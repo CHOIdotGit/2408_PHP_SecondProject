@@ -148,4 +148,16 @@ import { useStore } from 'vuex';
   .base-modal-cancel {
     background-color: #F3F3F3;
   }
+  
+  /* ------------------------------------------------------------------------ */
+
+  @media(max-width: 390px) {
+    .base-modal-overlay {
+      white-space: wrap;
+    }
+
+    .base-modal-content {
+      font-size: 1.25rem;
+    }
+  }
 </style>

@@ -231,4 +231,92 @@
     background-color: #F3F3F3;
   }
   
+  /* ------------------------------------------------------------------------- */
+
+  @media(max-width: 390px) {
+
+    /* 메인 컨테이너 */
+    .regist-container {
+      overflow-y: auto;
+      white-space: wrap;
+    }
+    /* 메인 박스 */
+    .regist-main-box {
+      max-width: 97vw;
+      height: 834px;
+      max-height: 100vh;
+      margin: 5px 0;
+      padding: 15px 10px;
+    }
+    
+    /* */
+
+    /* 메인 타이틀 제목 */
+    .regist-main-title {
+      font-size: 1.2rem;
+    }
+
+    /* 서브 타이틀 */
+    .regist-main-subtitle {
+      font-size: 1.25rem;
+      margin: 30px 0;
+    }
+    
+    /* */
+
+    /* 선택박스 그리드셀 변경 */
+    .regist-select-box {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 0 10px;
+    }
+    /* 선택박스 내부여백 조정 */
+    .regist-select-box > div {
+      padding: 10px 15px;
+      height: 312px;
+    }
+
+    /* 프로필 영역 */
+    .regist-main-profile {
+      margin: 0 0 10px 0;
+    }
+    /* 프로필 크기 조정 */
+    .regist-profile-preview {
+      width: 100px;
+      height: 100px;
+      margin-top: 0;
+    }
+
+    /* 메인 대제목 */
+    .regist-select-title {
+      font-size: 1.4rem;
+      margin: 5px 0 10px 0;
+    }
+    /* 메인 소제목 */
+    .regist-select-subtitle {
+      font-size: 0.92rem;
+      margin: 10px 0;
+    }
+    .regist-select-content {
+      font-size: 0.85rem;
+      margin: 10px 0;
+    }
+
+    /* 선택 버튼 설정 */
+    .regist-select-btn, .regist-select-btn button {
+      width: 100%;
+    }
+    .regist-select-btn button {
+      margin-top: 20px;
+    }
+    .regist-select-btn button {
+      background-color: #2563EB;
+    }
+    
+    /* 하단 버튼 설정 */
+    .regist-footer-btn {
+      margin-top: 15px;
+    }
+  }
+  
 </style>

@@ -142,6 +142,7 @@ import { useRoute, useRouter } from 'vue-router';
   // 통과됫으면 페이지 이동
   watch(() => isEmailPass.value, (pass) => {
     if(pass) {
+      store.commit('auth/setIsEmailPass', false);
       router.push(findType.value === 'id' ? '/find/complete/id' : '/find/reset/pwd');
     }
   });
@@ -356,5 +357,49 @@ import { useRoute, useRouter } from 'vue-router';
     color: #ff0000;
   }
 
+  /* -------------------------------------------------------------------- */
+  
+  @media(max-width: 390px) {
+    /* 메인 박스 */
+    .find-main-box {
+      max-width: 97vw;
+      padding: 30px 15px;
+      height: 495px;
+      margin-bottom: 55px;
+    }
+
+    /*  */
+    
+    /* 헤더 박스 높이 조절 */
+    .find-header-select > div {
+      height: 80px;
+    }
+    /* 헤더 텍스트 조절 */
+    .find-link-id, .find-link-pwd {
+      font-size: 1.3rem;
+    }
+
+    /*  */
+
+    /* 메인 타이틀 */
+    .find-main-form h2 {
+      font-size: 1.2rem;
+      margin: 30px 0 10px 5px;
+    }
+
+    /* 입력 내용 */
+    .find-input-group input {
+      font-size: 1.15rem;
+      margin: 15px;
+    }
+
+    /*  */
+
+    /* 하단 서브 텍스트 */
+    .find-footer-btn > p {
+      font-size: 1rem;
+      margin: 36px 0 20px 0;
+    }
+  }
 
 </style>

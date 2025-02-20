@@ -382,4 +382,89 @@
     background-color: #ff0000;
   }
   
+  /* ------------------------------------------------------------------------ */
+
+  @media(max-width: 390px) {
+    .wdrl-container {
+      white-space: wrap;
+    }
+
+    /* 메인박스 */
+    .wdrl-main-box {
+      width: 100%;
+      height: 645px;
+      padding: 0 10px;
+      justify-content: flex-start;
+    }
+
+    /* 예외 메세지 */
+    .empty-msg {
+      font-size: 1.6rem;
+      height: 645px;
+      margin: 0 5px 0 10px;
+    }
+
+    /* 중앙선 제거 */
+    .wdrl-header-notice > hr {
+      display: none;
+    }
+
+    /* 상하 테두리 제거 */
+    .wdrl-header-notice {
+      border: none;
+    }
+
+    /* 박스 높이 조절 */
+    .wdrl-notice-item {
+      height: 270px;
+    }
+    /* 세로 정렬 */
+    .wdrl-header-notice > div {
+      flex-direction: column;
+    }
+
+    /* 대제목 설정 */
+    .wdrl-notice-item > div {
+      height: 100px !important;
+      padding: 0 !important;
+      text-align: center;
+    }
+    .wdrl-notice-item > div > h3 {
+      font-size: 1.3rem !important;
+      margin: 10px 0;
+    }
+
+    /* 아이콘 설정 */
+    .wdrl-notice-item:nth-child(1) > div:nth-child(1) {
+      width: 120px;
+      height: 120px !important;
+      margin: 0;
+    }
+    .wdrl-notice-item:nth-child(3) > div:nth-child(1) { 
+      width: 110px;
+      height: 100px !important;
+      margin: 0;
+    }
+
+    /* 서브 설명 */
+    .wdrl-notice-item > div:nth-child(2) > p {
+      padding: 10px 0;
+    }
+
+    /* 하단 동의 텍스트 */
+    .wdrl-footer-check {
+      font-size: 1rem;
+      margin: 10px 0;
+    }
+
+    /* 하단 버튼 */
+    .wdrl-footer-btn {
+      margin: 0;
+    }
+    .wdrl-footer-btn button {
+      background-color: #ff0000;
+    }
+
+  }
+  
 </style>

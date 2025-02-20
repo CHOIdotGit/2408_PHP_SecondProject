@@ -631,7 +631,7 @@
       
       <div class="regist-agree-chk">
         <input v-model="isAgree.agree1" type="checkbox" name="agree1" id="agree1" autocomplete="off" required>
-        <label for="agree1">&nbsp;약관을&nbsp;충분히&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
+        <label for="agree1">약관을&nbsp;충분히&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
       </div>
       
       
@@ -657,8 +657,8 @@
       </div>
       
       <div class="regist-agree-chk">
-        <input v-model="isAgree.agree2" type="checkbox" name="agree2" id="agree2" autocomplete="off" required>
-        <label for="agree2">&nbsp;개인정보&nbsp;수집&nbsp;및&nbsp;이용(필수)에&nbsp;대한&nbsp;안내를&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
+        <input v-model="isAgree.agree2" type="checkbox" name="agree2" id="agree2" class="regist-input-chk" autocomplete="off" required>
+        <label for="agree2">개인정보&nbsp;수집&nbsp;및&nbsp;이용(필수)에&nbsp;대한&nbsp;안내를&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
       </div>
       
 
@@ -688,8 +688,8 @@
       </div>
       
       <div class="regist-agree-chk">
-        <input v-model="isAgree.agree3" type="checkbox" name="agree3" id="agree3" autocomplete="off" required>
-        <label for="agree3">&nbsp;개인정보&nbsp;수집&nbsp;및&nbsp;이용(선택)에&nbsp;대한&nbsp;안내를&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
+        <input v-model="isAgree.agree3" type="checkbox" name="agree3" id="agree3" class="regist-input-chk" autocomplete="off" required>
+        <label for="agree3">개인정보&nbsp;수집&nbsp;및&nbsp;이용(선택)에&nbsp;대한&nbsp;안내를&nbsp;이해하였으며&nbsp;이에&nbsp;동의&nbsp;합니다.</label>
       </div>
 
       <div class="regist-footer">
@@ -739,7 +739,7 @@ import { useRouter } from 'vue-router';
     cursor: pointer;
     width: 18px;
     height: 18px;
-    margin-right: 2px;
+    margin-right: 6px;
   }
 
   /* 배경 컨테이너 */
@@ -881,6 +881,82 @@ import { useRouter } from 'vue-router';
 
   .btn-cancel > button {
     background-color: #F3F3F3;
+  }
+  
+  /* ------------------------------------------------------------------------- */
+
+  @media(max-width: 390px) {
+    /* 메인 컨테이너 */
+    .regist-container {
+      overflow-y: auto;
+      white-space: wrap;
+    }
+    /* 메인 박스 */
+    .regist-main-box {
+      max-width: 97vw;
+      height: 834px;
+      max-height: 100vh;
+      margin: 5px 0;
+      padding: 15px 10px;
+    }
+    
+    /* */
+
+    /* 체크박스 */
+    .regist-input-chk {
+      width: 24px !important;
+    }
+
+    /* 라벨 폰트 */
+    label {
+      font-size: 0.9rem;
+    }
+
+    /* 메인 타이틀 제목 */
+    .regist-main-title {
+      font-size: 1.2rem;
+    }
+
+    /* 이용약관 박스 */
+    .regist-agree-box {
+      padding: 10px;
+      height: 210px;
+      padding: 15px 10px;
+    }
+    /* 이용약관내 간격 */
+    .regist-agree-content, span .color-green { 
+      line-height: 15px;  
+    }
+    /* 이용약관내 초록글자 */
+    span .color-green {
+      font-size: 0.8rem;
+    }
+    
+    /* */
+
+    /* 개인정보표 여백 조정 */
+    .regist-main-content > div > div {
+      padding: 5px;
+      height: 50px;
+    }
+    /* 개인정보표 타이틀 부분 */
+    .regist-main-content > div:nth-child(3) > div
+    ,.regist-main-content > div > div:nth-child(1) {
+      font-size: 0.95rem;
+      padding: 10px 5px;
+    }
+    /* 개인정보표 소내용 */
+    .regist-main-content > div:not(:nth-child(3)) > div:nth-child(2) {
+      padding: 8px;
+    }
+    .regist-main-content > div:nth-child(3) > div:nth-child(2) {
+      padding: 5px 8px;
+      font-size: 0.9rem;
+    }
+    
+    .regist-select-btn button {
+      background-color: #2563EB;
+    }
   }
 
   

@@ -18,11 +18,12 @@
       </div>
 
       <!-- 공용 에러 -->
-      <p v-if="errMsg.common" class="err-msg">
+      <p v-if="errMsg.common" class="err-msg msg-etc">
         {{ errMsg.common }}
       </p>
-      <p v-else>
-        <span>*</span>가 있는 항목은 필수 입력사항입니다.
+      <p v-else class="ann-msg msg-etc">
+        <!-- <span>*</span>가 있는 항목은 필수 입력사항입니다. -->
+        수정한 내용이 정확한지 확인한 후 변경해주세요.
       </p>
 
       
@@ -53,11 +54,11 @@
           </label>
           <label for="email">
             이메일
-            <span>*</span>
+            <!-- <span>*</span> -->
           </label>
           <label for="tel">
             휴대폰
-            <span>*</span>
+            <!-- <span>*</span> -->
           </label>
         </div>
 
@@ -78,7 +79,15 @@
 
           <!-- 새 비밀번호 확인 입력 DIV -->
           <div class="edit-input-group">
-            <input v-model="editInfo.newPassword" :class="{ 'err-border' : errMsg.newPassword }" type="password" name="newPassword" id="newPassword" autocomplete="off">
+            <input 
+              v-model="editInfo.newPassword" 
+              :class="{ 'err-border' : errMsg.newPassword }" 
+              :placeholder="isMobile ? '새 비밀번호' : ''" 
+              type="password" 
+              name="newPassword" 
+              id="newPassword" 
+              autocomplete="off"
+            >
             <p v-if="errMsg.newPassword" class="err-msg">
               {{ errMsg.newPassword }}
             </p>
@@ -89,7 +98,15 @@
 
           <!-- 새 비밀번호 확인 입력 DIV -->
           <div class="edit-input-group">
-            <input v-model="editInfo.newPasswordChk" :class="{ 'err-border' : errMsg.newPasswordChk }" type="password" name="newPasswordChk" id="newPasswordChk" autocomplete="off">
+            <input 
+              v-model="editInfo.newPasswordChk" 
+              :class="{ 'err-border' : errMsg.newPasswordChk }" 
+              :placeholder="isMobile ? '새 비밀번호 확인' : ''" 
+              type="password" 
+              name="newPasswordChk" 
+              id="newPasswordChk" 
+              autocomplete="off"
+            >
             <p v-if="errMsg.newPasswordChk" class="err-msg">
               {{ errMsg.newPasswordChk }}
             </p>
@@ -109,6 +126,7 @@
               <input 
                 v-model="editInfo.email" 
                 :class="{ 'err-border' : errMsg.email }"
+                :placeholder="isMobile ? '이메일' : ''" 
                 @input="onlyEmail"
                 @blur="chgEmail"
                 type="email" 
@@ -124,7 +142,7 @@
               {{ errMsg.email }}
             </p>
             <p v-else class="ann-msg">
-              이메일을 변경하실 경우 이메일 인증을 진행해 주세요.
+              이메일을 변경하실 경우 이메일 인증을 진행하셔야 합니다.
             </p>
           </div>
 
@@ -133,6 +151,7 @@
             <input 
               v-model="editInfo.tel" 
               :class="{ 'err-border' : errMsg.tel }" 
+              :placeholder="isMobile ? '휴대폰 번호' : ''" 
               @input="onlyNumber"
               type="text" 
               name="tel" 
@@ -186,10 +205,10 @@ import { useRoute } from 'vue-router';
   const errMsg = computed(() => store.state.auth.errMsg);
   const isError = computed(() => store.state.auth.isError);
 
-  // 이전 입력 이메일
+  // 이전 입력 이메일 ---------------------------------------------------------------------------------------------
   const prevEmail = ref('');
 
-  // 모달 스위칭
+  // 모달 스위칭 ---------------------------------------------------------------------------------------------
   const privateModalFlg = computed(() => store.state.auth.privateModalFlg);
 
   // 유저 정보 ---------------------------------------------------------------------------------------------
@@ -206,7 +225,7 @@ import { useRoute } from 'vue-router';
     profile: null,
   });
 
-  const oldInfo = ref({
+  const oldInfo = reactive({
     email: '',
     tel: '',
   });
@@ -350,8 +369,14 @@ import { useRoute } from 'vue-router';
 
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
-  onBeforeMount(() => {
+  const isMobile = ref(window.innerWidth <= 390);
 
+  // 윈도우 크기 변경 시 반응
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 390;
+  });
+
+  onBeforeMount(() => {
     // 유저 정보 로드
     store.dispatch(store.state.auth.parentFlg ? 'auth/parentInfo' : 'auth/childInfo' );
   });
@@ -482,7 +507,6 @@ import { useRoute } from 'vue-router';
   /* 필수입력 안내사항 */
   .edit-main-profile + p {
     font-size: 1.1rem;
-    font-weight: 500;
     text-align: left;
     width: 100%;
   }
@@ -598,7 +622,7 @@ import { useRoute } from 'vue-router';
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
   /* 버튼 호버 */
   .btn-submit:hover {
@@ -644,6 +668,85 @@ import { useRoute } from 'vue-router';
   .pass-border {
     border: 2px solid rgba(0, 165, 0, 0.6);
     box-shadow: 0 0 2px #00a500;
+  }
+
+  .msg-etc {
+    padding-top: 0;
+  }
+  
+  /* ------------------------------------------------------------------------ */
+
+  @media(max-width: 390px) {
+    .edit-container {
+      white-space: wrap;
+    }
+
+    /* 메인박스 */
+    .edit-main-box {
+      width: 100%;
+      height: 645px;
+      padding: 0 10px;
+    }
+
+    /* 메인 입력창 제목탭 숨김 */
+    .edit-main-content {
+      grid-template-columns: 1fr;
+    }
+    /* 제목탭 숨김 */
+    .edit-item-title {
+      display: none;
+    }
+
+    /* 프로필 크기 조절 */
+    .edit-profile-preview {
+      width: 150px;
+      height: 150px;
+      margin-top: 0;
+    }
+
+    /*  */
+    .edit-main-profile {
+      margin-bottom: 0;
+    }
+
+    /* 프로필 밑 텍스트 */
+    .edit-main-profile + p {
+      font-size: 0.95rem;
+      margin: 15px 0 5px 5px;
+    }
+
+    .edit-main-content{
+      margin-top: 0;
+    }
+
+    .edit-item-content > div {
+      height: 70px;
+    }
+    .edit-item-content > div:nth-child(1),
+    .edit-item-content > div:nth-child(4) {
+      height: 50px;
+    }
+
+    .edit-text-group {
+      font-size: 1.15rem;
+      padding-left: 10px;
+    }
+
+    .edit-input-group {
+      padding: 10px 0 0 8px;
+    }
+    .edit-input-group input {
+      width: 75vw;
+    }
+
+    /* .edit-input-group input[type="email"] {
+      max-width: 75vw;
+    } */
+
+    .btn-submit {
+      margin-top: 10.5px;
+      background-color: #2563EB;
+    }
   }
 
 </style>

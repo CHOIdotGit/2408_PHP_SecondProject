@@ -77,7 +77,8 @@
             <div class="btn-group">
               <input 
                 v-model="registInfo.account" 
-                :class="{ 'err-border' : errMsg.account, 'pass-border' : isAccountPass }" 
+                :class="{ 'err-border' : errMsg.account, 'pass-border' : isAccountPass }"
+                :placeholder="isMobile ? '아이디' : ''" 
                 @blur="chgAccount"
                 type="text" 
                 name="account" 
@@ -100,7 +101,16 @@
 
           <!-- 비밀번호 입력 DIV -->
           <div>
-            <input v-model="registInfo.password" :class="{ 'err-border' : errMsg.password }" type="password" name="password" id="password" autocomplete="off" required>
+            <input 
+              v-model="registInfo.password" 
+              :class="{ 'err-border' : errMsg.password }" 
+              :placeholder="isMobile ? '비밀번호' : ''" 
+              type="password" 
+              name="password" 
+              id="password" 
+              autocomplete="off" 
+              required
+            >
             <p v-if="errMsg.password" class="err-msg">
               {{ errMsg.password }}
             </p>
@@ -111,7 +121,16 @@
 
           <!-- 비밀번호 확인 입력 DIV -->
           <div>
-            <input v-model="registInfo.passwordChk" :class="{ 'err-border' : errMsg.passwordChk }" type="password" name="passwordChk" id="passwordChk" autocomplete="off" required>
+            <input 
+              v-model="registInfo.passwordChk" 
+              :class="{ 'err-border' : errMsg.passwordChk }" 
+              :placeholder="isMobile ? '비밀번호 확인' : ''" 
+              type="password" 
+              name="passwordChk" 
+              id="passwordChk" 
+              autocomplete="off" 
+              required
+            >
             <p v-if="errMsg.passwordChk" class="err-msg">
               {{ errMsg.passwordChk }}
             </p>
@@ -122,7 +141,16 @@
 
           <!-- 이름 입력 DIV -->
           <div>
-            <input v-model="registInfo.name" :class="{ 'err-border' : errMsg.name }" type="text" name="name" id="name" autocomplete="off" required>
+            <input 
+              v-model="registInfo.name" 
+              :class="{ 'err-border' : errMsg.name }" 
+              :placeholder="isMobile ? '이름' : ''" 
+              type="text" 
+              name="name" 
+              id="name" 
+              autocomplete="off" 
+              required
+            >
             <p v-if="errMsg.name" class="err-msg">
               {{ errMsg.name }}
             </p>
@@ -134,6 +162,7 @@
               <input 
                 v-model="registInfo.email" 
                 :class="{ 'err-border' : errMsg.email, 'pass-border' : isEmailPass }"
+                :placeholder="isMobile ? '이메일' : ''" 
                 @input="onlyEmail"
                 @blur="chgEmail"
                 type="email" 
@@ -160,6 +189,7 @@
             <input 
               v-model="registInfo.tel" 
               :class="{ 'err-border' : errMsg.tel }" 
+              :placeholder="isMobile ? '휴대폰 번호' : ''" 
               @input="onlyNumber"
               type="text" 
               name="tel" 
@@ -178,6 +208,7 @@
               <input
                 v-model="registInfo.famCode"
                 :class="{ 'err-border' : errMsg.famCode, 'pass-border' : isMatchingPass }" 
+                :placeholder="isMobile ? '가족코드' : ''" 
                 @blur="chgFamCode"
                 type="text" 
                 name="famCode" 
@@ -450,6 +481,14 @@ import { useRoute } from 'vue-router';
   }
 
   // 이벤트 세팅 ---------------------------------------------------------------------------------------------
+
+  const isMobile = ref(window.innerWidth <= 390);
+
+  // 윈도우 크기 변경 시 반응
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 390;
+  });
+  
   onBeforeMount(() => {
     // 에러 정보 리셋
     if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
@@ -543,11 +582,11 @@ import { useRoute } from 'vue-router';
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    padding: 15px 20px;
+    padding: 8px 20px;
   }
 
   /* 메인 제목 타이틀 */
-  .regist-main-title {
+  .regist-main-title, .regist-main-title > span {
     font-size: 1.4rem;
     font-weight: 600;
   }
@@ -659,20 +698,16 @@ import { useRoute } from 'vue-router';
 
   /* 내용 섹션 위치 조정 */
   .regist-item-content > div {
-    padding: 17px 0 0 10px;
+    padding: 15px 0 0 10px;
+    margin-top: 2px;
   }
 
   /* 내용 안의 인풋들 */
   .regist-item-content > div input {
     padding: 5px;
-    font-size: 0.9rem;
+    font-size: 1rem;
     width: 280px;
   }
-
-  /* 버튼 없는 인풋 반응형 */
-  /* .regist-item-content > div > input {
-    max-width: 32.6vw;
-  } */
 
   /* 내용 안의 우측 버튼들 */
   .regist-item-content > div button {
@@ -689,11 +724,6 @@ import { useRoute } from 'vue-router';
     display: flex;
     align-items: center;
   }
-
-  /* 버튼 있는 인풋 반응형 */
-  /* .btn-group > input {
-    max-width: 30vw;
-  } */
 
   /* 해당 버튼 호버시 효과 */
   .regist-item-content > div button:hover {
@@ -748,7 +778,7 @@ import { useRoute } from 'vue-router';
     justify-content: center;
     align-items: center; 
     column-gap: 30px;
-    margin-top: 27.5px;
+    margin-top: 18px;
   }
 
   .btn-submit, .btn-cancel > button {
@@ -770,6 +800,76 @@ import { useRoute } from 'vue-router';
 
   .btn-cancel > button {
     background-color: #F3F3F3;
+  }
+
+  /* -------------------------------------------------------------------------- */
+
+  /* 버튼 없는 인풋 반응형 */
+  /* .regist-item-content > div > input {
+    max-width: 32.6vw;
+  } */
+
+  /* 버튼 있는 인풋 반응형 */
+  /* .btn-group > input {
+    max-width: 30vw;
+  } */
+
+  @media(max-width: 390px) {
+
+    /* 메인 컨테이너 */
+    .regist-container {
+      overflow-y: auto;
+      white-space: wrap;
+    }
+    /* 메인 박스 */
+    .regist-main-box {
+      max-width: 97vw;
+      height: 834px;
+      max-height: 100vh;
+      margin: 5px 0;
+      padding: 0 10px;
+    }
+    
+    /* */
+
+    /* 메인 타이틀 제목 */
+    .regist-main-title, .regist-main-title span {
+      font-size: 1.2rem;
+    }
+
+    /* 메인 입력 셀 하나로 */
+    .regist-main-content {
+      grid-template-columns: 1fr;
+    }
+    /* 제목탭 숨김 */
+    .regist-item-title {
+      display: none;
+    }
+
+    /* 프로필 크기 설정 */
+    .regist-profile-preview {
+      width: 180px;
+      height: 180px;
+      margin-top: 0;
+    }
+
+    /* 인풋 여백설정 */
+    .regist-item-content > div {
+      padding: 17px 0 0 10px;
+    }
+
+    /* 안내사항 및 에러 메시지 */
+    .ann-msg, .err-msg, .pass-msg {
+      font-size: 0.75rem;
+    }
+
+    /* 하단 버튼 */
+    .regist-footer {
+      margin-top: 22px;
+    }
+    .btn-submit {
+      background-color: #2563EB;
+    }
   }
 
 </style>

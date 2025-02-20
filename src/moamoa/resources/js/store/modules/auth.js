@@ -525,9 +525,15 @@ export default {
       axios.post(url, data, config)
       .then(res => {
 
+        // 가족코드 세팅
         if(res.data.famCode) {
           sessionStorage.setItem('famCode', res.data.famCode);
+          context.commit('setIsMatchingPass', false);
         }
+
+        // 인증값 리셋
+        context.commit('setIsAccountPass', false);
+        context.commit('setIsEmailPass', false);
 
         // 회원가입 완료 페이지로 이동
         router.replace('/regist/complete/'+ registInfo.userType);
@@ -657,8 +663,12 @@ export default {
       .then(res => {
         // alert('회원 정보의 수정이 완료되었습니다.');
         context.commit('setIsError', false);
+        context.commit('setIsEmailPass', false);
 
-        router.replace('/');
+        setTimeout(() => {
+          context.commit('setPrivateModalFlg', false);
+          router.replace('/');
+        }, 500);
       }).catch(err => {
         // 다시 시도할 경우를 대비해 메세지 초기화
         context.commit('resetErrMsg');
@@ -712,7 +722,11 @@ export default {
       .then(res => {
         // console.log(res.data);
         // alert('회원 탈퇴 신청이 완료되었습니다. 로그인 페이지로 이동합니다.');
-        context.dispatch('logout'); // 로그아웃 실행
+        
+        setTimeout(() => {
+          context.commit('setPrivateModalFlg', false);
+          context.dispatch('logout'); // 로그아웃 실행
+        }, 500);
       })
       .catch(err => {
         // 출력 메세지 변수 연결

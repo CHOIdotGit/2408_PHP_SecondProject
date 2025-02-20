@@ -265,9 +265,7 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     });
   };
 
-
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
-
 
   // 클릭 외부 감지 함수
   const handleCopyBoard = (e) => {

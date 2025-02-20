@@ -221,5 +221,61 @@ import { useRoute } from 'vue-router';
   .find-pwd-btn {
     background-color: #F3F3F3;
   }
+  
+  /* -------------------------------------------------------------------- */
+  
+  @media(max-width: 390px) {
+    /* 메인 박스 */
+    .find-main-box {
+      max-width: 97vw;
+      padding: 30px 15px;
+      height: 495px;
+      margin-bottom: 55px;
+    }
+
+    /* 아이콘 크기 조절 */
+    .find-header-icon > div {
+      width: 100px;
+      height: 100px;
+    }
+    /* 헤더 타이틀 크기 조절 */
+    .find-header-icon > h1 {
+      font-size: 1.8rem;
+    }
+
+    /* 메인 서브 타이틀 크기 */
+    .find-main-content > div > p {
+      font-size: 1.2rem;
+    }
+
+    /* 음영 박스 크기 변경 */
+    .find-content-id {
+      padding: 10px 0 0 0;
+    }
+    /* 아이디 크기 조절 */
+    .find-content-id > div {
+      font-size: 1.6rem;
+    }
+
+    /* 하단 버튼 간격 조절 */
+    .find-footer-btn {
+      column-gap: 30px;
+      padding: 0;
+    }
+    /* 하단 버튼들 */
+    .find-footer-btn button {
+      font-size: 1.1rem;
+      padding: 20px 0;
+    }
+
+    /* 비밀번호 완료 텍스트 조절 */
+    .find-content-pwd {
+      padding: 0 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+  }
 
 </style>

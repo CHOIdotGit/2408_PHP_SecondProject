@@ -34,6 +34,7 @@
             <input 
               v-model="identInfo.password" 
               :class="{ 'err-border' : errMsg.password }" 
+              :placeholder="isMobile ? '비밀번호를 입력하세요' : ''"
               @keyup.enter="identBtn"
               type="password" 
               name="password" 
@@ -100,6 +101,13 @@ import { useRoute } from 'vue-router';
 
   // 이벤트 처리 ---------------------------------------------------------------------------------------------
   
+  const isMobile = ref(window.innerWidth <= 390);
+
+  // 윈도우 크기 변경 시 반응
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 390;
+  });
+
   onBeforeMount(() => {
     // 에러 정보 리셋
     if(Object.values(errMsg).some(value => value !== '' && value !== null && value !== undefined)) {
@@ -274,6 +282,55 @@ import { useRoute } from 'vue-router';
     font-size: 1.8rem;
     color: red;
     padding-bottom: 90px;
+  }
+
+  /* -------------------------------------------------------------------- */
+
+  @media(max-width: 390px) {
+    .ident-container {
+      white-space: wrap;
+    }
+
+    /* 메인박스 */
+    .ident-main-box {
+      width: 100%;
+      height: 645px;
+      padding: 0 10px;
+    }
+
+    /* 메인 제목 텍스트 */
+    .ident-main-box > h2 {
+      font-size: 2rem;
+    }
+
+    /* 메인 입력창 제목탭 숨김 */
+    .ident-main-content {
+      grid-template-columns: 1fr;
+    }
+    .ident-item-title {
+      display: none;
+    }
+
+    /* 입력창 여백조정 */
+    .ident-item-content > div {
+      height: inherit;
+      padding: 20px 10px;
+      font-size: 1.3rem;
+    }
+    /* 입력창 조절 */
+    .ident-item-content > div input {
+      width: 100%;
+      font-size: 1.2rem;
+    }
+
+    .ident-main-footer > p {
+      font-size: 0.9rem;
+    }
+
+    /* 버튼색 변경 */
+    .ident-footer-btn > button {
+      background-color: #2563EB;
+    }
   }
 
 </style>

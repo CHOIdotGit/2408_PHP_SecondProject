@@ -234,5 +234,38 @@ import { useStore } from 'vuex';
     box-shadow: 0 0 2px #ff0000;
   }
 
+  /* -------------------------------------------------------------------- */
+
+  @media(max-width: 390px) {
+    /* 메인 박스 */
+    .find-main-box {
+      max-width: 97vw;
+      padding: 30px 15px;
+      height: 495px;
+      margin-bottom: 55px;
+    }
+
+    /* 메인 타이틀 */
+    .find-main-form h2 {
+      font-size: 1.2rem;
+      margin: 30px 0 10px 5px;
+    }
+
+    .find-input-group > div {
+      padding: 15px;
+    }
+
+    /* 입력 내용 */
+    .find-input-group input {
+      font-size: 1.15rem;
+    }
+
+    /* 하단 서브 텍스트 */
+    .find-footer-btn > p {
+      font-size: 1rem;
+      margin: 50px 0 20px 0;
+      padding: 0 20px;
+    }
+  }
 
 </style>

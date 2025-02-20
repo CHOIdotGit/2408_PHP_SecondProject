@@ -154,6 +154,7 @@ import { useStore } from 'vuex';
       }else if(emailModalFlg.value){
         // 타이머 멈춤
         clearInterval(timer);
+
         // 만료 메세지 출력
         alert('인증 시간이 만료되었습니다. 다시 인증을 진행해주세요.');
         closeEmailModal();
@@ -312,6 +313,41 @@ import { useStore } from 'vuex';
   .email-modal-btn > button:nth-child(2) span {
     padding: 0;
     margin: 0;
+  }
+
+  /* ------------------------------------------------------------------------ */
+
+  @media(max-width: 390px) {
+    .email-modal-overlay {
+      white-space: wrap;
+    }
+
+    /* 소제목 조절 */
+    .email-modal-content > p {
+      font-size: 0.9rem;
+      white-space: wrap;
+    }
+
+    /* 모달 박스 */
+    .email-modal-box {
+      width: 375px;
+      padding: 20px;
+    }
+
+    /* 모달 내용 */
+    .email-modal-main {
+      justify-content: center;
+      padding: 0;
+    }
+
+    .email-modal-code > input {
+      padding: 2px 0 0 24px;
+    }
+    .email-modal-code > span {
+      right: 18px;
+      top: 10px;
+    }
+
   }
   
 </style>
