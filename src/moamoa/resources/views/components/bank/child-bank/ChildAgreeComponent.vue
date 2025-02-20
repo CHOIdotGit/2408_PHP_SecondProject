@@ -79,19 +79,26 @@
                 
                 <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
                 <label for="agree-yes">네, 동의합니다</label>
-
-                <!-- <div class="radioBtn">
-                    <label for="agree-yes" class="radioStyle">
-                        <input type="radio" iid="agree-yes" value="yes" name="agree">
-                        <div>네, 동의합니다</div>
-                    </label>
-
-                </div> -->
             </div>
 
             <div class="registBtn">
                 <div class="box-btn cancel">돌아가기</div>
                 <div class="box-btn" @click="goResigt(agreement)">가입하기</div>
+            </div>
+        </div>
+    <!-- ************************* -->
+    <!-- ********모달********* -->
+    <!-- ************************* -->
+        <div class="base-modal-overlay" v-show="agreeModal">
+            <div class="base-modal-box">
+            <div class="base-modal-content">
+                약관에 동의하시길 바랍니다
+            </div>
+
+            <div class="base-modal-btn">
+                <button type="button" class="base-modal-submit" @click="closeModal">확인</button>
+                <!-- <button type="button" class="base-modal-cancel" @click="closeModal">취소</button> -->
+            </div>
             </div>
         </div>
     </div>
@@ -109,6 +116,11 @@ const router = useRouter();
 
 const agreement = ref("");
 
+// 모달 처리
+const agreeModal = ref(false);
+const closeModal = () => {
+    agreeModal.value = false;
+}
 const goResigt = () => {
     if(agreement.value === 'yes') {
         router.push('/moabank/product/regist/' + route.params.product_id);
@@ -116,7 +128,7 @@ const goResigt = () => {
     }
 
     else if(agreement.value === 'no') {
-        alert('약관에 동의하시길 바랍니다');
+        agreeModal.value = true;
     }
 }
 
@@ -366,6 +378,76 @@ h1 {
     height: 50px;
 }
 
+/* ************* */
+/*     모달      */
+/* ************* */
+/* 버튼 손모양 */
+button {
+cursor: pointer;
+}
 
+/* 뒷배경 */
+.base-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* 모달 박스 */
+.base-modal-box {
+background-color: #fff;
+padding: 25px;
+border-radius: 10px;
+width: 430px;
+height: 330px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+border: 3px solid #A2CAAC;
+}
+
+/* 각 넓이 설정 */
+.base-modal-content, .base-modal-btn {
+width: 100%;
+font-size: 1.6rem;
+text-align: center;
+line-height: 227px;
+}
+
+/* 버튼 중앙 정렬 */
+.base-modal-btn {
+display: flex;
+justify-content: center;
+align-items: center;
+column-gap: 75px;
+}
+
+/* 각 버튼 설정 */
+.base-modal-btn > button {
+padding: 12px 40px;
+border: none;
+border-radius: 5px;
+font-size: 1.1rem;
+}
+
+/* 확인 버튼 */
+.base-modal-submit {
+background-color: #A2CAAC;
+color: #fff;
+}
+
+/* 취소 버튼 */
+.base-modal-cancel {
+background-color: #F3F3F3;
+}
+  
 
 </style>

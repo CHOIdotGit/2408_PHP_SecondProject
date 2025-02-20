@@ -72,6 +72,21 @@
     </div>
 </div>
 
+<!-- ************************* -->
+<!-- ********안내 모달********* -->
+<!-- ************************* -->
+<div class="base-modal-overlay" v-show="infoModal">
+<div class="base-modal-box">
+    <div class="base-modal-content">
+    <div>미션이 승인되었습니다</div>
+    </div>
+
+    <div class="base-modal-btn">
+    <button type="button" class="base-modal-submit" @click="delCloseModal">확인</button>
+    </div>
+</div>
+</div>
+
     
 </template>
 
@@ -117,6 +132,12 @@ const delOpenModal = (mission_id) => {
     delModal.value = true;
 }
 
+// ****************************
+// *******모달창 설정***********
+// ****************************
+// 안내 모달창
+const infoModal = ref(false); 
+
 const delCloseModal = () => { //모달창 닫기
     delModal.value = false;
 }
@@ -143,7 +164,8 @@ const goUpdate = (mission_id) => {
 const approvalMission = () => {
     const missionItem = ref([missionDetail.value.mission_id]);
     store.dispatch('mission/approvalMission', missionItem.value);
-    alert('해당 미션의 승인이 완료되었습니다.');
+    // alert('해당 미션의 승인이 완료되었습니다.');
+    infoModal.value = true;
     goBack(missionDetail.value.child_id);
 }
 
@@ -325,6 +347,77 @@ const approvalMission = () => {
     width: 100px;
     cursor: pointer;
     margin: 10px;
+}
+
+/* ********** */
+/* 안내 모달 */
+/* ********** */
+/* 버튼 손모양 */
+button {
+cursor: pointer;
+}
+
+/* 뒷배경 */
+.base-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* 모달 박스 */
+.base-modal-box {
+background-color: #fff;
+padding: 25px;
+border-radius: 10px;
+width: 430px;
+height: 330px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+border: 3px solid #A2CAAC;
+}
+
+/* 각 넓이 설정 */
+.base-modal-content, .base-modal-btn {
+width: 100%;
+font-size: 1.6rem;
+text-align: center;
+line-height: 227px;
+}
+
+/* 버튼 중앙 정렬 */
+.base-modal-btn {
+display: flex;
+justify-content: center;
+align-items: center;
+column-gap: 75px;
+}
+
+/* 각 버튼 설정 */
+.base-modal-btn > button {
+padding: 12px 40px;
+border: none;
+border-radius: 5px;
+font-size: 1.1rem;
+}
+
+/* 확인 버튼 */
+.base-modal-submit {
+background-color: #A2CAAC;
+color: #fff;
+}
+
+/* 취소 버튼 */
+.base-modal-cancel {
+background-color: #F3F3F3;
 }
 
 

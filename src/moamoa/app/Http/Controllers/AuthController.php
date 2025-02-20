@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use App\Mail\SendEmail;
+use App\Models\Child;
+use App\Models\Point;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -72,7 +74,34 @@ class AuthController extends Controller {
         }else { 
           //아니면 자녀 로그인
           Auth::guard('children')->login($child);
-    
+
+          // *******************************************
+          // 로그인하면 포인트 지급
+          // *******************************************(김주연)
+          // $childPoints = Child::whereIn('child_id', $child->child_ids)
+          //                     ->where('point_flg', '0')
+          //                     ->get();
+
+          // $today = now()->format('Y-m-d');
+
+          // foreach($childPoints as $childPoint) {
+          //   if( empty($childPoint->login_at) ||$childPoint->login_at < $today ) {
+          //     $insertPoint = new Point();
+          //     $insertPoint->child_id = $childPoint->child_id;
+          //     $insertPoint->point = 2;
+          //     $insertPoint->point_code = '0';
+          //     $insertPoint->payment_at = $today;
+  
+          //     $insertPoint->save();
+          //   }
+          // }
+          //   Child::where('child_id', $child->child_ids)
+          //         ->where('point_flg', '0')
+          //         ->update([
+          //           'login_at'=> $today
+          //           ,'point_flg' => '1'
+          //         ]);
+            
           $responseData = [
             'success' => true
             ,'msg' => '자녀 로그인 성공'

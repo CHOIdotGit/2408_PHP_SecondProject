@@ -188,8 +188,9 @@ class MissionController extends Controller
                     ->update(['status' => 2]);
             }
 
-            
-
+            // ***************************************
+            // 미션 완료 하면 포인트 지급 
+            // ***************************************(김주연)
             $missionPointFlgs = Mission::whereIn('mission_id', $request->mission_ids)
                                     ->where('status', 2)
                                     ->where('point_flg', 0)

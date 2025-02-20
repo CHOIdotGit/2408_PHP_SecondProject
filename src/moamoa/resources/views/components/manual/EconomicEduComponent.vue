@@ -12,12 +12,13 @@
 
         </div>
     </div>
-    <div class="economin-box">
+    <div class="economin-box  deco1">
         <h2>금융시장과 금융기관</h2>
         <div class="economic-content">
             <p>금융시장은 사람들 사이에 돈의 거래가 이루어지는 곳을 말하며,</p>
             <p>금융기관이란 저축하는 사람들로부터 받은 돈을 소비나 투자를 하려는 사람에게 빌려 주어서</p>
             <p>돈의 유통을 도와주는 역할을 하는 은행과 증권회사 등을 말한다.</p>
+            <img src="/img/playConcept-img062.png" alt="">
 
         </div>
     </div>
@@ -27,7 +28,7 @@
             <p>저축은 미래의 소비를 위해 현재의 소비를 줄이는 행위이며,</p>
             <p>저축에 대한 보장으로 받는 것이 이자이다.</p>
             <p>사람들은 어떤 저축상품을 선택하느냐에 따라 수익성과 위험성이 달라지게 된다.</p>
-
+            <img src="/img/playConcept-img063.png" alt="">
         </div>
     </div>
 
@@ -47,19 +48,28 @@
 }
 
 .economin-box {
-    margin-bottom: 60px;
+    width: 700px;
     background-color: #f2f2f2;
+    border-bottom: 30px solid #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+.deco1 {
+    background: #d8dbec;
 }
 
 .economic-content {
     font-size: 1.2rem;
+    line-height: 31px;
 }
 
 img {
-    width: 80%;
+    height: 40%;
 }
 
 h2 {
-    padding: 15px;
+    padding: 27px;
+    font-size: 2rem;
 }
 </style>

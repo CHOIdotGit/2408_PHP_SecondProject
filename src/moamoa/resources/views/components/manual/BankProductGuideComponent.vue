@@ -1,5 +1,5 @@
 <template>
-    <div class="bank-product-containver">
+    <div class="bank-product-container">
         <div class="bank-product-box" >
             <p class="bank-product-title">상품 특징</p>
             <div class="bank-product-content">
@@ -14,12 +14,6 @@
             </div>
         </div>
         <div class="bank-product-box" >
-            <p class="bank-product-title">납입 기한</p>
-            <div class="bank-product-content">
-                <p >7일(일단위)</p>
-            </div>
-        </div>
-        <div class="bank-product-box" >
             <p class="bank-product-title">가입 금액</p>
             <div class="bank-product-content">
                 <p >최소 100 최대 1000 (추가입금 불가)</p>
@@ -28,7 +22,23 @@
         <div class="bank-product-box" >
             <p class="bank-product-title">이자 지급 시기</p>
             <div class="bank-product-content">
-                <p >만기일시지급식</p>
+                <p >만기 후 이자 지급식</p>
+            </div>
+        </div>
+        <div class="bank-product-box" >
+            <p class="bank-product-title">세제 해택</p>
+            <div class="bank-product-content">
+                <p>우리나라는 이자소득 원천징수세 15.4%(소득세 14%, 지방소득세 1.4%)를 부과하나</p>
+                <p>모아 은행은 자녀의 경제 교육을 위한 포인트 통장으로 발생한 이자에 대한 소득제를 부과하지 않습니다</p>
+            </div>
+        </div>
+        <div class="bank-product-box" >
+            <p class="bank-product-title">예금자 보호 제도</p>
+            <div class="bank-product-content">
+                <img src="/img/kdic_logo_new.png" alt="">
+                <p >예금자보호제도는 다수의 소액예금자를 우선 보호하고</p>
+                <p>부실 금융회사를 선택한 예금자도 일정부분 책임을 분담한다는 차원에서 예금의 전액을 보호하지 않고 일정액만을 보호하고 있습니다</p>
+                <p>원금과 소정이자를 합하여 1인당 5천만원까지만 보호되며 초과금액은 보호되지 않습니다</p>
             </div>
         </div>
     </div>
@@ -40,6 +50,29 @@
 </script>
 
 <style scoped>
+.bank-product-container {
+    margin-top: 30px;
+    
+    font-size: 1.2rem;
+}
 
+.bank-product-box {
+    border-bottom: 1px solid #f1f1f1;
+    display: flex;
+    padding: 20px;
+    width: 700px;
+}
+
+.bank-product-title {
+    width: 150px;
+    margin-right: 10px;
+    color: #bd842e;
+    font-weight: 600;
+}
+
+.bank-product-content {
+    width: 500px;
+    line-height: 34px;
+}
 
 </style>

@@ -116,11 +116,27 @@
                 <div class="del-guide">선택한 {{ (checkboxItem).length }} 개의 미션이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="delCloseModal" class="modal-close">취소</button>
                 <button @click="deleteCheckedMission()" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
+
+    <!-- ************************* -->
+    <!-- ********안내 모달********* -->
+    <!-- ************************* -->
+    <div class="base-modal-overlay" v-show="infoModal">
+    <div class="base-modal-box">
+      <div class="base-modal-content">
+        <div>삭제할 미션을 선택하세요</div>
+      </div>
+
+      <div class="base-modal-btn">
+        <button type="button" class="base-modal-submit" @click="delCloseModal">확인</button>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -276,8 +292,8 @@ console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 // 체크된 미션만 삭제 처리 하기
 const deleteCheckedMission = () => {
     if(checkboxItem.value.length === 0) {
-        alert("삭제할 미션을 선택하세요");
-        console.log("삭제할 미션 ",checkboxItem.value);
+        // alert("삭제할 미션을 선택하세요");
+        infoModal.value = true;
         return;
     }
     store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
@@ -288,29 +304,33 @@ const deleteCheckedMission = () => {
 
 }
 
+// ****************************
+// *******모달창 설정***********
+// ****************************
+// 안내 모달창
+const infoModal = ref(false); 
 
 // *****삭제 모달창********** 
 const delModal = ref(false);
 
 const delOpenModal = () => { //모달창 열기
     if(checkboxItem.value.length === 0) {
-        alert("선택하신 미션이 없습니다.");
+        infoModal.value = true;
         return;
     }
     else {
         delModal.value = true;
-
     }
 }
 
 const delCloseModal = () => { //모달창 닫기
     delModal.value = false;
+    infoModal.value = false;
 }
 
 
 // 미션아이디 확인해서 상세 페이지 이동하기 위해서
 const getMissionId = (mission_id) => {
-    console.log('미션 아이디 획득', mission_id);
     store.dispatch('childMission/showMissionDetail', mission_id);
 }
 
@@ -557,7 +577,7 @@ const missionSearch = () => {
 }
 
 /* 삭제 모달 버튼 */
-.modal-cancel {
+.modal-close {
     color: #ACACAC;
     background-color: #FFFFFF;
     font-size: 1.2rem;
@@ -618,5 +638,76 @@ const missionSearch = () => {
 .dots {
     /* cursor: default; */
     all: unset;
+}
+
+/* ********** */
+/* 안내 모달 */
+/* ********** */
+/* 버튼 손모양 */
+button {
+cursor: pointer;
+}
+
+/* 뒷배경 */
+.base-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* 모달 박스 */
+.base-modal-box {
+background-color: #fff;
+padding: 25px;
+border-radius: 10px;
+width: 430px;
+height: 330px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+border: 3px solid #A2CAAC;
+}
+
+/* 각 넓이 설정 */
+.base-modal-content, .base-modal-btn {
+width: 100%;
+font-size: 1.6rem;
+text-align: center;
+line-height: 227px;
+}
+
+/* 버튼 중앙 정렬 */
+.base-modal-btn {
+display: flex;
+justify-content: center;
+align-items: center;
+column-gap: 75px;
+}
+
+/* 각 버튼 설정 */
+.base-modal-btn > button {
+padding: 12px 40px;
+border: none;
+border-radius: 5px;
+font-size: 1.1rem;
+}
+
+/* 확인 버튼 */
+.base-modal-submit {
+background-color: #A2CAAC;
+color: #fff;
+}
+
+/* 취소 버튼 */
+.base-modal-cancel {
+background-color: #F3F3F3;
 }
 </style>
