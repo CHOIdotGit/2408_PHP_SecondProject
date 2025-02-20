@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Child;
 use App\Models\Mission;
+use App\Models\Point;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -167,7 +168,7 @@ class MissionController extends Controller
         try {
             DB::beginTransaction();
 
-            $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 0)->get();
+            $missions = Mission::whereIn('mission_id', $request->mission_ids)->where('status', 1)->get();
             if(count($missions) > 0) {
                 foreach($missions as $mission) {
                     $transactionData = new Transaction();
@@ -183,8 +184,30 @@ class MissionController extends Controller
                 }
     
                 Mission::whereIn('mission_id', $request->mission_ids)
-                    ->where('status', 0)
+                    ->where('status', 1)
                     ->update(['status' => 2]);
+            }
+
+            
+
+            $missionPointFlgs = Mission::whereIn('mission_id', $request->mission_ids)
+                                    ->where('status', 2)
+                                    ->where('point_flg', 0)
+                                    ->get();
+
+            if(count($missionPointFlgs) > 0) {
+                foreach($missionPointFlgs as $missionPointFlg) {
+                    $missionPoint = new Point();
+                    $missionPoint->child_id = $missionPointFlg -> child_id;
+                    $missionPoint->point = 10;
+                    $missionPoint->point_code = '1';
+                    $missionPoint->payment_at = now()->format('Y-m-d');
+        
+                    $missionPoint->save();
+                }
+                Mission::whereIn('mission_id', $request->mission_ids)
+                        ->where('point_flg', '0')
+                        ->update(['point_flg' => '2']);
             }
 
             DB::commit();
@@ -193,6 +216,7 @@ class MissionController extends Controller
                 'success' => true
                 ,'msg' => '미션 승인 업데이트 성공'
             ], 200);
+
         }catch(Throwable $th) {
             DB::rollBack();
 

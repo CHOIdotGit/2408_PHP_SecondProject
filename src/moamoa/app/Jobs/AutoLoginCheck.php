@@ -18,10 +18,6 @@ class AutoLoginCheck extends MyJob {
         // 로그인 유저 가 자녀인지 확인
         $child = Auth::guard('children')->user();
 
-        if(!$child) {
-            return;
-        }
-
         $today = now()->format('Y-m-d');
 
         // 로그인 한 날짜 확인

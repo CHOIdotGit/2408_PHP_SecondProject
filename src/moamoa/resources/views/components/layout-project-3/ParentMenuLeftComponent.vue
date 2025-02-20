@@ -31,7 +31,6 @@
                 <!-- 기본값: 부모 정보 -->
                 <option :value="null">(나)</option>
                 <option v-for="child in childNameList" :key="child" :value="child">
-                    {{ child.child_id }}
                     {{ child.name }}
                 </option>
             </select>

@@ -17,6 +17,7 @@ class Point extends Model
         ,'point'
         ,'point_code'
         ,'payment_at'
+        ,'point_flg'
     ];
 
     public function child() {

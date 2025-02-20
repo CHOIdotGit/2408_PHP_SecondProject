@@ -77,7 +77,6 @@ const goPointPage = () => {
 
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
-    // store.dispatch('saving/parnetChildSavingDetail', saving_sign_up_id);
     router.push('/parent/bankbook/' + saving_sign_up_id);
 }
 
