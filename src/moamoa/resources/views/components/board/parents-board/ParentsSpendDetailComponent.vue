@@ -14,7 +14,7 @@
                     <p class="title">날짜</p>
                     <div class="date-detail"></div>
                     <div class="date deco">
-                        <span class="ms-date h-60">{{ transactionDetail.transaction_date }}</span>   
+                        <span class="ms-date h-60" span-div>{{ transactionDetail.transaction_date }}</span>   
                     </div>
                 </div>
                 <div class="content-cate">

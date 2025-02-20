@@ -13,11 +13,11 @@
                         <div class="c-date">
                             <div class="c-start-date">
                                 <p class="c-date-title">시작일</p>
-                                <span class="c-ms-date">{{ missionDetail.start_at }}</span>
+                                <span class="c-ms-date span-div">{{ missionDetail.start_at }}</span>
                             </div>
                             <div class="c-end-date">
                                 <p class="c-date-title">종료일</p>
-                                <span class="c-ms-date">{{ missionDetail.end_at }}</span>
+                                <span class="c-ms-date span-div">{{ missionDetail.end_at }}</span>
                             </div>
                         </div>
                     </div>

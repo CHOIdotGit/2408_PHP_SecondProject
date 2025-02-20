@@ -6,7 +6,7 @@
                 <p class="bank-name">모아은행</p>
             </div>
             <!-- 통장 정보 -->
-            <div v-if="pointList.length" class="bankbook-info">
+            <div v-if="pointList.length > 0" class="bankbook-info">
                 <div class="info-detail">
                     <div class="b-info">
                         <p class="p-first">통장 종류</p>
@@ -14,19 +14,12 @@
                     </div>
                     <div class="b-info">
                         <p class="margin-left p-first">나의 모아</p>
-                        <!-- <p class="margin-left p-first">모아 포인트</p>
-                        <p class="margin-left p-first">보유중인 모아 포인트</p> -->
                         <p>{{ Number(totalPoint).toLocaleString() }}</p>
                     </div>
                     <div class="b-info">
                         <p class="p-first">가입한 날</p>
                         <p>{{ formatDate(pointList[0].child.created_at) }}</p>
                     </div>
-                        <div class="b-info">
-                        <p class="margin-left p-first">금리</p>
-                        <p class="p-rate">3.0 %</p>
-                    </div>
-                    <!-- <p>보유중인 모아 포인트</p> -->
                 </div>
                 <div class="bankbook-profile">
                     <img :src="pointList[0].child.profile" class="img-size">
@@ -38,7 +31,7 @@
             <!-- 거래 내역 -->
             <div class="bankbook-table">
                 <div class="bankbook-title">
-                    <p @click="toggleSortOrder" class="change-date">년 월 일</p>
+                    <p class="change-date">년 월 일</p>
                     <p>출금 금액</p>
                     <p>맡기신 금액</p>
                     <p>거래 후 잔액</p>
@@ -47,13 +40,13 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="item in pointListWithBalance" :key="item.id" class="bankbook-transactions">
+                            <div v-for="item in pointList" :key="item" class="bankbook-transactions">
                                 <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
-                                <!-- 출금: point_code가 '3'인 경우에만 표시 -->
-                                <p class="bankbook-amount">{{ item.point_code === '3' ? Number(item.point).toLocaleString() : '' }}</p>
-                                <!-- 입금: point_code가 '3'이 아닐 때 표시 -->
-                                <p class="bankbook-amount">{{ item.point_code !== '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <!-- 출금 -->
+                                <p class="bankbook-amount">{{ item.withdrawal === 0 ? '' : Number(item.withdrawal).toLocaleString() }}</p>
+                                <!-- 입금 -->
+                                <p class="bankbook-amount">{{ item.deposit === 0 ? '' : Number(item.deposit).toLocaleString() }}</p>
                                 <!-- 거래 후 잔액 -->
                                 <p class="bankbook-amount">{{ Number(item.cumulativeTotal).toLocaleString() }}</p>
                                 <!-- 카테고리 -->
@@ -77,8 +70,7 @@
                 <!-- 페이지 번호 출력 4가 현재 페이지일때 (예: 1 ... 3 4 5 6) -->
                 <span v-for="page in pageNumbers" :key="page" class="paginate-span">
                     <!-- '...'인 경우 span 태그 사용 -->
-                    <!-- <button class="paginate-btn" @click="goToPage(page)" :disabled="page === currentPage || page === '...'">{{ page }}</button> -->
-                     <!-- 페이지 번호 버튼 -->
+                    <!-- 페이지 번호 버튼 -->
                     <button 
                         v-if="page !== '...'" 
                         class="paginate-btn" 
@@ -118,23 +110,8 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
-const pointList = computed(() => store.state.point.pointList);
+const pointList = computed(() => store.state.point.childPointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
-
-const pointListWithTotal = computed(() => {
-    let balance = Number(totalPoint.value); // 숫자로 변환
-    return pointList.value.map(item => {
-        const withdrawal = item.point_code === '3' ? Number(item.point) : 0;
-        const deposit = item.point_code !== '3' ? Number(item.point) : 0;
-        balance -= (deposit - withdrawal);
-        return {
-            ...item,
-            cumulativeTotal: balance, // 누적 잔액
-            deposit,                  // 입금 금액 (필요시)
-            withdrawal                // 출금 금액 (필요시)
-        };
-    });
-});
 
 // 시분초 제외
 const formatDate = (date) => {

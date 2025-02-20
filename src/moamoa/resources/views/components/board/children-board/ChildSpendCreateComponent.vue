@@ -30,7 +30,7 @@
                 <div class="c-content">
                     <p class="title">금액</p>
                     <input type="number" class="ms-amount deco" id="ms-amount" required v-model="transactionCreate.amount">
-                    <span>원</span>
+                    <span class="span-div">원</span>
                 </div>
                 <div class="c-bottom-btn">
                     <button @click="goBack" class="c-create-btn cancel">취소</button>
@@ -83,7 +83,6 @@ const goBack = () => {
 
 
 <style scoped>
-@import url('../../../../css/boardCommon.css');
 @import url('../../../../css/boardCommon.css');
 
 /* 입력란 테두리 */

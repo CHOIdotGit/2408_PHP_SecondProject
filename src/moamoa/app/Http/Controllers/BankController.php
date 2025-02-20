@@ -91,7 +91,7 @@ class BankController extends Controller
     public function index($id) {
         $productCount = SavingSignUp::where('child_id', $id)->count();
 
-        $point = Point::where('child_id', $id)->where('point_code', '!=', 3)->sum('point');
+        // $point = Point::where('child_id', $id)->where('point_code', '!=', '3')->sum('point');
 
         // $signUpProduct = SavingSignUp::where('child_id', $id)
         //                                 ->with('saving_products')
@@ -106,7 +106,18 @@ class BankController extends Controller
                                     ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
                                     ->get();
 
+        // point_code가 3이 아닌 항목의 합
+        $positivePoints = Point::where('child_id', $id)
+            ->where('point_code', '!=', 3)
+            ->sum('point');
 
+        // point_code가 3인 항목의 합
+        $negativePoints = Point::where('child_id', $id)
+            ->where('point_code', 3)
+            ->sum('point');
+
+        // 최종 결과: 3번 항목을 빼고 나머지 항목의 합산
+        $point = $positivePoints - $negativePoints;
         
         $responseData = [
             'success' => true

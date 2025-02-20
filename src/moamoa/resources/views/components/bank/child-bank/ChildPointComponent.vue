@@ -6,7 +6,7 @@
                 <p class="bank-name">모아은행</p>
             </div>
             <!-- 통장 정보 -->
-            <div v-if="pointList.length" class="bankbook-info">
+            <div v-if="pointList.length > 0" class="bankbook-info">
                 <div class="info-detail">
                     <div class="b-info">
                         <p class="p-first">통장 종류</p>
@@ -20,11 +20,6 @@
                         <p class="p-first">가입한 날</p>
                         <p>{{ formatDate(pointList[0].child.created_at) }}</p>
                     </div>
-                        <div class="b-info">
-                        <p class="margin-left p-first">금리</p>
-                        <p class="p-rate">3.0 %</p>
-                    </div>
-                    <!-- <p>보유중인 모아 포인트</p> -->
                 </div>
                 <div class="bankbook-profile">
                     <img :src="pointList[0].child.profile" class="img-size">
@@ -36,9 +31,7 @@
             <!-- 거래 내역 -->
             <div class="bankbook-table">
                 <div class="bankbook-title">
-                    <p>년 월 일
-                        <!-- 이걸 클릭하면 최신순, 오래된순 정렬하는 기능 추가 -->
-                    </p>
+                    <p>년 월 일</p>
                     <p>출금 금액</p>
                     <p>맡기신 금액</p>
                     <p>거래 후 잔액</p>
@@ -47,13 +40,13 @@
                 <div class="bankbook-item">
                     <div class="testing">
                         <div class="main-content">
-                            <div v-for="item in pointListWithTotal" :key="item.id" class="bankbook-transactions">
+                            <div v-for="item in pointList" :key="item" class="bankbook-transactions">
                                 <!-- 날짜 -->
                                 <p>{{ item.payment_at }}</p>
-                                <!-- 출금: point_code가 '3'인 경우에만 표시 -->
-                                <p class="bankbook-amount">{{ item.point_code === '3' ? Number(item.point).toLocaleString() : '' }}</p>
-                                <!-- 입금: point_code가 '3'이 아닐 때 표시 -->
-                                <p class="bankbook-amount">{{ item.point_code !== '3' ? Number(item.point).toLocaleString() : '' }}</p>
+                                <!-- 출금 -->
+                                <p class="bankbook-amount">{{ item.withdrawal === 0 ? '' : Number(item.withdrawal).toLocaleString() }}</p>
+                                <!-- 입금 -->
+                                <p class="bankbook-amount">{{ item.deposit === 0 ? '' : Number(item.deposit).toLocaleString() }}</p>
                                 <!-- 거래 후 잔액 -->
                                 <p class="bankbook-amount">{{ Number(item.cumulativeTotal).toLocaleString() }}</p>
                                 <!-- 카테고리 -->
@@ -77,7 +70,6 @@
                 <!-- 페이지 번호 출력 4가 현재 페이지일때 (예: 1 ... 3 4 5 6) -->
                 <span v-for="page in pageNumbers" :key="page" class="paginate-span">
                     <!-- '...'인 경우 span 태그 사용 -->
-                    <!-- <button class="paginate-btn" @click="goToPage(page)" :disabled="page === currentPage || page === '...'">{{ page }}</button> -->
                      <!-- 페이지 번호 버튼 -->
                     <button 
                         v-if="page !== '...'" 
@@ -120,9 +112,6 @@ const store = useStore();
 const route = useRoute();
 const pointList = computed(() => store.state.point.pointList);
 const totalPoint = computed(() => store.state.point.totalPoint);
-const deposit = computed(() => store.state.point.deposit);
-const withdrawal = computed(() => store.state.point.withdrawal);
-const startingBalance = computed(() => store.state.point.startingBalance);
 // const childId = computed(() => store.state.point.childId);
 
 // 시분초 제외
@@ -181,11 +170,11 @@ const pageNumbers = computed(() => {
 });
 
 // 페이지 이동 함수
-// const goToPage = (page) => {
-//     if (page >= 1 && page <= lastPage.value) {
-//         store.dispatch('point/childPrintPointList', { child_id: route.params.child_id, page });
-//     }
-// };
+const goToPage = (page) => {
+    if (page >= 1 && page <= lastPage.value) {
+        store.dispatch('point/childPrintPointList', { child_id: route.params.child_id, page });
+    }
+};
 
 // 이전 페이지로 이동하는 함수
 const goToPrevious = () => {
@@ -200,40 +189,6 @@ const goToNext = () => {
         goToPage(currentPage.value + 1);
     }
 };
-
-const pointListWithTotal = computed(() => {
-    // API로부터 전달받은 startingBalance (이전 페이지까지의 누적 잔액)
-    let cumulative = Number(startingBalance.value);
-
-    // 거래 내역(pointList.value)을 payment_at 기준 오름차순(과거 → 최신)으로 정렬
-    const sortedList = [...pointList.value].sort(
-        (a, b) => new Date(a.payment_at) - new Date(b.payment_at)
-    );
-
-    // 정렬된 내역을 순회하며 누적 계산 진행
-    const computedList = sortedList.map(item => {
-        const isWithdrawal = item.point_code === '3';
-        const amount = Number(item.point);
-
-        if (isWithdrawal) {
-            cumulative -= amount;
-        } else {
-            cumulative += amount;
-        }
-
-        return {
-            ...item,
-            cumulativeTotal: cumulative, // 해당 거래 후 누적 잔액
-            deposit: isWithdrawal ? 0 : amount,
-            withdrawal: isWithdrawal ? amount : 0
-        };
-    });
-
-    // 최종 결과를 내림차순(최신 거래가 위로 오도록) 정렬하여 반환
-    return computedList.reverse();
-});
-
-
 
 onBeforeMount(() => {
     store.dispatch('point/childPrintPointList', {child_id: route.params.child_id, page: 1});

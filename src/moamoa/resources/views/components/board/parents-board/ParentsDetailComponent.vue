@@ -13,11 +13,11 @@
                 <div class="date-detail">
                     <div class="start-date">
                         <p class="date-title">시작일</p>
-                        <span class="ms-date">{{ missionDetail.start_at }}</span>
+                        <span class="ms-date span-div">{{ missionDetail.start_at }}</span>
                     </div>
                     <div class="end-date">
                         <p class="date-title">종료일</p>
-                        <span class="ms-date">{{ missionDetail.end_at }}</span>
+                        <span class="ms-date span-div">{{ missionDetail.end_at }}</span>
                     </div>
                 </div>
             </div>
