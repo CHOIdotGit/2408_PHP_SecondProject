@@ -81,6 +81,20 @@ class HeaderController extends Controller
         return response()->json($responseData, 200);
     }
 
+    public function selectChild(Request $request) {
+        $parent = Auth::guard('parents')->user();
+
+        $selectChild = Child::select('child_id', 'name', 'profile')
+                                ->where('child_id', $request->child_id)
+                                ->first();
+
+        $responseData = [
+            'success' => true
+            ,'selectChild' => $selectChild
+        ];
+        return response()->json($responseData, 200);
+    }
+
     public function childBellList() {
         // ************************************************
         // 헤더 알람 : 부모가 미션을 승인하면 알람 목록에 출력

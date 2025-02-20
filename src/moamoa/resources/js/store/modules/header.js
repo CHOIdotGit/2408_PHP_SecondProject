@@ -11,7 +11,7 @@ export default {
         childInfo: [], // 로그인한 자녀 프로필 정보
         checkChildMissionAlarm: [],
         myName: {},
-        selectChild: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null,
+        childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null,
     }),
     mutations: {
         setChildNameList(state, childNameList) {
@@ -33,9 +33,9 @@ export default {
         setMyName(state, myName) {
             state.myName = myName
         },
-        setSelectChild(state, childNameList) {
-            state.childNameList = childNameList
-            sessionStorage.setItem('child_id', childNameList);
+        setChildId(state, childId) {
+            sessionStorage.setItem('child_id', childId);
+            state.childId = childId;
         }
     },
     actions: {
@@ -94,11 +94,10 @@ export default {
                 const url = '/api/parent/header';
                 axios.get(url)
                 .then(response => {
-    
+
                     context.commit('setChildNameList', response.data.childNameList);
-                    console.log('메뉴에서 자녀 리스트 보이기',response.data.childNameList);
                     context.commit('setMyName', response.data.myName);
-                    
+                    console.log('메뉴에서 자녀 리스트 보이기',response.data.childNameList);
                     return resolve();
                 })
                 .catch(error => {
@@ -126,11 +125,28 @@ export default {
             });
         },
 
+        // ****************************************
+        // 메뉴에서 자녀 선택 하기 ㅜㅜ
+        // ****************************************
+        // chooseChild(context, child_id) {
+        //     const url = '/api/parent/moabank/' + child_id;
+        //     console.log(url);
+        //     axios.get(url)
+        //         .then(response => {
+        //             sessionStorage.setItem('child_id', response.data.childNameList);
 
-
-
+        //         })
+        //         .catch(error => {
+        //             console.log('로그인한 자녀 프로필 불러오기 실패 ', error);
+        //             return resolve();
+        //         });
+        // },
     },
     getters: {
-
+        getChildInfo(state) {
+            return childId => {
+                return state.childNameList.find(item => item.child_id == childId);
+            }
+        }
     },
 }

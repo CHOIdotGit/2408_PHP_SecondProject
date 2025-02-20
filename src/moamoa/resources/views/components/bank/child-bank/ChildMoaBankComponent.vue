@@ -83,9 +83,9 @@ const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
 
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
-    const bankbook_id = saving_sign_up_id;
-    store.dispatch('saving/childSavingDetail', bankbook_id);
-    router.push('/child/bankbook/' + bankbook_id);
+    // const bankbook_id = saving_sign_up_id;
+    store.dispatch('saving/childSavingDetail', saving_sign_up_id);
+    router.push('/child/bankbook/' + saving_sign_up_id);
 }
 
 // 자녀 포인트 페이지로 이동

@@ -14,22 +14,23 @@
                     </div>
                     <div class="b-info">
                         <p class="margin-left p-first">납입 유형</p>
-                        <p>{{ savingInfo.saving_product_type }}</p>
+                        <p>{{ getTypeText(savingDetail[0]?.saving_product_type) }}</p>
                     </div>
                     <div class="b-info">
                         <p class="p-first">가입한 날</p>
-                        <p>{{ savingInfo.saving_detail_created_at }}</p>
+                        <p>{{ savingInfo.saving_sign_up_start_at }}</p>
                     </div>
                         <div class="b-info">
                             <p class="margin-left p-first">금리</p>
-                            <p class="p-rate">{{ Number(savingInfo.saving_product_interest_rate).toFixed(1) }} %</p>
+                            <p class="p-rate">{{ Number(savingDetail[0]?.saving_product_interest_rate).toFixed(1) }} %</p>
                     </div>
                 </div>
                 <div class="bankbook-profile">
                     <img :src="childInfo.profile" class="img-size">
-                    <div class="div-child-name">
-                    <p>{{ childInfo.name }}</p>
-                </div>
+                    <!-- 이름 영역 -->
+                    <!-- <div class="div-child-name">
+                        <p>{{ childInfo.name }}</p>
+                    </div> -->
                 </div>
             </div>
             <!-- 거래 내역 -->
@@ -58,7 +59,7 @@
 </template>
   
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
@@ -71,17 +72,14 @@ const savingDetail = computed(()=>store.state.saving.savingDetail);
 // 통장 정보
 const savingInfo = computed(()=> store.state.saving.savingInfo);
 
-// 자녀 정보
-const childInfo = store.state.header.childInfo;
-
 onMounted(()=> {
-    const bankbookId = route.params.saving_sign_up_id;
-    store.dispatch('saving/parnetChildSavingDetail', bankbookId);
-    store.dispatch('header/childInfo')
+    store.dispatch('saving/parnetChildSavingDetail', route.params.saving_sign_up_id);
+    store.dispatch('header/childNameList');
+    // store.dispatch('header/chooseChild', store.state.header.childId);
 })
 
-// 날짜 형태 바꾸기 yyyy-mm-dd
-
+// 자녀 정보
+const childInfo = computed(() => store.getters['header/getChildInfo'](store.state.header.childId));
 
 // 카테고리 문자로 변환
 const getCategoryText = (saving_detail_category) => {
@@ -91,6 +89,17 @@ const getCategoryText = (saving_detail_category) => {
     };
     return categoryMapping[saving_detail_category]; // 기본값 없이 반환
 };
+
+// 적금 유형 문자로 변환
+const getTypeText = (saving_product_type) => {
+    const typeMapping = {
+        "0": '매일 납입',
+        "1": '매주 납입',
+    };
+    return typeMapping[saving_product_type]; // 기본값 없이 반환
+};
+
+
 
 </script>
   

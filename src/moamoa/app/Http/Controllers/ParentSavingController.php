@@ -66,6 +66,7 @@ class ParentSavingController extends Controller
 
         // 자녀 적금 통장 내역
         $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
+                                        ,'saving_sign_ups.saving_sign_up_id'
                                         ,'saving_products.saving_product_name'
                                         ,'saving_products.saving_product_interest_rate'
                                         ,'saving_products.saving_product_type'
@@ -77,7 +78,6 @@ class ParentSavingController extends Controller
                                         )
                                 ->join('saving_details', 'saving_sign_ups.saving_sign_up_id', '=', 'saving_details.saving_sign_up_id')
                                 ->join('saving_products','saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
-                                ->whereIn('saving_sign_ups.child_id', $child)
                                 ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
                                 ->whereNull('saving_sign_ups.deleted_at')
                                 ->get();
@@ -87,7 +87,6 @@ class ParentSavingController extends Controller
                                                 ,'saving_sign_ups.saving_sign_up_status'
                                                 ,'saving_sign_ups.created_at'
                                                 )
-                                        ->where('saving_sign_ups.child_id', $child)
                                         ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
                                         ->first();
 

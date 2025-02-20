@@ -23,16 +23,18 @@
                 <!-- 가입한 적금 상품 개수 쿼리문으로 가져오기 -->
             </div>
             <!-- v-if -->
-            <div class="div-box" v-for="item in savingList" :key="item"  @click="goSavingDetail(item.saving_sign_up_id)">
-                <p class="have-point">모아 적금통장</p>
-                <p class="have-moa" >⭐ {{ item.saving_product_name }} 적금 ⭐</p>
-                <div class="div-box-item">
-                    <p >잔액</p>
-                    <div>{{ item.total }}moa</div>
-                </div>
-                <div class="div-box-item">
-                    <p>이자율 : </p>
-                    <div>{{ item.saving_product_interest_rate }} %</div>
+            <div class="div-box" v-for="item in savingList" :key="item">
+                <div @click="goSavingDetail(item.saving_sign_up_id)">
+                    <p class="have-point">모아 적금통장</p>
+                    <p class="have-moa" >⭐ {{ item.saving_product_name }} 적금 ⭐</p>
+                    <div class="div-box-item">
+                        <p >잔액</p>
+                        <div>{{ item.total }}moa</div>
+                    </div>
+                    <div class="div-box-item">
+                        <p>이자율 : </p>
+                        <div>{{ item.saving_product_interest_rate }} %</div>
+                    </div>
                 </div>
             </div>
             <!-- v-else -->
@@ -59,14 +61,14 @@ const point = computed(() => store.state.bank.point);
 // const childId = computed(() => store.state.bank.childId);
 // const productCount = computed(() => store.state.bank.productCount);
 
-const productCount = computed(() => {
-    const today = new Date();
-    const productInfoArray = Object.values(store.state.bank.productInfo); // 객체를 배열로 변환
+// const productCount = computed(() => {
+//     const today = new Date();
+//     const productInfoArray = Object.values(store.state.bank.productInfo); // 객체를 배열로 변환
 
-    return productInfoArray.filter(item => {
-        return new Date(item.saving_sign_up_end_at) >= today;
-    });
-});
+//     return productInfoArray.filter(item => {
+//         return new Date(item.saving_sign_up_end_at) >= today;
+//     });
+// });
 
 const emptySlots = computed(() => {
     return Math.max(3 - productCount.value.length, 0);
@@ -96,15 +98,10 @@ const goPointPage = () => {
 
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {
-    const bankbook_id = saving_sign_up_id;
-    store.dispatch('saving/parnetChildSavingDetail', bankbook_id);
-    router.push('/parent/bankbook/' + bankbook_id);
+    // store.dispatch('saving/parnetChildSavingDetail', saving_sign_up_id);
+    router.push('/parent/bankbook/' + saving_sign_up_id);
 }
 
-// const addSavingPage = () => {
-//     console.log('적금상품 더보기');
-//     store.dispatch('bank/addsavingList');
-// }
 
 // 가입한 적금 상품 개수 
 onBeforeMount(() => {

@@ -27,9 +27,10 @@
             </div>
             <div class="bankbook-profile">
                 <img :src="childInfo.profile" class="img-size">
-                <div class="div-child-name">
+                <!-- 이름 영역 -->
+                <!-- <div class="div-child-name">
                     <p>{{ childInfo.name }}</p>
-                </div>
+                </div> -->
             </div>
         </div>
 

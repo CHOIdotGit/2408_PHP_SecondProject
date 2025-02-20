@@ -67,9 +67,11 @@ export default {
             console.log(url);
             axios.get(url)
                 .then(response => {
-                    context.commit('setChildSavingList', response.data.savingList);
+                    sessionStorage.setItem('child_id', child_id);
                     context.commit('setChildId', child_id);
-                    console.log('자녀 적금 리스트 불러오기:', response.data.savingList);
+                    
+                    context.commit('setChildSavingList', response.data.savingList);
+                    console.log('자녀 적금 리스트 id:', child_id);
 
                 })
                 .catch(error => {
@@ -96,17 +98,18 @@ export default {
         },
 
         // 부모가 자녀 통장 확인
-        parnetChildSavingDetail(context, savingSignUpId) {
-            const url = '/api/parent/bankbook/' + savingSignUpId;
+        parnetChildSavingDetail(context, saving_sign_up_id) {
+            const url = '/api/parent/bankbook/' + saving_sign_up_id;
             console.log(url);
             axios.get(url) 
                 .then(response => {
-                    sessionStorage.setItem('saving_sign_up_id', savingSignUpId);
-                    context.commit('setSavingSignUpId', savingSignUpId);
+                    sessionStorage.setItem('saving_sign_up_id', saving_sign_up_id);
+                    context.commit('setSavingSignUpId', saving_sign_up_id);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
                     console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
-                    
+                    console.log('자녀 통장 정보', response.data.bankBookInfo);
+                    console.log('bbbb', saving_sign_up_id);
                 })
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);

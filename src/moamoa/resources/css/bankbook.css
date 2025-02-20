@@ -160,6 +160,9 @@
     background-color: #ffffff;
     margin: 25px 0 25px 25px;
     border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
 }
 
 .margin-left {
@@ -167,8 +170,8 @@
 }
 
 .img-size {
-    width: 148px;
-    max-height: 150px;
+    
+    max-height: 100%;
     object-fit: cover;
 }
 

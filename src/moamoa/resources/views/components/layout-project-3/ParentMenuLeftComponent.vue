@@ -30,7 +30,7 @@
             <select name="childName" id="child" v-model="selectedChild">
                 <!-- 기본값: 부모 정보 -->
                 <option :value="null">(나)</option>
-                <option v-for="child in childNameList" :key="child" :value="child" @change="sendChild(child.child_id)">
+                <option v-for="child in childNameList" :key="child" :value="child">
                     {{ child.child_id }}
                     {{ child.name }}
                 </option>
@@ -132,13 +132,10 @@ const displayProfile = computed(() => {
     return selectedChild.value ? selectedChild.value : myName.value;
 });
 
-const selectChild = computed({
-    get: () =>store.state.header.selectChild,
-    set: (newId) => {
-        store.dispatch('header/setSelectChild', newId);
-        router.push(`/parent/mission/list/${newId}`);
-    }
-})
+watch(() => selectedChild.value, newInfo => {
+    store.commit('header/setChildId', newInfo.child_id);
+    router.replace('/parent/home');
+});
 
 onBeforeMount(async () => {
     await store.dispatch('header/childNameList');

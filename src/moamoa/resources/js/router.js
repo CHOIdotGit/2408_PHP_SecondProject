@@ -298,7 +298,7 @@ const routes = [
 
     // 부모 자녀 적금 페이지
     {
-        path: '/parent/bankbook/:bankbook_id',
+        path: '/parent/bankbook/:saving_sign_up_id',
         component: ParentsBankBookComponent,
         beforeEnter: chkAuth,
     },
