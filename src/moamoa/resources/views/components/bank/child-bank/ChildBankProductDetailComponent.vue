@@ -43,22 +43,29 @@
     </div>
 
     <div class="tap-menu">
-        <div class="tap-item">상품안내</div>
-        <div class="tap-item">금리 및 이율</div>
-        <div class="tap-item">유의사항</div>
+        <div :class="openBankEconomic ? 'active' : 'tap-item'" @click="economicEdu">경제 교실</div>
+        <div :class="openBankGuide ? 'active' : 'tap-item'" @click="bankGuide">상품 안내</div>
+        <div class="tap-item" @click="bankRate">금리 및 이율</div>
+        <div class="tap-item" @click="bankNotice">유의사항</div>
     </div>
 
-    <div>
-        <div></div>
+    <div class="">
+        <!-- 경제 교실 -->
+        <EconomicEduComponent v-show="openBankEconomic"/>
+
+        <!-- 상품 특징 -->
+        <BankProductGuideComponent v-show="openBankGuide"/>
     </div>
 </div>
 
 </template>
 
 <script setup>
-import { computed, onBeforeMount, onMounted } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import BankProductGuideComponent from '../../manual/BankProductGuideComponent.vue';
+import EconomicEduComponent from '../../manual/EconomicEduComponent.vue';
 
 const store = useStore();
 const route = useRoute();
@@ -73,6 +80,22 @@ onBeforeMount(() => {
     console.log('상품 ID:', id);  // id가 제대로 전달되는지 확인
     store.dispatch('bank/selectedProduct', id);
 });
+
+// ********************
+// 탭 메뉴
+// ********************
+const openBankGuide = ref(false);
+const openBankEconomic = ref(true);
+
+const bankGuide = () => {
+    openBankGuide.value = true;
+    openBankEconomic.value = false;
+}
+
+const economicEdu = () => {
+    openBankEconomic.value = true;
+    openBankGuide.value = false;
+}
 </script>
 
 
@@ -178,9 +201,19 @@ img {
     text-align: center;
     width: 100%;
     height: 50px;
-    /* cursor: pointer; */
+    cursor: pointer;
     line-height: 47px;
     
+}
+
+.active {
+    border-top: 5px solid #ffdd38;
+    background: #fff;
+    text-align: center;
+    cursor: pointer;
+    line-height: 47px;
+    width: 100%;
+    height: 50px;
 }
 
 </style>

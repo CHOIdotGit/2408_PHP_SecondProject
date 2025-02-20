@@ -68,6 +68,7 @@ onBeforeMount(() => {
 //     store.dispatch('bank/addsavingList');
 // }
 
+
 const everyDay = ref(true);
 const everyWeek = ref(false); 
 
@@ -220,7 +221,7 @@ img {
     background-color: #f0f0f0;
     width: 600px;
     height: 73px;
-    border-bottom-color: #f0f0f0;
+    border-bottom: 1px solid #d9d9d9;
     cursor: pointer;
     font-size: 2rem;
     line-height: 74px;
