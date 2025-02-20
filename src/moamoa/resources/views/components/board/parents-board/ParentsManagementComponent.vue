@@ -50,6 +50,7 @@
             </Swiper>
             <div v-if="noChildFlg">
                 <p class="no-child">등록된 자녀가 없습니다.</p>
+                <p class="no-child">자녀를 등록해주세요. 가족정보 페이지에서 자녀를 승인하시면 가족으로 등록됩니다.</p>
             </div>
         </div>
     </div>

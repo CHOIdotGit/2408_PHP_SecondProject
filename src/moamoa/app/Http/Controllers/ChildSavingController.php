@@ -191,25 +191,61 @@ class ChildSavingController extends Controller
     }
 
     // 자녀 만기된 적금 가져오기
-    public function expiredSaving() {
+    // public function expiredSaving() {
         
+    //     $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
+    //     $today = now()->toDateString(); // 오늘 날짜 가져오기
+
+    //     $expiredSavings = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status')
+    //                                     ->where('saving_sign_ups.child_id', $child)
+    //                                     ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
+    //                                     ->with(['saving_products' => function($query) {
+    //                                         $query->select('saving_product_id', 'saving_product_name'); // saving_sign_up_id도 포함해야 관계가 제대로 연결됨
+    //                                     }])
+    //                                     ->paginate(20);
+
+    //     $responseData = [
+    //         'success' => true
+    //         ,'msg' => '만기된 적금 가져오기 성공'    
+    //         ,'expiredSavings' => $expiredSavings
+    //     ];
+
+    //     return response()->json($responseData, 200);
+    // }
+    public function expiredSaving() {
         $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
         $today = now()->toDateString(); // 오늘 날짜 가져오기
-
-        $expiredSavings = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status')
-                                        ->where('saving_sign_ups.child_id', $child)
-                                        ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
-                                        ->with(['saving_products' => function($query) {
-                                            $query->select('saving_product_id', 'saving_product_name'); // saving_sign_up_id도 포함해야 관계가 제대로 연결됨
-                                        }])
-                                        ->paginate(20);
-
+    
+        // 만기된 적금 데이터를 전체 조회 (페이지네이션 없이)
+        $expiredSavings = SavingSignUp::select(
+                'saving_sign_ups.saving_sign_up_id',
+                'saving_sign_ups.child_id',
+                'saving_sign_ups.saving_sign_up_end_at',
+                'saving_sign_ups.saving_sign_up_status',
+                'saving_products.saving_product_name'
+            )
+            ->where('saving_sign_ups.child_id', $child)
+            ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
+            ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+            ->get();
+    
+        // 페이지네이션을 위한 변수 설정
+        $perPage = 20;
+        $currentPage = request('page', 1);
+        $totalCount = $expiredSavings->count();
+    
+        // 페이지네이션 적용: 현재 페이지에 맞게 데이터를 잘라냄
+        $paginatedData = $expiredSavings->slice(($currentPage - 1) * $perPage, $perPage)->values();
+    
         $responseData = [
-            'success' => true
-            ,'msg' => '만기된 적금 가져오기 성공'    
-            ,'expiredSavings' => $expiredSavings
+            'success' => true,
+            'msg' => '만기된 적금 가져오기 성공',
+            'expiredSavings' => $paginatedData, // 현재 페이지에 해당하는 데이터
+            'currentPage' => (int) $currentPage,
+            'lastPage' => ceil($totalCount / $perPage), // 전체 페이지 수 계산
         ];
-
+    
         return response()->json($responseData, 200);
     }
+    
 }

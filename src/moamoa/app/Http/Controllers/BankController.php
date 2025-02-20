@@ -90,15 +90,6 @@ class BankController extends Controller
     // 가입한 적금 상품 개수와 포인트 확인 - 부모 페이지
     public function index($id) {
         $productCount = SavingSignUp::where('child_id', $id)->count();
-
-        // $point = Point::where('child_id', $id)->where('point_code', '!=', '3')->sum('point');
-
-        // $signUpProduct = SavingSignUp::where('child_id', $id)
-        //                                 ->with('saving_products')
-        // SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_interest_rate')->get();
-
-        // 가입한 적금 상품 상세 정보 불러오기
-        // $productInfo = SavingProduct::select('saving_product_id', 'saving_product_name', 'saving_product_period', 'saving_product_amount', 'saving_product_interest_rate', 'saving_product_type')
         $productInfo = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_product_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_products.saving_product_id'
                                             , 'saving_products.saving_product_name', 'saving_products.saving_product_period', 'saving_products.saving_product_amount'
                                             , 'saving_products.saving_product_interest_rate', 'saving_products.saving_product_type')
@@ -108,13 +99,13 @@ class BankController extends Controller
 
         // point_code가 3이 아닌 항목의 합
         $positivePoints = Point::where('child_id', $id)
-            ->where('point_code', '!=', 3)
-            ->sum('point');
+                                    ->where('point_code', '!=', 3)
+                                    ->sum('point');
 
         // point_code가 3인 항목의 합
         $negativePoints = Point::where('child_id', $id)
-            ->where('point_code', 3)
-            ->sum('point');
+                                    ->where('point_code', 3)
+                                    ->sum('point');
 
         // 최종 결과: 3번 항목을 빼고 나머지 항목의 합산
         $point = $positivePoints - $negativePoints;
@@ -123,8 +114,8 @@ class BankController extends Controller
             'success' => true
             ,'msg' => '적금 상품 개수와 포인트, 가입한 적금 상품 상세 정보 불러오기 성공'    
             ,'productCount' => $productCount
-            ,'point' => $point
             ,'productInfo' => $productInfo
+            ,'point' => $point
         ];
         return response()->json($responseData, 200);
     }
@@ -182,8 +173,8 @@ class BankController extends Controller
                                         ->where('saving_product_id', $productId)
                                         ->first();
 
-        // 3. 상품에 가입된 내역들 가져오기 (saving_sign_up_id 기준)
-        $signUps = SavingSignUp::where('saving_product_id', $productId)->get();
+        // 3. 상품에 가입된 내역들 가져오기 - 오늘 날짜보다 이전인 항목 (saving_sign_up_id 기준)
+        $signUps = SavingSignUp::where('saving_product_id', $productId)->where('saving_sign_up_end_at', '<', now()->toDateString())->get();
 
         if ($signUps->isEmpty()) {
             return response()->json(['success' => false, 'msg' => 'No sign-up records found for this product'], 404);

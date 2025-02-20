@@ -8,7 +8,7 @@
                 <div class="cancellation-date">해지일</div>
             </div>
             <div v-for="item in expiredSavingList" :key="item" class="expired-saving-list">
-                <div v-for="saving in item.saving_products" :key="saving" class="expired-saving-name">{{ saving.saving_product_name }} 적금</div>
+                <div class="expired-saving-name">{{ item.saving_product_name }} 적금</div>
                 <div class="saving-status">{{ getStatusText(item.saving_sign_up_status) }}</div>
                 <div class="cancellation-date">{{ item.saving_sign_up_end_at }}</div>
             </div>

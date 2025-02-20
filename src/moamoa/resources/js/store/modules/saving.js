@@ -15,8 +15,6 @@ export default {
         // 페이지네이션
         ,currentPage: 1
         ,lastPage: 1
-        ,perPage: 10
-        ,total: 0
     }),
 
     mutations: {
@@ -122,12 +120,10 @@ export default {
             try {
                 const response = await axios.get(`/api/child/expired/saving?page=${searchData.page}`);
                 
-                context.commit('setExpiredSavings', response.data.expiredSavings.data);
+                context.commit('setExpiredSavings', response.data.expiredSavings);
                 context.commit('setPagination', {
-                    current_page: response.data.expiredSavings.current_page,
-                    last_page: response.data.expiredSavings.last_page,
-                    per_page: response.data.expiredSavings.per_page,
-                    total: response.data.expiredSavings.total,
+                    current_page: response.data.expiredSavings.currentPage,
+                    last_page: response.data.expiredSavings.lastPage,
                 });
             } catch (error) {
                 console.error('자녀 만기 적금 리스트 불러오기 실패', error);

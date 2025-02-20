@@ -50,7 +50,7 @@
                         <p class="bankbook-date">{{ item.saving_detail_created_at.split(" ")[0] }}</p>
                         <p class="bankbook-amount">{{ Number(item.saving_detail_outcome).toLocaleString() }}</p>
                         <p class="bankbook-amount">{{ Number(item.saving_detail_income).toLocaleString() }}</p>
-                        <p class="bankbook-amount">{{ item.saving_detail_left }}</p>
+                        <p class="bankbook-amount">{{ Number(item.saving_detail_left).toLocaleString() }}</p>
                         <p>{{ getCategoryText(item.saving_detail_category) }}</p>
                     </div>
                 </div>

@@ -127,8 +127,7 @@ const getCategoryText = (point_code) => {
         "1": '미션 수행',
         "2": '이자',
         "3": '적금',
-        "4": '도전 과제',
-        "5": '적금 만기',
+        "4": '만기 적금',
     };
     return categoryMapping[point_code]; // 기본값 없이 반환
 };

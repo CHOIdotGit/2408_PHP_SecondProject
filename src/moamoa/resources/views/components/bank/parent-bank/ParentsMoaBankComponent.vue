@@ -19,7 +19,7 @@
                 <!-- 온클릭으로 링크는 부모 포인트 페이지로 설정하기 -->
                 <p class="have-moa">{{ Number(point).toLocaleString() }} moa</p>
                 <!-- totalPoint 가져오면 -->
-                <p class="subscribe">현재 가입한 적금 상품 : {{ savingList.length }} 개</p>
+                <p class="subscribe">현재 가입한 적금 상품 : {{ productCount }} 개</p>
                 <!-- 가입한 적금 상품 개수 쿼리문으로 가져오기 -->
             </div>
             <!-- v-if -->
@@ -59,35 +59,14 @@ const route = useRoute();
 
 const point = computed(() => store.state.bank.point);
 // const childId = computed(() => store.state.bank.childId);
-// const productCount = computed(() => store.state.bank.productCount);
-
-// const productCount = computed(() => {
-//     const today = new Date();
-//     const productInfoArray = Object.values(store.state.bank.productInfo); // 객체를 배열로 변환
-
-//     return productInfoArray.filter(item => {
-//         return new Date(item.saving_sign_up_end_at) >= today;
-//     });
-// });
-
-const emptySlots = computed(() => {
-    return Math.max(3 - productCount.value.length, 0);
-});
-
+const productCount = computed(() => store.state.bank.productCount);
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
-
-// 적금 상품 가져오기
-// const savingProduct = computed(()=> store.state.bank.savingList);
-
 // 자녀 적금 상품 가져 오기
 const savingList = computed(()=> store.state.saving.childSavingList);
-// const savingList = computed(() => {
-//     const today = new Date();
-//     return store.state.saving.childSavingList.filter(item => {
-//         // item.saving_sign_up_end_at이 오늘 날짜 이후(또는 오늘과 같음)일 때만 포함
-//         return new Date(item.saving_sign_up_end_at) >= today;
-//     });
+
+// const emptySlots = computed(() => {
+//     return Math.max(3 - productCount.value.length, 0);
 // });
 
 // 자녀 포인트 페이지로 이동
@@ -102,7 +81,6 @@ const goSavingDetail = (saving_sign_up_id) => {
     router.push('/parent/bankbook/' + saving_sign_up_id);
 }
 
-
 // 가입한 적금 상품 개수 
 onBeforeMount(() => {
     store.dispatch('bank/koreaBank');
@@ -110,8 +88,6 @@ onBeforeMount(() => {
     store.dispatch('bank/signProductCount', route.params.child_id);
     store.dispatch('saving/parentChildSaving', route.params.child_id);
 });
-
-
 </script>
 
 

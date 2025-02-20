@@ -177,7 +177,7 @@ Route::patch('/api/parent/header/bell/check/{mission_id}', [HeaderController::cl
 Route::get('/api/child/info', [HeaderController::class, 'childInfo']);
 
 // 헤더 관련('자녀 선택-셀렉트 박스)
-Route::get('/api/parent/moabank/{child_id}', [HeaderController::class, 'selectChild']);
+// Route::get('/api/parent/moabank/{child_id}', [HeaderController::class, 'selectChild']);
 
 
 // ******************************

@@ -69,11 +69,11 @@ export default {
                 
                 // pointList 데이터를 commit
                 context.commit('setPointList', response.data.pointList);
-                context.commit('setTotalPoint', response.data.childTotalPoint);
+                context.commit('setTotalPoint', response.data.totalPoint);
                 // pagination 정보를 개별적으로 commit
                 context.commit('setPagination', {
-                    current_page: response.data.pointList.currentPage,
-                    last_page: response.data.pointList.lastPage,
+                    current_page: response.data.currentPage,
+                    last_page: response.data.lastPage,
                 });
             } catch (error) {
               console.error('포인트 정보 불러오기 오류', error);
