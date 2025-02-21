@@ -20,12 +20,16 @@
             </select>
         </div> -->
         <div class="child-box" v-if="childNameList.length > 0">
+            <!-- 메뉴 :  프로필 보이는 곳 -->
             <div class="child-profile">
-                <img :src="displayProfile.profile || '/profile/default5.webp'">
+                <img :src="displayProfile.profile">
             </div>
             <div class="child-info">
                 <div class="child-name">{{ displayProfile.name }}</div>
             </div>
+            <!-- 자녀 선택 없을 시 경고 알람 : "자녀를 선택하세요" -->
+            <img src="/img/icon-select-alarm.png" alt="" class="select-alarm" v-show="showAlarm">
+
             <!-- 자녀 프로필 선택 메뉴 -->
             <select name="childName" id="child" v-model="selectedChild">
                 <!-- 기본값: 부모 정보 -->
@@ -62,25 +66,25 @@
             </router-link>
             <!-- <div class="menu-title" @click="$store.dispatch('transaction/transactionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 거래 모듈 변경에 따른 지출리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="goSpendList(selectedChild.child_id)"> 
+            <div class="menu-title" @click="goSpendList"> 
                 <img src="/img/icon-coin.png" alt="" class="menu-icon">
                 지출
             </div>
             <!-- <div class="menu-title" @click="$store.dispatch('mission/missionList', selectedChildId.child_id)"> -->
             <!-- 최상민 : 미션 모듈 변경에 따른 미션리스트 이동 방법 변경 -->
-            <div class="menu-title" @click="goMissionList(selectedChild.child_id)"> 
+            <div class="menu-title" @click="goMissionList"> 
                 <img src="/img/icon-piggy-bank.png" alt="" class="menu-icon">
                 미션
             </div>
-            <div class="menu-title" @click="goParentCalendar(selectedChild.child_id)">
+            <div class="menu-title" @click="goParentCalendar">
                 <img src="/img/icon-calendar.png" alt="" class="menu-icon">
                 캘린더
             </div>
-            <div class="menu-title" @click="goParentStatis(selectedChild.child_id)">
+            <div class="menu-title" @click="goParentStatis">
                 <img src="/img/icon-signal.png" alt="" class="menu-icon">
                 통계
             </div>
-            <div class="menu-title" @click="goBankbook(selectedChild.child_id)">
+            <div class="menu-title" @click="goBankbook">
                 <img src="/img/icon-sack-dollar.png" alt="" class="menu-icon">
                 모아통장
             </div>
@@ -117,8 +121,7 @@ const isMobile = store.state.mobile.isMobile;
 const  slidMenu = ref(true);
 
 // 자녀 프로필 메뉴
-// const selectedChildId = ref(0); // 셀렉트 박스가 처음에 "0=자녀선택" 표시
-const selectedChild = ref(null);
+const selectedChild = ref(null); // 로그인시 부모가 표시
 const childNameList = computed(() => store.state.header.childNameList || []); //등록된 자녀 수 확인
 const childProfile = ref({}); // 선택된 자녀 정보
 
@@ -126,13 +129,18 @@ const childProfile = ref({}); // 선택된 자녀 정보
 // 로그인한 부모 정보
 const myName = computed(() => store.state.header.myName);
 
-
-const displayProfile = computed(() => {
-    return selectedChild.value ? selectedChild.value : myName.value;
-});
+// const displayProfile = computed(() => {
+//     return selectedChild.value ? selectedChild.value : myName.value;
+// });
+const displayProfile = computed(()=> selectedChild.value ? selectedChild.value : myName.value);
 
 watch(() => selectedChild.value, newInfo => {
-    store.commit('header/setChildId', newInfo.child_id);
+    if(newInfo) {
+        store.commit('header/setChildId', newInfo.child_id);
+    }
+    else {
+        store.commit('header/setChildId', null);
+    }
     router.replace('/parent/home');
 });
 
@@ -142,53 +150,85 @@ onBeforeMount(async () => {
     
     // TODO : 확인용 나중에 삭제 start ----------
     if(store.state.header.childNameList.length > 0) {
-        console.log('등록된 자녀 확인하기');
-        console.log(store.state.header.childNameList);
+        console.log('등록된 자녀 확인하기:', store.state.header.childNameList);
     }
     else {
         console.log('등록된 자녀 없음');
     }
     // TODO : 확인용 나중에 삭제 end ----------
-})
+});
 
+// 자녀 선택 없을 시 띄우는 경고 알람 
+const showAlarm = ref(false);
+
+// 게시판 이동----------------------------------------------------------------------
 // 부모 지출 리스트 페이지로 이동
-const goSpendList = (child_id) => {
-    // 거래 정보를 가져오는 액션 호출
-    store.dispatch('transaction/transactionList', {child_id: route.params.id, page: 1});
-    router.push('/parent/spend/list/' + child_id);
+const goSpendList = () => {
+    console.log('현재 선택된 자녀', selectedChild.value);
+
+    if(!selectedChild.value) {
+        showAlarm.value = true;
+        setTimeout(()=> showAlarm.value = false, 2000); // 2초 후 닫기기
+        return;    
+    } 
+    
+    else {
+        const child_id = selectedChild.value.child_id;
+        // 거래 정보를 가져오는 액션 호출
+        store.dispatch('transaction/transactionList', {child_id: route.params.id, page: 1});
+        router.push('/parent/spend/list/' + child_id);
+
+    }
 };
 
 // 부모 미션 리스트 페이지로 이동
-const goMissionList = (child_id) => {
-
+const goMissionList = () => {
+    if(!selectedChild.value) {
+        showAlarm.value = true;
+        setTimeout(()=> showAlarm.value = false, 2000); // 2초 후 닫기기
+        return;    
+    } 
+    const child_id = selectedChild.value.child_id;
     store.dispatch('mission/missionList', {child_id: route.params.id, page: 1});
     router.push('/parent/mission/list/' + child_id);
 };
 
-
-
-const dateToday = ref(new Date());
 //  부모 캘린더로 이동
-const goParentCalendar = (child_id) => {
-    // store.dispatch('calendar/parentCalendarInfo', child_id)
+const dateToday = ref(new Date());
+const goParentCalendar = () => {
+    if(!selectedChild.value) {
+        showAlarm.value = true;
+        setTimeout(()=> showAlarm.value = false, 2000); // 2초 후 닫기기
+        return;    
+    }
+    const child_id = selectedChild.value.child_id;
     store.dispatch('calendar/parentCalendarInfo', { date: dateToday.value, child_id })
     router.push('/parent/calendar/'+ child_id);
 }
 
 // 부모 통계로 이동
-const goParentStatis = (child_id) => {
+const goParentStatis = () => {
+    if(!selectedChild.value) {
+        showAlarm.value = true;
+        setTimeout(()=> showAlarm.value = false, 2000); // 2초 후 닫기기
+        return;    
+    }
+    const child_id = selectedChild.value.child_id;
     store.dispatch('transaction/parentStats', child_id)
     router.push('/parent/stats/' + child_id);
 }
 
 // 부모 통장 페이지
-const goBankbook = (child_id) => {
+const goBankbook = () => {
+    if(!selectedChild.value) {
+        showAlarm.value = true;
+        setTimeout(()=> showAlarm.value = false, 2000); // 2초 후 닫기기
+        return;    
+    }
+    const child_id = selectedChild.value.child_id;
     router.push('/parent/moabank/' + child_id);
 }
-// const goBankbook = (child_id) => {
-//     store.dispatch('bankbook/', child_id)
-//     router.push('/parent/bankbook/');
-// }
+
 </script>
 
 <style scoped>
@@ -276,6 +316,13 @@ button {
     transition: left .3s;
 }
 
+.select-alarm {
+    width: 11%;
+    position: absolute;
+    top: 240px;
+    left: 216px;
+}
+
 /* 반응형 버튼 */
 .menu-btn {
     height: 60px;
@@ -338,7 +385,7 @@ button {
     height: 30px;
     font-size: 1.2rem;
     border-radius: 4px;
-    
+    position: relative;
 }
 
 
