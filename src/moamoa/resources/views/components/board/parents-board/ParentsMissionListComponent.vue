@@ -20,139 +20,26 @@
             <img src="/img/m-search.png" alt="" class="m-search-button" @click="searchOpenModal">
         </div>
         <div class="m-expense-list">
-            <img src="/img/m-create-btn.png" alt="" class="m-create-btn">
+            <img src="/img/m-create-btn.png" alt="" class="m-create-btn" @click="getChildId(childId)">
             <!-- 한 게시물  -->
-            <div class="m-expense-section">
+            <div class="m-expense-section" v-if="missionList && missionList.length" v-for="item in missionList" :key="item">
                 <div class="m-expense-first">
-                    <p class="m-expense-title">미션리스트는지출이랑동일</p>
-                    <p class="m-expense-amount">50,000</p>
+                    <p @click="getMissionId(item.mission_id)" class="m-expense-title">{{ item.title }}</p>
                 </div>
                 <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
+                    <div class="m-sec-expense">
+                        <p :class="mGetStatusClass(item.status)">{{ getStatusText(item.status) }}</p>
+                        <p class="m-expense-cate">{{ getCategoryText(item.category) }}</p>
+                    </div>
+                    <p class="m-expense-amount">{{ item.amount.toLocaleString() }}원</p>
+                </div>
+                <div class="m-expense-thrid">
+                    <p class="m-expense-date">{{ item.start_at }}</p>
                     <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
+                    <p class="m-expense-date">{{ item.end_at }}</p>
                 </div>
             </div>
             <!-- 여기까지 한게시물 -->
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">날짜만 하나 더 추가</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-status">대기중</p>
-                    <p class="m-expense-cate">학습</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                    <p class="m-expense-date">~</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
         </div>
         <footer>
             <div class="m-footer-menu">
@@ -565,6 +452,20 @@ const getStatusClass = (status) => {
     }
 };
 
+const mGetStatusClass = (status) => {
+    switch (status) {
+        case '0': // 진행중
+            return 'm-state-in-progress';
+        case '1': // 대기중
+            return 'm-state-waiting';
+        case '2': // 완료
+            return 'm-state-complete';
+        case '3': // 취소
+            return 'm-state-cancel';
+    }
+};
+
+
 // 미션 리스트 받아오기
 const missionList = computed(() => store.state.mission.missionList);
 
@@ -824,6 +725,8 @@ const missionSearch = (childId) => {
     line-height: 40px;
 }
 
+
+
 .mission-inserted-list {
     display: grid;
     margin-top: 15px ;
@@ -1073,6 +976,33 @@ const missionSearch = (childId) => {
     }
 }
 
+.m-state-in-progress {
+    background-color: rgba(138, 160, 246, 0.5);
+    color: #0010BE;
+    line-height: 23px;
+}
+
+.m-state-complete {
+    background-color: rgba(255, 222, 92, 0.5);
+    color: #2F8A1D;
+    line-height: 23px;
+}
+.m-state-waiting {
+    background-color: rgba(22, 200, 150, 0.5);
+    color: #165442;
+    line-height: 23px;
+}
+
+.m-state-cancel {
+    background-color: rgba(254, 135, 105, 0.5);
+    color: #FF3300;
+    line-height: 23px;
+}
+
+.m-sec-expense {
+    display: flex;
+    gap: 20px;
+}
 .menu-sec-first {
     margin-left: 15px;
 }
@@ -1154,15 +1084,23 @@ const missionSearch = (childId) => {
 
 .m-expense-amount {
     margin-right: 20px;
+    font-size: 1.3rem;
+    
 }
 
 .m-expense-first {
     display: flex;
-    justify-content: space-between;
     font-size: 1.3rem;
 }
 
 .m-expense-second {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+    font-size: 1.1rem;
+}
+
+.m-expense-thrid {
     display: flex;
     gap: 15px;
     font-size: 1.1rem;

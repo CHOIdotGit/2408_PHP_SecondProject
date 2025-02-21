@@ -21,106 +21,18 @@
         </div>
         <div class="m-expense-list">
             <!-- 한 게시물  -->
-            <div class="m-expense-section">
+            <div v-if="transactionList && transactionList.length" v-for="item in transactionList" :key="item" class="m-expense-section">
                 <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
+                    <p @click="goTransactionDetail(item.transaction_id)" class="m-expense-title">{{ getTruncatedTitle(item.title) }}</p>
+                    <p class="m-expense-amount">{{ Number(item.amount).toLocaleString() }}원</p>
                 </div>
                 <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
+                    <p class="m-expense-category">{{ getCategoryText(item.category) }}</p>
+                    <p class="m-expense-date">{{ item.transaction_date }}</p>
                 </div>
             </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
-            <div class="m-expense-section">
-                <div class="m-expense-first">
-                    <p class="m-expense-title">가나다라마바사아자차</p>
-                    <p class="m-expense-amount">60,000</p>
-                </div>
-                <div class="m-expense-second">
-                    <p class="m-expense-category">쇼핑</p>
-                    <p class="m-expense-date">2025.02.19</p>
-                </div>
-            </div>
+            <!-- 여기까지  -->
+            
         </div>
         <footer>
             <div class="m-footer-menu">
@@ -801,7 +713,7 @@ const searchCloseModal = () => {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    max-height: 640px;
+    min-height: 640px;
 }
 
 /* --- 모바일 모달 ---- */

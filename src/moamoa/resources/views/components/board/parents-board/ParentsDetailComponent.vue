@@ -46,12 +46,11 @@
             </div>
         </div>
         <div class="m-detail-btn">
-            <button class="m-back-to-list"> < 목록으로</button>
-            <button class="m-back-to-list detail-update" > 수정</button>
-            <button class="m-back-to-list" @click="mDeleteOpenModal"> 삭제</button>
-            <button class="m-back-to-list"> 승인</button>
-            
+            <button @click="goBack(missionDetail.child_id)" class="m-back-to-list"> < 목록으로</button>
+            <button @click="goUpdate(missionDetail.mission_id)" class="m-back-to-list detail-update" > 수정</button>
+            <button @click="delOpenModal('mission', missionDetail.mission_id)" class="m-back-to-list"> 삭제</button>
         </div>
+        <button v-if="missionDetail.status === '1'" @click="approvalMission" class="m-back-to-list m-regist"> 승인</button>
         <footer>
             <div class="m-footer-menu">
                 <div class="m-menu">
@@ -85,7 +84,7 @@
 
 
     <!-- 검색 모달 -->
-    <div class="del-modal-back" v-show="mobileDeleteModal.isOpen">
+    <div class="del-modal-back" v-show="delModal.isOpen">
             <div class="m-modal-list-container">
                 <div class="m-delete-modal-sec">
                     <img src="/img/m-modal-delete.png" alt="">
@@ -143,12 +142,12 @@
             </div>
             <div class="buttons">
                 <div class="bottom-btn left">
-                    <button @click="goBack(missionDetail.child_id)" class="ms-cancel">뒤로가기</button>
+                    <button @click="goBack(missionDetail.child_id)" class="ms-cancel">목록으로</button>
                 </div>
                 <div class="bottom-btn right">
-                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del bottom-btn">미션 삭제</button>
-                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up bottom-btn">미션 수정</button>
-                    <button v-if="missionDetail.status === '0'" @click="approvalMission" class="ms-confirm bottom-btn">미션 승인</button>
+                    <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-confirm bottom-btn">승인</button>
+                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del bottom-btn">삭제</button>
+                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up bottom-btn">수정</button>
                 </div>
             </div>
         </div>
@@ -217,16 +216,6 @@ onMounted(() => {
 const isMobile = store.state.mobile.isMobile;
 
 // --------------- 모바일 모달 -----------------
-
-const mobileDeleteModal = reactive({ isOpen: false });
-
-const mDeleteOpenModal = () => {
-    mobileDeleteModal.isOpen = true;
-};
-
-const mDeleteCloseModal = () => {
-    mobileDeleteModal.isOpen = false;
-};
 
 
 //****미션 카테고리 정보 출력****
@@ -342,13 +331,17 @@ const approvalMission = () => {
 }
 
 .ms-confirm{
+    position: absolute;
     color: #ffffff;
     background-color: #A2CAAC;
     font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     width: 120px;
+    bottom: 53px;
+    left: 1120px;
     border-radius: 0px;
     cursor: pointer;
+    margin-right: 20px;
 }
 
 .ms-up {
@@ -359,7 +352,6 @@ const approvalMission = () => {
     padding: 5px;
     width: 120px;
     border-radius: 0px;
-    
     margin-right: 20px;
     cursor: pointer;
 }
@@ -374,6 +366,7 @@ const approvalMission = () => {
 
 .right {
     display: flex;
+    margin-left: 140px;
 }
 
 .buttons {
@@ -668,7 +661,7 @@ const approvalMission = () => {
  }
 
 .detail-update {
-    margin-left: 100px;
+    margin-left: 160px;
 }
 
 .m-category-btn {
@@ -700,6 +693,12 @@ const approvalMission = () => {
     display: flex;
     gap: 20px;
     min-height: 70px;
+}
+
+.m-regist {
+    position: absolute;
+    right: 150px;
+    bottom: 86px;
 }
 /* --- 모바일 모달 ---- */
 
@@ -762,9 +761,7 @@ const approvalMission = () => {
 
 .m-modal-ms-title {
     text-align: center;
-    max-width: 270px;
     white-space: normal;
-    justify-items: center;
 }
 
 .m-del-guide {
