@@ -189,7 +189,7 @@ img {
 
 /* 적금 상품들 */
 .bank-product-head {
-    background-color: #0AB48C;
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
     width: 100%;
     height: 150px;
     color: #fff;

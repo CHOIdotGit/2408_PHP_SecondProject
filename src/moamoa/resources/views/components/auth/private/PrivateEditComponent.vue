@@ -168,6 +168,12 @@
       </div>
 
       <div class="edit-footer">
+        <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'">
+          <p class="info-page info-page-red">회원 탈퇴</p>
+        </router-link> -->
+        <button @click="wdrlBtn" type="button" class="btn-submit">
+          회원탈퇴
+        </button>
         <button @click="editBtn" type="button" class="btn-submit">
           수정확인
         </button>
@@ -623,7 +629,9 @@ import { useRoute } from 'vue-router';
     background-color: #3B82F6;
     color: #fff;
     font-size: 1.2rem;
+    margin-left: 40px;
   }
+
   /* 버튼 호버 */
   .btn-submit:hover {
     background-color: #2563EB;

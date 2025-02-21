@@ -10,6 +10,15 @@
                 </div>
                 <div class="child-info">
                     <div class="child-name">{{ childInfo.name }}</div>
+                    <div class="parent-info-btn">
+                        <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="user-info-btn">
+                            <p class="info-page">개인정보</p>
+                        </router-link>
+                        <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="user-info-btn">
+                            <p class="info-page">가족정보</p>
+                        </router-link>
+    
+                    </div>
                 </div>
             </div>
             <!-- 메뉴 -->
@@ -200,16 +209,15 @@ button {
 /* 자녀 프로필 */
 .child-box {
     display: flex;
-    flex-direction: column;
     align-items: center;
     background-color: #eaf1ff96;
-    padding: 10px;
+    height: 165px;
 }
 
 .child-profile {
     width: 100px;
     height: 100px;
-    margin-bottom: 10px;
+    margin: 5px;
 }
 
 .child-profile >img {
@@ -223,11 +231,7 @@ button {
 }
 
 .child-info {
-    display: flex;
-    text-align: center;
     padding-left: 10px;
-    gap: 10px;
-    align-items: center;
 }
 .child-name {
     font-size: 1.3rem;
@@ -255,7 +259,32 @@ button {
     align-items: center;
 }
 
-/* 메뉴  */
+/* 개인정보/ 가족정보 버튼 */
+.parent-info-btn {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.user-info-btn {
+    text-decoration: none;
+}
+
+.user-info-bnt:hover {
+    background-color: #8cc59a;
+}
+
+.info-page {
+    width: 80px;
+    height: 37px;
+    text-align: center;
+    color: #fff;
+    background-color: #8a98db;
+    line-height: 37px;
+    border-radius: 13px;
+}
+
+/* ** 메뉴 ***********************************  */
 .menu-box {
     font-size: 1.6rem;
     font-family: 'MangoDdobak-B';

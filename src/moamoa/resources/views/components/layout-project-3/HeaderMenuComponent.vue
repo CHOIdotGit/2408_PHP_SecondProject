@@ -65,20 +65,24 @@
             </div>
 
             <!-- 햄버거 아이콘 -->
-            <div  class="icon-btn" @click="openHamburgerModal" >
-                <img src="/img/icon-hamburger-black.png" alt="" class="icon" >
+            <div  class="icon-btn" @click="openHamburgerModal">
+                <!-- <img src="/img/icon-hamburger-black.png" alt="" class="icon" > -->
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
+                    <img :src="profileImg" alt="" class="icon-profile">
+                </router-link>
+                
             </div>
             <!-- 햄버거 모달 메뉴 -->
             <div class="dropdown" v-show="hamburgerModal" >
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="link-deco">
+                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="link-deco">
                     <p class="info-page">가족정보</p>
-                </router-link>
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
+                </router-link> -->
+                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
                     <p class="info-page">개인정보 수정</p>
-                </router-link>
-                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
+                </router-link> -->
+                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
                     <p class="info-page info-page-red">회원 탈퇴</p>
-                </router-link>
+                </router-link> -->
             </div>
         </div>
     </div>
@@ -88,7 +92,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 const store = useStore();
@@ -99,6 +103,27 @@ const router = useRouter();
 // +==========================+
 // v-if="ismobile"적으면 모바일 화면으로 이동
 const isMobile = store.state.mobile.isMobile;
+
+
+const profileImg = computed(()=> {
+    if(store.state.auth.parentFlg) {
+        return myName.value.profile;
+    }
+    else {
+        return childInfo.value.profile;
+    }
+});
+
+
+// 로그인한 부모 정보
+const myName = computed(() => store.state.header.myName);
+// ****로그인한 자녀 프로필 불러오기*****
+const childInfo = computed(()=> store.state.header.childInfo);
+onBeforeMount(async () => {
+    await store.dispatch('header/childNameList');
+    await store.dispatch('header/childInfo');
+});
+
 
 
 /* 햄버거 모달 */
@@ -122,11 +147,9 @@ const bellModal = ref(false);
 // ******부모가 로그인했을 때 표시되는 자녀 미션*******
 const bellContent = computed(() => store.state.header.bellContent); // 새로 등록될때마다 미션 보여줌
 const openBellModal = () => {
-    console.log('열라라 참께');
     bellModal.value = !bellModal.value;
     hamburgerModal.value = false;
     store.dispatch('header/bellContent');
-    console.log('이거 닫겼나?');
 }
 
 const closeBellModal = () => {
@@ -295,6 +318,13 @@ const checkMission = (mission_id) => {
 .link-deco {
     text-decoration: none;
     color: #000;
+}
+
+.icon-profile {
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+    /* border: 2px solid #a2caac; */
 }
 
 /* **********알람 모달창*********** */

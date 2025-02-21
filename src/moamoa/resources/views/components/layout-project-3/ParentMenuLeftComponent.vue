@@ -5,7 +5,7 @@
         <div class="child-box" v-if="childNameList.length > 0">
             <!-- 메뉴 :  프로필 보이는 곳 -->
             <div class="child-profile">
-                <img :src="displayProfile.profile">
+                <img :src="displayProfile.profile || '/user-img/default.webp'">
                 <div class="child-name">{{ displayProfile.name }}</div>
             </div>
 
@@ -37,13 +37,13 @@
 
         <!-- 자녀가 없을 때  -->
         <div class="child-box" v-else>
+            <div class="child-name">자녀를 등록하세요</div>
             <div class="child-profile">
                 <img :src="displayProfile.profile || '/profile/default5.webp'">    
             </div>
             <div class="child-info">
                 <div class="child-name">{{ displayProfile.name }}</div>
             </div>
-            <!-- <div class="child-name">자녀를 등록하세요</div> -->
 
             <!-- 자녀 프로필 선택 메뉴 -->
             <select name="childName" id="child"> 
@@ -314,8 +314,8 @@ button {
 .select-alarm {
     width: 11%;
     position: absolute;
-    top: 240px;
-    left: 216px;
+    top: 145px;
+    left: 250px;
 }
 
 /* 반응형 버튼 */
