@@ -222,8 +222,8 @@
         <div class="list-container">
             <div class="route"> 홈  > 미션 </div>
             <div class="top-btns">
-                <button @click="getChildId(childId)" class="btn-top mission-regist">미션 등록</button>
                 <button @click="approvalMission" class="btn-top mission-confirm">미션 승인</button>
+                <button @click="getChildId(childId)" class="btn-top mission-regist">미션 등록</button>
                 <button @click="delOpenModal" class="btn-top mission-delete">미션 삭제</button>
             </div>
             <div class="search-menu">
@@ -730,7 +730,7 @@ const missionSearch = (childId) => {
 }
 
 .mission-confirm {
-    margin-left: 20px;
+    margin-left: 1000px;
 }
 
 .mission-delete {
@@ -738,8 +738,7 @@ const missionSearch = (childId) => {
 }
 
 .mission-regist {
-    margin-left: 1000px;
-
+    margin-left: 20px;
 }
 .mission-title:hover {
     color: #A2CAAC;
@@ -1178,7 +1177,7 @@ const missionSearch = (childId) => {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    min-height: 640px;
+    max-height: 640px;
 }
 
 .m-expense-status{

@@ -136,10 +136,10 @@
     text-align: end;
 }
 
-span {
+/* span {
     font-size: 1.5rem;
     line-height: 40px;
-}
+} */
 
 .ms-amount::-webkit-outer-spin-button,
 .ms-amount::-webkit-inner-spin-button {
