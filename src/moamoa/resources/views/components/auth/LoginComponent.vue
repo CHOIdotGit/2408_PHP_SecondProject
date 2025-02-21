@@ -236,6 +236,10 @@ import { useStore } from 'vuex';
       border: none;
   }
 
+  span {
+    font-size: 1rem;
+  }
+
   
   @media(max-width: 390px) {
     input {

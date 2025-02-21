@@ -60,7 +60,7 @@ class TransactionController extends Controller
         $parent = Auth::guard('parents')->user();
 
         $category = $request->category;
-        $date = $request->transaction_date;
+        $date = date('Y-m-d', strtotime($request->date));
         $keyword = $request->keyword;
         Log::debug('request', $request->all());
         $filters = Transaction::with('child')
@@ -69,14 +69,14 @@ class TransactionController extends Controller
             ,['transactions.child_id', $request->child_id]
             ,['transactions.transaction_code', '1']
         ])
-        ->when($category !== '', function($query) use ($category) {
-            return $query->where('transactions.category', $category);
+        ->when(!empty($category), function($query) use ($category) {
+            $query->where('transactions.category', $category);
         })
         ->when($date, function($query) use ($date) {
-            return $query->whereDate('transactions.transaction_date', '=', $date);
+            $query->whereDate('transactions.transaction_date', '=', $date);
         })
-        ->when($keyword !== '', function($query) use ($keyword) {
-            return $query->where('transactions.title', 'like', '%' . $keyword . '%');
+        ->when(!empty($keyword) !== '', function($query) use ($keyword) {
+            $query->where('transactions.title', 'like', '%' . $keyword . '%');
         })
         ->orderBy('transactions.transaction_date' ,'DESC')
         ->paginate(20);

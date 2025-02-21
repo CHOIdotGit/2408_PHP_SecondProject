@@ -827,7 +827,7 @@ import { useRoute } from 'vue-router';
       height: 834px;
       max-height: 100vh;
       margin: 5px 0;
-      padding: 0 10px;
+      padding: 15px 10px;
     }
     
     /* */

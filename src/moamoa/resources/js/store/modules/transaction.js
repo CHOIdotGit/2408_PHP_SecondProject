@@ -201,15 +201,16 @@ export default {
             const url = '/api/transaction/search';
 
             axios.get(url, {
-                params:  searchData 
+                params: searchData
             })
             .then(response => {
+                // console.log(response.data);
                 context.commit('setTransactionList', response.data.filters.data);
                 context.commit('setFilterTransactionList', searchData);
             })
             .catch(error => {
                 console.log('검색안됨', error);
-            })
+            });
         },
     },
 

@@ -326,6 +326,10 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     flex-direction: column;
   }
 
+  .info-header-title > span {
+    font-size: 2rem;
+  }
+
   /* 헤더 프로필 아이콘 */
   .info-header-profile {
     width: 120px;

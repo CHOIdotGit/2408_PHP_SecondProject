@@ -402,17 +402,17 @@ const goToNext = () => {
 // +=================+
 // 기본값
 const today = ref(new Date().toISOString().slice(0, 10));
-const filters = ref({
+const filters = reactive({
     category: "",
-    date: today,
+    date: today.value,
     keyword: "",
     child_id: ""
 });
 
 const search = (childId) => {
-    filters.value.child_id = childId;
-    console.log(filters.value.date);
-    store.dispatch('transaction/transactionSearch', filters.value);
+    filters.child_id = childId;
+    // console.log(filters);
+    store.dispatch('transaction/transactionSearch', filters);
 };
 
 // --------------- 모바일 모달 -----------------
