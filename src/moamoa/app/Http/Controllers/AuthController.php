@@ -78,29 +78,29 @@ class AuthController extends Controller {
           // *******************************************
           // 로그인하면 포인트 지급
           // *******************************************(김주연)
-          // $childPoints = Child::whereIn('child_id', $child->child_ids)
-          //                     ->where('point_flg', '0')
-          //                     ->get();
+          $childPoints = Child::where('child_id', $child->child_id)
+                              ->where('point_flg', '0')
+                              ->get();
 
-          // $today = now()->format('Y-m-d');
+          $today = now()->format('Y-m-d');
 
-          // foreach($childPoints as $childPoint) {
-          //   if( empty($childPoint->login_at) ||$childPoint->login_at < $today ) {
-          //     $insertPoint = new Point();
-          //     $insertPoint->child_id = $childPoint->child_id;
-          //     $insertPoint->point = 2;
-          //     $insertPoint->point_code = '0';
-          //     $insertPoint->payment_at = $today;
+          foreach($childPoints as $childPoint) {
+            if( empty($childPoint->login_at) ||$childPoint->login_at < $today ) {
+              $insertPoint = new Point();
+              $insertPoint->child_id = $childPoint->child_id;
+              $insertPoint->point = 2;
+              $insertPoint->point_code = '0';
+              $insertPoint->payment_at = $today;
   
-          //     $insertPoint->save();
-          //   }
-          // }
-          //   Child::where('child_id', $child->child_ids)
-          //         ->where('point_flg', '0')
-          //         ->update([
-          //           'login_at'=> $today
-          //           ,'point_flg' => '1'
-          //         ]);
+              $insertPoint->save();
+            }
+          }
+            Child::where('child_id', $child->child_id)
+                  ->where('point_flg', '0')
+                  ->update([
+                    'login_at'=> $today
+                    ,'point_flg' => '1'
+                  ]);
             
           $responseData = [
             'success' => true
