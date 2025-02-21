@@ -2,42 +2,37 @@
 <div class="menu-left" v-if="!isMobile">
     <div class="menu-container" v-show="slidMenu">
         <img src="/img/logo4.png" class="logo" width="250px"  height="100px">
-        <!-- 자녀가 있을 때 - 최상민 수정함함 -->
-        <!-- <div class="child-box" v-if="childNameList.length > 0" >
-            <div class="child-profile">
-                <img :src="childProfile.profile || '/profile/default5.webp'" alt="">    
-            </div>
-            <div class="child-info"> -->
-                <!-- <div class="child-name">{{ childProfile.name }}</div>
-            </div> -->
-
-            <!-- 자녀 프로필 선택 메뉴 -->
-            <!-- <select name="childName" id="child" v-if="childNameList.length > 0" v-model="selectedChildId">
-                <option value="0" disabled>자녀 선택</option>
-                <option v-for="child in childNameList" :key="child" :value="child">
-                    {{ child.name }}
-                </option>
-            </select>
-        </div> -->
         <div class="child-box" v-if="childNameList.length > 0">
             <!-- 메뉴 :  프로필 보이는 곳 -->
             <div class="child-profile">
                 <img :src="displayProfile.profile">
-            </div>
-            <div class="child-info">
                 <div class="child-name">{{ displayProfile.name }}</div>
             </div>
+
             <!-- 자녀 선택 없을 시 경고 알람 : "자녀를 선택하세요" -->
             <img src="/img/icon-select-alarm.png" alt="" class="select-alarm" v-show="showAlarm">
+            <div class="child-info">
+                <p>* 자녀선택</p>
+                <!-- 자녀 프로필 선택 메뉴 -->
+                <select name="childName" id="child" v-model="selectedChild">
+                    <!-- 기본값: 부모 정보 -->
+                    <option :value="null">(나)</option>
+                    <option v-for="child in childNameList" :key="child" :value="child">
+                        {{ child.name }}
+                    </option>
+                </select>
+                <div class="parent-info-btn">
+                    <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="user-info-btn">
+                        <p class="info-page">개인정보</p>
+                    </router-link>
+                    <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="user-info-btn">
+                        <p class="info-page">가족정보</p>
+                    </router-link>
 
-            <!-- 자녀 프로필 선택 메뉴 -->
-            <select name="childName" id="child" v-model="selectedChild">
-                <!-- 기본값: 부모 정보 -->
-                <option :value="null">(나)</option>
-                <option v-for="child in childNameList" :key="child" :value="child">
-                    {{ child.name }}
-                </option>
-            </select>
+                </div>
+            </div>
+
+            
         </div>
 
         <!-- 자녀가 없을 때  -->
@@ -47,8 +42,8 @@
             </div>
             <div class="child-info">
                 <div class="child-name">{{ displayProfile.name }}</div>
-                <div class="child-name">자녀를 등록하세요</div>
             </div>
+            <!-- <div class="child-name">자녀를 등록하세요</div> -->
 
             <!-- 자녀 프로필 선택 메뉴 -->
             <select name="childName" id="child"> 
@@ -341,18 +336,14 @@ button {
 /* 자녀 프로필 */
 .child-box {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    border-bottom: 1px solid #000000;
     background-color: #d7e4da;
     padding: 10px;
+    justify-items: center;
+    height: 165px;
+    gap: 8px;
 }
 
-.child-profile {
-    width: 100px;
-    height: 100px;
-    margin-bottom: 10px;
-}
 
 .child-profile >img {
     width: 100px;
@@ -366,13 +357,12 @@ button {
 
 .child-info {
     display: flex;
-    text-align: center;
-    padding-left: 10px;
-    gap: 10px;
-    align-items: center;
+    flex-direction: column;
+    gap: 4px;
 }
 .child-name {
     font-size: 1.3rem;
+    text-align: center;
 }
 
 .child-nickname {
@@ -397,7 +387,32 @@ button {
     align-items: center;
 }
 
-/* 메뉴  */
+/* 개인정보/ 가족정보 버튼 */
+.parent-info-btn {
+    display: flex;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.user-info-btn {
+    text-decoration: none;
+}
+
+.user-info-bnt:hover {
+    background-color: #8cc59a;
+}
+
+.info-page {
+    width: 80px;
+    height: 37px;
+    text-align: center;
+    color: #fff;
+    background-color: #5f976d;
+    line-height: 37px;
+    border-radius: 13px;
+}
+
+/* ***메뉴********************************  */
 .menu-box {
     font-size: 1.6rem;
     font-family: 'MangoDdobak-B';
