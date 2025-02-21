@@ -55,41 +55,60 @@
         </div>
     </div>
 
-    <div class="m-container" v-if="isMobile">
-        <div class="m-header">
-            <img src="/img/icon-girl-4.png" alt="" class="m-user-image">
-            <p class="m-user-profile">김주연</p>
-            <p class="go-update"> > </p>
-        </div>
-        <div class="m-child">
-            <img src="/img/icon-boy-4.png" alt="" class="m-child-profile">
-            <div class="m-main-content">
-                <p class="m-child-name"> 배현진 </p>
-                <div class="m-expenses">
-                    <p class="m-home-title-e">지출내역</p>
-                    <p class="m-home-content m-first">2,400원</p>
-                    <p class="m-home-content">1,700원</p>
-                    <p class="m-home-content">32,600원</p>
-                </div>
-                <div class="m-expenses">
-                    <p class="m-home-title-c"> 승인 대기중인 내역</p>
-                    <p class="m-home-content m-first"> 테스트 </p>
-                    <p class="m-home-content"> 방청소하기</p>
-                    <p class="m-home-content"> 프로젝트 마무리하기</p>
-                </div>
+<div class="m-container" v-if="isMobile">
+    <div class="m-header">
+        <img src="/img/icon-girl-4.png" alt="" class="m-user-image">
+        <p class="m-user-profile">김주연</p>
+        <p class="go-update"> > </p>
+    </div>
+    <div class="m-child">
+        <img src="/img/icon-boy-4.png" alt="" class="m-child-profile">
+        <div class="m-main-content">
+            <p class="m-child-name"> 배현진 </p>
+            <div class="m-expenses">
+                <p class="m-home-title-e">지출내역</p>
+                <p class="m-home-content m-first">2,400원</p>
+                <p class="m-home-content">1,700원</p>
+                <p class="m-home-content">32,600원</p>
+            </div>
+            <div class="m-expenses">
+                <p class="m-home-title-c"> 승인 대기중인 내역</p>
+                <p class="m-home-content m-first"> 테스트 </p>
+                <p class="m-home-content"> 방청소하기</p>
+                <p class="m-home-content"> 프로젝트 마무리하기</p>
             </div>
         </div>
+    </div>
 
+    <footer>
         <div class="m-footer-menu">
             <div class="m-menu">
-                <img src="/img/icon-home.png" alt="" class="m-home">
-                <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
-                <img src="/img/icon-coin.png" alt="" class="m-expense">
-                <img src="/img/icon-calendar.png" alt="" class="m-calendar">
-                <img src="/img/icon-sack-dollar.png" alt="" class="m-bank">
-                <img src="/img/icon-hamburger-black.png" alt="" class="m-etc">
+                <div class="m-menu-section">
+                    <img src="/img/icon-home.png" alt="" class="m-home menu-sec-first">
+                    <p class="m-menu-title   menu-sec-first"> 홈 </p>
+                </div>
+                <div class="m-menu-section">
+                    <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
+                    <p class="m-menu-title"> 미션 </p>
+                </div>
+                <div class="m-menu-section">
+                    <img src="/img/icon-coin.png" alt="" class="m-expense">
+                    <p class="m-menu-title"> 지출 </p>
+                </div>
+                <div class="m-menu-section">
+                    <img src="/img/icon-calendar.png" alt="" class="m-calendar">
+                    <p class="m-menu-title"> 달력 </p>
+                </div>
+                <div class="m-menu-section">
+                    <img src="/img/icon-sack-dollar.png" alt="" class="m-bank">
+                    <p class="m-menu-title"> 모아통장 </p>
+                </div>
+                <div class="m-menu-section">
+                    <img src="/img/mobile-etc.png" alt="" class="m-etc">
+                </div>
         </div>
     </div>
+</footer>
 </div>
 
 </template>
@@ -383,6 +402,7 @@ onBeforeMount(async () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 690px;
     margin-top: 20px;
 }   
 
@@ -409,7 +429,7 @@ onBeforeMount(async () => {
 
 .m-home-title-c{
     font-size: 1.3rem;
-    margin-left: 25px;
+    margin-left: 35px;
     background-color: #A2CAAC;
     color: white;
     border-radius: 15px;
@@ -442,14 +462,29 @@ onBeforeMount(async () => {
 
 .m-menu {
     display: flex;
-    gap: 25px;
+    gap: 15px;
     border-top: 2px solid black;
-    margin-top: 150px;
     img {
+        filter: contrast(0.5);
         margin-top: 10px;
-        width: 40px;
-        height: 40px;
+        width: 25px;
+        height: 25px;
     }
+}
+
+.menu-sec-first {
+    margin-left: 15px;
+}
+.m-menu-section {
+    display: flex;
+    flex-direction: column;
+    width: 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+}
+.m-menu-title {
+    font-size: 0.8rem;
 }
 
 .m-home {
