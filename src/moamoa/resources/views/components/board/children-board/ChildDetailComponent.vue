@@ -41,9 +41,18 @@
                     <div class="c-left">
                         <button @click="goBack" class="c-back">뒤로가기</button>
                     </div>
+                    
                     <div class="c-right">
                         <button @click="delOpenModal('mission', mission_id)" class="c-ms-del">미션 삭제</button>
-                        <button class="c-ms-complete">미션 완료</button>
+                        
+                        <button 
+                            v-if="missionDetail.status === '0'" 
+                            @click="completeBtn" 
+                            class="c-ms-complete"
+                        >
+                            미션 완료
+                        </button>
+
                         <button @click="goUpdate(missionDetail.mission_id)" class="c-ms-up">미션 수정</button>
                     </div>
                 </div>
@@ -74,6 +83,19 @@
         </div>
     </div>
 </div>
+
+    <!-- 완료 모달 -->
+    <div v-show="completeModalFlg" class="base-modal-overlay">
+        <div class="base-modal-box">
+            <div class="base-modal-content">
+                해당 미션을 완료 처리 하였습니다
+            </div>
+
+            <div class="base-modal-btn">
+                <button @click="closeCompleteModal" type="button" class="base-modal-cancel">닫기</button>
+            </div>
+        </div>
+    </div>
 
 
 </template>
@@ -140,6 +162,36 @@ const delOpenModal = (type, mission_id) => {
 const delCloseModal = () => {
     delModal.value = false;
 }
+
+
+    // 완료용 모달 스위칭
+    const completeModalFlg = ref(false);
+    
+    // 완료 모달 열기 닫기
+    const openCompleteModal = () => {
+        completeModalFlg.value = true;
+    };
+    const closeCompleteModal = () => {
+        completeModalFlg.value = false;
+    };
+
+    // 미션 완료
+    const completeBtn = async () => {
+        // 완료 처리 우선 수행
+        await store.dispatch('childMission/completeChildMission', missionDetail.value);
+
+        // 모달 띄우고
+        openCompleteModal();
+        
+        setTimeout(() => {
+            // 리스트 업데이트후
+            store.dispatch('childMission/setChildMissionList', {child_id: missionDetail.value.child_id, page: 1});
+            
+            // 리스트로 이동
+            router.replace('/child/mission/list');
+        }, 1000);
+    };
+
 
 
 </script>
@@ -313,4 +365,78 @@ const delCloseModal = () => {
 .child-theme {
     background-color: #5589e996;
 }
+
+  /* 버튼 손모양 */
+  button {
+    cursor: pointer;
+  }
+
+  /* 뒷배경 */
+  .base-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  /* 모달 박스 */
+  .base-modal-box {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    width: 430px;
+    height: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid #A2CAAC;
+  }
+
+    /* 각 넓이 설정 */
+    .base-modal-content, .base-modal-btn {
+    width: 100%;
+    }
+
+    .base-modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.4rem;
+    height: 100%;
+    }
+
+  /* 버튼 중앙 정렬 */
+  .base-modal-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 75px;
+  }
+
+  /* 각 버튼 설정 */
+  .base-modal-btn > button {
+    padding: 12px 40px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+  }
+
+  /* 확인 버튼 */
+  .base-modal-submit {
+    background-color: #A2CAAC;
+    color: #fff;
+  }
+
+  /* 취소 버튼 */
+  .base-modal-cancel {
+    background-color: #F3F3F3;
+  }
 </style>

@@ -56,6 +56,16 @@
     width: 100%;
   }
 
+  /* 모달 내용 */
+  .base-modal-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.4rem;
+    height: 100%;
+  }
+
   /* 버튼 중앙 정렬 */
   .base-modal-btn {
     display: flex;

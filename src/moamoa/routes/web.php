@@ -142,6 +142,8 @@ Route::delete('/api/child/spend/list/checked/delete', [TransactionChildrenContro
 // 자녀 지출 수정 페이지
 Route::patch('/api/child/spend/update/{transaction_id}', [TransactionChildrenController::class, 'update']);
 
+// 자녀 미션 완료
+Route::post('/api/child/mission/complete', [ChildMissionController::class, 'completeChildMission']);
 
 // ******************************
 // *         검색 관련           *

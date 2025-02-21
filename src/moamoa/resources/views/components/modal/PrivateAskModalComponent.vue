@@ -113,6 +113,7 @@ import { useStore } from 'vuex';
     width: 100%;
   }
 
+  /* 모달 내용 */
   .base-modal-content {
     display: flex;
     justify-content: center;

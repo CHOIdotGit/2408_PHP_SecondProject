@@ -6,7 +6,9 @@ use App\Models\Child;
 use App\Models\Mission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ChildMissionController extends Controller
 {
@@ -187,5 +189,43 @@ class ChildMissionController extends Controller
             ,'updateMission' => $updateMission
         ];
         return response()->json($responseData, 200);
+    }
+
+    /**
+     * 자녀 미션 완료 처리
+     * 
+     * @param Request $request
+     * 
+     * @return JSON $responseData
+     */
+    public function completeChildMission(Request $request) {
+        $updateChildData = Mission::where('mission_id', $request->mission_id)->first();
+        
+        if($updateChildData) {
+            try{
+                DB::beginTransaction();
+                
+                $updateChildData->status = '1';
+                $updateChildData->save();
+
+                DB::commit();
+            }catch(Throwable $th) {
+                DB::rollback();
+                throw $th;
+            }
+        }else {
+            return response()->json([
+                'success' => false,
+                'error' => '해당 자녀를 찾을수 없습니다.'
+            ]);
+        }
+
+        $responseData = [
+            'success' => true
+            ,'msg' => '자녀 미션 완료 성공'
+        ];
+
+        return response()->json($responseData, 200);
+
     }
 }

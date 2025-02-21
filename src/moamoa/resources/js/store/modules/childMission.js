@@ -355,6 +355,25 @@ export default {
             })
     
         },
+
+        /** 
+         * 미션 완료 처리
+         * 
+         * @param {*} context
+         * @param {*} missionInfo
+         */
+        completeChildMission(context, missionInfo) {
+            const url = '/api/child/mission/complete';
+            const data = JSON.stringify(missionInfo);
+
+            axios.post(url, data)
+            .then(res => {
+                // console.log(res.data);
+            })
+            .catch(err => {
+                console.err(err);
+            });
+        },
     },
 
     getters: {
