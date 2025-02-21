@@ -17,11 +17,11 @@
                         <p>{{ getTypeText(savingDetail[0]?.saving_product_type) }}</p>
                     </div>
                     <div class="b-info">
-                        <p class="p-first">가입한 날</p>
+                        <p class="p-first">가입 날짜</p>
                         <p>{{ savingInfo.saving_sign_up_start_at }}</p>
                     </div>
                         <div class="b-info">
-                            <p class="margin-left p-first">금리</p>
+                            <p class="margin-left p-first">금   리</p>
                             <p class="p-rate">{{ Number(savingDetail[0]?.saving_product_interest_rate).toFixed(1) }} %</p>
                     </div>
                 </div>

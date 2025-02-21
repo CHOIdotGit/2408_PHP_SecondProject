@@ -126,16 +126,16 @@
     <!-- ********안내 모달********* -->
     <!-- ************************* -->
     <div class="base-modal-overlay" v-show="infoModal">
-    <div class="base-modal-box">
-      <div class="base-modal-content">
-        <div>삭제할 미션을 선택하세요</div>
-      </div>
+        <div class="base-modal-box">
+            <div class="base-modal-content">
+                <div>삭제할 미션을 선택하세요</div>
+            </div>
 
-      <div class="base-modal-btn">
-        <button type="button" class="base-modal-submit" @click="delCloseModal">확인</button>
-      </div>
+            <div class="base-modal-btn">
+                <button type="button" class="base-modal-submit" @click="delCloseModal">확인</button>
+            </div>
+        </div>
     </div>
-  </div>
 
 </template>
 

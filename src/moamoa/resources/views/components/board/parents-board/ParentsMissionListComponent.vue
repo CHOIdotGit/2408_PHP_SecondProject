@@ -227,7 +227,7 @@
                 <div class="del-guide">선택한 {{(checkboxItem).length}} 개의 미션이 삭제됩니다.</div>
             </div>
             <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="delCloseModal" class="modal-close">취소</button>
                 <button @click="deleteCheckedMission()" class="modal-del">삭제</button>
             </div>
         </div>
@@ -796,7 +796,7 @@ const missionSearch = (childId) => {
 }
 
 /* 삭제 모달 버튼 */
-.modal-cancel {
+.modal-close {
     color: #ACACAC;
     background-color: #FFFFFF;
     font-size: 1.2rem;

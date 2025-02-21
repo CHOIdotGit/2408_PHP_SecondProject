@@ -23,7 +23,7 @@
         <div class="bank-form">
             <p class="bank-form-title">납입 금액</p>
             <div class="bank-form-content">
-                <input type="num" class="amountInput" maxlength="4" v-model="regist.saving_sign_up_amount"> 모아
+                <input type="num" name="amountInput" class="amountInput" maxlength="4" v-model="regist.saving_sign_up_amount"> 모아
                 <p class="guide">* 최소 100 ~ 최대 1,000 금액을 입력할 수 있습니다</p>
             </div>
         </div>
@@ -41,7 +41,6 @@
                     <label :for="'day-' + val" class="radioStyle">
                         <input type="radio" :value="val"  name="days" :id="'day-'+val" v-model="regist.saving_sign_up_deposit_at" >
                         <p class="days-btn">{{ dayMatching(val) }}</p>
-                        {{ val }}
                     </label>
                 </div>
             </div>
@@ -50,12 +49,25 @@
     <!-- 적금 가입하기 버튼 -->
     <div class="bank-box-bottom">
         <div class="registBtn">
-            <div class="box-btn cancel" >돌아가기</div>
+            <div class="box-btn cancel" @click="router.push('/moabank/product')">돌아가기</div>
             <div class="box-btn" @click="goBank">가입하기</div>
         </div>
     </div>
 
-    
+    <!-- ************************* -->
+    <!-- ********안내 모달********* -->
+    <!-- ************************* -->
+    <div class="base-modal-overlay" v-show="$store.state.saving.errorMsg">
+        <div class="base-modal-box">
+            <div class="base-modal-content">
+                <div>{{ $store.state.saving.errorMsg }}</div>
+            </div>
+
+            <div class="base-modal-btn">
+                <button type="button" class="base-modal-submit" @click="$store.commit('saving/resetError')">확인</button>
+            </div>
+        </div>
+    </div>
 
 
 </div>
@@ -130,18 +142,36 @@ const regist = reactive({
     ,saving_sign_up_deposit_at: ''
 });
 
-const goBank = () =>{
-    if(regist.amount > 1000) {
-        alert('최대 1000 모아까지 가능합니다.')
-    }
-    else if(regist.amount < 100) {
-        alert('최소 100 모아부터 가능합니다. ')
-    }
-    else {
+// const goBank = () =>{
+//     if(regist.saving_sign_up_amount > 1000) {
+//         // alert('최대 1000 모아까지 가능합니다.')
+//         infoModal.value = true;
+//     }
+//     else if(regist.saving_sign_up_amount < 100) {
+//         alert('최소 100 모아부터 가능합니다. ')
+//     }
+//     else {
+//         store.dispatch('saving/createSaving', regist);
+//     }
+    
+// }
+
+// ****************************
+// *******모달창 설정***********
+// ****************************
+
+const goBank = () => {
+    console.log(regist.saving_sign_up_amount);
+    if(!(regist.saving_sign_up_amount >= 100 && regist.saving_sign_up_amount <= 1000)) {
+        // alert('최대 1000 모아까지 가능합니다.')
+        store.commit('saving/setErrorMsg', '100 ~ 1000 모아까지 가능합니다.');
+    } else {
         store.dispatch('saving/createSaving', regist);
     }
-    
-}
+};
+
+
+
 
 </script>
 
@@ -310,6 +340,75 @@ h1 {
     color: #c9c9c9;
 }
 
+/* ********** */
+/* 안내 모달 */
+/* ********** */
+/* 버튼 손모양 */
+button {
+cursor: pointer;
+}
 
+/* 뒷배경 */
+.base-modal-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+/* 모달 박스 */
+.base-modal-box {
+background-color: #fff;
+padding: 25px;
+border-radius: 10px;
+width: 430px;
+height: 330px;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+border: 3px solid #A2CAAC;
+}
+
+/* 각 넓이 설정 */
+.base-modal-content, .base-modal-btn {
+width: 100%;
+font-size: 1.6rem;
+text-align: center;
+line-height: 227px;
+}
+
+/* 버튼 중앙 정렬 */
+.base-modal-btn {
+display: flex;
+justify-content: center;
+align-items: center;
+column-gap: 75px;
+}
+
+/* 각 버튼 설정 */
+.base-modal-btn > button {
+padding: 12px 40px;
+border: none;
+border-radius: 5px;
+font-size: 1.1rem;
+}
+
+/* 확인 버튼 */
+.base-modal-submit {
+background-color: #A2CAAC;
+color: #fff;
+}
+
+/* 취소 버튼 */
+.base-modal-cancel {
+background-color: #F3F3F3;
+}
 
 </style>

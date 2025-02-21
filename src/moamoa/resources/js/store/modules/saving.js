@@ -10,11 +10,14 @@ export default {
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         ,savingSignUpId: sessionStorage.getItem('saving_sign_up_id') ? sessionStorage.getItem('saving_sign_up_id') : null
+        // -----------------------------------------------------------------
         ,savingInfo: [] // 자녀 통장 정보
         ,expiredSavings: [] // 자녀 만기 적금 리스트
         // 페이지네이션
         ,currentPage: 1
         ,lastPage: 1
+        // 에러 메세지 관련 ----------------------------------------------
+        ,errorMsg: ''
     }),
 
     mutations: {
@@ -42,6 +45,15 @@ export default {
         setChildId(state, childId) {
             state.childId = childId;
         },
+        // 에러 메세지 관련 -----------------------------
+        setErrorMsg(state, errorMsg) {
+            state.errorMsg = errorMsg;
+        },
+
+        // 에러 메세지 초기화 -----------------------------
+        resetError(state) {
+            state.errorMsg = '';
+        }
 
     },
 
@@ -79,13 +91,13 @@ export default {
 
 
         // 자녀 통장 내역
-        childSavingDetail(context, savingSignUpId) {
-            const url = '/api/child/moabank/bankbook/'+ savingSignUpId;
+        childSavingDetail(context, saving_sign_up_id) {
+            const url = '/api/child/moabank/bankbook/'+ saving_sign_up_id;
 
             axios.get(url)
                 .then(response => {
-                    sessionStorage.setItem('saving_sign_up_id', savingSignUpId);
-                    context.commit('setSavingSignUpId', savingSignUpId);
+                    sessionStorage.setItem('saving_sign_up_id', saving_sign_up_id);
+                    context.commit('setSavingSignUpId', saving_sign_up_id);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
                     
@@ -105,9 +117,6 @@ export default {
                     context.commit('setSavingSignUpId', saving_sign_up_id);
                     context.commit('setSavingDetail', response.data.bankBook);
                     context.commit('setSavingInfo', response.data.bankBookInfo);
-                    console.log('자녀 통장 내역 불러오기 :', response.data.bankBook);
-                    console.log('자녀 통장 정보', response.data.bankBookInfo);
-                    console.log('bbbb', saving_sign_up_id);
                 })
                 .catch(error => {
                     console.error('자녀 통장 내역 불러오기 실패', error);
@@ -151,14 +160,21 @@ export default {
 
                 context.commit('setSavingSignUpId', newSaving.saving_sign_up_id);
                 sessionStorage.setItem('savingSignUpId', newSaving.saving_sign_up_id);
-                console.log('새로운 통장 아이디 생성 : ', newSaving.saving_sign_up_idd);
+                console.log('새로운 통장 아이디 생성 : ', newSaving.saving_sign_up_id);
 
                 context.commit('setSavingDetail', newSaving);
                 alert('적금 가입이 완료 되었습니다.');
                 router.replace('/child/bankbook/' + newSaving.saving_sign_up_id);
             })
             .catch(error => {
-                console.error('적금 가입 실패', error);
+                context.commit('resetError');
+
+                const errorMsg = error.response.data.errormsg;
+                // console.log(error.response.data.errormsg.point);
+
+                if(error.response.status === 400) {
+                    context.commit('setErrorMsg', errorMsg);
+                }
             });
 
         }

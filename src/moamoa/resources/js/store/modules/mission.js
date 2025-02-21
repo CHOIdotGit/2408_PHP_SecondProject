@@ -24,6 +24,8 @@ export default {
         ,lastPage: 1
         ,perPage: 10
         ,total: 0
+        // 모달 메세지
+        ,
         
     }),
     mutations: {

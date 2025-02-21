@@ -54,7 +54,7 @@
             <div class="del-guide">해당 지출이 삭제됩니다.</div>
         </div>
         <div class="del-btn">
-            <button @click="delCloseModal" class="modal-cancel">취소</button>
+            <button @click="delCloseModal" class="modal-close">취소</button>
             <button @click="deleteTransaction(transactionDetail.transaction_id)" class="modal-del">삭제</button>
         </div>
     </div>
@@ -244,7 +244,7 @@ const delCloseModal = () => {
 
 
 /* 버튼 */
-.modal-cancel {
+.modal-close {
     color: #ACACAC;
     background-color: #FFFFFF;
     font-size: 1.2rem;

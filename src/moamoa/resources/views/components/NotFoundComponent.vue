@@ -1,5 +1,5 @@
 <template>
-<div class="container">
+<div class="error-container">
     <div class="error-icon">
         <img src="/img/icon-error.png" alt="">
         <p>404 Not Found</p>
@@ -17,7 +17,7 @@
 
 </script>
 <style scoped>
-.container {
+.error-container {
     display: flex;
     justify-content: center;
     margin-top: 200px;

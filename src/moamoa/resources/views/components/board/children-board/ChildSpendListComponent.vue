@@ -106,7 +106,7 @@
                 <div class="del-guide">삭제됩니다.</div>
             </div>
             <div class="del-btn">
-                <button @click="delCloseModal" class="modal-cancel">취소</button>
+                <button @click="delCloseModal" class="modal-close">취소</button>
                 <button @click="deleteCheckedSpend()" class="modal-del">지출 삭제</button>
             </div>
         </div>
@@ -483,7 +483,7 @@ const search = () => {
 }
 
 /* 삭제 모달 버튼 */
-.modal-cancel {
+.modal-close {
     color: #ACACAC;
     background-color: #FFFFFF;
     font-size: 1.2rem;

@@ -115,18 +115,22 @@ class ChildSavingController extends Controller
         // type = 1(매주) => 0~6
         // 적금 상품 확인
 
-
         // 가입한 적금이 3개면 가입불가
         $savingCount = SavingSignUp::where('child_id', $child->child_id)
                                     ->count();
 
         if($savingCount === 3) {
             return response()
-                    ->json(['msg' => '최대 3개의 적금만 가입할 수 있습니다.']);
+                    ->json([
+                        'type' => 'error'
+                        ,'errormsg' => '최대 3개의 적금만 가입할 수 있습니다.'
+                    ], 400);
     
         }
 
+        else {
 
+        // 가입하려는 적금 상품 가져오기
         $savingInfo = SavingProduct::select('saving_product_id'
                                         ,'saving_product_type'
                                         ,'saving_product_interest_rate'
@@ -147,38 +151,50 @@ class ChildSavingController extends Controller
             ,'saving_sign_up_start_at'=>$today
             ,'saving_sign_up_end_at' =>$endDate
         ];
+            // 자녀의 포인트 합계
+            $point = Point::where('child_id', $request->child_id)
+                            ->sum('point');
+            if($point >= $savingResit['saving_sign_up_amount']) {
+                // 매일 적금일 경우
+                if($savingInfo->saving_product_type === "0") {
+                    $savingResit['saving_sign_up_deposit_at'] = "7";
+                }
 
-        // 매일 적금일 경우
-        if($savingInfo->saving_product_type === "0") {
-            $savingResit['saving_sign_up_deposit_at'] = "7";
-        }
+                // 매주 적금일 경우
+                else if($savingInfo->saving_product_type === "1") {
+                    $savingResit['saving_sign_up_deposit_at'] = $request->saving_sign_up_deposit_at;
+                }
 
-        // 매주 적금일 경우
-        else if($savingInfo->saving_product_type === "1") {
-            $savingResit['saving_sign_up_deposit_at'] = $request->saving_sign_up_deposit_at;
-        }
+                $regist = SavingSignUp::create($savingResit);
 
-        $regist = SavingSignUp::create($savingResit);
+                $savingDetail = [
+                    'saving_sign_up_id'=> $regist->saving_sign_up_id
+                    ,'saving_detail_category' => "0"
+                    ,'saving_detail_left' => $regist->saving_sign_up_amount
+                    ,'saving_detail_income'=> $regist->saving_sign_up_amount
+                    ,'saving_detail_outcome' => "0"
+                ];
 
-        $savingDetail = [
-            'saving_sign_up_id'=> $regist->saving_sign_up_id
-            ,'saving_detail_category' => "0"
-            ,'saving_detail_left' => $regist->saving_sign_up_amount
-            ,'saving_detail_income'=> $regist->saving_sign_up_amount
-            ,'saving_detail_outcome' => "0"
-        ];
+                SavingDetail::create($savingDetail);
 
-        SavingDetail::create($savingDetail);
+                // 포인트 내역에서 출금 기록하기
+                $outcome = [
+                    'child_id' => $child->child_id
+                    ,'point' => $regist->saving_sign_up_amount
+                    ,'point_code' => '3' // 자동이체 출금
+                    ,'payment_at' => date('Y-m-d')
+                ];
+                $outPoint = new Point($outcome);
+                $outPoint->save();
 
-        // 포인트 내역에서 출금 기록하기
-        $outcome = [
-            'child_id' => $child->child_id
-            ,'point' => $regist->saving_sign_up_amount
-            ,'point_code' => '3' // 자동이체 출금
-            ,'payment_at' => date('Y-m-d')
-        ];
-        $outPoint = new Point($outcome);
-        $outPoint->save();
+            }
+            else {
+                return response()
+                            ->json([
+                                'type' => 'error'
+                                ,'errormsg' => '포인트가 부족합니다.'
+                            ], 400);
+            }
         
 
         $responseData = [
@@ -187,31 +203,11 @@ class ChildSavingController extends Controller
             ,'regist' => $regist->toArray()
         ];
 
+    }
+
         return response()->json($responseData, 200);
     }
 
-    // 자녀 만기된 적금 가져오기
-    // public function expiredSaving() {
-        
-    //     $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
-    //     $today = now()->toDateString(); // 오늘 날짜 가져오기
-
-    //     $expiredSavings = SavingSignUp::select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status')
-    //                                     ->where('saving_sign_ups.child_id', $child)
-    //                                     ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
-    //                                     ->with(['saving_products' => function($query) {
-    //                                         $query->select('saving_product_id', 'saving_product_name'); // saving_sign_up_id도 포함해야 관계가 제대로 연결됨
-    //                                     }])
-    //                                     ->paginate(20);
-
-    //     $responseData = [
-    //         'success' => true
-    //         ,'msg' => '만기된 적금 가져오기 성공'    
-    //         ,'expiredSavings' => $expiredSavings
-    //     ];
-
-    //     return response()->json($responseData, 200);
-    // }
     public function expiredSaving() {
         $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
         $today = now()->toDateString(); // 오늘 날짜 가져오기

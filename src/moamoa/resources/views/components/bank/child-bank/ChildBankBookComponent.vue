@@ -17,11 +17,11 @@
                     <p>{{ getTypeText(savingInfo.saving_sign_up_status) }}</p>
                 </div>
                 <div class="b-info">
-                    <p class="p-first">가입한 날</p>
+                    <p class="p-first">가입 날짜</p>
                     <p>{{ savingInfo.saving_sign_up_start_at }}</p>
                 </div>
                 <div class="b-info">
-                    <p class="margin-left p-first">금리</p>
+                    <p class="margin-left p-first">금   리</p>
                     <p class="p-rate">{{ Number(savingDetail[0]?.saving_product_interest_rate).toFixed(1) }} %</p>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             <div class="bankbook-item">
                 <div class="main-content" >
                     <div v-for="item in savingDetail" :key="item" class="bankbook-transactions">
-                        <p class="bankbook-date">{{ item.saving_detail_created_at.split(" ")[0] }}</p>
+                        <p class="bankbook-date">{{ item.saving_detail_created_at }}</p>
                         <p class="bankbook-amount">{{ Number(item.saving_detail_outcome).toLocaleString() }}</p>
                         <p class="bankbook-amount">{{ Number(item.saving_detail_income).toLocaleString() }}</p>
                         <p class="bankbook-amount">{{ Number(item.saving_detail_left).toLocaleString() }}</p>
@@ -82,8 +82,7 @@ const childInfo = store.state.header.childInfo;
 
 
 onMounted(()=> {
-    const bankbookId = route.params.saving_sign_up_id;
-    store.dispatch('saving/childSavingDetail', bankbookId);
+    store.dispatch('saving/childSavingDetail', route.params.saving_sign_up_id);
     store.dispatch('header/childInfo')
 })
 

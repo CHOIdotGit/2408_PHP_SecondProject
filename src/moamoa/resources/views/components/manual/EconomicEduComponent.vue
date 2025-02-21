@@ -49,14 +49,14 @@
 
 .economin-box {
     width: 700px;
-    background-color: #f2f2f2;
+    background-color: #eaeaf2;
     border-bottom: 30px solid #fff;
     padding: 20px;
     text-align: center;
 }
 
 .deco1 {
-    background: #d8dbec;
+    background-color: #d8dbec;
 }
 
 .economic-content {

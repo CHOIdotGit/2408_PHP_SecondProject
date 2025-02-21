@@ -452,7 +452,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     width: 100px;
     height: 100px;
     background-color: #FFFFFF;
-    border: 3px solid #5589e996;
+    /* border: 3px solid #5589e996; */
     border-radius: 50px;
     padding: 3px;
 }

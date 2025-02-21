@@ -82,7 +82,7 @@
             </div>
 
             <div class="registBtn">
-                <div class="box-btn cancel">돌아가기</div>
+                <div class="box-btn cancel" @click="router.push('/moabank/product')">돌아가기</div>
                 <div class="box-btn" @click="goResigt(agreement)">가입하기</div>
             </div>
         </div>

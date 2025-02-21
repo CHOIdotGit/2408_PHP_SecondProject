@@ -23,9 +23,9 @@
                 </div>
                 <div class="bankbook-profile">
                     <img :src="pointList[0].child.profile" class="img-size">
-                    <div class="div-child-name">
+                    <!-- <div class="div-child-name">
                         <p>{{ pointList[0].child.name }}</p>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <!-- 거래 내역 -->
