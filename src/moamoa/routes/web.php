@@ -251,6 +251,9 @@ Route::get('/api/child/moabank/interest/rate/{productId}', [BankController::clas
 // 자녀 적금 가입하기
 Route::post('/api/child/moabank/saving/create/{product_id}', [ChildSavingController::class, 'store']);
 
+// 자녀 적금 중도해지
+Route::patch('/api/child/moabank/early/termination', [ChildSavingController::class, 'earlyTermination']);
+
 // 이건 마지막 위치
 Route::get('/{any}', function () {
     return view('welcome');

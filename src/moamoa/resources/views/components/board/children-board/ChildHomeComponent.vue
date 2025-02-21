@@ -35,7 +35,7 @@
     </div>
     <div class="mission-box">
         <div class="Recently-registered-mission missions">
-            <p class="mission-title">미션</p>
+            <p class="mission-title">출석</p>
             <!-- <p v-if="homeMission.status === []" class="mission-content">최근 등록된 미션이 없습니다</p>
             <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p> -->
         </div>

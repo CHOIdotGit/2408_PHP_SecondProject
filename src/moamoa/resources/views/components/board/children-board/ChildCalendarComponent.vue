@@ -137,22 +137,6 @@ async function nextMonth() {
 }
 // 모달 관련 --------------------------------------------------------------------
 // 모달 상태 관리
-// const delModal = reactive({ isOpen: false });
-
-// const openModalTransactionOnDay = () => {
-//     delModal.isOpen = true;
-// };
-
-// const closeModalTransactionOnDay = () => {
-//     delModal.isOpen = false;
-// };
-
-// // 날짜 클릭 시 모달 열기 및 데이터 필터링
-// function openModal(day) {
-//     store.dispatch('calendar/transactionsOnDay', getYearMonth(day));
-//     openModalTransactionOnDay();
-// }
-
 const isModalOpen = ref(false);
 const selectedDate = ref(null);
 const selectedDay = ref(''); // 클릭한 날짜를 저장할 상태
@@ -172,14 +156,6 @@ const closeModal = () => {
     isModalOpen.value = false;
     // selectedDay.value = null; // 선택한 날짜 초기화 (필요시)
 };
-
-// transactionsOnDay와 missionList 병합
-// const transactionsAndMissions = computed(() => {
-//   const transactionsOnDay = store.state.calendar.transactionsOnDay;
-//   const missionList = store.state.calendar.missionList;
-  
-//   return [...transactionsOnDay, ...missionList];
-// });
 
 // 카테고리 변환
 const getCategoryText = (category) => {
@@ -206,19 +182,6 @@ onBeforeMount(() => {
     store.dispatch("calendar/childCalendarInfo", dateToday.value);
 });
 
-
-// 각 날짜에 맞는 값입력
-
-// function getYearMonth(day) {
-//     return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-// }
-
-// function getDailyIncomeExpense(day, data, incomFlg) {
-//     const item = data.find(item => item.target_at === getYearMonth(day));
-//     const symbol =incomFlg ? '+' : '-';
-//     return item ? symbol + Number(item.income).toLocaleString() : '';
-// }
-
 // YYYY-MM-DD 형식의 날짜 반환
 function getYearMonth(day) {
     return `${dateToday.value.getFullYear()}-${String(dateToday.value.getMonth() + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -233,7 +196,6 @@ function getDailyIncomeExpense(day, data, incomFlg) {
         const money = incomFlg ? item.income : item.outgo;
         return item ? symbol + Number(money).toLocaleString() : '';
     }
-    // return item ? symbol + Number(item.income).toLocaleString() : '';
 }
 
 

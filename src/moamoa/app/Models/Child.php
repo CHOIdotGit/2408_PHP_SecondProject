@@ -61,4 +61,7 @@ class Child extends Authenticatable {
             $builder->where('app_state', 1);
         });
     }
+    public function getCreatedAtAttribute($value) {
+        return \Carbon\Carbon::parse($value)->toDateString(); // 'YYYY-MM-DD' 형식으로 변환
+    }
 }

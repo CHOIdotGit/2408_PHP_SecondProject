@@ -18,14 +18,11 @@
                     </div>
                     <div class="b-info">
                         <p class="p-first">가입한 날</p>
-                        <p>{{ formatDate(pointList[0].child.created_at) }}</p>
+                        <p>{{ pointList[0].child.created_at }}</p>
                     </div>
                 </div>
                 <div class="bankbook-profile">
                     <img :src="pointList[0].child.profile" class="img-size">
-                    <!-- <div class="div-child-name">
-                        <p>{{ pointList[0].child.name }}</p>
-                    </div> -->
                 </div>
             </div>
             <!-- 거래 내역 -->
@@ -127,7 +124,7 @@ const getCategoryText = (point_code) => {
         "1": '미션 수행',
         "2": '이자',
         "3": '적금',
-        "4": '만기 적금',
+        "4": '원금',
     };
     return categoryMapping[point_code]; // 기본값 없이 반환
 };

@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="del-btn">
-                <button @click="$emit('close')" class="modal-cancel">취소</button>
+                <button @click="$emit('close')" class="modal-cancel">닫기</button>
             </div>
         </div>
     </div>

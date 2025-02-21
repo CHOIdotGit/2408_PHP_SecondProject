@@ -57,42 +57,32 @@ class ChildSavingController extends Controller
     // 자녀 적금 통장 상세
     public function show($saving_sign_up_id) {
             // 로그인 유저가 자녀인지 확인
-            $child = Auth::guard('children')->user();
+            $child = Auth::guard('children')->id();
 
-
-                // 자녀 적금 통장 내역
-                $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
-                                                ,'saving_products.saving_product_name'
-                                                ,'saving_products.saving_product_interest_rate'
-                                                ,'saving_products.saving_product_type'
-                                                ,'saving_details.saving_detail_left'
-                                                ,'saving_details.saving_detail_income'
-                                                ,'saving_details.saving_detail_outcome'
-                                                ,'saving_details.created_at as saving_detail_created_at'
-                                                ,'saving_details.saving_detail_category'
+            // 자녀 적금 통장 내역
+            $bankBook = SavingSignUp::select('saving_sign_ups.child_id'
+                                            ,'saving_products.saving_product_name'
+                                            ,'saving_products.saving_product_interest_rate'
+                                            ,'saving_products.saving_product_type'
+                                            ,DB::raw('SUM(saving_details.saving_detail_income) OVER (ORDER BY saving_details.created_at) as saving_detail_left')
+                                            ,'saving_details.saving_detail_income'
+                                            ,'saving_details.saving_detail_outcome'
+                                            ,DB::raw('DATE(saving_details.created_at) as saving_detail_created_at') // 날짜 변환
+                                            ,'saving_details.saving_detail_category'
+                                            )
+                                    ->join('saving_details', 'saving_sign_ups.saving_sign_up_id', '=', 'saving_details.saving_sign_up_id')
+                                    ->join('saving_products','saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+                                    ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
+                                    ->whereNull('saving_sign_ups.deleted_at')
+                                    ->get();
+            // 자녀가 가입한 통장 정보
+            $bankBookInfo = SavingSignUp::select('saving_sign_ups.child_id'
+                                                ,'saving_sign_ups.saving_sign_up_start_at'
+                                                ,'saving_sign_ups.saving_sign_up_status'
+                                                ,DB::raw('DATE(saving_sign_ups.created_at) as created_at') // 날짜 변환
                                                 )
-                                        ->join('saving_details', 'saving_sign_ups.saving_sign_up_id', '=', 'saving_details.saving_sign_up_id')
-                                        ->join('saving_products','saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
                                         ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
-                                        ->whereNull('saving_sign_ups.deleted_at')
-                                        ->get();
-                // 자녀가 가입한 통장 정보
-                $bankBookInfo = SavingSignUp::select('saving_sign_ups.child_id'
-                                                    ,'saving_sign_ups.saving_sign_up_start_at'
-                                                    ,'saving_sign_ups.saving_sign_up_status'
-                                                    ,'saving_sign_ups.created_at'
-                                                    )
-                                            ->where('saving_sign_ups.saving_sign_up_id', $saving_sign_up_id)
-                                            ->first();
-
-            // $bankBook = SavingDetail::select('saving_details.saving_detail_left'
-            //                                 ,'saving_details.saving_detail_income'
-            //                                 ,'saving_details.saving_detail_outcome'
-            //                                 ,'saving_details.created_at'
-            //                                 ,'saving_details.saving_detail_category'
-            //                                 )
-            //                             ->where('saving_sign_up_id', $id)
-            //                             ->get();
+                                        ->first();
 
             $responseData = [
                 'success' => true
@@ -208,6 +198,7 @@ class ChildSavingController extends Controller
         return response()->json($responseData, 200);
     }
 
+    // 자녀 만기된 적금 가져오기
     public function expiredSaving() {
         $child = Auth::guard('children')->id(); // 로그인한 사용자의 데이터만 가져오기 위함
         $today = now()->toDateString(); // 오늘 날짜 가져오기
@@ -242,6 +233,59 @@ class ChildSavingController extends Controller
         ];
     
         return response()->json($responseData, 200);
+    }
+
+    // 자녀 적금 중도 해지
+    public function earlyTermination(Request $request) {
+        $saving_sign_up_id = $request->input('saving_sign_up_id');
+        $confirmed = $request->input('confirmed', false);
+    
+        $savingSignUp = SavingSignUp::find($saving_sign_up_id);
+        if (!$savingSignUp) {
+            return response()->json(['success' => false, 'msg' => 'Saving sign up record not found'], 404);
+        }
+    
+        // 상태가 '0'이 아닐 경우 중도 해지 불가
+        if ($savingSignUp->saving_sign_up_status !== '0') {
+            return response()->json(['success' => false, 'msg' => 'Early termination is not applicable'], 400);
+        }
+        
+        // saving_details에서 적금 관련 내역(카테고리 '0')을 시간 순서대로 가져오고 누적합 계산
+        $savingDetails = SavingDetail::where('saving_sign_up_id', $saving_sign_up_id)
+                            ->where('saving_detail_category', '0')
+                            ->orderBy('created_at', 'asc')
+                            ->get();
+    
+        $cumulativeSum = 0;
+        foreach ($savingDetails as $detail) {
+            $cumulativeSum += $detail->saving_detail_income;
+        }
+    
+        // confirmed가 false면, 중도 해지 처리를 진행하지 않고 누적합만 반환
+        if (!$confirmed) {
+            return response()->json([
+                'success'     => true,
+                'final_total' => $cumulativeSum, // 누적합 반환
+                'msg'         => '중도 해지 가능합니다.'
+            ], 200);
+        }
+        
+        // confirmed가 true일 때만 상태 변경 및 처리 진행
+        $savingSignUp->update(['saving_sign_up_status' => '1']);
+    
+        // points 테이블에 기록
+        Point::create([
+            'child_id'   => $savingSignUp->child_id,
+            'point_code' => '4',
+            'point'      => $cumulativeSum,
+            'payment_at' => now(),
+        ]);
+    
+        return response()->json([
+            'success'     => true,
+            'final_total' => $cumulativeSum,
+            'msg'         => '중도해지 처리가 완료되었습니다.'
+        ], 200);
     }
     
 }

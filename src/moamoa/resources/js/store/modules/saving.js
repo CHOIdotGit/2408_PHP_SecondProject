@@ -18,6 +18,8 @@ export default {
         ,lastPage: 1
         // 에러 메세지 관련 ----------------------------------------------
         ,errorMsg: ''
+        ,savingSignUpId: null
+        ,finalTotal: 0
     }),
 
     mutations: {
@@ -53,7 +55,10 @@ export default {
         // 에러 메세지 초기화 -----------------------------
         resetError(state) {
             state.errorMsg = '';
-        }
+        },
+        setFinalTotal(state, total) {
+            state.finalTotal = total;
+        },
 
     },
 
@@ -177,8 +182,41 @@ export default {
                 }
             });
 
-        }
+        },
 
+        // 자녀 적금 중도 해지
+        async earlyTermination(context, payload) {
+            // payload가 숫자면 프리뷰, 객체면 { savingSignUpId, confirmed } 형식으로 처리
+            let savingSignUpId, confirmed;
+            if (typeof payload === 'object') {
+                savingSignUpId = payload.savingSignUpId;
+                confirmed = payload.confirmed;
+            } else {
+                savingSignUpId = payload;
+                confirmed = false; // 기본은 프리뷰
+            }
+            
+            try {
+                const response = await axios.patch('/api/child/moabank/early/termination', {
+                    saving_sign_up_id: savingSignUpId,
+                    confirmed: confirmed
+                });
+                
+                if (response.data.success) {
+                    // 실제 해지인 경우만 최종 금액을 commit (혹은 프리뷰에도 commit해도 됨)
+                    if (confirmed) {
+                        context.commit("setFinalTotal", response.data.final_total);
+                    }
+                    return response.data;
+                } else {
+                    throw new Error(response.data.message);
+                }
+            } catch (error) {
+                console.error("중도 해지 오류:", error.response?.data?.message || error.message);
+                throw error;
+            }
+        },
+        
     },
 
     getters: {

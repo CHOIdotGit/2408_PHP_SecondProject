@@ -165,6 +165,21 @@
     justify-content: center;
 }
 
+.early-termination {
+    margin-left: 750px;
+    margin-bottom: 25px;
+}
+
+.btn-early-termination {
+    font-size: 1.3rem;
+    width: 120px;
+    height: 40px;
+    border: none;
+    border-radius: 12px;
+    background-color: #5589e996;
+    cursor: pointer;
+}
+
 .margin-left {
     margin-left: 40px;
 }

@@ -320,6 +320,7 @@ button {
     margin-left: 40px;
     width: 100px;
     text-align: center;
+    height: 28px;
 }
 
 .logo {
