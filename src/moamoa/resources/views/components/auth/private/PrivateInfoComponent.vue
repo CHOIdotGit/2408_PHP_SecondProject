@@ -28,21 +28,23 @@
           <div class="info-copy-code">
             <span>{{ userInfo.family_code }}</span>
 
-            <button @click="copyFamCode" type="button">
-              <img src="/img/icon-copy.webp">
-            </button>
-            
-            <!-- 복사 알림창 DIV -->
-            <div v-show="copyboard" class="info-alarm-copy">
-              <div>
-                <img @click="copyboardClose" src="/img/icon-cross.png">
-                
-                <br>
+            <div class="info-copy-line">
+              <button @click="copyFamCode" type="button">
+                <img src="/img/icon-copy.webp">
+              </button>
 
-                <p>가족코드가 복사되었습니다</p>
+              <!-- 복사 알림창 DIV -->
+              <div v-show="copyboard" class="info-alarm-copy">
+                <div>
+                  <img @click="copyboardClose" src="/img/icon-cross.png">
+                  
+                  <br>
+
+                  <p>가족코드가 복사되었습니다</p>
+                </div>
+                
+                <img src="/img/alarm-reverse.webp">
               </div>
-              
-              <img src="/img/alarm-reverse.webp">
             </div>
           </div>
 
@@ -406,7 +408,6 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     justify-content: center;
     background-color: #f5f5f5;
     padding: 30px 0;
-    position: relative;
   }
   /* 가족코드 출력 */
   .info-copy-code > span {
@@ -415,20 +416,24 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     letter-spacing: 0.4rem;
     padding-left: 27px;
   }
-  /* 복사 아이콘 크기 조절 */
-  .info-copy-code > button {
-    width: 20px;
-    height: 20px;
+
+  .info-copy-line {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
   }
-  .info-copy-code > button > img {
+  .info-copy-line > button > img {
     width: 100%;
     height: 100%;
   }
   /* 복사 버튼 설정 */
-  .info-copy-code > button {
+  .info-copy-line > button {
+    width: 20px;
+    height: 20px;
     background-color: transparent;
     border: none;
-    margin: 15px 0 0 10px;
+    /* margin: 15px 0 0 10px; */
     cursor: pointer;
   }
 
@@ -439,9 +444,10 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
-    left: 55.5%;
-    top: -14.2%;
+    left: -459%;
+    top: -60.2%;
     /* transform: translate(-50%, -50%); */
+    width: 198px;
   }
 
   /* 알림 박스 설정 */
@@ -454,7 +460,7 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     background-color: #fff;
     border: 1px solid #eee;
     border-radius: 5px;
-    padding: 10px;
+    padding: 5px;
     padding-right: 20px;
     /* width: 200px; */
   }
@@ -773,7 +779,8 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
     }
     /* 알림창 박스 */
     .info-alarm-copy {
-      top: -4.2%;
+      top: -82.2%;
+      left: -571%;
     }
     .info-alarm-copy > div {
       width: 165px;

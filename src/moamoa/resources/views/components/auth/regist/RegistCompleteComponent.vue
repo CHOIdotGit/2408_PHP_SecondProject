@@ -33,21 +33,23 @@
             <div class="regist-complete-code">
               <span>{{ famCode }}</span>
 
-              <button @click="copyFamCode" type="button">
-                <img src="/img/icon-copy.webp">
-              </button>
-
-              <!-- 복사 알림창 DIV -->
-              <div v-show="copyboard" class="regist-alarm-copy">
-                <div>
-                  <img @click="copyboardClose" src="/img/icon-cross.png">
+              <div class="regist-complete-copy">
+                <button @click="copyFamCode" type="button">
+                  <img src="/img/icon-copy.webp">
+                </button>
+  
+                <!-- 복사 알림창 DIV -->
+                <div v-show="copyboard" class="regist-alarm-copy">
+                  <div>
+                    <img @click="copyboardClose" src="/img/icon-cross.png">
+                    
+                    <br>
+  
+                    <p>가족코드가 복사되었습니다</p>
+                  </div>
                   
-                  <br>
-
-                  <p>가족코드가 복사되었습니다</p>
+                  <img src="/img/alarm-reverse.webp">
                 </div>
-                
-                <img src="/img/alarm-reverse.webp">
               </div>
             </div>
           </div>
@@ -263,7 +265,6 @@ import { useRoute } from 'vue-router';
     display: flex;
     justify-content: space-between;
     width: 100%;
-    position: relative;
   }
 
   /* 가족코드 출력 */
@@ -274,21 +275,25 @@ import { useRoute } from 'vue-router';
     padding-left: 12px;
   }
 
-  /* 복사 아이콘 크기 조절 */
-  .regist-complete-code > button {
-    width: 20px;
-    height: 20px;
+  .regist-complete-copy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
   }
-  .regist-complete-code > button > img {
+
+  .regist-complete-copy > button > img {
     width: 100%;
     height: 100%;
   }
 
   /* 복사 버튼 설정 */
-  .regist-complete-code > button {
+  .regist-complete-copy > button {
+    width: 20px;
+    height: 20px;
     background-color: transparent;
     border: none;
-    margin: 15px 0 0 10px;
+    /* margin: 15px 0 0 10px; */
   }
 
   /* 하단 간격 조절 */
@@ -332,7 +337,7 @@ import { useRoute } from 'vue-router';
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
-    left: 65%;
+    left: -415%;
     top: -81%;
     /* transform: translate(-50%, -50%); */
   }
@@ -430,7 +435,7 @@ import { useRoute } from 'vue-router';
 
     /* 복사 말풍선 위치 조정 */
     .regist-alarm-copy {
-      left: 57%;
+      left: -514%;
       top: -70%;
     }
     /* 말풍선 꼬다리 아이콘 */
