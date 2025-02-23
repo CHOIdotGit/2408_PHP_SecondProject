@@ -315,13 +315,14 @@ import { useRoute } from 'vue-router';
   }
   
   .regist-complete-footer-btn button {
-    margin-top: 30px;
-    padding: 10px;
-    width: 120px;
+    margin-top: 55px;
+    font-size: 1.4rem;
+    padding: 25px 0;
+    width: 450px;
+    border-radius: 10px;
     border: none;
     background-color: #3B82F6;
     color: #fff;
-    font-size: 1.2rem;
   }
   
   .regist-complete-footer-btn button:hover {
@@ -460,6 +461,7 @@ import { useRoute } from 'vue-router';
 
     .regist-complete-footer-btn button {
       background-color: #2563EB;
+      width: 348px;
     }
   }
 

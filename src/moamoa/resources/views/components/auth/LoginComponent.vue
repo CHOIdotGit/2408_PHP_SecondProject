@@ -65,7 +65,8 @@
       </div>
     </div>
   </div>
-  <div class="first-guide-modal">
+
+  <div v-if="!isMobile" class="first-guide-modal">
     <FirstGuideComponent />
   </div>
 
@@ -77,6 +78,8 @@ import { useStore } from 'vuex';
 import FirstGuideComponent from '../manual/FirstGuideComponent.vue';
 
   const store = useStore();
+  
+  const isMobile = store.state.mobile.isMobile;
 
   // 에러 정보 ---------------------------------------------------------------------------------------------
   const errMsg = computed(() => store.state.auth.errMsg);

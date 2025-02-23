@@ -582,7 +582,7 @@ import { useRoute } from 'vue-router';
     margin-top: 50px;
     background-color: #fff;
     border-radius: 10px;
-    padding: 8px 20px;
+    padding: 15px 20px;
   }
 
   /* 메인 제목 타이틀 */
