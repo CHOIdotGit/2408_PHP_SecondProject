@@ -183,7 +183,7 @@ export default {
                 console.log('새로운 지출 아이디:', newTransaction.transaction_id)
                 context.commit('setTransactionDetail', newTransaction);
                 //지출 작성 알람
-                alert('지출 작성되었습니다.');
+                // alert('지출 작성되었습니다.');
 
                 router.replace('/child/spend/detail/' + newTransaction.transaction_id);
                 })
@@ -205,7 +205,7 @@ export default {
                 .then(response => {
                     context.commit('deleteTransaction', response.data.deleteTransaction);
                     
-                    alert('지출 삭제되었습니다.'); //지출 삭제 알람
+                    // alert('지출 삭제되었습니다.'); //지출 삭제 알람
 
                     router.replace('/child/spend/list');
                     console.log('자녀아이디 확인', '/child/spend/list' );
@@ -230,7 +230,7 @@ export default {
                 //**context.commit**은 Mutation을 호출하여 Vuex 상태를 변경할 때 사용됩니다.
                 //context.commit('mutationName', 전달할 데이터(payload));
                 
-                alert('지출이 삭제되었습니다.'); //지출 삭제 알람
+                // alert('지출이 삭제되었습니다.'); //지출 삭제 알람
 
             })
             .catch(error => {

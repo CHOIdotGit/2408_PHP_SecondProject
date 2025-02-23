@@ -168,7 +168,7 @@ export default {
                 console.log('새로운 통장 아이디 생성 : ', newSaving.saving_sign_up_id);
 
                 context.commit('setSavingDetail', newSaving);
-                alert('적금 가입이 완료 되었습니다.');
+                // alert('적금 가입이 완료 되었습니다.');
                 router.replace('/child/bankbook/' + newSaving.saving_sign_up_id);
             })
             .catch(error => {

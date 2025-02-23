@@ -313,7 +313,7 @@ export default {
                 context.commit('deleteMission', response.data.checkedMissionId);
 
                 
-                alert('미션이 삭제되었습니다.'); //미션 삭제 알람
+                // alert('미션이 삭제되었습니다.'); //미션 삭제 알람
 
 
             })
@@ -367,7 +367,7 @@ export default {
                 console.log('미션 수정 성공 :', response.data);
                 context.commit('setMissionDetail', response.data.updateMission);
                 
-                alert("미션이 수정되었습니다.");
+                // alert("미션이 수정되었습니다.");
                 router.push('/parent/mission/detail/' + data.mission_id);
 
             })

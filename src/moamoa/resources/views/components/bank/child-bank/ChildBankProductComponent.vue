@@ -208,6 +208,7 @@ img {
     height: 73px;
     border-top: 5px solid #ffdd38;
     border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
     border-bottom-color: #fff;
     background: #fff;
     cursor: pointer;

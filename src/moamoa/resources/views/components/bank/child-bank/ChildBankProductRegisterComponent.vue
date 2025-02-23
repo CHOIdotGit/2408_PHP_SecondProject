@@ -263,6 +263,7 @@ h1 {
     border: #dbdbdb 1px solid;
     width: 180px;
     text-align: end;
+    margin-bottom: 5px;
 }
 
 .amountInput:focus {

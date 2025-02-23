@@ -1,9 +1,8 @@
 <template>
-<div class="regist-manual-contianer">
-    <div class="manual-box">
-        <img src="" alt="">
-        <p></p>
-    </div>
+<div class="user-manual-content">
+    <img src="/img/manual/manual-regist-1.png" alt="">
+    <img src="/img/manual/manual-regist-2.png" alt="">
+    <img src="/img/manual/manual-regist-3.png" alt="">
 
 </div>
 
@@ -16,4 +15,8 @@
 
 <style scoped>
 
+.user-manual-content>img{
+    border: 1px solid #000;
+    margin-bottom: 56px;
+}
 </style>

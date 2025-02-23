@@ -28,8 +28,8 @@ class Kernel extends ConsoleKernel
                     ->update(['status' => 3]);
             Log::debug('testest');
                 //})->dailyAt('17:00'); //매일 17시에 실행
-                  })->dailyAt('15:00'); //매일 15시에 실행
-        // })->everyMinute();
+                  //})->dailyAt('15:00'); //매일 15시에 실행
+         })->everyMinute();
 
 
         // 매일 자정에 물리삭제 검사 실행
@@ -43,9 +43,9 @@ class Kernel extends ConsoleKernel
         })->dailyAt('15:00'); //매일 15시에 실행
 
         //로그인하면 하루 한번 포인트 지급
-        $schedule->call(function() {
-            new AutoLoginCheck();
-        })->everyMinute();
+        // $schedule->call(function() {
+        //     new AutoLoginCheck();
+        // })->everyMinute();
 
         // 49일마다 실행 - 적금 이자율 갱신신
         // $schedule->call(function () {
