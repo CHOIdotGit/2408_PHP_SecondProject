@@ -23,7 +23,7 @@
         </div>
 
         <!-- 하단 메뉴 -->
-        <footer :class="{ 'footer-custom': !isAuth }">
+        <footer class="web-footer" :class="{ 'footer-custom': !isAuth }">
             <FooderComponent />
         </footer>
     </div>
@@ -31,12 +31,20 @@
     <!-- 모바일 디자인 -->
     <div v-else>
         <div>
+            <header v-if="isAuth && (isParents && urlType === 'private')">
+                <MobileHeaderComponent />
+            </header>
+            
             <main>
                 <!-- 화면 -->
-                <div>
+                <div :class="{ 'm-expense-list': !isAuth || (isAuth && (isParents && urlType === 'private')) }">
                     <router-view></router-view>
                 </div>
             </main>
+
+            <footer v-if="isAuth && (isParents && urlType === 'private')">
+                <MobileFooterComponent />
+            </footer>
         </div>
     </div>
 
@@ -48,18 +56,24 @@
 <script setup>
 import { computed } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 import MenuLeftComponent from './layout-project-3/MenuLeftComponent.vue';
 import HeaderMenuComponent from './layout-project-3/HeaderMenuComponent.vue';
 import FooderComponent from './layout-project-3/FooderComponent.vue';
 
+import MobileHeaderComponent from './layout/MobileHeaderComponent.vue';
+import MobileFooterComponent from './layout/MobileFooterComponent.vue';
+
 
 const store = useStore();
+const route = useRoute();
 
 // 로그인 상태 체크
 const isAuth = computed(() => store.state.auth.authFlg);
 const isParents = computed(() => store.state.auth.parentFlg);
 const isChilds = computed(() => store.state.auth.childFlg);
 const isMobile = store.state.mobile.isMobile;
+const urlType = computed(() => route.path.split('/')[2]);
 
 </script>
 
@@ -70,7 +84,7 @@ const isMobile = store.state.mobile.isMobile;
 @import url("../../css/swiper.css");
 
 /* footer */
-footer {
+.web-footer {
     height: 32vh;
     background: #fafafa;
 }
@@ -105,5 +119,14 @@ footer {
 .top-header-menu {
     width: 1500px;
 }
+
+.m-expense-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow: scroll;
+    white-space: nowrap;
+    min-height: 640px;
+} 
 
 </style>

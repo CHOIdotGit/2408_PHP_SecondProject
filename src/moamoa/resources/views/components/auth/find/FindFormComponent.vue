@@ -387,6 +387,11 @@ import { useRoute, useRouter } from 'vue-router';
       margin: 30px 0 10px 5px;
     }
 
+    /* 입력창 좌우 여백 조정  */
+    .find-input-group > div {
+      padding: 0 10px;
+    }
+
     /* 입력 내용 */
     .find-input-group input {
       font-size: 1.15rem;

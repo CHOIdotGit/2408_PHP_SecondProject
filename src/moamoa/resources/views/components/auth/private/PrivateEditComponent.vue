@@ -168,12 +168,10 @@
       </div>
 
       <div class="edit-footer">
-        <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'">
-          <p class="info-page info-page-red">회원 탈퇴</p>
-        </router-link> -->
-        <button @click="wdrlBtn" type="button" class="btn-submit">
-          회원탈퇴
-        </button>
+        <router-link :to="'/parent/private/wdrl'">
+          <p class="btn-wdrl">회원 탈퇴</p>
+        </router-link>
+        
         <button @click="editBtn" type="button" class="btn-submit">
           수정확인
         </button>
@@ -617,24 +615,37 @@ import { useRoute } from 'vue-router';
   .edit-footer {
     display: flex;
     justify-content: center;
-    align-items: center; 
+    align-items: center;
+    column-gap: 60px;
   }
   /* 수정확인 버튼 */
-  .btn-submit {
-    margin-top: 27.5px;
+  .btn-submit, .btn-wdrl {
     padding: 10px;
     width: 120px;
     height: 50px;
     border: none;
-    background-color: #3B82F6;
     color: #fff;
     font-size: 1.2rem;
-    margin-left: 40px;
+    /* margin-left: 40px; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 27.5px;
   }
-
+  /* 확인 버튼 색 */
+  .btn-submit {
+    background-color: #3B82F6;
+  }
   /* 버튼 호버 */
   .btn-submit:hover {
     background-color: #2563EB;
+  }
+  /* 탈퇴 버튼 */
+  .btn-wdrl {
+    background-color: #ff5555;
+  }
+  .btn-wdrl:hover {
+    background-color: #ff0000;
   }
 
   /* ------------------------------------------------------------------------ */
@@ -751,9 +762,20 @@ import { useRoute } from 'vue-router';
       max-width: 75vw;
     } */
 
+    /* 하단 버튼 사이 간격 조절 */
+    .edit-footer {
+      column-gap: 30px;
+    }
+
+    /*하단 버튼 설정 */
+    .btn-submit, .btn-wdrl {
+      margin-top: 11.5px;
+    }
     .btn-submit {
-      margin-top: 10.5px;
       background-color: #2563EB;
+    }
+    .btn-wdrl {
+      background-color: #ff0000;
     }
   }
 

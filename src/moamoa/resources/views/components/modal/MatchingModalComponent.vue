@@ -209,6 +209,16 @@ import { useStore } from 'vuex';
     margin-right: 4px;
   }
 
+  /* ------------------------------------------------------------------------ */
 
+  @media(max-width: 390px) {
+    .matching-modal-overlay {
+      white-space: wrap;
+    }
+
+    .matching-modal-btn {
+      width: 100%;
+    }
+  }
   
 </style>
