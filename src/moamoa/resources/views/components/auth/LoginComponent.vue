@@ -65,11 +65,16 @@
       </div>
     </div>
   </div>
+  <div class="first-guide-modal">
+    <FirstGuideComponent />
+  </div>
+
 </template>
 
 <script setup>
 import { computed, onBeforeMount, reactive } from 'vue';
 import { useStore } from 'vuex';
+import FirstGuideComponent from '../manual/FirstGuideComponent.vue';
 
   const store = useStore();
 
@@ -153,6 +158,7 @@ import { useStore } from 'vuex';
       align-items: center;
       flex-direction: column;
       row-gap: 20px;
+      position: relative;
   }
 
   .login-box {
@@ -257,6 +263,15 @@ import { useStore } from 'vuex';
     .data-btn button {
       font-size: 1.2rem;
     }
+  }
+
+  /* 로그인 가이드 모달창 */
+  .first-guide-modal {
+    position: absolute;
+    top: 12vh;
+    left: 30vw;
+    z-index: 1000;
+
   }
 
 </style>
