@@ -107,7 +107,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-close">취소</button>
-                <button @click="deleteCheckedSpend()" class="modal-del">지출 삭제</button>
+                <button @click="deleteCheckedSpend" class="modal-del">지출 삭제</button>
             </div>
         </div>
     </div>
@@ -260,11 +260,13 @@ const deleteCheckedSpend = () => {
         infoModal.value = true;
         return;
     }
-    store.dispatch('childTransaction/deletcheckedTransaction', checkboxItem.value);
-    delModal.value = false;
-    
-    store.dispatch('childTransaction/transactionList'); //삭제후 지출 리스트 새로 불러오기
-    checkboxItem.value = [];
+    else {
+        store.dispatch('childTransaction/deletcheckedTransaction', checkboxItem.value);
+        store.dispatch('childTransaction/transactionList'); //삭제후 지출 리스트 새로 불러오기
+        delModal.value = false;
+        checkboxItem.value = [];
+
+    }
 
 }
 

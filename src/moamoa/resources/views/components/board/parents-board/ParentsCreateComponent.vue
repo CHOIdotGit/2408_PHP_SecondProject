@@ -41,8 +41,8 @@
                     <span class="span-div" style="font-size: 1.5rem;">원</span>
                 </div>
                 <div class="bottom-btn">
-                    <button @click="getChildId(childId)" class="create-btn cancel">목록으로</button>
-                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="parent create-btn">등록</button>
+                    <button @click="getChildId(childId)" class="create-btn cancel">등록 취소</button>
+                    <button @click="$store.dispatch('mission/createMission', missionCreate)" class="parent create-btn">미션 등록</button>
                 </div>
                 
             </div>
@@ -106,7 +106,7 @@
         </div>
         <div class="m-detail-btn">
             <button class="m-back-to-list"> < 목록으로</button>
-            <button @click="$store.dispatch('mission/createMission', missionCreate)" class="m-back-to-list m-regist"> 등록</button>
+            <button @click="$store.dispatch('mission/createMission', missionCreate)" class="m-back-to-list m-regist">등록</button>
             
         </div>
         <footer>
@@ -249,10 +249,10 @@ const getChildId = (child_id) => {
 /* 하단 버튼 영역 */
 .bottom-btn{
     display: flex;
-    gap: 760px;
+    gap: 30px;
     margin-top: 20px;
-    margin-right: 150px;
-    margin-left: 500px;
+    width: 75%;
+    justify-content: end;
 
 }
 

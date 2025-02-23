@@ -29,7 +29,7 @@
                 <p class="ms-amount">{{ Number(transactionDetail.amount).toLocaleString() }}원</p>
             </div>
             <div class="c-bottom-btn">
-                <button @click="goBack" class="ms-cancel left">뒤로가기</button>
+                <button @click="goBack" class="ms-cancel left">목록으로</button>
                 <button @click="delOpenModal(transactionDetail.transaction_id)" class="btn">지출 삭제</button>
                 <button @click="goUpdate(transactionDetail.transaction_id)" class="btn">지출 수정</button>
             </div>

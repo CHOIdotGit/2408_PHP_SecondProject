@@ -145,9 +145,9 @@
                     <button @click="goBack(missionDetail.child_id)" class="ms-cancel">목록으로</button>
                 </div>
                 <div class="bottom-btn right">
-                    <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-confirm bottom-btn">승인</button>
-                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del bottom-btn">삭제</button>
-                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up bottom-btn">수정</button>
+                    <button v-if="missionDetail.status === '1'" @click="approvalMission" class="ms-confirm bottom-btn">미션 승인</button>
+                    <button @click="delOpenModal('mission', missionDetail.mission_id)" class="ms-del bottom-btn">미션 삭제</button>
+                    <button @click="goUpdate(missionDetail.mission_id)" class="ms-up bottom-btn">미션 수정</button>
                 </div>
             </div>
         </div>

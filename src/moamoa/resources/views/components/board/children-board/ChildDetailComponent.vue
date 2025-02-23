@@ -39,7 +39,7 @@
                 </div>
                 <div class="c-bottom-btn">
                     <div class="c-left">
-                        <button @click="goBack" class="c-back">뒤로가기</button>
+                        <button @click="goBack" class="c-back">목록으로</button>
                     </div>
                     <div class="c-right">
                         <button 

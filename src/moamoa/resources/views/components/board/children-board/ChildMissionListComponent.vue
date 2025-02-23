@@ -117,7 +117,7 @@
             </div>
             <div class="del-btn">
                 <button @click="delCloseModal" class="modal-close">취소</button>
-                <button @click="deleteCheckedMission()" class="modal-del">삭제</button>
+                <button @click="deleteCheckedMission" class="modal-del">삭제</button>
             </div>
         </div>
     </div>
@@ -290,17 +290,20 @@ console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 // }
 
 // 체크된 미션만 삭제 처리 하기
-const deleteCheckedMission = () => {
+const deleteCheckedMission = async () => {
     if(checkboxItem.value.length === 0) {
         // alert("삭제할 미션을 선택하세요");
         infoModal.value = true;
         return;
     }
-    store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
-    delModal.value = false;
+    else {
+        await store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
+        await store.dispatch('childMission/setChildMissionList'); //삭제후 미션 리스트 새로 불러오기
+        
+        delModal.value = false;
+        checkboxItem.value = [];
+    }
     
-    store.dispatch('childMission/setChildMissionList'); //삭제후 미션 리스트 새로 불러오기
-    checkboxItem.value = [];
 
 }
 

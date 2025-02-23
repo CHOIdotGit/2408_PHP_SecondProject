@@ -30,7 +30,7 @@ export default {
         setChildHome(state, childHome) {
             state.childHome = childHome;
         },
-        setChildMissionList(state, childMissionList) {
+        getChildMissionList(state, childMissionList) {
             state.childMissionList = childMissionList;
         },
         setControlFlg(state, flg) {
@@ -134,7 +134,7 @@ export default {
                 const response = await axios.get(`/api/child/mission/list?page=${searchData.page}`);
                 
                 // missionList 데이터를 commit
-                context.commit('setChildMissionList', response.data.childMissionList.data);
+                context.commit('getChildMissionList', response.data.childMissionList.data);
 
                 // 세션 스토리지에 자녀ID 세팅
                 // sessionStorage.setItem('child_id', searchData.child_id);
@@ -268,7 +268,7 @@ export default {
                 // let missionIds = [response.data.checkedMissionId];
                 // console.log(missionIds);
                 // for(let id = 0; id <= [missionIds]; id++) {
-                //    
+                   
                 // }
 
                 // console.log(response.data.checkedMissionId);
@@ -278,7 +278,7 @@ export default {
                 
                 // alert('미션이 삭제되었습니다.'); //미션 삭제 알람
 
-                // context.commit('setChildMissionList', response.data.childMissionList.data)
+                //context.commit('setChildMissionList', response.data.childMissionList.data)
                 // router.replace('/child/mission/list');
                 // Store.dispatch('childMission/setChildMissionList')
             })
@@ -347,7 +347,7 @@ export default {
                 params:  searchData 
             })
             .then(response => {
-                context.commit('setChildMissionList', response.data.filters.data);
+                context.commit('getChildMissionList', response.data.filters.data);
                 context.commit('setFilterMissionList', searchData);
             })
             .catch(error => {
