@@ -7,6 +7,7 @@ export default {
     namespaced:true,
     state: ()=> ({
         childTransactionList: []
+        ,childHome: null
         ,transactions: []
         ,lastPageFlg: false
         ,controlFlg: true
@@ -23,6 +24,8 @@ export default {
         ,perPage: 10
         ,total: 0
         ,filter: [] // 필터 검색
+        ,savings: []
+        ,data: []
     }),
     mutations: {
         setChildTransactionList(state, childTransactionList) {
@@ -70,20 +73,25 @@ export default {
         setFilterTransactionList(state, childTransactionList) {
             state.filter = childTransactionList;
         },
+        setChildHome(state, childHome) {
+            state.childHome = childHome;
+        },
+        setSavings(state, savings) {
+            state.savings = savings;
+        },
+        setData(state, data) {
+            state.data = data;
+        },
     },
     actions: {
-
         // 자녀 홈페이지 지출 관련
         childHomeTransaction(context) {
             const url = '/api/child/home';
             axios.get(url)
             .then(response => {
-                context.commit('setTransactionAmount', response.data.transactionAmount);
-                context.commit('setMostUsedCategory', response.data.mostUsedCategory);
-                console.log('가장 큰 지출 확인', response.data.transactionAmount);
-                console.log('가장 많이 사용한 카테고리 확인', response.data.mostUsedCategory);
-                context.commit('setTotalAmount', response.data.totalAmount);
-                context.commit('setTotalExpenses', response.data.totalExpenses);
+                context.commit('setChildHome', response.data.childHome);
+                context.commit('setSavings', response.data.savings);
+                context.commit('setData', response.data.data);
             })
             .catch(error => {
                 console.error('지출 금액 불러오기 실패', error);

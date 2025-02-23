@@ -66,8 +66,7 @@ console.log('totalPoints 확인 : ', totalPoints)
 const savingList = computed(() => {
     const today = new Date();
     return store.state.saving.childSavingList.filter(item => {
-        // item.saving_sign_up_end_at이 오늘 날짜 이후(또는 오늘과 같음)일 때만 포함
-        return new Date(item.saving_sign_up_end_at) >= today;
+        return item.saving_sign_up_status === '0' && new Date(item.saving_sign_up_end_at) >= today;
     });
 });
 

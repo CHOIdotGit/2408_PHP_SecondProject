@@ -35,7 +35,7 @@
 }
 
 .search input {
-    width: 1000px;
+    width: 500px;
     padding: 5px; /* 적절한 여백 추가 */
     font-size: 1.2rem;
     margin-bottom: 20px;
@@ -43,6 +43,9 @@
     margin-top: 20px;
 }
 
+.search-option {
+    width: 540px;
+}
 
 .search-date {
     margin-top: 20px;

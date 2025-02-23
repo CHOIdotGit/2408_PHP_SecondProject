@@ -195,7 +195,7 @@ export default {
                 savingSignUpId = payload;
                 confirmed = false; // 기본은 프리뷰
             }
-            
+        
             try {
                 const response = await axios.patch('/api/child/moabank/early/termination', {
                     saving_sign_up_id: savingSignUpId,
@@ -203,10 +203,9 @@ export default {
                 });
                 
                 if (response.data.success) {
-                    // 실제 해지인 경우만 최종 금액을 commit (혹은 프리뷰에도 commit해도 됨)
-                    if (confirmed) {
-                        context.commit("setFinalTotal", response.data.final_total);
-                    }
+                    // confirmed 여부와 관계없이 final_total을 commit (혹은 필요에 따라 확인)
+                    context.commit("setFinalTotal", response.data.final_total);
+        
                     return response.data;
                 } else {
                     throw new Error(response.data.message);

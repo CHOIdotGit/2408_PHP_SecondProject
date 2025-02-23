@@ -33,8 +33,8 @@
                     <span class="span-div">원</span>
                 </div>
                 <div class="c-bottom-btn">
-                    <button @click="goBack" class="c-create-btn cancel">취소</button>
-                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">등록</button>
+                    <button @click="goBack" class="c-create-btn cancel">등록 취소</button>
+                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">지출 등록</button>
                 </div>
             </div>
         </div>

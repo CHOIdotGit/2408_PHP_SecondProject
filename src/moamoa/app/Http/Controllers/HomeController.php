@@ -74,11 +74,9 @@ class HomeController extends Controller
         $startOfMonth = Carbon::create($year, $month, 1)->startOfDay(); // 해당 월의 첫 날
         $endOfMonth = Carbon::create($year, $month, 1)->endOfMonth()->endOfDay(); // 해당 월의 마지막 날
 
-        $childHome = Child::select('children.child_id', 'children.name', 'children.profile')
+        $childHome = Child::select('children.child_id', 'children.name', 'children.profile', 'children.login_at')
                                     ->where('children.child_id', $child_id)
-                                    ->first();
-        // 관계 데이터 추가
-       
+                                    ->first();       
        
         // missions 관계에 날짜 조건 추가
         $missions = $childHome->missions()
@@ -90,9 +88,11 @@ class HomeController extends Controller
                     ->limit(6)
                     ->get();
 
-        $savings = $childHome->saving_sign_ups('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_sign_up_start_at', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status', )
-                                ->select();
-
+        $savings = $childHome->saving_sign_ups()
+                    ->select('saving_sign_ups.saving_sign_up_id', 'saving_sign_ups.saving_sign_up_start_at', 'saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.saving_sign_up_status', 'saving_products.saving_product_name')
+                    ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+                    ->where('saving_sign_ups.saving_sign_up_status', '0')
+                    ->get();
 
         /** transactions 관계에 조건 추가 **/ 
         // $transactions = $childHome->transactions()
@@ -149,6 +149,7 @@ class HomeController extends Controller
             ,'missions' => $missions
             ,'data' => $data
             ,'eachCategoryTransaction' => $eachCategoryTransaction
+            ,'savings' => $savings
         ];
         return response()->json($responseData, 200);
     }

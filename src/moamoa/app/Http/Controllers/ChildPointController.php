@@ -82,15 +82,22 @@ class ChildPointController extends Controller
     public function total() {
         $child = Auth::guard('children')->id();
 
-        $totalPoint = Point::select('points.point_id', 'points.child_id', 'points.point_code', 'points.point')
-                                ->where('points.child_id', $child)
-                                ->where('points.point_code', '!=', 3)
-                                ->sum('points.point');
+        $totalPoint = Point::select('points.point')
+            ->where('points.child_id', $child)
+            ->where('points.point_code', '!=', 3)
+            ->sum('points.point');  // point_code != 3인 합
+
+        $pointsWithCode3 = Point::select('points.point')
+            ->where('points.child_id', $child)
+            ->where('points.point_code', 3)
+            ->sum('points.point');  // point_code == 3인 합
+
+        $finalTotalPoint = $totalPoint - $pointsWithCode3;
 
         $responseData = [
             'success' => true
             ,'msg' => '포인트 합계 획득 성공'
-            ,'totalPoint' => $totalPoint
+            ,'totalPoint' => $finalTotalPoint
         ];
         return response()->json($responseData, 200);
     }

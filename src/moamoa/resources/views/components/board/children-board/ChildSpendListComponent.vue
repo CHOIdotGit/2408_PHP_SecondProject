@@ -9,12 +9,12 @@
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p>⦁ 지출 일자</p> 
+                        <p>지출 일자</p> 
                         <input type="date" min="2000-01-01" v-model="filters.date">
 
                     </div>
                     <div class="search-filter">
-                        <p>⦁ 지출 종류 </p> 
+                        <p>지출 종류 </p> 
                         <select name="spend-type" v-model="filters.category">
                             <option value="">전체</option>
                             <option value="0">교통비</option>
@@ -410,12 +410,15 @@ const search = () => {
     margin-top: 20px;
     font-weight: 800;
     align-content: space-between;
-    margin-left: 210px;
+    margin-left: 680px;
     background-color: #5589e996;
     font-size: 1.5rem;
     border: none;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
 
+.search-option {
+    width: 540px;
 }
 
 .search-btn button:hover {

@@ -95,6 +95,8 @@
 /* 날짜 ~ */
 .span-div {
     padding: 5px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션(지출) 날짜 입력란 */

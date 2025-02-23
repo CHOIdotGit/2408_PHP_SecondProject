@@ -90,7 +90,10 @@ const childInfo = computed(() => store.state.header.childInfo);
 // 모달 관련 상태와 값
 const showModal = ref(false);
 const finalTotal = computed(() => store.state.saving.finalTotal);
-const savingSignUpId = ref(null);
+// const savingSignUpId = ref(null);
+const savingSignUpId = computed(() => {
+    return route.params.saving_sign_up_id; // 페이지 URL에서 `saving_sign_up_id`를 받아옴
+});
 
 // onBeforeMount(() => {
 onMounted(() => {
@@ -98,23 +101,52 @@ onMounted(() => {
     store.dispatch('header/childInfo');
 });
 
-const openModal = () => {
-    store.dispatch('saving/earlyTermination', { 
-            savingSignUpId: savingSignUpId.value, 
-            confirmed: false 
+// const openModal = () => {
+//     store.dispatch('saving/earlyTermination', { 
+//             savingSignUpId: savingSignUpId.value, 
+//             confirmed: false 
+//     });
+//     showModal.value = true;
+// };
+const openModal = async () => {
+    const response = await store.dispatch('saving/earlyTermination', { 
+        savingSignUpId: savingSignUpId.value, 
+        confirmed: false 
     });
+    console.log('Updated finalTotal:', store.state.saving.finalTotal);
+    showModal.value = true;
 };
 
-
+// const confirmModal = async () => {
+//     try {
+//         const response = await store.dispatch('saving/earlyTermination', { 
+//         savingSignUpId: savingSignUpId.value, 
+//         confirmed: true 
+//         });
+//         store.commit('saving/setFinalTotal', response.data.final_total);
+//         showModal.value = false;
+//     } catch (error) {
+//         console.error("중도 해지 처리 실패:", error);
+//     }
+// };
 
 const confirmModal = async () => {
     try {
-            await store.dispatch('saving/earlyTermination', { 
-            savingSignUpId: savingSignUpId.value, 
-            confirmed: true 
+        const response = await store.dispatch('saving/earlyTermination', { 
+        savingSignUpId: savingSignUpId.value, 
+        confirmed: true 
         });
-        store.commit('saving/setFinalTotal', response.data.final_total);
+        // 응답 구조 확인을 위해 로그 추가
+        console.log('API Response:', response); 
+
+        // response 구조에 따라 수정 (예: response.data 대신 response 직접 사용)
+        const finalTotal = response?.data?.final_total ?? response?.final_total;
+        if (finalTotal === undefined) {
+            throw new Error('final_total is undefined');
+        }
+        store.commit('saving/setFinalTotal', finalTotal);
         showModal.value = false;
+        router.replace('/child/moabank');
     } catch (error) {
         console.error("중도 해지 처리 실패:", error);
     }

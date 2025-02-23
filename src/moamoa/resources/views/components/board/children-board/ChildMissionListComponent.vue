@@ -3,19 +3,19 @@
         <div class="list-container">
             <div class="route"> 홈  > 미션 </div>
             <div class="for-buttons">
-                <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
                 <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
+                <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
             </div>
             <div class="search-menu">
                 <div class="search-option">
                     <div class="search-date">
-                        <p>⦁ 미션 일자 </p> 
+                        <p>미션 일자 </p> 
                         <input type="date" min="2000-01-01" v-model="filters.startDate">
                         <p>~</p>
                         <input type="date" min="2000-01-01" v-model="filters.endDate">
                     </div>
                     <div class="search-filter">
-                        <p>⦁ 미션 종류 </p> 
+                        <p>미션 종류 </p> 
                         <select name="mission-type" v-model="filters.category" >
                             <option value="" >전체</option>
                             <option value="0">학습</option>
@@ -24,7 +24,7 @@
                             <option value="3">생활습관</option>
                             <option value="4">기타</option>
                         </select>
-                        <p>⦁ 진행 상태 </p> 
+                        <p>진행 상태 </p> 
                         <select name="status" v-model="filters.status">
                             <option value="">전체</option>
                             <option value="0">미션 진행</option>
@@ -415,6 +415,12 @@ const missionSearch = () => {
     color: #5589e996;
 }
 
+.for-buttons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
 .btn {
     width: 120px;
     height: 50px;
@@ -427,11 +433,11 @@ const missionSearch = () => {
 }
 
 .btn-top {
-    margin-left: 20px;
+    margin-left: 30px;
 }
 
 .btn-bottom {
-    margin-left: 1140px;
+    margin-left: 30px;
 }
 
 #checkbox9 {
@@ -536,7 +542,7 @@ const missionSearch = () => {
     margin-top: 20px;
     font-weight: 800;
     align-content: space-between;
-    margin-left: 210px;
+    margin-left: 680px;
     background-color: #5589e996;
     font-size: 1.5rem;
     border: none;

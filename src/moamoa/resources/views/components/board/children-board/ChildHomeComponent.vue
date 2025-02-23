@@ -1,58 +1,69 @@
 <template>
-<div class="stat-container">
-    <div class="container">
-        <div class="graph-section">
-            <div class="date-menu">
-                <button @click="prevMonth">◀</button>
-                <p class="date-display">{{ formattedDate }}</p>
-                <button @click="nextMonth">▶</button>
+    <div class="stat-container">
+        <div class="container">
+            <div class="graph-section">
+                <div class="date-menu">
+                    <button @click="prevMonth">◀</button>
+                    <p class="date-display">{{ formattedDate }}</p>
+                    <button @click="nextMonth">▶</button>
+                </div>
+                <div class="doughnut">
+                    <canvas ref="doughnutCanvas" height="650" width="650"></canvas>
+                </div>
             </div>
-            <div class="doughnut">
-                <canvas ref="doughnutCanvas" height="650" width="650"></canvas>
+            <div class="">
+                <div class="info">
+                    <div class="d-grid" v-if="data">
+                        <div>
+                            <p class="info-title">가장 큰 지출</p>
+                            <!-- <p class="info-content">최근 소비한 내역이 없습니다.</p> -->
+                            <p class="info-content">{{ data.transactions_max_amount > 0 ? Number(data.transactions_max_amount).toLocaleString() + '원' : '최근 소비한 내역이 없습니다.' }}</p>
+                        </div>
+                        <div>
+                            <p class="info-title">가장 많이 사용한 카테고리</p>
+                            <p class="info-content">{{ data.transactions_max_category ? getCategoryText(data.transactions_max_category) : '최근 사용한 카테고리가 없습니다.' }}</p>
+                        </div>
+                        <div>
+                            <p class="info-title">지출 총 합</p>
+                            <p class="info-content">{{ data.transactions_sum_amount ? Number(data.transactions_sum_amount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }}</p>
+                        </div>
+                        <div>
+                            <p class="info-title">용돈 총 합</p>
+                            <p class="info-content">{{ data.missions_sum_amount ? Number(data.missions_sum_amount).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mission-box">
+                    <div class="Recently-registered-mission missions">
+                        <p class="mission-title">매일매일 출석체크!</p>
+                        <p class="mission-content">작은 한 걸음이 큰 변화를 만듭니다!</p>
+                        <p class="mission-content">로그인 하시면 매일 2moa <br /> 포인트를 획득하실 수 있습니다.</p>
+                        <p class="mission-content"></p>
+                        <p v-if="childHome" class="mission-content">출석 날짜: {{ childHome.login_at }}</p>
+                    </div>
+                    <div class="Recently-completed-mission missions">
+                        <p class="mission-title">내 적금</p>
+                        <!-- 적금 통장이 없는 경우 -->
+                        <div v-if="!savings.length">
+                            <p class="mission-content">현재 가입된 적금 통장이 없습니다.</p>
+                            <p class="mission-content">적금 통장을 가입하시려면</p>
+                            <p class="mission-content"><strong>모아 은행</strong> 페이지로 이동해주세요.</p> 
+                        </div>
+                        <div v-else>
+                            <div v-for="item in savings" :key="item">
+                                <p class="mission-content">{{ item.saving_product_name }} 적금</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="">
-            <div class="info">
-                <div class="d-grid">
-                  <div>
-                    <p class="info-title">가장 큰 지출</p>
-                    <!-- <p class="info-content">최근 소비한 내역이 없습니다.</p> -->
-                    <p class="info-content">{{ mostSpendAmount.amount > 0 ? Number(mostSpendAmount.amount).toLocaleString() + '원' : '최근 소비한 내역이 없습니다.' }}</p>
-                </div>
-                <div>
-                    <p class="info-title">가장 많이 사용한 카테고리</p>
-                    <p class="info-content">{{ mostUsedCategory.category ? getCategoryText(mostUsedCategory.category) : '최근 사용한 카테고리가 없습니다.' }}</p>
-                </div>
-                <div>
-                    <p class="info-title">지출 총 합</p>
-                    <p class="info-content">{{ totalAmount ? Number(totalAmount).toLocaleString() + '원' : '최근 지출 내역이 없습니다.' }}</p>
-                </div>
-                <div>
-                    <p class="info-title">용돈 총 합</p>
-                    <p class="info-content">{{ totalExpenses ? Number(totalExpenses).toLocaleString() + '원' : '최근 받은 용돈이 없습니다.' }}</p>
-                </div>
         </div>
     </div>
-    <div class="mission-box">
-        <div class="Recently-registered-mission missions">
-            <p class="mission-title">출석</p>
-            <!-- <p v-if="homeMission.status === []" class="mission-content">최근 등록된 미션이 없습니다</p>
-            <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p> -->
-        </div>
-        <div class="Recently-completed-mission missions">
-            <p class="mission-title">적금</p>
-            <!-- <p v-if="!(homeMission.status === '2')" class="mission-content">최근 완료한 미션이 없습니다</p>
-            <p v-else v-for="item in homeMission" :key="item" class="mission-content">{{ item.title }}</p> -->
-        </div>
-    </div>
-</div>
-</div>
-  </div>
 </template>
 
 <script setup>
 
-import { computed, onMounted , ref, watch} from 'vue';
+import { computed, onMounted, onBeforeMount, ref, watch} from 'vue';
 import { useStore } from 'vuex';
 import Chart from 'chart.js/auto';
 import { useRoute } from 'vue-router';
@@ -62,6 +73,7 @@ const route = useRoute();
 
 
 const dateToday = ref(new Date());
+const childHome = computed(() => store.state.childTransaction.childHome);
 
 // 현재 연월 표시 (반응형 데이터)
 const formattedDate = computed(() =>
@@ -77,6 +89,8 @@ const mostSpendAmount = computed(() => store.state.childTransaction.transactionA
 const mostUsedCategory = computed(() => store.state.childTransaction.mostUsedCategory);
 const totalAmount = computed(() => store.state.childTransaction.totalAmount);
 const totalExpenses = computed(() => store.state.childTransaction.totalExpenses);
+const savings = computed(() => store.state.childTransaction.savings);
+const data = computed(() => store.state.childTransaction.data);
 
 // 이전 월로 이동
 async function prevMonth() {
@@ -160,8 +174,11 @@ watch(
 );
 
 // ✅ **마운트 시 그래프 렌더링**
-onMounted(async () => {
+// onMounted(async () => {
+onBeforeMount(async () => {
     await store.dispatch('transaction/childStats', {date:dateToday.value});
+    await store.dispatch("childTransaction/childHomeTransaction");
+    
     setDoughuntDrawData(); // v3 add
     renderDoughnutChart();
 });
@@ -199,7 +216,8 @@ const setDoughuntDrawData = () => {
     grid-template-columns: 300px 300px;
     gap: 25px;
     height: 250px;
-    border: black 3px solid;
+    border: 5px solid #5589e996;
+    border-radius: 15px;
 }
 
 .mission-box {
@@ -240,23 +258,24 @@ const setDoughuntDrawData = () => {
 
 .info-content {
     padding: 10px;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .missions {
     width: 300px;
     height: 415px;
     margin-top: 25px;
-    background-color: #5589e996;
+    border: 5px solid #5589e996;
     text-align: center;
+    border-radius: 15px;
 }
 
 .mission-title {
     padding: 25px;
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 .mission-content {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     margin-top: 15px;
 }
 </style>

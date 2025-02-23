@@ -41,19 +41,24 @@
                     <div class="c-left">
                         <button @click="goBack" class="c-back">뒤로가기</button>
                     </div>
-                    
                     <div class="c-right">
-                        <button @click="delOpenModal('mission', mission_id)" class="c-ms-del">미션 삭제</button>
-                        
                         <button 
                             v-if="missionDetail.status === '0'" 
                             @click="completeBtn" 
-                            class="c-ms-complete"
-                        >
+                            class="c-ms-complete">
                             미션 완료
                         </button>
-
-                        <button @click="goUpdate(missionDetail.mission_id)" class="c-ms-up">미션 수정</button>
+                        <button 
+                            @click="delOpenModal('mission', mission_id)" 
+                            :class="['c-ms-del', { 'c-ms-del-no-complete': missionDetail.status !== '0' }]"
+                        >
+                            미션 삭제
+                        </button>
+                        <button 
+                            @click="goUpdate(missionDetail.mission_id)" 
+                            class="c-ms-up">
+                            미션 수정
+                        </button>
                     </div>
                 </div>
             </div>
@@ -251,12 +256,16 @@ const delCloseModal = () => {
     
 }
 .c-ms-del {
-    margin-left: 460px;
     background-color: #5589e996;
     font-size: 1.3rem;
     border: none;
     color: white;
     cursor: pointer;
+}
+
+/* 미션 완료 버튼이 없는 경우에 적용할 추가 스타일 */
+.c-ms-del-no-complete {
+    margin-left: 610px;
 }
 
 .c-ms-up {
@@ -268,6 +277,7 @@ const delCloseModal = () => {
 }
 
 .c-ms-complete {
+    margin-left: 460px;
     background-color: #5589e996;
     font-size: 1.3rem;
     border: none;

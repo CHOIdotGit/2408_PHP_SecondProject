@@ -223,6 +223,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     height: 70px;
     gap: 30px;
     align-items: center;
+    justify-content: space-between;
 }
 
 .sec-container {
@@ -383,7 +384,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 .cost {
     justify-content: center;
     align-items: end;
-    width: 100px;
+    margin-right: 10px;
 }
 
 .modal-name {
