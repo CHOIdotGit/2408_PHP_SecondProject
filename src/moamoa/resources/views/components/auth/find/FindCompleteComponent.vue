@@ -24,6 +24,25 @@
 
           <div>
             <p>{{ userInfo.account }}</p>
+
+            <div class="find-content-idbox">
+              <button @click="copyAccount" type="button">
+                <img src="/img/icon-copy.webp">
+              </button>
+  
+              <!-- 복사 알림창 DIV -->
+              <div v-show="copyboard" class="find-alarm-copy">
+                <div>
+                  <img @click="copyboardClose" src="/img/icon-cross.png">
+                  
+                  <br>
+  
+                  <p>아이디가 복사되었습니다</p>
+                </div>
+                
+                <img src="/img/alarm-reverse.webp">
+              </div>
+            </div>
           </div>
         </div>
         
@@ -54,7 +73,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeMount, reactive } from 'vue';
+import { computed, onBeforeMount, onMounted, onUnmounted, reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 
@@ -63,7 +82,6 @@ import { useRoute } from 'vue-router';
 
   // 유형 정보 ---------------------------------------------------------------------------------------------
   const findType = computed(() => route.path.split('/').pop());
-
   const userInfo = computed(() => store.state.auth.userInfo);
 
   const settingUser = reactive({
@@ -71,8 +89,67 @@ import { useRoute } from 'vue-router';
     userId: sessionStorage.getItem('userId') ? sessionStorage.getItem('userId') : ''
   });
 
-  onBeforeMount(() => {
+  // 클립보드 복사 처리 ---------------------------------------------------------------------------------------------
+  
+  // 복사 알림창 스위칭
+  const copyboard = ref(false);
 
+  const copyboardClose = () => {
+    copyboard.value = false;
+  }
+  
+  const copyAccount = () => {
+
+    // 새요소 생성
+    const textCode = document.createElement('textarea');
+
+    // 요소에 가족코드를 저장
+    textCode.value = userInfo.value.account;
+
+    // 요소 삽입
+    document.body.appendChild(textCode);
+    
+    // 해당 요소 선택
+    textCode.select();
+
+    // 요소를 클립보드에 복사
+    document.execCommand('copy'); // 클립보드에 복사
+
+    // 요소 제거
+    document.body.removeChild(textCode);
+    
+    // 메세지로 알림
+    copyboard.value = true;
+  };
+
+  // 이벤트 처리 ---------------------------------------------------------------------------------------------
+  
+
+  // 클릭 외부 감지 함수
+  const handleCopyBoard = (e) => {
+    const copyIcon = document.querySelector('.find-alarm-copy');
+
+    // 알림창이 활성화 되어있고 타겟이 해당DOM의 이외를 클릭했을때
+    if(copyIcon && !copyIcon.contains(e.target) && copyboard.value) {
+      // 외부 클릭시 알림 숨김
+      copyboard.value = false;
+    }
+  };
+
+  onMounted(() => {
+    document.addEventListener('mousedown', handleCopyBoard);
+    
+    // 히스토리 상태 변경을 강제로 만들어서 뒤로 가기를 막음
+    history.pushState(null, '', window.location.href);
+  });
+
+  // 이벤트 해제
+  onUnmounted(() => {
+    document.removeEventListener('mousedown', handleCopyBoard);
+  });  
+
+  onBeforeMount(() => {
+    // 유저 정보 로드
     store.dispatch('auth/userInfo', settingUser);
   });
 
@@ -141,14 +218,18 @@ import { useRoute } from 'vue-router';
   /* -------------------------------------------------------------------- */
 
   /* 메인 공통 설정 */
-  .find-main-content, 
-  .find-main-content > div , 
+  .find-main-content,  
+  .find-main-content > div,
   .find-main-content > div > div {
     width: 100%;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  
+  .find-main-content,  
+  .find-main-content > div {
+    flex-direction: column;
   }
 
   /* 메인 텍스트 */
@@ -189,6 +270,7 @@ import { useRoute } from 'vue-router';
   /* 하단 부분 */
   .find-footer-btn {
     width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -221,10 +303,86 @@ import { useRoute } from 'vue-router';
   .find-pwd-btn {
     background-color: #F3F3F3;
   }
+
+  /* -------------------------------------------------------------------- */
+
+  .find-content-idbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  .find-content-idbox > button > img {
+    width: 100%;
+    height: 100%;
+  }
+  /* 복사 버튼 설정 */
+  .find-content-idbox > button {
+    background-color: transparent;
+    border: none;
+    margin-left: 10px;
+    width: 20px;
+    height: 20px;
+  }
+
+  /* 복사 알림창 */
+  .find-alarm-copy {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+    /* left: 54.6%;
+    top: -9%; */
+    bottom: 190%;
+  }
+
+  /* 알림 박스 설정 */
+  .find-alarm-copy > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 190px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 0 20px 0 5px;
+  }
+
+  /* 알림 x 버튼 */
+  .find-alarm-copy > div > img {
+    position: absolute;
+    left: 92%;
+    top: 17%;
+    width: 8px;
+    height: 8px;
+    cursor: pointer;
+  }
+
+  /* 복사 알리 텍스트 */
+  .find-alarm-copy > div > p {
+    font-size: 0.8rem;
+    height: 100%;
+    /* margin: 10px; */
+  }
+
+  /* 꼬다리 이미지 */
+  .find-alarm-copy > img {
+    position: absolute;
+    left: 46.5%;
+    top: 97%;
+    width: 20px;
+    height: 20px;
+  }
   
   /* -------------------------------------------------------------------- */
   
   @media(max-width: 390px) {
+    .find-container {
+      white-space: wrap;
+    }
+
     /* 메인 박스 */
     .find-main-box {
       max-width: 97vw;
@@ -255,7 +413,7 @@ import { useRoute } from 'vue-router';
     /* 아이디 크기 조절 */
     .find-content-id > div {
       font-size: 1.6rem;
-    }
+    } 
 
     /* 하단 버튼 간격 조절 */
     .find-footer-btn {
@@ -271,9 +429,6 @@ import { useRoute } from 'vue-router';
     /* 비밀번호 완료 텍스트 조절 */
     .find-content-pwd {
       padding: 0 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
 
   }

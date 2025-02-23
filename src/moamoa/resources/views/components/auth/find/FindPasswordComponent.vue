@@ -237,6 +237,10 @@ import { useStore } from 'vuex';
   /* -------------------------------------------------------------------- */
 
   @media(max-width: 390px) {
+    .find-container {
+      white-space: wrap;
+    }
+
     /* 메인 박스 */
     .find-main-box {
       max-width: 97vw;

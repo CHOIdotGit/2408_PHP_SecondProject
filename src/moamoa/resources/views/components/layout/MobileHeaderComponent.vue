@@ -13,9 +13,6 @@
           <p class="m-child-select menu-sec-first"> 배현진 </p>
           <p class="m-child-select"> 김현석 </p>
           <p class="m-child-select"> 최상민 </p>
-          <p class="m-child-select"> 최상민 </p>
-          <p class="m-child-select"> 최상민 </p>
-          <p class="m-child-select"> 최상민 </p>
       </div>
       <img src="/img/m-search.png" alt="" class="m-search-button">
   </div>

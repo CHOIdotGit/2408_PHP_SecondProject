@@ -106,7 +106,6 @@ import { useRoute } from 'vue-router';
   const copyboardClose = () => {
     copyboard.value = false;
   }
-
   
   const copyFamCode = () => {
 
@@ -167,8 +166,9 @@ import { useRoute } from 'vue-router';
   });  
 
 </script>
+
 <style scoped>
-/* 버튼 커서 손모양 */
+  /* 버튼 커서 손모양 */
   button, input[type="checkbox"] {
     cursor: pointer;
   }
@@ -435,12 +435,12 @@ import { useRoute } from 'vue-router';
     }
     /* 말풍선 꼬다리 아이콘 */
     .regist-alarm-copy > img {
-      left: 56.5%;
+      left: 59.5%;
     }
     /* 복사 말풍선 내부조전 */
     .regist-alarm-copy > div {
-      width: 166px;
-      padding: 5px 5px 5px 10px;
+      width: 170px;
+      padding: 5px;
       justify-content: flex-start;
     }
     /* 복사 말풍선 텍스트 */

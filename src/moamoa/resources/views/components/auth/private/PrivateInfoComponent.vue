@@ -724,5 +724,174 @@ import PrivateAskModalComponent from '../../modal/PrivateAskModalComponent.vue';
   }
   
   /* ------------------------------------------------------------------------ */
+  
+  @media(max-width: 390px) {
+    .info-container {
+      white-space: wrap;
+    }
+
+    /* 메인 박스 */
+    .info-main-box {
+      width: 100%;
+      height: 645px;
+      padding: 0 10px;
+    }
+
+    /*  */
+
+    /* 헤더 프로필 */
+    .info-header-profile {
+      width: 100px;
+      height: 100px;
+    }
+    /* 헤더 텍스트 */
+    .info-header-title > h2 {
+      font-size: 1.7rem;
+      margin: 20px 0;
+    }
+
+    /*  */
+
+    /* 중앙 박스 */
+    .info-main-content {
+      padding: 15px;
+    }
+    /* 메인 타이틀 */
+    .info-main-content > div > h2 {
+      font-size: 1.55rem;
+      margin-bottom: 15px;
+    }
+    /* 가족코드 */
+    .info-copy-code > span {
+      font-size: 2rem;
+      padding-left: 12px;
+    }
+
+    /* 복사 아이콘 */
+    .info-copy-code > button {
+      margin: 15px 0 0 5px;
+    }
+    /* 알림창 박스 */
+    .info-alarm-copy {
+      top: -4.2%;
+    }
+    .info-alarm-copy > div {
+      width: 165px;
+      padding: 5px;
+      padding-right: 15px;
+    }
+    /* 알림창 꼬다리 */
+    .info-alarm-copy > img {
+      left: 57.5%;
+    }
+    /* 복사 알림 텍스트 */
+    .info-alarm-copy > div > p {
+      font-size: 0.75rem;
+    }
+
+    /* 메인 서브 타이틀 */
+    .info-main-content > div > p {
+      font-size: 0.95rem;
+      margin-top: 15px;
+    }
+
+    /*  */
+
+    .info-connect-card {
+      display: flex;
+      justify-content: space-between;
+      padding: 25px 10px;
+    }
+
+    .info-connect-content > h2 {
+      font-size: 1.6rem;
+    }
+
+    .info-connect-btn > button {
+      font-size: 1.2rem;
+      padding: 10px 20px;
+    }
+    
+    /*  */
+
+    /* 자녀 메인 타이틀 */
+    .info-footer-list > h2 {
+      font-size: 1.6rem;
+      margin: 15px 0 10px 0;
+    }
+    /* 자녀 카드 간격 */
+    .info-footer-list > div {
+      gap: 42px !important;
+    }
+    /* 자녀 카드 박스 */
+    .info-footer-item {
+      width: 140px;
+      height: 193px;
+    }
+
+    /* 승인 대기중 문구 */
+    .info-wait-apply {
+      left: 11%;
+      font-size: 0.9rem;
+      height: 22px;
+    }
+
+    /* 자녀 프로필 */
+    .info-footer-profile {
+      width: 100px;
+      height: 100px;
+      margin: 11px 0;
+    }
+    /* 카드 자녀 이름 */
+    .info-footer-item > p {
+      font-size: 1.2rem;
+    }
+
+    /* 승인 아이콘 */
+    .info-footer-btn {
+      margin-top: 7px;
+    }
+    /* 승인 취소 간격 */
+    .info-footer-btn > div {
+      column-gap: 35px;
+    }
+    /* 카드 버튼 크기 */
+    .info-footer-btn button {
+      width: 30px;
+      height: 30px;
+    }
+
+    /* 승인취소 좌표 */
+    .info-alarm-apply
+    ,.info-alarm-cancel {
+      top: -81%;
+      left: -25%;
+    }
+    /* 승인됨 좌표 */
+    .info-alarm-applied {
+      top: -95%;
+      left: -40%;
+    }
+    
+    /* 클릭시 미니알림 */
+    .info-apply-btn:hover + .info-alarm-apply
+    ,.info-cancel-btn:hover + .info-alarm-cancel
+    ,.info-applied-btn:hover + .info-alarm-applied {
+      display: none;
+    }
+    .info-apply-btn:active + .info-alarm-apply
+    ,.info-cancel-btn:active + .info-alarm-cancel
+    ,.info-applied-btn:active + .info-alarm-applied
+    ,.info-apply-btn:focus + .info-alarm-apply
+    ,.info-cancel-btn:focus + .info-alarm-cancel
+    ,.info-applied-btn:focus + .info-alarm-applied {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+
+    
+  }
 
 </style>

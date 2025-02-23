@@ -23,12 +23,13 @@ class AuthenticationRequest extends FormRequest {
     ];
 
     // 로그인 체크, 부모 테이블이나 자녀 테이블에 해당 아이디가 있는지 확인함
-    if($this->routeIs('auth.login')) {
-      $rules['account'][] = new ExistsFamilyRule;
-    }
+    // if($this->routeIs('auth.login')) {
+    //   $rules['account'][] = new ExistsFamilyRule;
+    // }
 
     // 회원가입 or 회원수정
-    elseif($this->routeIs('auth.store.user')
+    // else
+    if($this->routeIs('auth.store.user')
         || $this->routeIs('auth.modify.user')
         || $this->routeIs('auth.chk.info')
     ) {
