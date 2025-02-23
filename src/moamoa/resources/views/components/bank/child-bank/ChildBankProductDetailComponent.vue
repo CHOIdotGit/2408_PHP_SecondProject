@@ -45,7 +45,7 @@
     <div class="tap-menu">
         <div :class="openBankEconomic ? 'active' : 'tap-item'" @click="economicEdu">경제 교실</div>
         <div :class="openBankGuide ? 'active' : 'tap-item'" @click="bankGuide">상품 안내</div>
-        <div class="tap-item" @click="bankRate">금리 및 이율</div>
+        <div :class="openBankRate ? 'active' : 'tap-item'" @click="bankRate">금리 및 이율</div>
         <div class="tap-item" @click="bankNotice">유의사항</div>
     </div>
 
@@ -55,6 +55,9 @@
 
         <!-- 상품 특징 -->
         <BankProductGuideComponent v-show="openBankGuide"/>
+
+        <!-- 금리 설명 -->
+         <BankRateEduComponent v-show="openBankRate"/>
     </div>
 </div>
 
@@ -66,6 +69,7 @@ import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 import BankProductGuideComponent from '../../manual/BankProductGuideComponent.vue';
 import EconomicEduComponent from '../../manual/EconomicEduComponent.vue';
+import BankRateEduComponent from '../../manual/BankRateEduComponent.vue';
 
 const store = useStore();
 const route = useRoute();
@@ -84,16 +88,24 @@ onBeforeMount(() => {
 // ********************
 // 탭 메뉴
 // ********************
-const openBankGuide = ref(false);
 const openBankEconomic = ref(true);
+const openBankGuide = ref(false);
+const openBankRate = ref(false);
 
 const bankGuide = () => {
     openBankGuide.value = true;
     openBankEconomic.value = false;
+    
 }
 
 const economicEdu = () => {
     openBankEconomic.value = true;
+    openBankGuide.value = false;
+}
+
+const bankRate = () => {
+    openBankRate.value = true;
+    openBankEconomic.value = false;
     openBankGuide.value = false;
 }
 </script>
