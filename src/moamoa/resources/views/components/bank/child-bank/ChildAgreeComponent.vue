@@ -71,14 +71,17 @@
         </div>
         <!-- 적금 가입 동의하기 버튼 -->
         <div class="bank-box-bottom">
-            <div>※ 모아은행 적금 상품 가입에 동의하십니까</div>
-            <div></div>
+            <div class="bank-guide">※ 모아은행 적금 상품 가입에 동의하십니까</div>
             <div class="agreeBtn">
-                <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
-                <label for="agree-no">아니요, 동의하지 않습니다.</label>
+                <label for="agree-no" :class="{'checkRadio': agreement === 'no' }" class="radioStyle">
+                    <input type="radio" id="agree-no" value="no" name="agree" v-model="agreement">
+                    <p>아니요, 동의하지 않습니다.</p>
+                </label>
                 
-                <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
-                <label for="agree-yes">네, 동의합니다</label>
+                <label for="agree-yes" :class="{'checkRadio': agreement === 'yes' }" class="radioStyle">
+                    <input type="radio" id="agree-yes" value="yes" name="agree" v-model="agreement">
+                    <p>네, 동의합니다.</p>
+                </label>
             </div>
 
             <div class="registBtn">
@@ -128,6 +131,10 @@ const goResigt = () => {
     }
 
     else if(agreement.value === 'no') {
+        agreeModal.value = true;
+    }
+
+    else {
         agreeModal.value = true;
     }
 }
@@ -337,6 +344,53 @@ h1 {
     gap: 20px;
 }
 
+.agreeBtn {
+    display: flex;
+    gap: 55px;
+}
+
+/*  기본스타일 제거, 버튼 모양 재설정 */
+input[type='radio'] {
+  -webkit-appearance: none;  
+  -moz-appearance: none; 
+  appearance: none; 
+  width: 13px;
+  height: 13px;
+  border: 1px solid #ccc; 
+  border-radius: 50%;
+  outline: none; 
+  cursor: pointer;
+}
+
+/* 체크 시 버튼 모양 스타일 */
+input[type='radio']:checked {
+    border: 4px solid #ee8432;
+    background-color: #fff5ee;
+}
+
+.radioStyle {
+    display: flex;
+    gap: 10px;
+    /* box-shadow: 3px 3px 10px #dcdcdc; */
+    border: 2px solid #ebebeb;
+    border-radius: 15px;
+    width: 240px;
+    height: 46px;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.checkRadio {
+    border: 2px solid #ee8432;
+    background-color: #fff5ee;
+}
+
+/* 가입멘트 */
+.bank-guide {
+    font-size: 1.8rem;
+}
+
 .registBtn {
     display: flex;
     gap: 100px;
@@ -360,23 +414,6 @@ h1 {
     color: #c9c9c9;
 }
 
-/* input raido 커스텀 */
-.radioBtn {
-    display: flex;
-
-}
-
-.radioStyle [type='radio'] {
-    display: none;
-}
-
-.radioStyle > div {
-    width: 200px;
-    border-radius: 15px;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 10px #dcdcdc;
-    height: 50px;
-}
 
 /* ************* */
 /*     모달      */
