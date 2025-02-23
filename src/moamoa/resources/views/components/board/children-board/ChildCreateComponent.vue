@@ -1,7 +1,7 @@
 <template>
     <div class="main-container">
         <div class="board-container">
-            <div class="c-route"> 홈  > 미션 > 작성</div>
+            <div class="c-route"> 홈  > 미션 > 등록</div>
             <div class="content-list">
                 <div class="c-content">
                     <p class="c-list-title">제목</p>

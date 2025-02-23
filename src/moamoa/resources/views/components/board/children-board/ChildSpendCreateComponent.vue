@@ -1,11 +1,11 @@
 <template>
     <div class="main-container">
         <div class="board-container">
-            <div class="c-route"> 홈  > 지출 > 작성</div>
+            <div class="c-route"> 홈  > 지출 > 등록</div>
             <div class="content-list">
                 <div class="c-content">
                     <p class="c-list-title">제목</p>
-                    <input type="text" class="ms-title deco" id="ms-title" maxlength="10" required autofocus v-model="transactionCreate.title">
+                    <input type="text" class="ms-title deco" id="ms-title" maxlength="10" autofocus placeholder="지출 제목을 입력하세요"  v-model="transactionCreate.title">
                 </div>
                 <div class="c-content">
                     <p class="c-list-title">날짜</p>
@@ -29,12 +29,12 @@
                 </div>
                 <div class="c-content">
                     <p class="title">금액</p>
-                    <input type="number" class="ms-amount deco" id="ms-amount" required v-model="transactionCreate.amount">
+                    <input type="number" class="ms-amount deco" id="ms-amount" v-model="transactionCreate.amount" placeholder="금액을 입력하세요">
                     <span class="span-div">원</span>
                 </div>
                 <div class="c-bottom-btn">
                     <button @click="goBack" class="c-create-btn cancel">취소</button>
-                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">작성</button>
+                    <button @click="$store.dispatch('childTransaction/createTransaction', transactionCreate)" class="c-create-btn">등록</button>
                 </div>
             </div>
         </div>

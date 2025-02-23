@@ -4,7 +4,7 @@
             <div class="route"> 홈  > 지출 </div>
             <div class="c-for-buttons">
                 <button @click="delOpenModal" class="c-btn c-mission-delete">지출 삭제</button>
-                <button @click="goSpendCreate" class="c-btn c-mission-insert">지출 작성</button>
+                <button @click="goSpendCreate" class="c-btn c-mission-insert">지출 등록</button>
             </div>
             <div class="search-menu">
                 <div class="search-option">

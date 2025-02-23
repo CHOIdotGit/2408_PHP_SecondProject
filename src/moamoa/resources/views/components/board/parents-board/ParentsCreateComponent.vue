@@ -1,7 +1,7 @@
 <template >
     <div class="main-container" v-if="!isMobile">
         <div class="board-container">
-        <div class="route"> 홈   > 미션  >  작성 </div>
+        <div class="route"> 홈   > 미션  >  등록 </div>
             <div class="content-list">
                 <div class="content">
                     <p class="title">제목</p>
@@ -70,7 +70,7 @@
         </div>
         <div class="m-expense-list">
             <div class="m-expense-route">
-                <p> 미션  >   작성 </p>
+                <p> 미션  >   등록 </p>
             </div>
             <div class="m-expense-title">
                 <input v-model="missionCreate.title" type="text" class="m-title" id="" maxlength="10" autofocus placeholder="미션 제목을 입력하세요">
