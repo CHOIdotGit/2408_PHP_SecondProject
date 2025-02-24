@@ -37,7 +37,6 @@
 
         <!-- 자녀가 없을 때  -->
         <div class="child-box" v-else>
-            <div class="child-name">자녀를 등록하세요</div>
             <div class="child-profile">
                 <img :src="displayProfile.profile || '/profile/default5.webp'">    
             </div>

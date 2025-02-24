@@ -65,7 +65,7 @@
             </div>
 
             <!-- 햄버거 아이콘 -->
-            <div  class="icon-btn" @click="openHamburgerModal">
+            <div  class="icon-btn" >
                 <!-- <img src="/img/icon-hamburger-black.png" alt="" class="icon" > -->
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
                     <img :src="profileImg" alt="" class="icon-profile">
@@ -73,17 +73,17 @@
                 
             </div>
             <!-- 햄버거 모달 메뉴 -->
-            <div class="dropdown" v-show="hamburgerModal" >
-                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="link-deco">
+            <!-- <div class="dropdown" >
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/info' : '/child/private/info'" class="link-deco">
                     <p class="info-page">가족정보</p>
-                </router-link> -->
-                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
+                </router-link>
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
                     <p class="info-page">개인정보 수정</p>
-                </router-link> -->
-                <!-- <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
+                </router-link>
+                <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/wdrl' : '/child/private/ident/wdrl'" class="link-deco">
                     <p class="info-page info-page-red">회원 탈퇴</p>
-                </router-link> -->
-            </div>
+                </router-link>
+            </div> -->
         </div>
     </div>
 
@@ -318,13 +318,14 @@ const checkMission = (mission_id) => {
 .link-deco {
     text-decoration: none;
     color: #000;
+    line-height: 0px;
 }
 
 .icon-profile {
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50px;
-    /* border: 2px solid #a2caac; */
+    border: 2px solid #a2caac;
 }
 
 /* **********알람 모달창*********** */
