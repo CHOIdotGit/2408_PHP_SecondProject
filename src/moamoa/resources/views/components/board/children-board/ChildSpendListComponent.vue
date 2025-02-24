@@ -260,13 +260,13 @@ const deleteCheckedSpend = () => {
         infoModal.value = true;
         return;
     }
-    else {
+
         store.dispatch('childTransaction/deletcheckedTransaction', checkboxItem.value);
-        store.dispatch('childTransaction/transactionList'); //삭제후 지출 리스트 새로 불러오기
+        store.dispatch('childTransaction/transactionList', { page:currentPage.value }); //삭제후 지출 리스트 새로 불러오기
         delModal.value = false;
         checkboxItem.value = [];
 
-    }
+
 
 }
 

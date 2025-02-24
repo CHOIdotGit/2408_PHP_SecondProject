@@ -37,27 +37,27 @@
         <footer>
             <div class="m-footer-menu">
                 <div class="m-menu">
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/home')">
                         <img src="/img/icon-home.png" alt="" class="m-home menu-sec-first">
                         <p class="m-menu-title   menu-sec-first"> 홈 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/mission/list/1')">
                         <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
                         <p class="m-menu-title"> 미션 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/spend/list/1')">
                         <img src="/img/icon-coin.png" alt="" class="m-expense">
                         <p class="m-menu-title"> 지출 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="goParentCalendar">
                         <img src="/img/icon-calendar.png" alt="" class="m-calendar">
                         <p class="m-menu-title"> 달력 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/moabank/1')">
                         <img src="/img/icon-sack-dollar.png" alt="" class="m-bank">
                         <p class="m-menu-title"> 모아통장 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" >
                         <img src="/img/mobile-etc.png" alt="" class="m-etc">
                     </div>
                 </div>
@@ -193,11 +193,12 @@
 <script setup>
 
 import { computed, onMounted, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 
 
 // +==========================+
@@ -338,6 +339,14 @@ const searchOpenModal = () => {
 const searchCloseModal = () => {
     serachModal.isOpen = false;
 };
+
+//  부모 캘린더로 이동
+const dateToday = ref(new Date());
+const goParentCalendar = () => {
+    // const child_id = selectedChild.value.child_id;
+    store.dispatch('calendar/parentCalendarInfo', { date: dateToday.value, child_id: 1 })
+    router.push('/parent/calendar/'+ 1);
+}
 </script>
 
 <style scoped>

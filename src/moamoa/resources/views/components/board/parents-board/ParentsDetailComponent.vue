@@ -337,7 +337,7 @@ const approvalMission = () => {
     font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     width: 120px;
-    bottom: 53px;
+    bottom: 11px;
     left: 1120px;
     border-radius: 0px;
     cursor: pointer;

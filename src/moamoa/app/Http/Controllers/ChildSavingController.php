@@ -189,7 +189,7 @@ class ChildSavingController extends Controller
 
         $responseData = [
             'success' => true
-            ,'msg' => '미션 등록 성공'
+            ,'msg' => '적금 가입 성공'
             ,'regist' => $regist->toArray()
         ];
 
