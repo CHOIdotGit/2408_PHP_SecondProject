@@ -1142,7 +1142,7 @@ const goParentCalendar = () => {
 /* --- 모바일 모달 ---- */
 
 .del-modal-back {
-    background-color: rgba(255, 224, 224, 0.637);
+    background-color: rgba(88, 88, 88, 0.637);
     position: fixed;
     top: 0;
     left: 0;
@@ -1175,6 +1175,7 @@ const goParentCalendar = () => {
 }
 
 .m-modal-list-container {
+    background-color: white;
     display: flex;
 }
 
