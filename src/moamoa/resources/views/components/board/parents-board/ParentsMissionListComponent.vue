@@ -44,27 +44,27 @@
         <footer>
             <div class="m-footer-menu">
                 <div class="m-menu">
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/home')">
                         <img src="/img/icon-home.png" alt="" class="m-home menu-sec-first">
                         <p class="m-menu-title   menu-sec-first"> 홈 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/mission/list/1')">
                         <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
                         <p class="m-menu-title"> 미션 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/spend/list/1')">
                         <img src="/img/icon-coin.png" alt="" class="m-expense">
                         <p class="m-menu-title"> 지출 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="goParentCalendar">
                         <img src="/img/icon-calendar.png" alt="" class="m-calendar">
                         <p class="m-menu-title"> 달력 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" @click="router.push('/parent/moabank/1')">
                         <img src="/img/icon-sack-dollar.png" alt="" class="m-bank">
                         <p class="m-menu-title"> 모아통장 </p>
                     </div>
-                    <div class="m-menu-section">
+                    <div class="m-menu-section" >
                         <img src="/img/mobile-etc.png" alt="" class="m-etc">
                     </div>
                 </div>
@@ -137,7 +137,7 @@
                             <option value="0">미션 진행</option>
                             <option value="1">미션 대기</option>
                             <option value="2">미션 완료</option>
-                            <option value="3">취소</option>
+                            <option value="3">미션 취소</option>
                         </select>
                     </div>
                     <div class="search">
@@ -239,7 +239,7 @@
     <div class="base-modal-overlay" v-show="infoModal">
     <div class="base-modal-box">
       <div class="base-modal-content">
-        <div>삭제할 미션을 선택하세요</div>
+        <div >미션을 선택하세요</div>
       </div>
 
       <div class="base-modal-btn">
@@ -285,7 +285,7 @@ const deleteCheckedMission = () => {
     store.dispatch('mission/deletcheckedMission', checkboxItem.value);
     delModal.value = false;
     
-    store.dispatch('mission/missionList', route.params.id); //삭제후 미션 리스트 새로 불러오기
+    store.dispatch('mission/missionList', { child_id: route.params.id, page: currentPage.value }); //삭제후 미션 리스트 새로 불러오기
     checkboxItem.value = [];
 }
 
@@ -491,11 +491,12 @@ const getChildId = (child_id) => {
 const approvalMission = () => {
     if(checkboxItem.value.length > 0) {
         store.dispatch('mission/approvalMission', checkboxItem.value);
-        store.dispatch('mission/missionList', route.params.id);
+        store.dispatch('mission/missionList', { child_id: route.params.id, page: currentPage.value });
         checkboxItem.value = [];
-        alert('진행중인 미션의 승인이 완료되었습니다.');
+        // alert('진행중인 미션의 승인이 완료되었습니다.');
     }else {
-        alert('선택되어있는 미션이 없습니다.');
+        // alert('선택되어있는 미션이 없습니다.');
+        infoModal.value = true;
     }
 };
 
@@ -521,6 +522,14 @@ const missionSearch = (childId) => {
     store.dispatch('mission/missionSearch', filters.value);
 };
 
+// 모바일 메뉴--------------------------------------------------
+//  부모 캘린더로 이동
+const dateToday = ref(new Date());
+const goParentCalendar = () => {
+    // const child_id = selectedChild.value.child_id;
+    store.dispatch('calendar/parentCalendarInfo', { date: dateToday.value, child_id: 1 })
+    router.push('/parent/calendar/'+ 1);
+}
 
 </script>
 
@@ -616,7 +625,7 @@ const missionSearch = (childId) => {
     margin-top: 20px;
     font-weight: 800;
     align-content: space-between;
-    margin-left: 210px;
+    margin-left: 680px;
     background-color: #A2CAAC;
     font-size: 1.5rem;
     border: none;
@@ -1133,7 +1142,7 @@ const missionSearch = (childId) => {
 /* --- 모바일 모달 ---- */
 
 .del-modal-back {
-    background-color: rgba(255, 224, 224, 0.637);
+    background-color: rgba(88, 88, 88, 0.637);
     position: fixed;
     top: 0;
     left: 0;
@@ -1166,6 +1175,7 @@ const missionSearch = (childId) => {
 }
 
 .m-modal-list-container {
+    background-color: white;
     display: flex;
 }
 

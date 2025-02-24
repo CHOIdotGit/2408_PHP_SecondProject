@@ -41,7 +41,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function() {
             new AutoSavingRecord();
         // })->daily();
-        })->dailyAt('15:00'); //매일 15시에 실행
+        })->dailyAt('16:00'); //매일 15시에 실행
         // })->everyMinute(); //매일 15시에 실행
 
         // 만기된 적금과 이자 금액 지급

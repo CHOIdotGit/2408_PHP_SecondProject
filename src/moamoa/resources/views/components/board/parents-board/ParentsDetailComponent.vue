@@ -202,7 +202,7 @@ import { useRoute, useRouter } from 'vue-router';
 // *****미션 상세 정보******
 const store = useStore();
 const router = useRouter();
-const route = useRoute();
+const route = useRoute();   
 
 const missionDetail = computed(() => store.state.mission.missionDetail);
 onMounted(() => {
@@ -337,7 +337,7 @@ const approvalMission = () => {
     font-size: 1.3rem;
     border: 1px solid #A2CAAC;
     width: 120px;
-    bottom: 53px;
+    bottom: 11px;
     left: 1120px;
     border-radius: 0px;
     cursor: pointer;
@@ -579,7 +579,7 @@ const approvalMission = () => {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    min-height: 580px;
+    min-height: 590px;
 }
 
 .m-expense-route {
@@ -698,7 +698,7 @@ const approvalMission = () => {
 .m-regist {
     position: absolute;
     right: 150px;
-    bottom: 86px;
+    bottom: 76px;
 }
 /* --- 모바일 모달 ---- */
 

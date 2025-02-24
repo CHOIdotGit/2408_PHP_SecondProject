@@ -74,11 +74,12 @@
 
 <script setup>
 import { computed, onBeforeMount, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 
 // 자녀 통장 내역 불러오기
 const savingDetail = computed(()=>store.state.saving.savingDetail);

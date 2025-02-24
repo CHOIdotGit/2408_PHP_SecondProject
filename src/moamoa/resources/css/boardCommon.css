@@ -123,6 +123,8 @@
     border-radius: 10px;
     font-size: 1.5rem;
     margin-left: 30px;
+    display: flex;
+    align-items: center;
 }
 
 /* 미션(지출) 금액 입력란 */

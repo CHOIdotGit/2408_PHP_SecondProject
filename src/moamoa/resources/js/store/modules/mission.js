@@ -289,8 +289,8 @@ export default {
             console.log(url);
             axios.delete(url)
                 .then(response => {
-                    context.commit('deleteMission', response.data.deleteMission);
-                    context.commit('setChildId', child_id)
+                    // context.commit('deleteMission', response.data.deleteMission);
+                    context.commit('setChildId', child_id);
                     router.replace('/parent/mission/list/' + sessionStorage.child_id);
                     console.log('자녀아이디 확인', '/parent/mission/list/' + sessionStorage.child_id );
                 })
@@ -309,8 +309,8 @@ export default {
                 data: { missionIds } // 선택된 미션 ID 배열 전달
             })
             .then(response => {
-                // console.log(response.data.checkedMissionId);
-                context.commit('deleteMission', response.data.checkedMissionId);
+                console.log(response.data.checkedMissionId);
+                // context.commit('deleteMission', response.data.checkedMissionId);
 
                 
                 // alert('미션이 삭제되었습니다.'); //미션 삭제 알람

@@ -272,7 +272,7 @@ export default {
                 // }
 
                 // console.log(response.data.checkedMissionId);
-                context.commit('deleteMission', response.data.checkedMissionId);
+                // context.commit('deleteMission', response.data.checkedMissionId);
                 //**context.commit**은 Mutation을 호출하여 Vuex 상태를 변경할 때 사용됩니다.
                 //context.commit('mutationName', 전달할 데이터(payload));
                 

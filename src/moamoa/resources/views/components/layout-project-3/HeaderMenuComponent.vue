@@ -68,7 +68,7 @@
             <div  class="icon-btn" >
                 <!-- <img src="/img/icon-hamburger-black.png" alt="" class="icon" > -->
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
-                    <img :src="profileImg" alt="" class="icon-profile">
+                    <img :src="profileImg || '/user-img/default.webp'" alt="" class="icon-profile">
                 </router-link>
                 
             </div>
@@ -120,8 +120,11 @@ const myName = computed(() => store.state.header.myName);
 // ****로그인한 자녀 프로필 불러오기*****
 const childInfo = computed(()=> store.state.header.childInfo);
 onBeforeMount(async () => {
-    await store.dispatch('header/childNameList');
-    await store.dispatch('header/childInfo');
+    if(store.state.auth.parentFlg) {
+        await store.dispatch('header/childNameList');
+    } else {
+        await store.dispatch('header/childInfo');
+    }
 });
 
 

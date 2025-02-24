@@ -3,6 +3,7 @@
         <div class="list-container">
             <div class="route"> 홈  > 미션 </div>
             <div class="for-buttons">
+                <!-- <button @click="completeBtn"  class="c-ms-complete">미션 완료</button> -->
                 <button @click="delOpenModal" class="btn btn-top mission-delete">미션 삭제</button>
                 <button @click="getChildId" class="btn btn-bottom mission-insert">미션 등록</button>
             </div>
@@ -141,11 +142,13 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-// import router from '../../../../js/router';
+
+
 const route = useRoute();
 const store = useStore();
+const router = useRouter();
 
 // onMount
 // onMounted(() => {
@@ -290,22 +293,21 @@ console.log('체크박스 선택된 데이터 : ', checkboxItem.value);
 // }
 
 // 체크된 미션만 삭제 처리 하기
-const deleteCheckedMission = async () => {
+const deleteCheckedMission = () => {
     if(checkboxItem.value.length === 0) {
         // alert("삭제할 미션을 선택하세요");
         infoModal.value = true;
         return;
     }
-    else {
-        await store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
-        await store.dispatch('childMission/setChildMissionList'); //삭제후 미션 리스트 새로 불러오기
-        
-        delModal.value = false;
-        checkboxItem.value = [];
-    }
-    
 
+    store.dispatch('childMission/deletcheckedMission', checkboxItem.value);
+    store.dispatch('childMission/setChildMissionList', { page:currentPage.value }); //삭제후 미션 리스트 새로 불러오기
+    
+    delModal.value = false;
+    checkboxItem.value = [];
 }
+
+
 
 // ****************************
 // *******모달창 설정***********
