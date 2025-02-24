@@ -63,12 +63,8 @@ console.log('totalPoints 확인 : ', totalPoints)
 
 // 자녀 적금 상품 가져 오기
 // const savingList = computed(()=> store.state.saving.childSavingList);
-const savingList = computed(() => {
-    const today = new Date();
-    return store.state.saving.childSavingList.filter(item => {
-        return new Date(item.saving_sign_up_end_at) >= today;
-    });
-});
+const savingList = computed(() => store.state.saving.childSavingList);
+// const savingList = computed(() => store.state.point.savingList)
 
 // 빈 슬롯 개수 계산
 const emptySlots = computed(() => {
@@ -78,7 +74,6 @@ const emptySlots = computed(() => {
 // 자녀 포인트 받아오기
 // 한국은행 기준금리 api 가져오기
 const koreaBankInterest = computed(()=> store.state.bank.bankInterest);
-
 
 // 자녀 통장 페이지로 이동
 const goSavingDetail = (saving_sign_up_id) => {

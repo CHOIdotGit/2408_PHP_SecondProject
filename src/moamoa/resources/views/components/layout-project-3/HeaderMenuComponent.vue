@@ -68,7 +68,7 @@
             <div  class="icon-btn" >
                 <!-- <img src="/img/icon-hamburger-black.png" alt="" class="icon" > -->
                 <router-link :to="$store.state.auth.parentFlg ? '/parent/private/ident/edit' : '/child/private/ident/edit'" class="link-deco">
-                    <img :src="profileImg" alt="" class="icon-profile">
+                    <img :src="profileImg || '/user-img/default.webp'" alt="" class="icon-profile">
                 </router-link>
                 
             </div>

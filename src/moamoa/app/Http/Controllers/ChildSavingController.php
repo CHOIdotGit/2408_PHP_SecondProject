@@ -27,6 +27,7 @@ class ChildSavingController extends Controller
         $childSavingList = SavingSignUp::select('saving_sign_ups.child_id',
                                                 'saving_sign_ups.saving_sign_up_id',
                                                 'saving_sign_ups.created_at',
+                                                'saving_sign_ups.saving_sign_up_status',
                                                 'saving_sign_ups.saving_sign_up_start_at',
                                                 'saving_sign_ups.saving_sign_up_end_at',
                                                 'saving_products.saving_product_name',
@@ -38,7 +39,8 @@ class ChildSavingController extends Controller
                                                 ) as total' )
                                             )
                                         ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
-                                        ->where('child_id', $child->child_id)
+                                        ->where('saving_sign_ups.child_id', $child->child_id)
+                                        ->where('saving_sign_ups.saving_sign_up_status', '0')
                                         ->whereDate('saving_sign_up_end_at', '>', $today )
                                         ->whereNull('saving_sign_ups.deleted_at')
                                         ->orderBy('saving_sign_ups.created_at', 'DESC')

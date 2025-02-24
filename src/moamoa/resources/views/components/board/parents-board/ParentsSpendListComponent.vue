@@ -421,7 +421,7 @@ const goParentCalendar = () => {
     margin-top: 20px;
     font-weight: 800;
     align-content: space-between;
-    margin-left: 210px;
+    margin-left: 680px;
     background-color: #A2CAAC;
     font-size: 1.5rem;
     border: none;

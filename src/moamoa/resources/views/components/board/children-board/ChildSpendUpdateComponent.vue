@@ -11,7 +11,6 @@
                     <p class="c-list-title">날짜</p>
                     <div class="date">
                         <div class="end-date">
-                            <p class="date-title">종료일</p>
                             <input type="date" class="ms-date" id="ms-date" min="2000-01-01" v-model="transactionDetail.transaction_date">
                         </div>
                     </div>

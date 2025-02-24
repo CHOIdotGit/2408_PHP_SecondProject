@@ -11,6 +11,7 @@ export default {
         ,lastPage: 1
         ,lastPageFlg: false
         ,controlFlg: true
+        ,savingList: []
         // 세션 관련 -------------------------------------------------------------
         ,childId: sessionStorage.getItem('child_id') ? sessionStorage.getItem('child_id') : null
         // ,pointId: sessionStorage.getItem('pointId') ? sessionStorage.getItem('pointId') :null
@@ -38,6 +39,9 @@ export default {
         },
         setChildPointList(state, childPointList) {
             state.childPointList = childPointList;
+        },
+        setSavingList(state, savingList) {
+            state.savingList = savingList;
         },
     },
     actions: {
@@ -86,6 +90,7 @@ export default {
             axios.get(url)
             .then(response => {
                 context.commit('setTotalPoint', response.data.totalPoint);
+                context.commit('setSavingList', response.data.savingList);
             })
             .catch(error => {
                 console.error('자녀 포인트 합계 불러오기 실패', error);
