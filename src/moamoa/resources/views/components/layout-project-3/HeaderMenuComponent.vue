@@ -120,8 +120,11 @@ const myName = computed(() => store.state.header.myName);
 // ****로그인한 자녀 프로필 불러오기*****
 const childInfo = computed(()=> store.state.header.childInfo);
 onBeforeMount(async () => {
-    await store.dispatch('header/childNameList');
-    await store.dispatch('header/childInfo');
+    if(store.state.auth.parentFlg) {
+        await store.dispatch('header/childNameList');
+    } else {
+        await store.dispatch('header/childInfo');
+    }
 });
 
 

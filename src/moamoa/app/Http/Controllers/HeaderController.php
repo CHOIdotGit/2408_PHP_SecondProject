@@ -126,6 +126,7 @@ class HeaderController extends Controller
         // alarm = 1 일 때 체크 한 상태
         // ************************************************ 
         $parent = Auth::guard('parents')->user();
+        // $parent = Auth::guard('parents')->id();
         $bellCheck = Mission::where('parent_id', $parent->parent_id)
                             ->where('mission_id', $mission_id)
                             ->where('alarm', 0)
@@ -153,10 +154,10 @@ class HeaderController extends Controller
         // ************************************************
         // *********로그인한 자녀의 프로필 정보 출력**********
         // ************************************************ 
-        $child = Auth::guard('children')->user();
+        $child_id = Auth::guard('children')->id();
 
         $childInfo = Child::select('children.child_id','children.name', 'children.profile')
-                            ->where('children.child_id', $child)
+                            ->where('children.child_id', $child_id)
                             ->first();
         
         $responseData = [
