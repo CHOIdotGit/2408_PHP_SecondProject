@@ -247,6 +247,7 @@ import FirstGuideComponent from '../manual/FirstGuideComponent.vue';
 
   span {
     font-size: 1rem;
+    padding: 0;
   }
 
   

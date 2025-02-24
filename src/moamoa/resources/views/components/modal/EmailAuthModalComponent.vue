@@ -344,8 +344,9 @@ import { useStore } from 'vuex';
       padding: 2px 0 0 24px;
     }
     .email-modal-code > span {
-      right: 18px;
-      top: 10px;
+      right: 24px;
+      top: 24px;
+      padding: 0;
     }
 
   }
