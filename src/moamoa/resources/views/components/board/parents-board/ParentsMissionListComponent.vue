@@ -1121,7 +1121,7 @@ const goParentCalendar = () => {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    max-height: 640px;
+    height: 640px;
 }
 
 .m-expense-status{

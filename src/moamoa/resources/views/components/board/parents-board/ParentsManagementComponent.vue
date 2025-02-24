@@ -255,13 +255,7 @@ const goBankbook = () => {
     margin-top: 20px;
 }
 
-/* 미션 항목이 1개 또는 2개일 때 중앙 정렬 효과 */
-.centered-mission {
-    /* display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center; */
-}
+
 
 .mission-title {
     font-size: 1.5rem;

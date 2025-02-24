@@ -230,7 +230,7 @@ const graphChartData = {
     {
       label: '주차별 소비 합계',
       data: weeklyOutgoData.value,
-      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#ffffff', '#000000'],
+      backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#462679', '#000000'],
       borderWidth: 0.8,
     },
   ],
