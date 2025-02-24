@@ -100,14 +100,14 @@ class HomeController extends Controller
         //                 ->get();
                         
         // 자녀 홈, 가장 큰 지출
-        $transactionAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        $transactionAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d H:i:s'), $endOfMonth->format('Y-m-d H:i:s')])
                                     ->where('transaction_code', '1')
                                     ->where('child_id', $child_id)
                                     ->max('amount');
 
         // 자녀 홈, 가장 많이 사용한 카테고리
         $mostUsedCategory = Transaction::select('category', DB::raw('COUNT(*) cnt'))
-                                        ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+                                        ->whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d H:i:s'), $endOfMonth->format('Y-m-d H:i:s')])
                                         ->where('transaction_code', '1')
                                         ->where('child_id', $child_id)
                                         ->groupBy('category')
@@ -116,14 +116,14 @@ class HomeController extends Controller
                                         ->first();// 가장 많이 사용된 카테고리 가져오기
 
         // 해당 월(예시, 12월 한 달)의 용돈 총 합
-        $totalAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        $totalAmount = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d H:i:s'), $endOfMonth->format('Y-m-d H:i:s')])
                                     ->where('transaction_code', '0')
                                     // ->where('deleted_at IS NULL')
                                     ->where('child_id',$child_id)
                                     ->sum('amount');
 
         // 해당 월(예시, 12월 한 달)의 지출 총 합
-        $totalExpenses = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d h:i:s'), $endOfMonth->format('Y-m-d h:i:s')])
+        $totalExpenses = Transaction::whereBetween('transactions.transaction_date', [$startOfMonth->format('Y-m-d H:i:s'), $endOfMonth->format('Y-m-d H:i:s')])
                                     ->where('transaction_code', '1')
                                     // ->where('deleted_at IS NULL')
                                     ->where('child_id', $child_id)

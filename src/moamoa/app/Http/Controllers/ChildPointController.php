@@ -19,6 +19,7 @@ class ChildPointController extends Controller
                                     $query->select('children.child_id', 'children.name', 'children.profile', 'children.created_at');
                                 }])
                                 ->orderBy('points.payment_at', 'asc') // 오름차순으로 정렬
+                                ->orderBy('points.created_at', 'asc') // 오름차순으로 정렬
                                 ->get(); // 페이지네이션 없이 전체 데이터를 가져옴
     
         // 누적 계산을 위한 변수 초기화
