@@ -440,11 +440,17 @@ const getUpdateMission = () => {
 }
 
  .m-expense-amount{
+    display: flex;
     max-width: 330px;
     padding-top: 10px;
     font-size: 1.3rem;
     margin-left: 30px;
     border-top: 2px solid #636363;
+ }
+
+ .m-ms-date {
+    height: 30px;
+    font-size: 1rem;
  }
 
 
