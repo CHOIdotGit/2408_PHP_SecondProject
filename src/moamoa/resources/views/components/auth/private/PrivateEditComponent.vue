@@ -168,7 +168,7 @@
       </div>
 
       <div class="edit-footer">
-        <router-link :to="store.state.auth.parentFlg === 'parent' ? '/parent/private/wdrl' : '/child/private/wdrl'">
+        <router-link :to="$store.state.auth.parentFlg ? '/parent/private/wdrl' : '/child/private/wdrl'">
           <p class="btn-wdrl">회원 탈퇴</p>
         </router-link>
         
