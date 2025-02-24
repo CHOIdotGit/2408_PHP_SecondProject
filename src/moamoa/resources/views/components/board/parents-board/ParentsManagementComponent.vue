@@ -24,7 +24,7 @@
                                     <div v-if="item.transactions && item.transactions.length === 0">
                                         <p class="no-amount">최근 지출한 금액이 없습니다.</p>
                                     </div>
-                                    <div v-else>
+                                    <div v-else class="amount-middle-div">
                                         <div class="amount" v-for="transaction in item.transactions" :key="transaction">
                                             {{ transaction.amount.toLocaleString() }}원
                                         </div>
@@ -37,7 +37,8 @@
                                     <div v-if="item.missions && item.missions.length === 0" class="margin-top">
                                         <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
                                     </div>
-                                    <div v-else class="mission-detail">
+                                    <div v-else class="mission-detail" :class="{'centered-mission': item.missions.length < 3}" :style="{
+                                        marginTop: item.missions.length === 1 ? '60px' : item.missions.length === 2 ? '45px' : '0' }">
                                         <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
                                             <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
                                         </div>
@@ -237,6 +238,20 @@ onBeforeMount(async () => {
     margin-top: 20px;
 }
 
+/* 미션 항목이 1개 또는 2개일 때 중앙 정렬 효과 */
+.centered-mission {
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; */
+}
+
+.mission-title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 10px;
+}
+
 .child-div {
     display: flex;
     flex-direction: column;
@@ -303,6 +318,7 @@ onBeforeMount(async () => {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 250px;
 }
 
 .mission {
@@ -328,6 +344,12 @@ onBeforeMount(async () => {
     margin-top: 10px;
 }
 
+.amount-middle-div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
 .amount {
     font-size: 1.5rem;
     text-align: center;
@@ -348,12 +370,6 @@ onBeforeMount(async () => {
     text-align: center;
     font-weight: 600;
     font-size: 1.3rem;
-}
-
-.mission-title {
-    font-size: 1.5rem;
-    text-align: center;
-    margin-top: 10px;
 }
 
 /* ------------- 모바일 버전 css ------------ */
