@@ -63,7 +63,7 @@ class AutoSavingRecord extends MyJob {
                     $outcome = [
                         'child_id' => $item->child_id
                         ,'point' => $item->saving_sign_up_amount
-                        ,'point_code' => '4'
+                        ,'point_code' => '3'
                         ,'payment_at' => date('Y-m-d')
                     ];
                     $outPoint = new Point($outcome);
