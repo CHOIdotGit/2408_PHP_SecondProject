@@ -38,7 +38,7 @@
                                         <p class="no-mission">승인 대기 중인 미션이 없습니다.</p>
                                     </div>
                                     <div v-else class="mission-detail" :class="{'centered-mission': item.missions.length < 3}" :style="{
-                                        marginTop: item.missions.length === 1 ? '60px' : item.missions.length === 2 ? '45px' : '0' }">
+                                        marginTop: item.missions.length === 1 ? '60px' : item.missions.length === 2 ? '50px' : '0' }">
                                         <div class="chk-div-box" v-for="mission in item.missions" :key="mission.mission_id">
                                             <p class="mission-title">{{ getTruncatedTitle(mission.title) }}</p>
                                         </div>

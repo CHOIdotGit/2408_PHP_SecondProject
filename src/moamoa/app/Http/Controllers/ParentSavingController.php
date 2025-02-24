@@ -73,7 +73,7 @@ class ParentSavingController extends Controller
                                         ,'saving_details.saving_detail_left'
                                         ,'saving_details.saving_detail_income'
                                         ,'saving_details.saving_detail_outcome'
-                                        ,'saving_details.created_at as saving_detail_created_at'
+                                        ,DB::raw('DATE(saving_details.created_at) as saving_detail_created_at')
                                         ,'saving_details.saving_detail_category'
                                         )
                                 ->join('saving_details', 'saving_sign_ups.saving_sign_up_id', '=', 'saving_details.saving_sign_up_id')

@@ -119,10 +119,13 @@
 
 <script setup>
 import { computed, ref, onMounted, reactive  } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
 // *****지출 상세 정보******
 const store = useStore();
+const router = useRouter();
+const route = useRoute();
 const transactionDetail = computed(() => store.state.transaction.transactionDetail);
 onMounted(() => {
     store.dispatch('transaction/showTransactionDetail', store.state.transaction.transactionId);
@@ -137,7 +140,8 @@ const isMobile = store.state.mobile.isMobile;
 
 // 뒤로가기
 const goBack = (child_id) => {
-    store.dispatch('transaction/transactionList', child_id);
+    store.dispatch('transaction/transactionList', {child_id: route.params.id, page: 1});
+    router.push('/parent/spend/list/' + child_id);
 }
 
 // 지출 카테고리 정보 가져오기

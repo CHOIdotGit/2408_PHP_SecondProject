@@ -66,7 +66,7 @@ console.log('totalPoints 확인 : ', totalPoints)
 const savingList = computed(() => {
     const today = new Date();
     return store.state.saving.childSavingList.filter(item => {
-        return item.saving_sign_up_status === '0' && new Date(item.saving_sign_up_end_at) >= today;
+        return new Date(item.saving_sign_up_end_at) >= today;
     });
 });
 
@@ -187,7 +187,7 @@ onBeforeMount(() => {
     height: 250px;
     margin-right: 50px;
     text-align: center;
-    background: #c9e6d7;
+    background-color: #c9e6d7;
     border-radius: 30px;
     cursor: pointer;
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Point;
+use App\Models\SavingSignUp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -94,10 +95,17 @@ class ChildPointController extends Controller
 
         $finalTotalPoint = $totalPoint - $pointsWithCode3;
 
+        $savingList = SavingSignUp::select('saving_sign_ups.saving_sign_up_end_at', 'saving_sign_ups.child_id', 'saving_sign_ups.saving_sign_up_status', 'saving_products.saving_product_name')
+                                    ->where('saving_sign_ups.saving_sign_up_status', 0)                                                        
+                                    ->where('saving_sign_ups.child_id', $child)                                                        
+                                    ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+                                    ->get();
+
         $responseData = [
             'success' => true
-            ,'msg' => '포인트 합계 획득 성공'
+            ,'msg' => '포인트 합계, 가입한 적금 상품 리스트 획득 성공'
             ,'totalPoint' => $finalTotalPoint
+            ,'savingList' => $savingList
         ];
         return response()->json($responseData, 200);
     }

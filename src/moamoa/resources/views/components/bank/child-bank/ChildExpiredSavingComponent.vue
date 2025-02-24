@@ -73,7 +73,7 @@ const expiredSavingList = computed(() =>store.state.saving.expiredSavings);
 // 카테고리를 문자열로 변환하는 함수
 const getStatusText = (saving_sign_up_status) => {
     const statusMapping = {
-        0: '진행중',
+        // 0: '진행중',
         1: '중도 해지',
         2: '만기 해지',
     };
