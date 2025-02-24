@@ -211,11 +211,14 @@ class ChildSavingController extends Controller
                 'saving_sign_ups.child_id',
                 'saving_sign_ups.saving_sign_up_end_at',
                 'saving_sign_ups.saving_sign_up_status',
+                'saving_sign_ups.updated_at',
                 'saving_products.saving_product_name'
             )
             ->where('saving_sign_ups.child_id', $child)
-            ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
+            // ->where('saving_sign_ups.saving_sign_up_end_at', '<', $today) // 만기일이 오늘보다 이전인 데이터 조회
+            ->where('saving_sign_ups.saving_sign_up_status', '!=', '0') // 진행중 빼고 전부 다
             ->join('saving_products', 'saving_sign_ups.saving_product_id', '=', 'saving_products.saving_product_id')
+            ->orderBy('saving_sign_ups.updated_at')
             ->get();
     
         // 페이지네이션을 위한 변수 설정

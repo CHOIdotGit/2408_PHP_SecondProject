@@ -10,7 +10,7 @@
             <div v-for="item in expiredSavingList" :key="item" class="expired-saving-list">
                 <div class="expired-saving-name">{{ item.saving_product_name }} 적금</div>
                 <div class="saving-status">{{ getStatusText(item.saving_sign_up_status) }}</div>
-                <div class="cancellation-date">{{ item.saving_sign_up_end_at }}</div>
+                <div class="cancellation-date">{{ formatDate(item.updated_at) }}</div>
             </div>
             <!-- 페이지네이션 UI by 최상민 -->
             <div class="pagination">
@@ -66,6 +66,11 @@ const route = useRoute();
 const router = useRouter();
 
 const page = 1; // 기본 값 설정
+
+const formatDate = (date) => {
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // "YYYY-MM-DD" 형식으로 반환
+}
 
 // 만기된 적금 정보 가져오기
 const expiredSavingList = computed(() =>store.state.saving.expiredSavings);
