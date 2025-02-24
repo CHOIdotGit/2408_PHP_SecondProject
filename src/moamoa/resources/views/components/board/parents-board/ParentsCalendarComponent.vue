@@ -55,8 +55,8 @@
             <div class="m-footer-menu">
                 <div class="m-menu">
                     <div class="m-menu-section" @click="router.push('/parent/home')">
-                        <img src="/img/icon-home.png" alt="" class="m-home menu-sec-first">
-                        <p class="m-menu-title   menu-sec-first"> 홈 </p>
+                        <img src="/img/icon-home.png" alt="" class="m-home" style="margin-left: 15px;">
+                        <p class="m-menu-title" style="margin-left: 15px;"> 홈 </p>
                     </div>
                     <div class="m-menu-section" @click="router.push('/parent/mission/list/1')">
                         <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
@@ -464,7 +464,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    min-height: 630px;
+    height: 640px;
 }
 
 .m-expense-route {
@@ -509,6 +509,7 @@ function getDailyIncomeExpense(day, data, incomFlg) {
 
 .menu-sec-first {
     margin-left: 15px;
+    background-color: #A2CAAC;
 }
 
 .m-detail-btn {

@@ -42,8 +42,8 @@
             <div class="m-footer-menu">
                 <div class="m-menu">
                     <div class="m-menu-section">
-                        <img src="/img/icon-home.png" alt="" class="m-home menu-sec-first">
-                        <p class="m-menu-title   menu-sec-first"> 홈 </p>
+                        <img src="/img/icon-home.png" alt="" class="m-home" style="margin-left: 15px;">
+                        <p class="m-menu-title" style="margin-left: 15px;"> 홈 </p>
                     </div>
                     <div class="m-menu-section">
                         <img src="/img/icon-piggy-bank.png" alt="" class="m-mission">
@@ -590,6 +590,7 @@ const setDoughuntDrawData = () => {
 }
 .menu-sec-first {
     margin-left: 15px;
+    background-color: #A2CAAC;
 }
 .m-menu-section {
     display: flex;
