@@ -719,7 +719,7 @@ const goParentCalendar = () => {
     gap: 15px;
     overflow: scroll;
     white-space: nowrap;
-    min-height: 640px;
+    height: 640px;
 }
 
 /* --- 모바일 모달 ---- */
