@@ -109,6 +109,7 @@ class ChildSavingController extends Controller
 
         // 가입한 적금이 3개면 가입불가
         $savingCount = SavingSignUp::where('child_id', $child->child_id)
+                                    ->where('saving_sign_up_status', '0')
                                     ->count();
 
         if($savingCount === 3) {
@@ -144,7 +145,8 @@ class ChildSavingController extends Controller
             ,'saving_sign_up_end_at' =>$endDate
         ];
             // 자녀의 포인트 합계
-            $point = Point::where('child_id', $request->child_id)
+            $point = Point::where('child_id', $child->child_id)
+                            ->whereIn('point_code', ['0', '1', '2', '4'])
                             ->sum('point');
             if($point >= $savingResit['saving_sign_up_amount']) {
                 // 매일 적금일 경우
