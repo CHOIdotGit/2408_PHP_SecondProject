@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Jobs\AutoLoginCheck;
 use App\Jobs\AutoSavingFinish;
 use App\Jobs\AutoSavingRecord;
+use App\Jobs\ResetPointFlg;
 use App\Models\Mission;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -68,7 +69,11 @@ class Kernel extends ConsoleKernel
                     'updated_at' => now(),
                 ]);
         })->monthlyOn(1, '03:00');
-        
+
+            // 자정마다 로그인 체크 flg 초기화
+            $schedule->call(function() {
+                new ResetPointFlg();
+            })->daily();
     }
 
     /**

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Mail\SendEmail;
 use App\Models\Child;
 use App\Models\Point;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -83,9 +84,11 @@ class AuthController extends Controller {
                               ->get();
 
           $today = now()->format('Y-m-d');
-
+          // $today = Carbon::today();
+          
           foreach($childPoints as $childPoint) {
-            if( empty($childPoint->login_at) ||$childPoint->login_at < $today ) {
+            // $loginAt = (string) $childPoints->login_at;
+            if( empty($childPoint->login_at) || $childPoint->login_at < $today ) {
               $insertPoint = new Point();
               $insertPoint->child_id = $childPoint->child_id;
               $insertPoint->point = 2;
