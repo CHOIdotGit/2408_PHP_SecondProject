@@ -39,7 +39,7 @@
                         <div class="main-content">
                             <div v-for="item in pointList" :key="item" class="bankbook-transactions">
                                 <!-- 날짜 -->
-                                <p>{{ item.payment_at }}</p>
+                                <p class="bankbook-date">{{ item.payment_at }}</p>
                                 <!-- 출금 -->
                                 <p class="bankbook-amount">{{ item.withdrawal === 0 ? '' : Number(item.withdrawal).toLocaleString() }}</p>
                                 <!-- 입금 -->
