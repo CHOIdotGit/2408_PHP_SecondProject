@@ -50,11 +50,24 @@ class Kernel extends ConsoleKernel
         })->dailyAt('16:00');
         // })->everyMinute();
 
-        //로그인하면 하루 한번 포인트 지급
-        // $schedule->call(function() {
-        //     new AutoLoginCheck();
-        // })->everyMinute();
-
+        $schedule->call(function () {
+            DB::table('saving_products')
+                ->whereIn('saving_product_id', range(1, 7))
+                ->where('updated_at', '<=', now()->subMonth())
+                ->update([
+                    'saving_product_interest_rate' => DB::raw('CASE
+                        WHEN saving_product_id = 1 THEN ROUND(RAND() * (1.5 - 1.0) + 1.0, 1)
+                        WHEN saving_product_id = 2 THEN ROUND(RAND() * (2.5 - 1.5) + 1.5, 1)
+                        WHEN saving_product_id = 3 THEN 3.0
+                        WHEN saving_product_id = 4 THEN ROUND(RAND() * (4.5 - 3.5) + 3.5, 1)
+                        WHEN saving_product_id = 5 THEN ROUND(RAND() * (5.5 - 4.5) + 4.5, 1)
+                        WHEN saving_product_id = 6 THEN ROUND(RAND() * (6.5 - 5.5) + 5.5, 1)
+                        WHEN saving_product_id = 7 THEN ROUND(RAND() * (7.5 - 6.5) + 6.5, 1)
+                        ELSE saving_product_interest_rate
+                    END'),
+                    'updated_at' => now(),
+                ]);
+        })->monthlyOn(1, '03:00');
         
     }
 
