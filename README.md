@@ -3,7 +3,9 @@
 <h3 align=center># MoaMoa</h3>
 
 <h2> http://112.222.157.156:6525/login</h2>
-:pushpin:기술스택
+
+<h2>:pushpin:기술스택</h2>
+<img src="https://img.shields.io/badge/Html5-E34F26?style=flat-square&logo=html5&logoColor=white"/>  <img src="https://img.shields.io/badge/css3-1572B6?style=flat-square&logo=css3&logoColor=white"/> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/>  <img src="https://img.shields.io/badge/php-777BB4?style=flat-square&logo=php&logoColor=white"/>  <img src="https://img.shields.io/badge/laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white"/>  <img src="https://img.shields.io/badge/vue.js-4FC08D?style=flat-square&logo=vue.js&logoColor=white"/>  <img src="https://img.shields.io/badge/mariadb-003545?style=flat-square&logo=mariadb&logoColor=white"/>
 
 
 <h2>:bulb:2차 프로젝트 2024.12.04 ~ 2025.01.09(160시간):bulb:</h2>
